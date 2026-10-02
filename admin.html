@@ -1,0 +1,4596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>BGC CLUB — Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+/* =========================================
+   BGC CLUB ADMIN — MODERN 2026
+========================================= */
+
+:root{
+  --bg:#f5f5f3;
+  --white:#ffffff;
+  --black:#141414;
+  --muted:#737373;
+  --line:#e7e7e3;
+  --soft:#f0f0ed;
+  --accent:#7b1722;
+  --accent-dark:#5f1019;
+  --green:#147a48;
+  --red:#b42318;
+  --shadow:0 18px 50px rgba(0,0,0,.07);
+  --radius:22px;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--black);
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+.hidden{
+  display:none !important;
+}
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+.login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+.login-card{
+  width:100%;
+  max-width:430px;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:34px;
+  box-shadow:var(--shadow);
+}
+
+.brand{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+}
+
+.brand span{
+  color:var(--accent);
+}
+
+.login-kicker{
+  margin-top:38px;
+  color:var(--accent);
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+}
+
+.login-title{
+  margin:10px 0 8px;
+  font-size:36px;
+  line-height:1.05;
+  letter-spacing:-1.8px;
+}
+
+.login-copy{
+  margin:0 0 25px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+
+
+/* =========================================
+   APP
+========================================= */
+
+.admin-app{
+  min-height:100vh;
+}
+
+.sidebar{
+  position:fixed;
+  inset:0 auto 0 0;
+  width:250px;
+  background:#171717;
+  color:#fff;
+  padding:24px 16px;
+  z-index:30;
+}
+
+.sidebar-brand{
+  padding:5px 12px 30px;
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.sidebar-brand span{
+  color:#e69aa2;
+}
+
+.sidebar-nav{
+  display:grid;
+  gap:7px;
+}
+
+.sidebar-nav button{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#aaa;
+  text-align:left;
+  padding:13px 14px;
+  border-radius:12px;
+  font-weight:750;
+}
+
+.sidebar-nav button:hover,
+.sidebar-nav button.active{
+  background:#2b2b2b;
+  color:#fff;
+}
+
+.sidebar-bottom{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:22px;
+}
+
+.main{
+  margin-left:250px;
+  padding:28px;
+  min-height:100vh;
+}
+
+.mobile-header{
+  display:none;
+}
+
+
+/* =========================================
+   TOP
+========================================= */
+
+.page-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:20px;
+  margin-bottom:25px;
+}
+
+.page-title{
+  margin:0;
+  font-size:36px;
+  line-height:1;
+  letter-spacing:-1.7px;
+}
+
+.page-subtitle{
+  margin:8px 0 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:11px 16px;
+  font-weight:800;
+  transition:.2s ease;
+}
+
+.btn-primary{
+  background:var(--accent);
+  color:#fff;
+}
+
+.btn-primary:hover{
+  background:var(--accent-dark);
+  transform:translateY(-1px);
+}
+
+.btn-light{
+  background:#fff;
+  color:var(--black);
+  border:1px solid var(--line);
+}
+
+.btn-danger{
+  background:#fff0ee;
+  color:var(--red);
+  border:1px solid #f0c6c2;
+}
+
+.btn-small{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:7px 10px;
+  font-size:11px;
+  font-weight:800;
+}
+
+.btn-small:hover{
+  background:var(--soft);
+}
+
+.btn-small.danger{
+  color:var(--red);
+}
+
+
+/* =========================================
+   SECTIONS
+========================================= */
+
+.admin-section{
+  display:none;
+}
+
+.admin-section.active{
+  display:block;
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:
+    repeat(4, minmax(0,1fr));
+  gap:14px;
+  margin-bottom:22px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+}
+
+.stat-number{
+  display:block;
+  font-size:32px;
+  font-weight:900;
+  letter-spacing:-1.5px;
+}
+
+.stat-label{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+}
+
+
+/* =========================================
+   PANEL
+========================================= */
+
+.panel{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 5px 25px rgba(0,0,0,.025);
+  margin-bottom:20px;
+}
+
+.panel-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:19px 20px;
+  border-bottom:1px solid var(--line);
+}
+
+.panel-head h2{
+  margin:0;
+  font-size:19px;
+  letter-spacing:-.5px;
+}
+
+.panel-body{
+  padding:20px;
+}
+
+
+/* =========================================
+   TABLE
+========================================= */
+
+.table-wrap{
+  overflow:auto;
+}
+
+.data-table{
+  width:100%;
+  min-width:850px;
+  border-collapse:collapse;
+}
+
+.data-table th,
+.data-table td{
+  padding:14px 15px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  font-size:13px;
+  vertical-align:middle;
+}
+
+.data-table th{
+  background:#fafaf8;
+  color:#777;
+  font-size:10px;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+
+.data-table tr:last-child td{
+  border-bottom:0;
+}
+
+.person{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:190px;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  object-fit:cover;
+  background:#eee;
+}
+
+.person strong{
+  display:block;
+}
+
+.person small{
+  display:block;
+  margin-top:3px;
+  color:#888;
+}
+
+.actions{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+
+/* =========================================
+   BADGES
+========================================= */
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  border-radius:999px;
+  padding:5px 9px;
+  font-size:10px;
+  font-weight:900;
+}
+
+.badge-green{
+  color:var(--green);
+  background:#e8f6ee;
+}
+
+.badge-gray{
+  color:#777;
+  background:#eeeeeb;
+}
+
+.badge-red{
+  color:var(--red);
+  background:#fff0ee;
+}
+
+
+/* =========================================
+   EMPTY / LOADING
+========================================= */
+
+.empty{
+  padding:50px 20px;
+  text-align:center;
+  color:#888;
+}
+
+.loading{
+  padding:35px 20px;
+  text-align:center;
+  color:#888;
+}
+
+
+/* =========================================
+   MODAL
+========================================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.58);
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modal-card{
+  width:min(760px,100%);
+  max-height:92vh;
+  overflow:auto;
+  background:#fff;
+  border-radius:24px;
+  box-shadow:0 30px 90px rgba(0,0,0,.28);
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  padding:20px 22px;
+  border-bottom:1px solid var(--line);
+}
+
+.modal-head h2{
+  margin:0;
+  font-size:21px;
+  letter-spacing:-.6px;
+}
+
+.modal-close{
+  width:36px;
+  height:36px;
+  border:0;
+  border-radius:50%;
+  background:#f0f0ed;
+  font-size:23px;
+}
+
+.modal-body{
+  padding:22px;
+}
+
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.field{
+  display:grid;
+  gap:7px;
+}
+
+.field.full{
+  grid-column:1/-1;
+}
+
+.field label{
+  font-size:12px;
+  font-weight:850;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  border:1px solid #dcdcd7;
+  border-radius:12px;
+  padding:12px 13px;
+  background:#fff;
+  outline:none;
+}
+
+.field textarea{
+  min-height:105px;
+  resize:vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:var(--accent);
+}
+
+.form-footer{
+  grid-column:1/-1;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  padding-top:18px;
+  margin-top:4px;
+  border-top:1px solid var(--line);
+}
+
+.photo-preview,
+.poster-preview{
+  width:100%;
+  height:170px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border:1px dashed #ccc;
+  border-radius:15px;
+  color:#888;
+  background:#fafaf8;
+}
+
+.photo-preview img,
+.poster-preview img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.help{
+  color:#888;
+  font-size:11px;
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:200;
+  max-width:340px;
+  padding:13px 17px;
+  border-radius:13px;
+  background:#171717;
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  opacity:0;
+  transform:translateY(10px);
+  pointer-events:none;
+  transition:.2s ease;
+}
+
+.toast.show{
+  opacity:1;
+  transform:none;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media(max-width:950px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main{
+    margin-left:0;
+    padding:18px;
+  }
+
+  .mobile-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:4px 0 18px;
+  }
+
+  .mobile-menu-btn{
+    border:0;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:11px;
+    padding:9px 12px;
+    font-weight:800;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+@media(max-width:620px){
+
+  .page-top{
+    flex-direction:column;
+  }
+
+  .page-title{
+    font-size:29px;
+  }
+
+  .stats-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .field.full{
+    grid-column:auto;
+  }
+
+  .form-footer{
+    grid-column:auto;
+    flex-direction:column;
+  }
+
+  .form-footer .btn{
+    width:100%;
+  }
+
+  .modal{
+    padding:10px;
+  }
+
+  .modal-card{
+    max-height:96vh;
+    border-radius:20px;
+  }
+
+}
+
+</style>
+</head>
+
+  <body>
+
+<!-- =========================================
+     LOGIN SCREEN
+========================================= -->
+
+<div
+  id="loginScreen"
+  class="login-screen"
+>
+
+  <div class="login-card">
+
+    <div class="brand">
+      BGC <span>CLUB</span>
+    </div>
+
+    <div class="login-kicker">
+      Private Admin Access
+    </div>
+
+    <h1 class="login-title">
+      Admin Dashboard
+    </h1>
+
+    <p class="login-copy">
+      Manage BGC LIVE webinars, founder profiles,
+      registrations and connections.
+    </p>
+
+    <form id="loginForm">
+
+      <div class="field">
+
+        <label>
+          Email
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          value="bgclubusiness@gmail.com"
+          required
+        >
+
+      </div>
+
+      <br>
+
+      <div class="field">
+
+        <label>
+          Password
+        </label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Enter password"
+          required
+        >
+
+      </div>
+
+      <br>
+
+      <button
+        class="btn btn-primary"
+        type="submit"
+        style="width:100%;"
+        id="loginButton"
+      >
+        Sign In
+      </button>
+
+    </form>
+
+    <p
+      id="loginMessage"
+      class="help"
+      style="margin-top:14px;"
+    ></p>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================
+     ADMIN APP
+========================================= -->
+
+<div
+  id="adminApp"
+  class="admin-app hidden"
+>
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+      BGC <span>CLUB</span>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <button
+        class="nav-btn active"
+        data-section="dashboard"
+      >
+        Dashboard
+      </button>
+
+      <button
+        class="nav-btn"
+        data-section="webinars"
+      >
+        Webinars
+      </button>
+
+      <button
+        class="nav-btn"
+        data-section="founders"
+      >
+        Founders
+      </button>
+
+      <button
+        class="nav-btn"
+        data-section="registrations"
+      >
+        Registrations
+      </button>
+
+      <button
+        class="nav-btn"
+        data-section="connections"
+      >
+        Connections
+      </button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+      <button
+        id="logoutButton"
+        class="logout"
+      >
+        Sign Out
+      </button>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <div class="mobile-header">
+
+      <div class="brand">
+        BGC <span>CLUB</span>
+      </div>
+
+      <button
+        id="mobileMenuButton"
+        class="mobile-menu-btn"
+      >
+        Menu
+      </button>
+
+    </div>
+
+
+    <!-- =====================================
+         DASHBOARD
+    ====================================== -->
+
+    <section
+      id="section-dashboard"
+      class="admin-section active"
+    >
+
+      <div class="page-top">
+
+        <div>
+
+          <h1 class="page-title">
+            Dashboard
+          </h1>
+
+          <p class="page-subtitle">
+            BGC CLUB overview
+          </p>
+
+        </div>
+
+        <div class="top-actions">
+
+          <button
+            class="btn btn-light"
+            id="refreshDashboard"
+          >
+            Refresh
+          </button>
+
+          <button
+            class="btn btn-primary"
+            id="dashboardAddWebinar"
+          >
+            + Add Webinar
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <span
+            id="statWebinars"
+            class="stat-number"
+          >0</span>
+
+          <span class="stat-label">
+            Published Webinars
+          </span>
+        </div>
+
+        <div class="stat-card">
+          <span
+            id="statFounders"
+            class="stat-number"
+          >0</span>
+
+          <span class="stat-label">
+            Founder Profiles
+          </span>
+        </div>
+
+        <div class="stat-card">
+          <span
+            id="statRegistrations"
+            class="stat-number"
+          >0</span>
+
+          <span class="stat-label">
+            Registrations
+          </span>
+        </div>
+
+        <div class="stat-card">
+          <span
+            id="statConnections"
+            class="stat-number"
+          >0</span>
+
+          <span class="stat-label">
+            Connections
+          </span>
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="panel-head">
+
+          <h2>
+            Recent Webinars
+          </h2>
+
+          <button
+            class="btn-small"
+            data-go-section="webinars"
+          >
+            View All
+          </button>
+
+        </div>
+
+        <div
+          id="dashboardWebinars"
+          class="panel-body"
+        >
+          <div class="loading">
+            Loading...
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         WEBINARS
+    ====================================== -->
+
+    <section
+      id="section-webinars"
+      class="admin-section"
+    >
+
+      <div class="page-top">
+
+        <div>
+
+          <h1 class="page-title">
+            Webinars
+          </h1>
+
+          <p class="page-subtitle">
+            Create and manage BGC LIVE sessions.
+          </p>
+
+        </div>
+
+        <button
+          class="btn btn-primary"
+          id="addWebinarButton"
+        >
+          + Add Webinar
+        </button>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="table-wrap">
+
+          <table class="data-table">
+
+            <thead>
+
+              <tr>
+                <th>Webinar</th>
+                <th>Date</th>
+                <th>Price</th>
+                <th>Interest</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="webinarsTableBody">
+
+              <tr>
+                <td colspan="6">
+                  <div class="loading">
+                    Loading...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         FOUNDERS
+    ====================================== -->
+
+    <section
+      id="section-founders"
+      class="admin-section"
+    >
+
+      <div class="page-top">
+
+        <div>
+
+          <h1 class="page-title">
+            Founders
+          </h1>
+
+          <p class="page-subtitle">
+            Edit or delete public founder profiles.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="table-wrap">
+
+          <table class="data-table">
+
+            <thead>
+
+              <tr>
+                <th>Founder</th>
+                <th>Business</th>
+                <th>Category</th>
+                <th>Location</th>
+                <th>Visibility</th>
+                <th>Actions</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="foundersTableBody">
+
+              <tr>
+                <td colspan="6">
+                  <div class="loading">
+                    Loading...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         REGISTRATIONS
+    ====================================== -->
+
+    <section
+      id="section-registrations"
+      class="admin-section"
+    >
+
+      <div class="page-top">
+
+        <div>
+
+          <h1 class="page-title">
+            Registrations
+          </h1>
+
+          <p class="page-subtitle">
+            BGC LIVE webinar registrations.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="table-wrap">
+
+          <table class="data-table">
+
+            <thead>
+
+              <tr>
+                <th>Name</th>
+                <th>Webinar</th>
+                <th>WhatsApp</th>
+                <th>Email</th>
+                <th>Registered</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="registrationsTableBody">
+
+              <tr>
+                <td colspan="5">
+                  <div class="loading">
+                    Loading...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================
+         CONNECTIONS
+    ====================================== -->
+
+    <section
+      id="section-connections"
+      class="admin-section"
+    >
+
+      <div class="page-top">
+
+        <div>
+
+          <h1 class="page-title">
+            Connections
+          </h1>
+
+          <p class="page-subtitle">
+            Founder connection requests.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <div class="panel">
+
+        <div class="table-wrap">
+
+          <table class="data-table">
+
+            <thead>
+
+              <tr>
+                <th>Name</th>
+                <th>Founder</th>
+                <th>WhatsApp</th>
+                <th>Email</th>
+                <th>Message</th>
+                <th>Date</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="connectionsTableBody">
+
+              <tr>
+                <td colspan="6">
+                  <div class="loading">
+                    Loading...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+    <!-- =========================================
+     WEBINAR MODAL
+========================================= -->
+
+<div
+  id="webinarModal"
+  class="modal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2 id="webinarModalTitle">
+        Add Webinar
+      </h2>
+
+      <button
+        class="modal-close"
+        id="closeWebinarModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      id="webinarForm"
+      class="modal-body form-grid"
+    >
+
+      <input
+        type="hidden"
+        id="webinarId"
+      >
+
+      <div class="field">
+
+        <label>
+          Title *
+        </label>
+
+        <input
+          id="webinarTitle"
+          required
+          placeholder="Example: AI for Business"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Category *
+        </label>
+
+        <input
+          id="webinarCategory"
+          required
+          placeholder="Business / AI / Manufacturing"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          Description *
+        </label>
+
+        <textarea
+          id="webinarDescription"
+          required
+          placeholder="Describe the webinar..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Event Date *
+        </label>
+
+        <input
+          id="webinarDate"
+          type="date"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Event Time *
+        </label>
+
+        <input
+          id="webinarTime"
+          type="time"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Duration (minutes)
+        </label>
+
+        <input
+          id="webinarDuration"
+          type="number"
+          min="1"
+          value="60"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Price (₹)
+        </label>
+
+        <input
+          id="webinarPrice"
+          type="number"
+          min="0"
+          value="0"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Seats
+        </label>
+
+        <input
+          id="webinarSeats"
+          type="number"
+          min="1"
+          value="10"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Status
+        </label>
+
+        <select id="webinarPublished">
+
+          <option value="true">
+            Published
+          </option>
+
+          <option value="false">
+            Draft
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          Webinar Poster
+        </label>
+
+        <input
+          id="webinarPoster"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+        >
+
+        <div class="help">
+          JPG / PNG / WEBP
+        </div>
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          Poster Preview
+        </label>
+
+        <div
+          id="webinarPosterPreview"
+          class="poster-preview"
+        >
+          No poster selected
+        </div>
+
+      </div>
+
+
+      <div class="form-footer">
+
+        <button
+          type="button"
+          class="btn btn-light"
+          id="cancelWebinar"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          id="saveWebinar"
+        >
+          Save Webinar
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================
+     FOUNDER EDIT MODAL
+========================================= -->
+
+<div
+  id="founderModal"
+  class="modal"
+>
+
+  <div class="modal-card">
+
+    <div class="modal-head">
+
+      <h2>
+        Edit Founder Profile
+      </h2>
+
+      <button
+        class="modal-close"
+        id="closeFounderModal"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form
+      id="founderForm"
+      class="modal-body form-grid"
+    >
+
+      <input
+        type="hidden"
+        id="founderId"
+      >
+
+
+      <div class="field full">
+
+        <label>
+          Current Photo
+        </label>
+
+        <div
+          id="founderPhotoPreview"
+          class="photo-preview"
+        >
+          No photo
+        </div>
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          Replace Photo
+        </label>
+
+        <input
+          id="founderPhoto"
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+        >
+
+        <div class="help">
+          Optional. Leave empty to keep current photo.
+        </div>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Full Name *
+        </label>
+
+        <input
+          id="founderName"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Role
+        </label>
+
+        <input
+          id="founderRole"
+          placeholder="Founder / CEO"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          WhatsApp *
+        </label>
+
+        <input
+          id="founderWhatsapp"
+          required
+          type="tel"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Email
+        </label>
+
+        <input
+          id="founderEmail"
+          type="email"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Business Name *
+        </label>
+
+        <input
+          id="founderBusiness"
+          required
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Business Category
+        </label>
+
+        <input
+          id="founderCategory"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Location
+        </label>
+
+        <input
+          id="founderLocation"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Business Stage
+        </label>
+
+        <input
+          id="founderStage"
+          placeholder="Idea / Startup / Growing"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          Headline
+        </label>
+
+        <input
+          id="founderHeadline"
+          placeholder="Short business headline"
+        >
+
+      </div>
+
+
+      <div class="field full">
+
+        <label>
+          About
+        </label>
+
+        <textarea
+          id="founderAbout"
+          placeholder="About the founder and business..."
+        ></textarea>
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Website
+        </label>
+
+        <input
+          id="founderWebsite"
+          type="url"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          Instagram
+        </label>
+
+        <input
+          id="founderInstagram"
+          type="url"
+        >
+
+      </div>
+
+
+      <div class="field">
+
+        <label>
+          LinkedIn
+        </label>
+
+        <input
+          id="founderLinkedin"
+          type="url"
+        >
+
+      </div>
+
+      <div class="field">
+
+  <label>
+    Android App
+  </label>
+
+  <input
+    id="founderAndroidApp"
+    type="url"
+    placeholder="https://play.google.com/store/apps/..."
+  >
+
+</div>
+
+
+<div class="field">
+
+  <label>
+    iOS App
+  </label>
+
+  <input
+    id="founderIosApp"
+    type="url"
+    placeholder="https://apps.apple.com/..."
+  >
+
+</div>
+
+
+      <div class="field">
+
+        <label>
+          Visibility
+        </label>
+
+        <select id="founderVisible">
+
+          <option value="true">
+            Public
+          </option>
+
+          <option value="false">
+            Hidden
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <div class="form-footer">
+
+        <button
+          type="button"
+          class="btn btn-light"
+          id="cancelFounder"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          id="saveFounder"
+        >
+          Save Changes
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<div
+  id="toast"
+  class="toast"
+></div>
+
+    <script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+  "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+const ADMIN_EMAIL =
+  "bgclubusiness@gmail.com";
+
+
+const ADMIN_WHATSAPP =
+  "919092035926";
+
+
+/* =========================================
+   STATE
+========================================= */
+
+const state = {
+
+  webinars: [],
+  founders: [],
+  registrations: [],
+  connections: []
+
+};
+
+
+/* =========================================
+   HELPERS
+========================================= */
+
+function $(id){
+  return document.getElementById(id);
+}
+
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDate(date){
+
+  if(!date){
+    return "-";
+  }
+
+  return new Date(
+    date + "T00:00:00"
+  ).toLocaleDateString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function formatDateTime(value){
+
+  if(!value){
+    return "-";
+  }
+
+  return new Date(value)
+    .toLocaleString(
+      "en-IN",
+      {
+        day:"2-digit",
+        month:"short",
+        year:"numeric",
+        hour:"2-digit",
+        minute:"2-digit"
+      }
+    );
+
+}
+
+
+function formatPrice(value){
+
+  const price =
+    Number(value || 0);
+
+  if(price <= 0){
+    return "Free";
+  }
+
+  return "₹" +
+    price.toLocaleString("en-IN");
+
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+let toastTimer;
+
+function showToast(
+  message,
+  type = "normal"
+){
+
+  const toast =
+    $("toast");
+
+  toast.textContent =
+    message;
+
+  toast.style.background =
+    type === "error"
+      ? "#b42318"
+      : "#171717";
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(
+      () => {
+        toast.classList.remove("show");
+      },
+      2800
+    );
+
+}
+
+
+/* =========================================
+   MODALS
+========================================= */
+
+function openModal(id){
+
+  $(id).classList.add("open");
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function closeModal(id){
+
+  $(id).classList.remove("open");
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+function switchSection(name){
+
+  document
+    .querySelectorAll(".admin-section")
+    .forEach(section => {
+
+      section.classList.remove("active");
+
+    });
+
+
+  const section =
+    $("section-" + name);
+
+  if(section){
+    section.classList.add("active");
+  }
+
+
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.section === name
+      );
+
+    });
+
+
+  const titles = {
+
+    dashboard:[
+      "Dashboard",
+      "BGC CLUB overview"
+    ],
+
+    webinars:[
+      "Webinars",
+      "Create and manage BGC LIVE sessions."
+    ],
+
+    founders:[
+      "Founders",
+      "Edit or delete public founder profiles."
+    ],
+
+    registrations:[
+      "Registrations",
+      "BGC LIVE webinar registrations."
+    ],
+
+    connections:[
+      "Connections",
+      "Founder connection requests."
+    ]
+
+  };
+
+
+  $("pageDummy")?.remove();
+
+}
+
+
+document
+  .querySelectorAll(".nav-btn")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        switchSection(
+          button.dataset.section
+        );
+
+      }
+    );
+
+  });
+
+
+document
+  .querySelectorAll("[data-go-section]")
+  .forEach(button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        switchSection(
+          button.dataset.goSection
+        );
+
+      }
+    );
+
+  });
+
+
+/* =========================================
+   AUTH
+========================================= */
+
+async function checkAdmin(){
+
+  const {
+    data,
+    error
+  } =
+    await db.auth.getSession();
+
+
+  if(error){
+
+    console.error(error);
+
+    showLogin();
+
+    $("loginMessage").textContent =
+      "Unable to check login session.";
+
+    return;
+
+  }
+
+
+  if(!data.session){
+
+    showLogin();
+
+    return;
+
+  }
+
+
+  const user =
+    data.session.user;
+
+
+  /*
+    BGC CLUB ADMIN EMAIL CHECK
+  */
+
+  if(
+    !user.email ||
+    user.email.toLowerCase()
+      !== ADMIN_EMAIL.toLowerCase()
+  ){
+
+    await db.auth.signOut();
+
+    showLogin();
+
+    $("loginMessage").textContent =
+      "This account is not the BGC CLUB admin account.";
+
+    return;
+
+  }
+
+
+  /*
+    ADMIN LOGIN SUCCESS
+    No admin_users table check.
+  */
+
+  await showAdmin();
+
+}
+
+
+function showLogin(){
+
+  $("loginScreen")
+    .classList.remove("hidden");
+
+  $("adminApp")
+    .classList.add("hidden");
+
+}
+
+
+async function showAdmin(){
+
+  $("loginScreen")
+    .classList.add("hidden");
+
+  $("adminApp")
+    .classList.remove("hidden");
+
+  await loadAllData();
+
+}
+
+
+$("loginForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const button =
+        $("loginButton");
+
+      const message =
+        $("loginMessage");
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Signing in...";
+
+      message.textContent =
+        "";
+
+
+      try{
+
+        const email =
+          $("loginEmail")
+            .value
+            .trim();
+
+
+        const password =
+          $("loginPassword")
+            .value;
+
+
+        const {
+          error
+        } =
+          await db.auth.signInWithPassword({
+            email,
+            password
+          });
+
+
+        if(error){
+
+          throw error;
+
+        }
+
+
+        await checkAdmin();
+
+
+      }catch(error){
+
+        console.error(error);
+
+        message.textContent =
+          error.message ||
+          "Login failed.";
+
+      }finally{
+
+        button.disabled = false;
+
+        button.textContent =
+          "Sign In";
+
+      }
+
+    }
+  );
+
+
+$("logoutButton")
+  .addEventListener(
+    "click",
+    async () => {
+
+      await db.auth.signOut();
+
+      showLogin();
+
+    }
+  );
+/* =========================================
+   BUTTONS
+========================================= */
+
+$("dashboardAddWebinar")
+  .addEventListener(
+    "click",
+    openAddWebinar
+  );
+
+
+$("addWebinarButton")
+  .addEventListener(
+    "click",
+    openAddWebinar
+  );
+
+
+$("refreshDashboard")
+  .addEventListener(
+    "click",
+    loadAllData
+  );
+
+
+$("closeWebinarModal")
+  .addEventListener(
+    "click",
+    closeWebinar
+  );
+
+
+$("cancelWebinar")
+  .addEventListener(
+    "click",
+    closeWebinar
+  );
+
+
+$("closeFounderModal")
+  .addEventListener(
+    "click",
+    closeFounder
+  );
+
+
+$("cancelFounder")
+  .addEventListener(
+    "click",
+    closeFounder
+  );
+
+
+/* =========================================
+   MODAL BACKDROP
+========================================= */
+
+$("webinarModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("webinarModal")
+      ){
+        closeWebinar();
+      }
+
+    }
+  );
+
+
+$("founderModal")
+  .addEventListener(
+    "click",
+    event => {
+
+      if(
+        event.target ===
+        $("founderModal")
+      ){
+        closeFounder();
+      }
+
+    }
+  );
+
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(event.key !== "Escape"){
+      return;
+    }
+
+    closeWebinar();
+
+    closeFounder();
+
+  }
+);
+
+      /* =========================================
+   LOAD ALL DATA
+========================================= */
+
+async function loadAllData(){
+
+  await Promise.all([
+    loadWebinars(),
+    loadFounders(),
+    loadRegistrations(),
+    loadConnections()
+  ]);
+
+  updateStats();
+
+}
+
+
+/* =========================================
+   LOAD WEBINARS
+========================================= */
+
+async function loadWebinars(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("webinars")
+      .select("*")
+      .order(
+        "event_date",
+        {
+          ascending:false
+        }
+      )
+      .order(
+        "event_time",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    $("webinarsTableBody").innerHTML =
+      `<tr>
+        <td colspan="6">
+          <div class="empty">
+            Unable to load webinars.
+          </div>
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+
+  state.webinars =
+    data || [];
+
+
+  renderWebinars();
+
+  renderDashboardWebinars();
+
+  updateStats();
+
+}
+
+
+/* =========================================
+   RENDER WEBINARS
+========================================= */
+
+function renderWebinars(){
+
+  const body =
+    $("webinarsTableBody");
+
+
+  if(!state.webinars.length){
+
+    body.innerHTML =
+      `<tr>
+        <td colspan="6">
+          <div class="empty">
+            No webinars created yet.
+          </div>
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    state.webinars
+      .map(webinar => {
+
+        return `
+          <tr>
+
+            <td>
+
+              <strong>
+                ${escapeHTML(webinar.title)}
+              </strong>
+
+              <div
+                style="
+                  color:#888;
+                  font-size:11px;
+                  margin-top:4px;
+                "
+              >
+                ${escapeHTML(
+                  webinar.category || "BGC LIVE"
+                )}
+              </div>
+
+            </td>
+
+
+            <td>
+              ${formatDate(webinar.event_date)}
+              <br>
+              <small>
+                ${
+                  webinar.event_time
+                    ? webinar.event_time.slice(0,5)
+                    : "-"
+                }
+              </small>
+            </td>
+
+
+            <td>
+              ${formatPrice(webinar.price)}
+            </td>
+
+
+            <td>
+              ${Number(
+                webinar.interest_count || 0
+              )}
+            </td>
+
+
+            <td>
+
+              ${
+                webinar.published
+
+                ? `
+                  <span class="badge badge-green">
+                    Published
+                  </span>
+                `
+
+                : `
+                  <span class="badge badge-gray">
+                    Draft
+                  </span>
+                `
+              }
+
+            </td>
+
+
+            <td>
+
+              <div class="actions">
+
+                <button
+                  class="btn-small"
+                  onclick="
+                    editWebinar('${webinar.id}')
+                  "
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  class="btn-small"
+                  onclick="
+                    toggleWebinar(
+                      '${webinar.id}',
+                      ${!webinar.published}
+                    )
+                  "
+                >
+                  ${
+                    webinar.published
+                      ? "Unpublish"
+                      : "Publish"
+                  }
+                </button>
+
+
+                <button
+                  class="btn-small danger"
+                  onclick="
+                    deleteWebinar('${webinar.id}')
+                  "
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================
+   DASHBOARD WEBINARS
+========================================= */
+
+function renderDashboardWebinars(){
+
+  const box =
+    $("dashboardWebinars");
+
+
+  const items =
+    state.webinars.slice(0,5);
+
+
+  if(!items.length){
+
+    box.innerHTML =
+      `<div class="empty">
+        No webinars available.
+      </div>`;
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    items
+      .map(webinar => {
+
+        return `
+          <div
+            style="
+              display:flex;
+              justify-content:space-between;
+              align-items:center;
+              gap:15px;
+              padding:13px 0;
+              border-bottom:1px solid var(--line);
+            "
+          >
+
+            <div>
+
+              <strong>
+                ${escapeHTML(webinar.title)}
+              </strong>
+
+              <div
+                style="
+                  color:#888;
+                  font-size:12px;
+                  margin-top:4px;
+                "
+              >
+                ${formatDate(webinar.event_date)}
+                ·
+                ${
+                  webinar.interest_count || 0
+                }
+                Interested
+              </div>
+
+            </div>
+
+
+            ${
+              webinar.published
+
+              ? `
+                <span class="badge badge-green">
+                  Published
+                </span>
+              `
+
+              : `
+                <span class="badge badge-gray">
+                  Draft
+                </span>
+              `
+            }
+
+          </div>
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================
+   WEBINAR TOGGLE
+========================================= */
+
+async function toggleWebinar(
+  id,
+  publish
+){
+
+  const {
+    error
+  } =
+    await db
+      .from("webinars")
+      .update({
+        published:publish,
+        updated_at:new Date().toISOString()
+      })
+      .eq("id",id);
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "Unable to update webinar.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showToast(
+    publish
+      ? "Webinar published."
+      : "Webinar moved to draft."
+  );
+
+
+  await loadWebinars();
+
+}
+
+
+/* =========================================
+   ADD WEBINAR
+========================================= */
+
+function openAddWebinar(){
+
+  $("webinarForm").reset();
+
+  $("webinarId").value =
+    "";
+
+  $("webinarModalTitle").textContent =
+    "Add Webinar";
+
+  $("saveWebinar").textContent =
+    "Create Webinar";
+
+  $("webinarPublished").value =
+    "true";
+
+  $("webinarPosterPreview").innerHTML =
+    "No poster selected";
+
+  openModal("webinarModal");
+
+}
+
+
+/* =========================================
+   EDIT WEBINAR
+========================================= */
+
+function editWebinar(id){
+
+  const webinar =
+    state.webinars.find(
+      item => item.id === id
+    );
+
+
+  if(!webinar){
+    return;
+  }
+
+
+  $("webinarId").value =
+    webinar.id;
+
+  $("webinarTitle").value =
+    webinar.title || "";
+
+  $("webinarCategory").value =
+    webinar.category || "";
+
+  $("webinarDescription").value =
+    webinar.description || "";
+
+  $("webinarDate").value =
+    webinar.event_date || "";
+
+  $("webinarTime").value =
+    webinar.event_time
+      ? webinar.event_time.slice(0,5)
+      : "";
+
+  $("webinarDuration").value =
+    webinar.duration_minutes || 60;
+
+  $("webinarPrice").value =
+    webinar.price || 0;
+
+  $("webinarSeats").value =
+    webinar.seats || 10;
+
+  $("webinarPublished").value =
+    String(
+      webinar.published !== false
+    );
+
+
+  if(webinar.poster_url){
+
+    $("webinarPosterPreview").innerHTML =
+      `
+      <img
+        src="${escapeHTML(webinar.poster_url)}"
+        alt="Poster"
+      >
+      `;
+
+  }else{
+
+    $("webinarPosterPreview").innerHTML =
+      "No poster";
+
+  }
+
+
+  $("webinarModalTitle").textContent =
+    "Edit Webinar";
+
+  $("saveWebinar").textContent =
+    "Save Changes";
+
+
+  openModal("webinarModal");
+
+}
+
+
+/* =========================================
+   DELETE WEBINAR
+========================================= */
+
+async function deleteWebinar(id){
+
+  const webinar =
+    state.webinars.find(
+      item => item.id === id
+    );
+
+
+  if(!webinar){
+    return;
+  }
+
+
+  const {
+    count,
+    error:countError
+  } =
+    await db
+      .from("webinar_registrations")
+      .select(
+        "id",
+        {
+          count:"exact",
+          head:true
+        }
+      )
+      .eq(
+        "webinar_id",
+        id
+      );
+
+
+  if(countError){
+
+    showToast(
+      countError.message ||
+      "Unable to check registrations.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if(Number(count || 0) > 0){
+
+    showToast(
+      "This webinar has registrations. Unpublish it instead of deleting.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      `Delete "${webinar.title}" permanently?`
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from("webinars")
+      .delete()
+      .eq("id",id);
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "Unable to delete webinar.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showToast(
+    "Webinar deleted successfully."
+  );
+
+
+  await loadWebinars();
+
+}
+
+      /* =========================================
+   WEBINAR POSTER PREVIEW
+========================================= */
+
+$("webinarPoster")
+  .addEventListener(
+    "change",
+    event => {
+
+      const file =
+        event.target.files[0];
+
+
+      if(!file){
+
+        $("webinarPosterPreview")
+          .innerHTML =
+          "No poster selected";
+
+        return;
+
+      }
+
+
+      if(
+        ![
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ].includes(file.type)
+      ){
+
+        showToast(
+          "Please select JPG, PNG or WEBP.",
+          "error"
+        );
+
+        event.target.value =
+          "";
+
+        return;
+
+      }
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        e => {
+
+          $("webinarPosterPreview")
+            .innerHTML =
+            `
+            <img
+              src="${e.target.result}"
+              alt="Poster preview"
+            >
+            `;
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+
+/* =========================================
+   UPLOAD WEBINAR POSTER
+========================================= */
+
+async function uploadWebinarPoster(
+  file
+){
+
+  if(!file){
+    return null;
+  }
+
+
+  const extension =
+    file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+
+  const path =
+    `admin/${crypto.randomUUID()}.${extension}`;
+
+
+  const {
+    error
+  } =
+    await db
+      .storage
+      .from("webinar-posters")
+      .upload(
+        path,
+        file,
+        {
+          cacheControl:"3600",
+          upsert:false
+        }
+      );
+
+
+  if(error){
+    throw error;
+  }
+
+
+  const {
+    data
+  } =
+    db
+      .storage
+      .from("webinar-posters")
+      .getPublicUrl(path);
+
+
+  return data.publicUrl;
+
+}
+
+
+/* =========================================
+   SAVE WEBINAR
+========================================= */
+
+$("webinarForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const button =
+        $("saveWebinar");
+
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Saving...";
+
+
+      try{
+
+        const id =
+          $("webinarId")
+            .value
+            .trim();
+
+
+        const payload = {
+
+          title:
+            $("webinarTitle")
+              .value
+              .trim(),
+
+          category:
+            $("webinarCategory")
+              .value
+              .trim(),
+
+          description:
+            $("webinarDescription")
+              .value
+              .trim(),
+
+          event_date:
+            $("webinarDate")
+              .value,
+
+          event_time:
+            $("webinarTime")
+              .value,
+
+          duration_minutes:
+            Number(
+              $("webinarDuration")
+                .value || 60
+            ),
+
+          price:
+            Number(
+              $("webinarPrice")
+                .value || 0
+            ),
+
+          seats:
+            Number(
+              $("webinarSeats")
+                .value || 10
+            ),
+
+          published:
+            $("webinarPublished")
+              .value === "true"
+
+        };
+
+
+        if(!payload.title){
+          throw new Error(
+            "Please enter webinar title."
+          );
+        }
+
+
+        if(!payload.category){
+          throw new Error(
+            "Please enter category."
+          );
+        }
+
+
+        if(!payload.description){
+          throw new Error(
+            "Please enter description."
+          );
+        }
+
+
+        if(!payload.event_date){
+          throw new Error(
+            "Please select event date."
+          );
+        }
+
+
+        const file =
+          $("webinarPoster")
+            .files[0];
+
+
+        if(file){
+
+          payload.poster_url =
+            await uploadWebinarPoster(
+              file
+            );
+
+        }
+
+
+        let error;
+
+
+        /* UPDATE */
+
+        if(id){
+
+          const result =
+            await db
+              .from("webinars")
+              .update({
+                ...payload,
+                updated_at:
+                  new Date().toISOString()
+              })
+              .eq("id",id);
+
+          error =
+            result.error;
+
+        }
+
+
+        /* CREATE */
+
+        else{
+
+          const result =
+            await db
+              .from("webinars")
+              .insert({
+                ...payload,
+                interest_count:0
+              });
+
+          error =
+            result.error;
+
+        }
+
+
+        if(error){
+          throw error;
+        }
+
+
+        closeWebinar();
+
+
+        showToast(
+          id
+            ? "Webinar updated successfully."
+            : "Webinar created successfully."
+        );
+
+
+        await loadWebinars();
+
+
+      }catch(error){
+
+        console.error(error);
+
+        showToast(
+          error.message ||
+          "Unable to save webinar.",
+          "error"
+        );
+
+      }finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          $("webinarId").value
+            ? "Save Changes"
+            : "Create Webinar";
+
+      }
+
+    }
+  );
+
+
+function closeWebinar(){
+
+  closeModal("webinarModal");
+
+  $("webinarForm").reset();
+
+  $("webinarId").value =
+    "";
+
+  $("webinarPosterPreview")
+    .innerHTML =
+    "No poster selected";
+
+}
+
+
+/* =========================================
+   FOUNDER PHOTO PREVIEW
+========================================= */
+
+$("founderPhoto")
+  .addEventListener(
+    "change",
+    event => {
+
+      const file =
+        event.target.files[0];
+
+
+      if(!file){
+        return;
+      }
+
+
+      if(
+        ![
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ].includes(file.type)
+      ){
+
+        showToast(
+          "Please select JPG, PNG or WEBP.",
+          "error"
+        );
+
+        event.target.value =
+          "";
+
+        return;
+
+      }
+
+
+      const reader =
+        new FileReader();
+
+
+      reader.onload =
+        e => {
+
+          $("founderPhotoPreview")
+            .innerHTML =
+            `
+            <img
+              src="${e.target.result}"
+              alt="Founder photo"
+            >
+            `;
+
+        };
+
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+
+/* =========================================
+   UPLOAD FOUNDER PHOTO
+========================================= */
+
+async function uploadFounderPhoto(
+  file
+){
+
+  if(!file){
+    return null;
+  }
+
+
+  const extension =
+    file.name
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+
+  const path =
+    `admin/${crypto.randomUUID()}.${extension}`;
+
+
+  const {
+    error
+  } =
+    await db
+      .storage
+      .from("founder-photos")
+      .upload(
+        path,
+        file,
+        {
+          cacheControl:"3600",
+          upsert:false
+        }
+      );
+
+
+  if(error){
+    throw error;
+  }
+
+
+  const {
+    data
+  } =
+    db
+      .storage
+      .from("founder-photos")
+      .getPublicUrl(path);
+
+
+  return data.publicUrl;
+
+}
+
+      /* =========================================
+   LOAD FOUNDERS
+========================================= */
+
+async function loadFounders(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("founder_profiles")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    $("foundersTableBody").innerHTML =
+      `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            Unable to load founder profiles.
+          </div>
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
+  state.founders =
+    data || [];
+
+
+  renderFounders();
+
+  updateStats();
+
+}
+
+
+/* =========================================
+   RENDER FOUNDERS
+========================================= */
+
+function renderFounders(){
+
+  const body =
+    $("foundersTableBody");
+
+
+  if(!state.founders.length){
+
+    body.innerHTML =
+      `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            No founder profiles yet.
+          </div>
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    state.founders
+      .map(founder => {
+
+        const photo =
+          founder.photo_url ||
+          "data:image/svg+xml;charset=UTF-8," +
+          encodeURIComponent(`
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100"
+              height="100"
+            >
+              <rect
+                width="100%"
+                height="100%"
+                fill="#eeeeeb"
+              />
+              <text
+                x="50%"
+                y="50%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                fill="#888"
+                font-size="12"
+              >
+                Founder
+              </text>
+            </svg>
+          `);
+
+
+        return `
+          <tr>
+
+            <td>
+
+              <div class="person">
+
+                <img
+                  class="avatar"
+                  src="${escapeHTML(photo)}"
+                  alt=""
+                >
+
+                <div>
+
+                  <strong>
+                    ${escapeHTML(
+                      founder.full_name
+                    )}
+                  </strong>
+
+                  <small>
+                    ${escapeHTML(
+                      founder.role ||
+                      "Founder"
+                    )}
+                  </small>
+
+                </div>
+
+              </div>
+
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                founder.business_name ||
+                "-"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                founder.business_category ||
+                "-"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                founder.location ||
+                "-"
+              )}
+            </td>
+
+
+            <td>
+
+              ${
+                founder.is_visible
+
+                ? `
+                  <span class="badge badge-green">
+                    Public
+                  </span>
+                `
+
+                : `
+                  <span class="badge badge-gray">
+                    Hidden
+                  </span>
+                `
+              }
+
+            </td>
+
+
+            <td>
+
+              <div class="actions">
+
+                <button
+                  class="btn-small"
+                  onclick="
+                    editFounder('${founder.id}')
+                  "
+                >
+                  Edit
+                </button>
+
+
+                <button
+                  class="btn-small danger"
+                  onclick="
+                    deleteFounder('${founder.id}')
+                  "
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </td>
+
+          </tr>
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================
+   EDIT FOUNDER
+========================================= */
+
+function editFounder(id){
+
+  const founder =
+    state.founders.find(
+      item => item.id === id
+    );
+
+
+  if(!founder){
+    return;
+  }
+
+
+  $("founderId").value =
+    founder.id;
+
+  $("founderName").value =
+    founder.full_name || "";
+
+  $("founderRole").value =
+    founder.role || "";
+
+  $("founderWhatsapp").value =
+    founder.whatsapp || "";
+
+  $("founderEmail").value =
+    founder.email || "";
+
+  $("founderBusiness").value =
+    founder.business_name || "";
+
+  $("founderCategory").value =
+    founder.business_category || "";
+
+  $("founderLocation").value =
+    founder.location || "";
+
+  $("founderStage").value =
+    founder.business_stage || "";
+
+  $("founderHeadline").value =
+    founder.headline || "";
+
+  $("founderAbout").value =
+    founder.about || "";
+
+  $("founderWebsite").value =
+    founder.website_url || "";
+
+  $("founderInstagram").value =
+    founder.instagram_url || "";
+
+  $("founderLinkedin").value =
+    founder.linkedin_url || "";
+
+  $("founderAndroidApp").value =
+  founder.android_app_url || "";
+
+$("founderIosApp").value =
+  founder.ios_app_url || "";
+
+  $("founderVisible").value =
+    String(
+      founder.is_visible !== false
+    );
+
+
+  if(founder.photo_url){
+
+    $("founderPhotoPreview")
+      .innerHTML =
+      `
+      <img
+        src="${escapeHTML(founder.photo_url)}"
+        alt="Founder photo"
+      >
+      `;
+
+  }else{
+
+    $("founderPhotoPreview")
+      .innerHTML =
+      "No photo";
+
+  }
+
+
+  openModal("founderModal");
+
+}
+
+
+/* =========================================
+   SAVE FOUNDER EDIT
+========================================= */
+
+$("founderForm")
+  .addEventListener(
+    "submit",
+    async event => {
+
+      event.preventDefault();
+
+
+      const button =
+        $("saveFounder");
+
+
+      button.disabled =
+        true;
+
+      button.textContent =
+        "Saving...";
+
+
+      try{
+
+        const id =
+          $("founderId")
+            .value
+            .trim();
+
+
+        if(!id){
+          throw new Error(
+            "Founder profile not selected."
+          );
+        }
+
+
+        const payload = {
+
+          full_name:
+            $("founderName")
+              .value
+              .trim(),
+
+          role:
+            $("founderRole")
+              .value
+              .trim(),
+
+          whatsapp:
+            $("founderWhatsapp")
+              .value
+              .replace(/\D/g,""),
+
+          email:
+            $("founderEmail")
+              .value
+              .trim() || null,
+
+          business_name:
+            $("founderBusiness")
+              .value
+              .trim(),
+
+          business_category:
+            $("founderCategory")
+              .value
+              .trim(),
+
+          location:
+            $("founderLocation")
+              .value
+              .trim(),
+
+          business_stage:
+            $("founderStage")
+              .value
+              .trim(),
+
+          headline:
+            $("founderHeadline")
+              .value
+              .trim(),
+
+          about:
+            $("founderAbout")
+              .value
+              .trim(),
+
+          website_url:
+            $("founderWebsite")
+              .value
+              .trim() || null,
+
+          instagram_url:
+            $("founderInstagram")
+              .value
+              .trim() || null,
+
+          linkedin_url:
+            $("founderLinkedin")
+              .value
+              .trim() || null,
+
+          android_app_url:
+  $("founderAndroidApp")
+    .value
+    .trim() || null,
+
+ios_app_url:
+  $("founderIosApp")
+    .value
+    .trim() || null,
+
+          is_visible:
+            $("founderVisible")
+              .value === "true",
+
+          updated_at:
+            new Date().toISOString()
+
+        };
+
+
+        if(!payload.full_name){
+          throw new Error(
+            "Founder name is required."
+          );
+        }
+
+
+        if(
+          payload.whatsapp.length < 10
+        ){
+          throw new Error(
+            "Please enter a valid WhatsApp number."
+          );
+        }
+
+
+        if(!payload.business_name){
+          throw new Error(
+            "Business name is required."
+          );
+        }
+
+
+        const newPhoto =
+          $("founderPhoto")
+            .files[0];
+
+
+        if(newPhoto){
+
+          payload.photo_url =
+            await uploadFounderPhoto(
+              newPhoto
+            );
+
+        }
+
+
+        const {
+          error
+        } =
+          await db
+            .from("founder_profiles")
+            .update(payload)
+            .eq("id",id);
+
+
+        if(error){
+          throw error;
+        }
+
+
+        closeFounder();
+
+
+        showToast(
+          "Founder profile updated."
+        );
+
+
+        await loadFounders();
+
+
+      }catch(error){
+
+        console.error(error);
+
+        showToast(
+          error.message ||
+          "Unable to update founder.",
+          "error"
+        );
+
+      }finally{
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Save Changes";
+
+      }
+
+    }
+  );
+
+
+/* =========================================
+   DELETE FOUNDER
+========================================= */
+
+async function deleteFounder(id){
+
+  const founder =
+    state.founders.find(
+      item => item.id === id
+    );
+
+
+  if(!founder){
+    return;
+  }
+
+
+  const confirmed =
+    confirm(
+      `Delete "${founder.full_name}" founder profile permanently?`
+    );
+
+
+  if(!confirmed){
+    return;
+  }
+
+
+  /* CHECK REGISTRATIONS */
+
+  const {
+    count:registrationCount,
+    error:registrationError
+  } =
+    await db
+      .from("webinar_registrations")
+      .select(
+        "id",
+        {
+          count:"exact",
+          head:true
+        }
+      )
+      .eq(
+        "founder_id",
+        id
+      );
+
+
+  if(
+    registrationError
+  ){
+
+    console.error(
+      registrationError
+    );
+
+  }
+
+
+  /* CHECK CONNECTIONS */
+
+  const {
+    count:connectionCount,
+    error:connectionError
+  } =
+    await db
+      .from("founder_connections")
+      .select(
+        "id",
+        {
+          count:"exact",
+          head:true
+        }
+      )
+      .eq(
+        "founder_id",
+        id
+      );
+
+
+  if(connectionError){
+
+    console.error(
+      connectionError
+    );
+
+  }
+
+
+  if(
+    Number(registrationCount || 0) > 0 ||
+    Number(connectionCount || 0) > 0
+  ){
+
+    showToast(
+      "This founder has registrations or connections. Delete those records first.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from("founder_profiles")
+      .delete()
+      .eq("id",id);
+
+
+  if(error){
+
+    showToast(
+      error.message ||
+      "Unable to delete founder.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showToast(
+    "Founder profile deleted."
+  );
+
+
+  await loadFounders();
+
+}
+
+
+function closeFounder(){
+
+  closeModal("founderModal");
+
+  $("founderForm").reset();
+
+  $("founderId").value =
+    "";
+
+  $("founderPhotoPreview")
+    .innerHTML =
+    "No photo";
+
+    }
+
+      /* =========================================
+   LOAD REGISTRATIONS
+========================================= */
+
+async function loadRegistrations(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("webinar_registrations")
+      .select(`
+        id,
+        full_name,
+        whatsapp,
+        email,
+        registered_at,
+        webinar_id,
+        webinars(title)
+      `)
+      .order(
+        "registered_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    $("registrationsTableBody").innerHTML =
+      `
+      <tr>
+        <td colspan="5">
+          <div class="empty">
+            Unable to load registrations.
+          </div>
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
+  state.registrations =
+    data || [];
+
+
+  const body =
+    $("registrationsTableBody");
+
+
+  if(!state.registrations.length){
+
+    body.innerHTML =
+      `
+      <tr>
+        <td colspan="5">
+          <div class="empty">
+            No registrations yet.
+          </div>
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    state.registrations
+      .map(item => {
+
+        return `
+          <tr>
+
+            <td>
+              <strong>
+                ${escapeHTML(
+                  item.full_name || "-"
+                )}
+              </strong>
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                item.webinars?.title || "-"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                item.whatsapp || "-"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                item.email || "-"
+              )}
+            </td>
+
+
+            <td>
+              ${formatDateTime(
+                item.registered_at
+              )}
+            </td>
+
+          </tr>
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================
+   LOAD CONNECTIONS
+========================================= */
+
+async function loadConnections(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("founder_connections")
+      .select(`
+        id,
+        name,
+        whatsapp,
+        email,
+        message,
+        created_at,
+        founder_id,
+        founder_profiles(
+          full_name,
+          business_name
+        )
+      `)
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    $("connectionsTableBody").innerHTML =
+      `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            Unable to load connections.
+          </div>
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
+  state.connections =
+    data || [];
+
+
+  const body =
+    $("connectionsTableBody");
+
+
+  if(!state.connections.length){
+
+    body.innerHTML =
+      `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            No connection requests yet.
+          </div>
+        </td>
+      </tr>
+      `;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    state.connections
+      .map(item => {
+
+        return `
+          <tr>
+
+            <td>
+              <strong>
+                ${escapeHTML(
+                  item.name || "-"
+                )}
+              </strong>
+            </td>
+
+
+            <td>
+
+              ${escapeHTML(
+                item.founder_profiles
+                  ?.full_name ||
+                "-"
+              )}
+
+              <br>
+
+              <small>
+                ${escapeHTML(
+                  item.founder_profiles
+                    ?.business_name ||
+                  ""
+                )}
+              </small>
+
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                item.whatsapp || "-"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                item.email || "-"
+              )}
+            </td>
+
+
+            <td>
+              ${escapeHTML(
+                item.message || "-"
+              )}
+            </td>
+
+
+            <td>
+              ${formatDateTime(
+                item.created_at
+              )}
+            </td>
+
+          </tr>
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================
+   STATS
+========================================= */
+
+function updateStats(){
+
+  $("statWebinars").textContent =
+    state.webinars.filter(
+      item => item.published
+    ).length;
+
+
+  $("statFounders").textContent =
+    state.founders.length;
+
+
+  $("statRegistrations").textContent =
+    state.registrations.length;
+
+
+  $("statConnections").textContent =
+    state.connections.length;
+
+}
+
+
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+$("mobileMenuButton")
+  .addEventListener(
+    "click",
+    () => {
+
+      const sidebar =
+        document.querySelector(
+          ".sidebar"
+        );
+
+
+      if(
+        sidebar.style.display ===
+        "block"
+      ){
+
+        sidebar.style.display =
+          "";
+
+      }else{
+
+        sidebar.style.display =
+          "block";
+
+        sidebar.style.position =
+          "fixed";
+
+        sidebar.style.width =
+          "270px";
+
+      }
+
+    }
+  );
+
+
+/* =========================================
+   AUTH STATE
+========================================= */
+
+db.auth.onAuthStateChange(
+  (event) => {
+
+    if(event === "SIGNED_OUT"){
+
+      showLogin();
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   ESCAPE
+========================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(event.key === "Escape"){
+
+      closeWebinar();
+
+      closeFounder();
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   START
+========================================= */
+
+(async function(){
+
+  await checkAdmin();
+
+})();
+
+</script>
+
+</body>
+</html>

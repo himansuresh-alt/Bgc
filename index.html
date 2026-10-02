@@ -1,0 +1,4437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="BGC CLUB — Business network for founders, entrepreneurs and business owners."
+>
+
+<meta
+  name="theme-color"
+  content="#ffffff"
+>
+
+<title>BGC CLUB — Business Network</title>
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin
+>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+>
+
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+<style>
+
+:root{
+
+  --bg:#ffffff;
+
+  --surface:#f6f7f8;
+
+  --surface-2:#eef0f2;
+
+  --black:#111111;
+
+  --dark:#17191d;
+
+  --muted:#686d75;
+
+  --line:#e4e6e9;
+
+  --accent:#8d1831;
+
+  --accent-light:#fff2f5;
+
+  --white:#ffffff;
+
+  --success:#16834b;
+
+  --danger:#b42318;
+
+  --radius:24px;
+
+  --max-width:1240px;
+
+}
+
+
+*{
+
+  box-sizing:border-box;
+
+  margin:0;
+
+  padding:0;
+
+}
+
+
+html{
+
+  scroll-behavior:smooth;
+
+}
+
+
+body{
+
+  font-family:
+    "DM Sans",
+    Arial,
+    sans-serif;
+
+  background:
+    var(--bg);
+
+  color:
+    var(--black);
+
+  line-height:1.5;
+
+  overflow-x:hidden;
+
+}
+
+
+button,
+input,
+textarea,
+select{
+
+  font:inherit;
+
+}
+
+
+button{
+
+  cursor:pointer;
+
+}
+
+
+a{
+
+  color:inherit;
+
+  text-decoration:none;
+
+}
+
+
+img{
+
+  display:block;
+
+  max-width:100%;
+
+}
+
+
+.container{
+
+  width:
+    min(
+      calc(100% - 40px),
+      var(--max-width)
+    );
+
+  margin:0 auto;
+
+}
+
+
+/* =====================================
+   HEADER
+===================================== */
+
+.site-header{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:100;
+
+  background:
+    rgba(255,255,255,.90);
+
+  backdrop-filter:
+    blur(18px);
+
+  -webkit-backdrop-filter:
+    blur(18px);
+
+  border-bottom:
+    1px solid
+    rgba(230,232,235,.85);
+
+}
+
+
+.nav{
+
+  min-height:76px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+
+}
+
+
+.brand{
+
+  border:0;
+
+  background:none;
+
+  color:var(--black);
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:22px;
+
+  font-weight:700;
+
+  letter-spacing:-1px;
+
+}
+
+
+.brand span{
+
+  color:var(--accent);
+
+}
+
+
+.nav-links{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:28px;
+
+}
+
+
+.nav-links a{
+
+  color:#454950;
+
+  font-size:14px;
+
+  font-weight:600;
+
+}
+
+
+.nav-links a:hover{
+
+  color:var(--accent);
+
+}
+
+
+.nav-cta{
+
+  border:0;
+
+  background:var(--black);
+
+  color:white;
+
+  padding:10px 17px;
+
+  border-radius:11px;
+
+  font-size:13px;
+
+  font-weight:700;
+
+  transition:.2s ease;
+
+}
+
+
+.nav-cta:hover{
+
+  background:var(--accent);
+
+  transform:translateY(-1px);
+
+}
+
+
+/* =====================================
+   HERO BASE
+===================================== */
+
+.hero{
+
+  position:relative;
+
+  padding:55px 0 80px;
+
+  overflow:hidden;
+
+  background:#ffffff;
+
+  text-align:center;
+
+}
+
+
+.hero-label{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  color:var(--accent);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  letter-spacing:1.2px;
+
+  text-transform:uppercase;
+
+}
+
+
+.hero-label::before{
+
+  content:"";
+
+  width:8px;
+
+  height:8px;
+
+  border-radius:50%;
+
+  background:var(--accent);
+
+}
+
+
+.hero-actions{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  justify-content:center;
+
+  gap:12px;
+
+}
+
+
+.primary-btn,
+.secondary-btn{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:15px;
+
+  min-height:52px;
+
+  padding:0 24px;
+
+  font-size:14px;
+
+  font-weight:700;
+
+  transition:.2s ease;
+
+}
+
+
+.primary-btn{
+
+  border:0;
+
+  background:var(--black);
+
+  color:white;
+
+}
+
+
+.primary-btn:hover{
+
+  background:var(--accent);
+
+  transform:translateY(-2px);
+
+}
+
+
+.secondary-btn{
+
+  border:1px solid var(--line);
+
+  background:white;
+
+  color:var(--black);
+
+}
+
+
+.secondary-btn:hover{
+
+  transform:translateY(-2px);
+
+  border-color:#c9cbd0;
+
+}
+
+
+/* =====================================
+   HERO BRAND
+===================================== */
+
+.bgc-hero-brand{
+
+  position:relative;
+
+  z-index:5;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:
+    clamp(54px,8vw,96px);
+
+  line-height:1;
+
+  font-weight:700;
+
+  letter-spacing:-5px;
+
+  color:#111111;
+
+  margin-bottom:8px;
+
+}
+
+
+.bgc-hero-brand span{
+
+  color:var(--accent);
+
+}
+
+
+/* =====================================
+   HERO VISUAL
+===================================== */
+
+.bgc-hero-visual{
+
+  position:relative;
+
+  width:100%;
+
+  height:360px;
+
+  margin-top:5px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  overflow:visible;
+
+}
+
+
+.hero-photo-glow{
+
+  position:absolute;
+
+  width:420px;
+
+  height:180px;
+
+  left:50%;
+
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(141,24,49,.10),
+      rgba(141,24,49,0) 70%
+    );
+
+  filter:blur(15px);
+
+  pointer-events:none;
+
+}
+
+
+.bgc-hero-visual .people-strip{
+
+  position:relative;
+
+  z-index:2;
+
+  width:100%;
+
+  height:100%;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:0;
+
+  overflow:visible;
+
+}
+
+
+.person-thumb{
+
+  position:relative;
+
+  flex:0 0 145px;
+
+  height:250px;
+
+  margin-left:-28px;
+
+  overflow:hidden;
+
+  border-radius:20px;
+
+  background:#eef0f2;
+
+  border:4px solid rgba(255,255,255,.92);
+
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.14);
+
+  transition:
+    transform .35s ease,
+    z-index .35s ease,
+    box-shadow .35s ease;
+
+}
+
+
+.person-thumb:first-child{
+
+  margin-left:0;
+
+}
+
+
+.person-thumb img{
+
+  width:100%;
+
+  height:100%;
+
+  object-fit:cover;
+
+}
+
+
+.person-thumb:hover{
+
+  z-index:20;
+
+  transform:
+    translateY(-12px)
+    scale(1.04);
+
+  box-shadow:
+    0 25px 55px rgba(0,0,0,.20);
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(1),
+.bgc-hero-visual .person-thumb:nth-child(7){
+
+  height:310px;
+
+  flex-basis:175px;
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(2),
+.bgc-hero-visual .person-thumb:nth-child(6){
+
+  height:285px;
+
+  flex-basis:165px;
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(3),
+.bgc-hero-visual .person-thumb:nth-child(5){
+
+  height:260px;
+
+  flex-basis:155px;
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(4){
+
+  height:235px;
+
+  flex-basis:145px;
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(1){
+
+  transform:
+    perspective(700px)
+    rotateY(18deg)
+    rotateZ(-2deg);
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(2){
+
+  transform:
+    perspective(700px)
+    rotateY(13deg)
+    rotateZ(-1deg);
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(3){
+
+  transform:
+    perspective(700px)
+    rotateY(7deg);
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(4){
+
+  transform:
+    translateY(7px);
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(5){
+
+  transform:
+    perspective(700px)
+    rotateY(-7deg);
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(6){
+
+  transform:
+    perspective(700px)
+    rotateY(-13deg)
+    rotateZ(1deg);
+
+}
+
+
+.bgc-hero-visual .person-thumb:nth-child(7){
+
+  transform:
+    perspective(700px)
+    rotateY(-18deg)
+    rotateZ(2deg);
+
+}
+
+
+.bgc-hero-content{
+
+  position:relative;
+
+  z-index:5;
+
+  margin-top:-8px;
+
+}
+
+
+.bgc-hero-content h1{
+
+  max-width:900px;
+
+  margin:0 auto;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:
+    clamp(44px,6vw,76px);
+
+  line-height:.98;
+
+  letter-spacing:-4px;
+
+  font-weight:650;
+
+  color:#111111;
+
+}
+
+
+.bgc-hero-content h1 span{
+
+  color:#444444;
+
+}
+
+
+.bgc-hero-content p{
+
+  max-width:650px;
+
+  margin:22px auto 0;
+
+  color:#555b63;
+
+  font-size:18px;
+
+  line-height:1.55;
+
+}
+
+
+.bgc-hero-content .hero-actions{
+
+  margin-top:28px;
+
+}
+
+
+/* =====================================
+   COMMON SECTIONS
+===================================== */
+
+.section{
+
+  padding:100px 0;
+
+}
+
+
+.section.soft{
+
+  background:var(--surface);
+
+}
+
+
+.section.dark{
+
+  background:var(--dark);
+
+  color:white;
+
+}
+
+
+.section-heading{
+
+  display:flex;
+
+  align-items:flex-end;
+
+  justify-content:space-between;
+
+  gap:40px;
+
+  margin-bottom:42px;
+
+}
+
+
+.section-label{
+
+  color:var(--accent);
+
+  font-size:12px;
+
+  font-weight:700;
+
+  letter-spacing:1.2px;
+
+  text-transform:uppercase;
+
+  margin-bottom:14px;
+
+}
+
+
+.dark .section-label{
+
+  color:#ff9eb2;
+
+}
+
+
+.section-title{
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:
+    clamp(40px,6vw,72px);
+
+  line-height:.98;
+
+  letter-spacing:-3px;
+
+  font-weight:600;
+
+}
+
+
+.section-description{
+
+  max-width:440px;
+
+  color:var(--muted);
+
+  font-size:15px;
+
+  line-height:1.7;
+
+}
+
+
+.dark .section-description{
+
+  color:#aeb3bb;
+
+}
+
+  /* =====================================
+   BGC LIVE FILTERS
+===================================== */
+
+.category-filters{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:9px;
+
+  margin-bottom:30px;
+
+}
+
+
+.filter-btn{
+
+  border:
+    1px solid
+    var(--line);
+
+  background:white;
+
+  color:#656a72;
+
+  padding:
+    9px 15px;
+
+  border-radius:999px;
+
+  font-size:12px;
+
+  font-weight:700;
+
+  transition:.2s ease;
+
+}
+
+
+.filter-btn:hover{
+
+  border-color:#c7cad0;
+
+  color:var(--black);
+
+}
+
+
+.filter-btn.active{
+
+  background:var(--black);
+
+  border-color:var(--black);
+
+  color:white;
+
+}
+
+
+/* =====================================
+   BGC LIVE EVENT LIST
+===================================== */
+
+.webinar-grid{
+
+  display:grid;
+
+  grid-template-columns:1fr;
+
+  gap:22px;
+
+}
+
+
+.webinar-card{
+
+  position:relative;
+
+  overflow:hidden;
+
+  border:
+    1px solid
+    #dedfe2;
+
+  border-radius:28px;
+
+  background:
+    rgba(255,255,255,.78);
+
+  padding:
+    30px 32px;
+
+  box-shadow:
+    0 7px 22px
+    rgba(0,0,0,.035);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+
+}
+
+
+.webinar-card:hover{
+
+  transform:
+    translateY(-3px);
+
+  border-color:#d2d4d8;
+
+  box-shadow:
+    0 20px 45px
+    rgba(0,0,0,.07);
+
+}
+
+
+/* TOP LINE */
+
+.webinar-top{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+}
+
+
+.webinar-category{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  min-height:32px;
+
+  padding:
+    0 14px;
+
+  border-radius:999px;
+
+  background:
+    var(--black);
+
+  color:white;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  letter-spacing:.5px;
+
+  text-transform:uppercase;
+
+}
+
+
+.webinar-status{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:6px;
+
+  min-height:32px;
+
+  padding:
+    0 13px;
+
+  border-radius:999px;
+
+  background:#ecfbf4;
+
+  border:
+    1px solid
+    #b8efd5;
+
+  color:#187a58;
+
+  font-size:11px;
+
+  font-weight:800;
+
+}
+
+
+.webinar-status-dot{
+
+  width:7px;
+
+  height:7px;
+
+  border-radius:50%;
+
+  background:#1c9c69;
+
+}
+
+
+.webinar-price{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  min-height:32px;
+
+  padding:
+    0 12px;
+
+  border-radius:999px;
+
+  background:#fafafa;
+
+  border:
+    1px solid
+    var(--line);
+
+  color:#696e75;
+
+  font-size:11px;
+
+  font-weight:700;
+
+}
+
+
+.webinar-number{
+
+  margin-left:auto;
+
+  color:#a0a4ab;
+
+  font-size:12px;
+
+  font-weight:700;
+
+}
+
+
+/* TITLE */
+
+.webinar-title{
+
+  max-width:850px;
+
+  margin-top:20px;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:
+    clamp(27px,4vw,42px);
+
+  line-height:1.08;
+
+  letter-spacing:-1.8px;
+
+  font-weight:650;
+
+}
+
+
+.webinar-description{
+
+  max-width:850px;
+
+  margin-top:11px;
+
+  color:#676c73;
+
+  font-size:15px;
+
+  line-height:1.65;
+
+}
+
+
+/* EVENT DETAILS */
+
+.webinar-meta{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:22px;
+
+  margin-top:23px;
+
+}
+
+
+.meta-item{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  color:#565b62;
+
+  font-size:14px;
+
+  font-weight:500;
+
+}
+
+
+.meta-icon{
+
+  width:19px;
+
+  height:19px;
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  color:#7a7e85;
+
+}
+
+
+.meta-item strong{
+
+  color:#33363b;
+
+  font-weight:600;
+
+}
+
+
+/* CRITERIA */
+
+.webinar-criteria{
+
+  margin-top:23px;
+
+  padding:
+    13px 16px;
+
+  border:
+    1px solid
+    #e7e8ea;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fafafa,
+      #f7f7f8
+    );
+
+  color:#696d74;
+
+  font-size:13px;
+
+  line-height:1.7;
+
+}
+
+
+.webinar-criteria strong{
+
+  color:#3e4248;
+
+  font-weight:800;
+
+}
+
+
+.criteria-pin{
+
+  margin-right:5px;
+
+}
+
+
+/* BOTTOM */
+
+.webinar-bottom{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+
+  margin-top:24px;
+
+}
+
+
+.interest-count{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  color:#747980;
+
+  font-size:12px;
+
+  font-weight:700;
+
+}
+
+
+.interest-dot{
+
+  width:7px;
+
+  height:7px;
+
+  border-radius:50%;
+
+  background:
+    var(--success);
+
+}
+
+
+/* ACTIONS */
+
+.webinar-actions{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+}
+
+
+.interest-btn,
+.view-details-btn{
+
+  min-height:46px;
+
+  padding:
+    0 20px;
+
+  border-radius:999px;
+
+  font-size:13px;
+
+  font-weight:800;
+
+  transition:.2s ease;
+
+}
+
+
+.interest-btn{
+
+  border:
+    1px solid
+    var(--line);
+
+  background:white;
+
+  color:#25272b;
+
+}
+
+
+.interest-btn:hover{
+
+  border-color:
+    var(--accent);
+
+  color:
+    var(--accent);
+
+}
+
+
+.interest-btn:disabled{
+
+  opacity:.55;
+
+  cursor:wait;
+
+}
+
+
+.view-details-btn{
+
+  border:
+    1px solid
+    var(--black);
+
+  background:
+    var(--black);
+
+  color:white;
+
+}
+
+
+.view-details-btn:hover{
+
+  background:
+    var(--accent);
+
+  border-color:
+    var(--accent);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+/* LOADING */
+
+.loading{
+
+  grid-column:1/-1;
+
+  padding:65px 20px;
+
+  text-align:center;
+
+  color:var(--muted);
+
+}
+
+
+.loading-spinner{
+
+  width:26px;
+
+  height:26px;
+
+  margin:0 auto 12px;
+
+  border:
+    3px solid
+    #e5e7ea;
+
+  border-top-color:
+    var(--accent);
+
+  border-radius:50%;
+
+  animation:
+    bgcSpin .8s linear infinite;
+
+}
+
+
+@keyframes bgcSpin{
+
+  to{
+
+    transform:rotate(360deg);
+
+  }
+
+}
+
+
+/* EMPTY */
+
+.empty-state{
+
+  grid-column:1/-1;
+
+  padding:65px 25px;
+
+  border:
+    1px dashed
+    #d9dce0;
+
+  border-radius:22px;
+
+  text-align:center;
+
+  color:var(--muted);
+
+}
+
+
+.empty-state strong{
+
+  display:block;
+
+  color:var(--black);
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:25px;
+
+  margin-bottom:7px;
+
+}
+
+
+/* =====================================
+   FOUNDERS
+===================================== */
+
+.founder-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(3,1fr);
+
+  gap:16px;
+
+}
+
+
+.founder-card{
+
+  position:relative;
+
+  height:470px;
+
+  overflow:hidden;
+
+  border-radius:22px;
+
+  background:#292c31;
+
+  cursor:pointer;
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+
+}
+
+
+.founder-card:hover{
+
+  transform:
+    translateY(-5px);
+
+  box-shadow:
+    0 24px 60px
+    rgba(0,0,0,.20);
+
+}
+
+
+.founder-card img{
+
+  width:100%;
+
+  height:100%;
+
+  object-fit:cover;
+
+  transform:scale(1.08);
+
+}
+
+
+.founder-gradient{
+
+  position:absolute;
+
+  inset:0;
+
+  background:
+    linear-gradient(
+      transparent 35%,
+      rgba(0,0,0,.90)
+    );
+
+}
+
+
+.founder-info{
+
+  position:absolute;
+
+  left:22px;
+
+  right:22px;
+
+  bottom:22px;
+
+  color:white;
+
+}
+
+
+.founder-name{
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:26px;
+
+  font-weight:600;
+
+  letter-spacing:-.8px;
+
+}
+
+
+.founder-role{
+
+  margin-top:4px;
+
+  color:#d8dbe0;
+
+  font-size:13px;
+
+}
+
+
+.founder-business{
+
+  margin-top:2px;
+
+  color:#aeb3bb;
+
+  font-size:12px;
+
+}
+
+
+.founder-empty{
+
+  grid-column:1/-1;
+
+  padding:70px 20px;
+
+  border:
+    1px solid
+    #34383e;
+
+  border-radius:22px;
+
+  text-align:center;
+
+  color:#9da3aa;
+
+}
+
+
+.founder-empty strong{
+
+  display:block;
+
+  margin-bottom:7px;
+
+  color:white;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:27px;
+
+}
+
+
+/* =====================================
+   JOIN
+===================================== */
+
+.join-section{
+
+  padding:95px 0;
+
+  background:
+    var(--accent);
+
+  color:white;
+
+}
+
+
+.join-inner{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:40px;
+
+}
+
+
+.join-title{
+
+  max-width:800px;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:
+    clamp(40px,6vw,70px);
+
+  line-height:.98;
+
+  letter-spacing:-3px;
+
+}
+
+
+.join-copy{
+
+  max-width:390px;
+
+  color:
+    rgba(255,255,255,.78);
+
+  font-size:15px;
+
+  line-height:1.7;
+
+}
+
+
+.join-btn{
+
+  margin-top:25px;
+
+  border:0;
+
+  background:white;
+
+  color:var(--accent);
+
+  border-radius:999px;
+
+  padding:14px 22px;
+
+  font-size:14px;
+
+  font-weight:700;
+
+}
+
+  /* =====================================
+   FOOTER
+===================================== */
+
+.footer{
+
+  padding:30px 0;
+
+  background:
+    var(--black);
+
+  color:white;
+
+}
+
+
+.footer-inner{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+
+}
+
+
+.footer-brand{
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:18px;
+
+  font-weight:700;
+
+}
+
+
+.footer-copy{
+
+  color:#9da2aa;
+
+  font-size:12px;
+
+}
+
+
+/* =====================================
+   MOBILE NAV
+===================================== */
+
+.mobile-bottom-nav{
+
+  display:none;
+
+}
+
+
+.scroll-progress{
+
+  position:fixed;
+
+  top:0;
+
+  left:0;
+
+  z-index:9999;
+
+  width:0;
+
+  height:3px;
+
+  background:
+    var(--accent);
+
+}
+
+
+/* =====================================
+   TABLET
+===================================== */
+
+@media(max-width:900px){
+
+  .container{
+
+    width:
+      min(
+        calc(100% - 28px),
+        var(--max-width)
+      );
+
+  }
+
+
+  .nav{
+
+    min-height:68px;
+
+  }
+
+
+  .nav-links{
+
+    gap:10px;
+
+  }
+
+
+  .nav-links a{
+
+    display:none;
+
+  }
+
+
+  .nav-cta{
+
+    padding:
+      10px 15px;
+
+  }
+
+
+  .hero{
+
+    padding:
+      34px 0
+      60px;
+
+  }
+
+
+  .section{
+
+    padding:
+      75px 0;
+
+  }
+
+
+  .section-heading{
+
+    display:block;
+
+    margin-bottom:30px;
+
+  }
+
+
+  .section-description{
+
+    margin-top:18px;
+
+  }
+
+
+  .webinar-card{
+
+    padding:
+      27px;
+
+  }
+
+
+  .founder-grid{
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+
+  .founder-card{
+
+    height:390px;
+
+  }
+
+
+  .join-inner{
+
+    display:block;
+
+  }
+
+
+  .join-copy{
+
+    margin-top:20px;
+
+  }
+
+
+  .footer-inner{
+
+    display:block;
+
+  }
+
+
+  .footer-copy{
+
+    margin-top:8px;
+
+  }
+
+}
+
+
+/* =====================================
+   MOBILE
+===================================== */
+
+@media(max-width:700px){
+
+  body{
+
+    padding-bottom:74px;
+
+  }
+
+
+  .bgc-hero-brand{
+
+    font-size:54px;
+
+    letter-spacing:-3px;
+
+  }
+
+
+  .bgc-hero-visual{
+
+    height:285px;
+
+    margin-top:12px;
+
+  }
+
+
+  .bgc-hero-visual .people-strip{
+
+    width:125%;
+
+    margin-left:-12.5%;
+
+  }
+
+
+  .bgc-hero-visual .person-thumb{
+
+    display:block;
+
+    flex-basis:92px;
+
+    height:185px;
+
+    margin-left:-22px;
+
+    border-radius:15px;
+
+    border-width:3px;
+
+  }
+
+
+  .bgc-hero-visual .person-thumb:nth-child(1),
+  .bgc-hero-visual .person-thumb:nth-child(7){
+
+    flex-basis:112px;
+
+    height:230px;
+
+  }
+
+
+  .bgc-hero-visual .person-thumb:nth-child(2),
+  .bgc-hero-visual .person-thumb:nth-child(6){
+
+    flex-basis:105px;
+
+    height:215px;
+
+  }
+
+
+  .bgc-hero-visual .person-thumb:nth-child(3),
+  .bgc-hero-visual .person-thumb:nth-child(5){
+
+    flex-basis:98px;
+
+    height:200px;
+
+  }
+
+
+  .bgc-hero-visual .person-thumb:nth-child(4){
+
+    flex-basis:92px;
+
+    height:190px;
+
+  }
+
+
+  .bgc-hero-content{
+
+    margin-top:0;
+
+  }
+
+
+  .bgc-hero-content h1{
+
+    font-size:47px;
+
+    line-height:.98;
+
+    letter-spacing:-2.8px;
+
+  }
+
+
+  .bgc-hero-content p{
+
+    font-size:15px;
+
+    padding:0 12px;
+
+  }
+
+
+  .bgc-hero-content .hero-actions{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    padding:0 10px;
+
+  }
+
+
+  .bgc-hero-content .primary-btn,
+  .bgc-hero-content .secondary-btn{
+
+    width:100%;
+
+  }
+
+
+  /* LIVE CARD MOBILE */
+
+  .webinar-card{
+
+    padding:
+      22px 20px;
+
+    border-radius:22px;
+
+  }
+
+
+  .webinar-number{
+
+    margin-left:auto;
+
+  }
+
+
+  .webinar-title{
+
+    font-size:28px;
+
+    letter-spacing:-1.2px;
+
+  }
+
+
+  .webinar-description{
+
+    font-size:14px;
+
+  }
+
+
+  .webinar-meta{
+
+    display:grid;
+
+    grid-template-columns:1fr;
+
+    gap:11px;
+
+  }
+
+
+  .meta-item{
+
+    font-size:13px;
+
+  }
+
+
+  .webinar-criteria{
+
+    font-size:12px;
+
+    padding:
+      12px 13px;
+
+  }
+
+
+  .webinar-bottom{
+
+    display:block;
+
+  }
+
+
+  .interest-count{
+
+    margin-bottom:14px;
+
+  }
+
+
+  .webinar-actions{
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+  }
+
+
+  .interest-btn,
+  .view-details-btn{
+
+    width:100%;
+
+    padding:
+      0 12px;
+
+  }
+
+
+  .mobile-bottom-nav{
+
+    position:fixed;
+
+    left:12px;
+
+    right:12px;
+
+    bottom:12px;
+
+    z-index:500;
+
+    height:62px;
+
+    display:grid;
+
+    grid-template-columns:
+      repeat(4,1fr);
+
+    align-items:center;
+
+    padding:5px;
+
+    border:
+      1px solid
+      rgba(220,223,227,.9);
+
+    border-radius:20px;
+
+    background:
+      rgba(255,255,255,.94);
+
+    backdrop-filter:
+      blur(20px);
+
+    -webkit-backdrop-filter:
+      blur(20px);
+
+    box-shadow:
+      0 14px 40px
+      rgba(0,0,0,.12);
+
+  }
+
+
+  .mobile-nav-item{
+
+    height:52px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:2px;
+
+    border-radius:16px;
+
+    color:#777c83;
+
+    font-size:10px;
+
+    font-weight:700;
+
+  }
+
+
+  .mobile-nav-icon{
+
+    font-size:18px;
+
+    line-height:1;
+
+  }
+
+
+  .mobile-nav-item.active{
+
+    background:#f4f5f7;
+
+    color:var(--accent);
+
+  }
+
+}
+
+
+/* =====================================
+   SMALL MOBILE
+===================================== */
+
+@media(max-width:420px){
+
+  .bgc-hero-brand{
+
+    font-size:48px;
+
+  }
+
+
+  .bgc-hero-visual{
+
+    height:250px;
+
+  }
+
+
+  .bgc-hero-visual .people-strip{
+
+    width:140%;
+
+    margin-left:-20%;
+
+  }
+
+
+  .bgc-hero-visual .person-thumb{
+
+    flex-basis:78px;
+
+    height:165px;
+
+  }
+
+
+  .bgc-hero-visual .person-thumb:nth-child(1),
+  .bgc-hero-visual .person-thumb:nth-child(7){
+
+    flex-basis:96px;
+
+    height:205px;
+
+  }
+
+
+  .bgc-hero-content h1{
+
+    font-size:42px;
+
+  }
+
+
+  .section-title{
+
+    font-size:44px;
+
+  }
+
+
+  .webinar-top{
+
+    gap:6px;
+
+  }
+
+
+  .webinar-category,
+  .webinar-status,
+  .webinar-price{
+
+    min-height:29px;
+
+    padding:
+      0 9px;
+
+    font-size:10px;
+
+  }
+
+
+  .webinar-number{
+
+    display:none;
+
+  }
+
+
+  .webinar-actions{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .founder-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .founder-card{
+
+    height:440px;
+
+  }
+
+
+  .join-title{
+
+    font-size:46px;
+
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<header class="site-header">
+
+  <div class="container nav">
+
+    <button
+      class="brand"
+      id="logoTrigger"
+      type="button"
+    >
+
+      BGC
+      <span>CLUB</span>
+
+    </button>
+
+
+    <nav class="nav-links">
+
+      <a href="#bgcLive">
+        BGC LIVE
+      </a>
+
+      <a href="founders.html">
+        Founders
+      </a>
+
+
+      <button
+        class="nav-cta"
+        type="button"
+        onclick="goToFounderCreate()"
+      >
+
+        Join as founder
+
+      </button>
+
+    </nav>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <!-- =====================================
+     MODERN BGC HERO
+===================================== -->
+
+<section class="hero">
+
+  <div class="container">
+
+    <div class="bgc-hero-brand">
+
+    
+
+    </div>
+
+
+    <div class="bgc-hero-visual">
+
+      <div class="hero-photo-glow"></div>
+
+
+      <div
+        class="people-strip"
+        id="peopleStrip"
+      >
+
+        <div class="loading">
+
+          Loading founders...
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="bgc-hero-content">
+
+      <h1>
+
+        Where Businesses
+        <span>Meet</span>
+        Opportunity.
+
+      </h1>
+
+
+      <p>
+
+        Networking, business learning and
+        opportunities — all in one place.
+
+      </p>
+
+
+      <div class="hero-actions">
+
+        <button
+          class="primary-btn"
+          type="button"
+          onclick="goToFounderCreate()"
+        >
+
+          Join Free
+          <span>→</span>
+
+        </button>
+
+
+        <a
+          href="#founders"
+          class="secondary-btn"
+        >
+
+          Explore Founders
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================
+     BGC LIVE
+===================================== -->
+
+<section
+  class="section soft"
+  id="bgcLive"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+      <div>
+
+        <div class="section-label">
+
+          UPCOMING BUSINESS SESSIONS
+
+        </div>
+
+
+        <h2 class="section-title">
+
+          BGC LIVE
+
+        </h2>
+
+      </div>
+
+
+      <p class="section-description">
+
+        Practical business learning sessions
+        designed for founders, entrepreneurs
+        and business owners.
+
+      </p>
+
+    </div>
+
+
+    <!-- CATEGORY FILTERS -->
+
+    <div
+      class="category-filters"
+      id="categoryFilters"
+    >
+
+      <button
+        class="filter-btn active"
+        data-category="all"
+        type="button"
+      >
+
+        All
+
+      </button>
+
+    </div>
+
+
+    <!-- WEBINAR CARDS -->
+
+    <div
+      class="webinar-grid"
+      id="webinarGrid"
+    >
+
+      <div class="loading">
+
+        <div class="loading-spinner"></div>
+
+        Loading BGC LIVE...
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</section>
+
+
+<!-- =====================================
+     FOUNDERS
+===================================== -->
+
+<section
+  class="section dark"
+  id="founders"
+>
+
+  <div class="container">
+
+
+    <div class="section-heading">
+
+      <div>
+
+        <div class="section-label">
+
+          FOUNDERS
+
+        </div>
+
+
+        <h2 class="section-title">
+
+          Meet the people<br>
+          building businesses.
+
+        </h2>
+
+      </div>
+
+
+      <p class="section-description">
+
+        Discover founders, business owners
+        and entrepreneurs who are part of
+        the BGC CLUB network.
+
+      </p>
+
+    </div>
+
+
+    <div
+      class="founder-grid"
+      id="founderGrid"
+    >
+
+      <div class="loading">
+
+        Loading founders...
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================
+     JOIN
+===================================== -->
+
+<section class="join-section">
+
+  <div class="container">
+
+    <div class="join-inner">
+
+      <div>
+
+        <h2 class="join-title">
+
+          Build your profile.<br>
+          Be discoverable.
+
+        </h2>
+
+
+        <button
+          class="join-btn"
+          type="button"
+          onclick="goToFounderCreate()"
+        >
+
+          Create Founder Profile ↗
+
+        </button>
+
+      </div>
+
+
+      <p class="join-copy">
+
+        Create your founder profile on
+        BGC CLUB and let other business
+        owners discover your business,
+        experience and journey.
+
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================
+     FOOTER
+===================================== -->
+
+<footer class="footer">
+
+  <div class="container">
+
+    <div class="footer-inner">
+
+      <div class="footer-brand">
+
+        BGC CLUB
+
+      </div>
+
+
+      <div class="footer-copy">
+
+        Business network for founders,
+        entrepreneurs and business owners.
+
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- =====================================
+     MOBILE NAV
+===================================== -->
+
+<nav class="mobile-bottom-nav">
+
+  <a
+    href="#"
+    class="mobile-nav-item active"
+  >
+
+    <span class="mobile-nav-icon">
+      ⌂
+    </span>
+
+    <span>
+      Home
+    </span>
+
+  </a>
+
+
+  <a
+    href="#bgcLive"
+    class="mobile-nav-item"
+  >
+
+    <span class="mobile-nav-icon">
+      ◉
+    </span>
+
+    <span>
+      BGC LIVE
+    </span>
+
+  </a>
+
+
+ <a
+  href="founders.html"
+  class="mobile-nav-item"
+>
+
+    <span class="mobile-nav-icon">
+      ◎
+    </span>
+
+    <span>
+      Founders
+    </span>
+
+  </a>
+
+
+  <a
+    href="founder-profile.html?create=1"
+    class="mobile-nav-item"
+  >
+
+    <span class="mobile-nav-icon">
+      +
+    </span>
+
+    <span>
+      Join
+    </span>
+
+  </a>
+
+</nav>
+
+
+<div
+  class="scroll-progress"
+  id="scrollProgress"
+></div>
+
+  <script>
+
+/* =====================================
+   SUPABASE
+===================================== */
+
+const SUPABASE_URL =
+  "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =====================================
+   HELPERS
+===================================== */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function formatDate(value){
+
+  if(!value){
+
+    return "Date to be announced";
+
+  }
+
+
+  return new Date(
+    value + "T00:00:00"
+  ).toLocaleDateString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"long",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+function formatTime(value){
+
+  if(!value){
+
+    return "";
+
+  }
+
+
+  const parts =
+    value
+      .toString()
+      .slice(0,5)
+      .split(":");
+
+
+  let hour =
+    Number(parts[0]);
+
+  const minute =
+    parts[1] || "00";
+
+
+  const suffix =
+    hour >= 12
+      ? "PM"
+      : "AM";
+
+
+  hour =
+    hour % 12 || 12;
+
+
+  return (
+    hour +
+    ":" +
+    minute +
+    " " +
+    suffix
+  );
+
+}
+
+
+function formatPrice(value){
+
+  const amount =
+    Number(value || 0);
+
+
+  if(amount <= 0){
+
+    return "Complimentary";
+
+  }
+
+
+  return "₹" +
+    amount.toLocaleString(
+      "en-IN"
+    );
+
+}
+
+
+function formatDuration(minutes){
+
+  const value =
+    Number(minutes || 0);
+
+
+  if(!value){
+
+    return "";
+
+  }
+
+
+  if(value < 60){
+
+    return value + " min";
+
+  }
+
+
+  const hours =
+    Math.floor(value / 60);
+
+  const mins =
+    value % 60;
+
+
+  if(!mins){
+
+    return (
+      hours +
+      (
+        hours === 1
+          ? " hour"
+          : " hours"
+      )
+    );
+
+  }
+
+
+  return (
+    hours +
+    "h " +
+    mins +
+    "m"
+  );
+
+}
+
+
+function goToFounderCreate(){
+
+  window.location.href =
+    "founder-profile.html?create=1";
+
+}
+
+
+/* =====================================
+   STATE
+===================================== */
+
+let allWebinars = [];
+
+let selectedCategory =
+  "all";
+
+
+/* =====================================
+   LOAD WEBINARS
+===================================== */
+
+async function loadWebinars(){
+
+  const grid =
+    document.getElementById(
+      "webinarGrid"
+    );
+
+
+  try{
+
+    const today =
+      new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from("webinars")
+
+        .select(`
+          id,
+          title,
+          category,
+          description,
+          poster_url,
+          event_date,
+          event_time,
+          duration_minutes,
+          price,
+          seats,
+          published,
+          interest_count
+        `)
+
+        .eq(
+          "published",
+          true
+        )
+
+        .gte(
+          "event_date",
+          today
+        )
+
+        .order(
+          "event_date",
+          {
+            ascending:true
+          }
+        )
+
+        .order(
+          "event_time",
+          {
+            ascending:true
+          }
+        );
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    allWebinars =
+      data || [];
+
+
+    renderCategoryFilters();
+
+    renderWebinars();
+
+
+  }catch(error){
+
+    console.error(
+      "Webinar loading error:",
+      error
+    );
+
+
+    grid.innerHTML = `
+
+      <div class="empty-state">
+
+        <strong>
+          Unable to load BGC LIVE
+        </strong>
+
+        Please refresh and try again.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================
+   CATEGORY FILTERS
+===================================== */
+
+function renderCategoryFilters(){
+
+  const container =
+    document.getElementById(
+      "categoryFilters"
+    );
+
+
+  const categories =
+    [
+      "all",
+      ...new Set(
+        allWebinars
+          .map(
+            webinar =>
+              webinar.category
+          )
+          .filter(Boolean)
+      )
+    ];
+
+
+  container.innerHTML =
+    categories
+      .map(
+        category => `
+
+          <button
+            type="button"
+            class="
+              filter-btn
+              ${
+                selectedCategory ===
+                category
+                  ? "active"
+                  : ""
+              }
+            "
+            data-category="${escapeHTML(
+              category
+            )}"
+          >
+
+            ${
+              category === "all"
+                ? "All"
+                : escapeHTML(
+                    category
+                  )
+            }
+
+          </button>
+
+        `
+      )
+      .join("");
+
+
+  container
+    .querySelectorAll(
+      ".filter-btn"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          function(){
+
+            selectedCategory =
+              this.dataset.category;
+
+
+            renderCategoryFilters();
+
+            renderWebinars();
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================
+   CRITERIA TEXT
+===================================== */
+
+function getCriteriaText(
+  webinar
+){
+
+  /*
+    Current webinars table does not
+    contain a criteria column.
+
+    So this uses a clean default
+    information line without changing
+    the existing database structure.
+  */
+
+  if(
+    webinar.category
+      ?.toLowerCase()
+      .includes("ai")
+  ){
+
+    return `
+      Founders • Business owners •
+      Entrepreneurs interested in AI
+      and practical business applications.
+    `;
+
+  }
+
+
+  if(
+    webinar.category
+      ?.toLowerCase()
+      .includes("business")
+  ){
+
+    return `
+      Founders • Entrepreneurs •
+      Business owners • Professionals
+      building or growing a business.
+    `;
+
+  }
+
+
+  return `
+    Founders • Entrepreneurs •
+    Business owners • Anyone interested
+    in practical business learning.
+  `;
+
+}
+
+    /* =====================================
+   RENDER WEBINARS
+===================================== */
+
+function renderWebinars(){
+
+  const grid =
+    document.getElementById(
+      "webinarGrid"
+    );
+
+
+  const filtered =
+    selectedCategory === "all"
+
+      ? allWebinars
+
+      : allWebinars.filter(
+          webinar =>
+            webinar.category ===
+            selectedCategory
+        );
+
+
+  if(!filtered.length){
+
+    grid.innerHTML = `
+
+      <div class="empty-state">
+
+        <strong>
+          No upcoming sessions
+        </strong>
+
+        There are no sessions
+        in this category right now.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    filtered
+      .map(
+        (webinar,index) => {
+
+          const interest =
+            Number(
+              webinar.interest_count || 0
+            );
+
+
+          const criteria =
+            getCriteriaText(
+              webinar
+            );
+
+
+          return `
+
+            <article
+              class="webinar-card"
+            >
+
+              <!-- TOP -->
+
+              <div class="webinar-top">
+
+                <span
+                  class="webinar-category"
+                >
+
+                  ${escapeHTML(
+                    webinar.category ||
+                    "WEBINAR"
+                  )}
+
+                </span>
+
+
+                <span
+                  class="webinar-status"
+                >
+
+                  <span
+                    class="webinar-status-dot"
+                  ></span>
+
+                  Open Registration
+
+                </span>
+
+
+                <span
+                  class="webinar-price"
+                >
+
+                  ${escapeHTML(
+                    formatPrice(
+                      webinar.price
+                    )
+                  )}
+
+                </span>
+
+
+                <span
+                  class="webinar-number"
+                >
+
+                  ${String(
+                    index + 1
+                  ).padStart(2,"0")}
+
+                </span>
+
+              </div>
+
+
+              <!-- TITLE -->
+
+              <h3
+                class="webinar-title"
+              >
+
+                ${escapeHTML(
+                  webinar.title
+                )}
+
+              </h3>
+
+
+              <!-- DESCRIPTION -->
+
+              <p
+                class="webinar-description"
+              >
+
+                ${escapeHTML(
+                  webinar.description ||
+                  "Practical business learning session designed for founders and business owners."
+                )}
+
+              </p>
+
+
+              <!-- META -->
+
+              <div
+                class="webinar-meta"
+              >
+
+                <div class="meta-item">
+
+                  <span
+                    class="meta-icon"
+                  >
+                    ▣
+                  </span>
+
+                  <strong>
+
+                    ${escapeHTML(
+                      formatDate(
+                        webinar.event_date
+                      )
+                    )}
+
+                  </strong>
+
+                </div>
+
+
+                ${
+                  webinar.event_time
+
+                  ? `
+
+                    <div class="meta-item">
+
+                      <span
+                        class="meta-icon"
+                      >
+                        ◷
+                      </span>
+
+                      <strong>
+
+                        ${escapeHTML(
+                          formatTime(
+                            webinar.event_time
+                          )
+                        )}
+
+                        ${
+                          webinar.duration_minutes
+                            ? " – " +
+                              escapeHTML(
+                                formatDuration(
+                                  Number(
+                                    webinar.duration_minutes
+                                  )
+                                )
+                              )
+                            : ""
+                        }
+
+                      </strong>
+
+                    </div>
+
+                  `
+
+                  : ""
+
+                }
+
+
+                <div class="meta-item">
+
+                  <span
+                    class="meta-icon"
+                  >
+                    ⌖
+                  </span>
+
+                  <strong>
+                    Live Interactive Online Webinar
+                  </strong>
+
+                </div>
+
+              </div>
+
+
+              <!-- CRITERIA -->
+
+              <div
+                class="webinar-criteria"
+              >
+
+                <span
+                  class="criteria-pin"
+                >
+                  📌
+                </span>
+
+                <strong>
+                  Criteria:
+                </strong>
+
+                ${escapeHTML(
+                  criteria
+                    .replace(/\s+/g," ")
+                    .trim()
+                )}
+
+              </div>
+
+
+              <!-- BOTTOM -->
+
+              <div
+                class="webinar-bottom"
+              >
+
+                <div
+                  class="interest-count"
+                >
+
+                  <span
+                    class="interest-dot"
+                  ></span>
+
+                  <span
+                    id="interest-${escapeHTML(
+                      webinar.id
+                    )}"
+                  >
+
+                    ${interest}
+                    ${
+                      interest === 1
+                        ? "person"
+                        : "people"
+                    }
+                    interested
+
+                  </span>
+
+                </div>
+
+
+                <div
+                  class="webinar-actions"
+                >
+
+                  <button
+                    type="button"
+                    class="interest-btn"
+                    data-interest-id="${escapeHTML(
+                      webinar.id
+                    )}"
+                  >
+
+                    I'm Interested
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="view-details-btn"
+                    data-details-id="${escapeHTML(
+                      webinar.id
+                    )}"
+                  >
+
+                    View Details
+                    <span>→</span>
+
+                  </button>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  bindWebinarButtons();
+
+}
+
+
+/* =====================================
+   BUTTON EVENTS
+===================================== */
+
+function bindWebinarButtons(){
+
+  document
+    .querySelectorAll(
+      "[data-interest-id]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          function(){
+
+            addInterest(
+              this.dataset.interestId,
+              this
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      "[data-details-id]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          function(){
+
+            viewWebinarDetails(
+              this.dataset.detailsId
+            );
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================
+   VIEW DETAILS
+===================================== */
+
+function viewWebinarDetails(
+  webinarId
+){
+
+  if(!webinarId){
+
+    return;
+
+  }
+
+
+  window.location.href =
+    "live.html?id=" +
+    encodeURIComponent(
+      webinarId
+    );
+
+}
+
+
+/* =====================================
+   ADD INTEREST
+===================================== */
+
+async function addInterest(
+  webinarId,
+  button
+){
+
+  if(
+    button.disabled
+  ){
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+
+  const webinar =
+    allWebinars.find(
+      item =>
+        item.id === webinarId
+    );
+
+
+  const originalText =
+    button.textContent;
+
+
+  button.textContent =
+    "Saving...";
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient.rpc(
+        "increment_webinar_interest",
+        {
+          p_webinar_id:
+            webinarId,
+
+          p_whatsapp:
+            null
+        }
+      );
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    let newCount;
+
+
+    if(
+      typeof data === "number"
+    ){
+
+      newCount =
+        data;
+
+    }else if(
+      typeof data === "object" &&
+      data !== null
+    ){
+
+      newCount =
+        Number(
+          data.interest_count ||
+          data.new_count ||
+          data.count ||
+          0
+        );
+
+    }else{
+
+      newCount =
+        Number(
+          webinar?.interest_count ||
+          0
+        ) + 1;
+
+    }
+
+
+    if(!newCount){
+
+      newCount =
+        Number(
+          webinar?.interest_count ||
+          0
+        ) + 1;
+
+    }
+
+
+    if(webinar){
+
+      webinar.interest_count =
+        newCount;
+
+    }
+
+
+    const counter =
+      document.getElementById(
+        "interest-" +
+        webinarId
+      );
+
+
+    if(counter){
+
+      counter.textContent =
+        newCount +
+        (
+          newCount === 1
+            ? " person interested"
+            : " people interested"
+        );
+
+    }
+
+
+    button.textContent =
+      "Interested ✓";
+
+
+  }catch(error){
+
+    console.error(
+      "Interest error:",
+      error
+    );
+
+
+    button.textContent =
+      originalText;
+
+
+    alert(
+      "Unable to save your interest. Please try again."
+    );
+
+
+  }finally{
+
+    button.disabled =
+      false;
+
+  }
+
+}
+
+    /* =====================================
+   LOAD FOUNDERS
+===================================== */
+
+async function loadFounders(){
+
+  const strip =
+    document.getElementById(
+      "peopleStrip"
+    );
+
+
+  const grid =
+    document.getElementById(
+      "founderGrid"
+    );
+
+
+  try{
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from(
+          "founder_profiles"
+        )
+
+        .select(`
+          id,
+          full_name,
+          role,
+          business_name,
+          headline,
+          photo_url,
+          is_visible,
+          created_at
+        `)
+
+        .eq(
+          "is_visible",
+          true
+        )
+
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        )
+
+        .limit(10);
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    const founders =
+      data || [];
+
+
+    const withPhoto =
+      founders.filter(
+        founder =>
+          !!founder.photo_url
+      );
+
+
+    /* HERO PHOTO STRIP */
+
+    if(!withPhoto.length){
+
+      strip.innerHTML =
+        "";
+
+      strip.classList.add(
+        "empty"
+      );
+
+    }else{
+
+      strip.classList.remove(
+        "empty"
+      );
+
+
+      strip.innerHTML =
+        withPhoto
+          .slice(0,7)
+          .map(
+            founder => `
+
+              <a
+                href="founder-profile.html?id=${encodeURIComponent(
+                  founder.id
+                )}"
+                class="person-thumb"
+              >
+
+                <img
+                  src="${escapeHTML(
+                    founder.photo_url
+                  )}"
+                  alt="${escapeHTML(
+                    founder.full_name
+                  )}"
+                  loading="lazy"
+                >
+
+              </a>
+
+            `
+          )
+          .join("");
+
+    }
+
+
+    /* FOUNDER GRID */
+
+    if(!founders.length){
+
+      grid.innerHTML = `
+
+        <div class="founder-empty">
+
+          <strong>
+            Founders are joining soon.
+          </strong>
+
+          Create your founder profile
+          and become part of BGC CLUB.
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    grid.innerHTML =
+      founders
+        .slice(0,3)
+        .map(
+          founder => `
+
+            <article
+              class="founder-card"
+              data-founder-id="${escapeHTML(
+                founder.id
+              )}"
+              tabindex="0"
+              role="button"
+            >
+
+              ${
+                founder.photo_url
+
+                ? `
+
+                  <img
+                    src="${escapeHTML(
+                      founder.photo_url
+                    )}"
+                    alt="${escapeHTML(
+                      founder.full_name
+                    )}"
+                    loading="lazy"
+                  >
+
+                `
+
+                : ""
+
+              }
+
+
+              <div
+                class="founder-gradient"
+              ></div>
+
+
+              <div
+                class="founder-info"
+              >
+
+                <div
+                  class="founder-name"
+                >
+
+                  ${escapeHTML(
+                    founder.full_name
+                  )}
+
+                </div>
+
+
+                <div
+                  class="founder-role"
+                >
+
+                  ${escapeHTML(
+                    founder.role ||
+                    founder.headline ||
+                    "Founder"
+                  )}
+
+                </div>
+
+
+                ${
+                  founder.business_name
+
+                  ? `
+
+                    <div
+                      class="founder-business"
+                    >
+
+                      ${escapeHTML(
+                        founder.business_name
+                      )}
+
+                    </div>
+
+                  `
+
+                  : ""
+
+                }
+
+              </div>
+
+            </article>
+
+          `
+        )
+        .join("");
+
+
+    grid
+      .querySelectorAll(
+        ".founder-card"
+      )
+      .forEach(
+        card => {
+
+          const id =
+            card.dataset.founderId;
+
+
+          card.addEventListener(
+            "click",
+            function(){
+
+              window.location.href =
+                "founder-profile.html?id=" +
+                encodeURIComponent(
+                  id
+                );
+
+            }
+          );
+
+
+          card.addEventListener(
+            "keydown",
+            function(event){
+
+              if(
+                event.key === "Enter" ||
+                event.key === " "
+              ){
+
+                event.preventDefault();
+
+
+                window.location.href =
+                  "founder-profile.html?id=" +
+                  encodeURIComponent(
+                    id
+                  );
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+
+  }catch(error){
+
+    console.error(
+      "Founder loading error:",
+      error
+    );
+
+
+    strip.innerHTML =
+      "";
+
+
+    grid.innerHTML = `
+
+      <div class="founder-empty">
+
+        <strong>
+          Founders
+        </strong>
+
+        Founder profiles will appear here.
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================================
+   ADMIN 5-TAP
+===================================== */
+
+let logoTapCount =
+  0;
+
+let logoTapTimer =
+  null;
+
+
+document
+  .getElementById(
+    "logoTrigger"
+  )
+  .addEventListener(
+    "click",
+    function(){
+
+      logoTapCount++;
+
+
+      clearTimeout(
+        logoTapTimer
+      );
+
+
+      logoTapTimer =
+        setTimeout(
+          function(){
+
+            logoTapCount =
+              0;
+
+          },
+          1500
+        );
+
+
+      if(
+        logoTapCount >= 5
+      ){
+
+        logoTapCount =
+          0;
+
+
+        window.location.href =
+          "admin.html";
+
+      }
+
+    }
+  );
+
+
+/* =====================================
+   SCROLL PROGRESS
+===================================== */
+
+function updateScrollProgress(){
+
+  const bar =
+    document.getElementById(
+      "scrollProgress"
+    );
+
+
+  if(!bar){
+
+    return;
+
+  }
+
+
+  const total =
+    document.documentElement
+      .scrollHeight -
+    window.innerHeight;
+
+
+  if(total <= 0){
+
+    bar.style.width =
+      "0%";
+
+    return;
+
+  }
+
+
+  const percentage =
+    (
+      window.scrollY /
+      total
+    ) * 100;
+
+
+  bar.style.width =
+    Math.min(
+      100,
+      Math.max(
+        0,
+        percentage
+      )
+    ) + "%";
+
+}
+
+
+window.addEventListener(
+  "scroll",
+  updateScrollProgress,
+  {
+    passive:true
+  }
+);
+
+
+/* =====================================
+   MOBILE NAV
+===================================== */
+
+document
+  .querySelectorAll(
+    ".mobile-nav-item"
+  )
+  .forEach(
+    item => {
+
+      item.addEventListener(
+        "click",
+        function(){
+
+          document
+            .querySelectorAll(
+              ".mobile-nav-item"
+            )
+            .forEach(
+              nav => {
+
+                nav.classList.remove(
+                  "active"
+                );
+
+              }
+            );
+
+
+          this.classList.add(
+            "active"
+          );
+
+        }
+      );
+
+    }
+  );
+
+    /* =====================================
+   INITIAL LOAD
+===================================== */
+
+async function initializeHome(){
+
+  updateScrollProgress();
+
+
+  await Promise.all([
+    loadWebinars(),
+    loadFounders()
+  ]);
+
+}
+
+
+if(
+  document.readyState ===
+  "loading"
+){
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    initializeHome,
+    {
+      once:true
+    }
+  );
+
+}else{
+
+  initializeHome();
+
+}
+
+
+/* =====================================
+   REFRESH FUNCTION
+===================================== */
+
+window.refreshBGCHome =
+  async function(){
+
+    await Promise.all([
+      loadWebinars(),
+      loadFounders()
+    ]);
+
+  };
+
+
+</script>
+
+
+</main>
+
+</body>
+
+</html>

@@ -1,0 +1,4705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <title>Founder Profile — BGC CLUB</title>
+
+  <meta
+    name="description"
+    content="Create and discover founder profiles on BGC CLUB."
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --surface: #ffffff;
+      --text: #111111;
+      --muted: #707070;
+      --border: #e7e7e4;
+
+      --accent: #7d1f2b;
+      --accent-dark: #5f1721;
+      --soft-accent: #f6e9eb;
+
+      --success: #18794e;
+      --danger: #b42318;
+
+      --shadow-sm: 0 8px 25px rgba(0,0,0,.06);
+      --shadow-md: 0 20px 55px rgba(0,0,0,.10);
+
+      --radius-lg: 26px;
+      --radius-md: 18px;
+      --radius-sm: 13px;
+
+      --max-width: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+      background: var(--bg);
+      color: var(--text);
+
+      line-height: 1.5;
+
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(
+        calc(100% - 40px),
+        var(--max-width)
+      );
+
+      margin: 0 auto;
+    }
+
+    /* =========================
+       SCROLL PROGRESS
+    ========================= */
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+
+      width: 0%;
+      height: 3px;
+
+      background: var(--accent);
+
+      z-index: 9999;
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .site-header {
+      position: sticky;
+      top: 0;
+
+      z-index: 1000;
+
+      background: rgba(255,255,255,.93);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+
+    .header-inner {
+      min-height: 76px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 11px;
+
+      font-size: 20px;
+      font-weight: 900;
+
+      letter-spacing: -.04em;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 11px;
+
+      background: var(--text);
+      color: #fff;
+
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .brand-text span {
+      color: var(--accent);
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+
+      gap: 30px;
+    }
+
+    .main-nav a {
+      position: relative;
+
+      color: #555;
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .main-nav a.active {
+      color: var(--text);
+    }
+
+    .main-nav a.active::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      right: 0;
+      bottom: -9px;
+
+      height: 2px;
+
+      border-radius: 20px;
+
+      background: var(--accent);
+    }
+
+    .header-cta {
+      min-height: 42px;
+
+      padding: 0 17px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 12px;
+
+      background: var(--accent);
+      color: #fff;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* =========================
+       PAGE
+    ========================= */
+
+    .profile-page {
+      padding: 55px 0 100px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      margin-bottom: 28px;
+
+      color: #666;
+
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    /* =========================
+       PROFILE CARD
+    ========================= */
+
+    .profile-shell {
+      display: grid;
+
+      grid-template-columns:
+        360px minmax(0, 1fr);
+
+      gap: 24px;
+
+      align-items: start;
+    }
+
+    .profile-photo-card {
+      position: sticky;
+      top: 105px;
+
+      overflow: hidden;
+
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius-lg);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-photo-wrap {
+      position: relative;
+
+      aspect-ratio: 1 / 1.08;
+
+      background: #eee;
+    }
+
+    .profile-photo {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .profile-photo-placeholder {
+      width: 100%;
+      height: 100%;
+
+      display: grid;
+      place-items: center;
+
+      background: var(--soft-accent);
+
+      color: var(--accent);
+
+      font-size: 70px;
+      font-weight: 900;
+    }
+
+    .verified-badge {
+      position: absolute;
+
+      left: 16px;
+      top: 16px;
+
+      padding: 8px 11px;
+
+      border-radius: 999px;
+
+      background: rgba(255,255,255,.95);
+
+      color: var(--success);
+
+      font-size: 11px;
+      font-weight: 900;
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-photo-info {
+      padding: 20px;
+    }
+
+    .profile-photo-info-title {
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .profile-photo-info-text {
+      margin-top: 6px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* =========================
+       PROFILE CONTENT
+    ========================= */
+
+    .profile-content {
+      min-width: 0;
+    }
+
+    .profile-header-card {
+      padding: 32px;
+
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius-lg);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .profile-eyebrow {
+      display: inline-flex;
+      align-items: center;
+
+      gap: 8px;
+
+      color: var(--accent);
+
+      font-size: 11px;
+      font-weight: 900;
+
+      letter-spacing: .13em;
+
+      text-transform: uppercase;
+    }
+
+    .profile-eyebrow::before {
+      content: "";
+
+      width: 22px;
+      height: 2px;
+
+      border-radius: 20px;
+
+      background: var(--accent);
+    }
+
+    .profile-name {
+      margin-top: 13px;
+
+      font-size:
+        clamp(34px, 5vw, 58px);
+
+      line-height: .98;
+
+      letter-spacing: -.055em;
+
+      font-weight: 900;
+    }
+
+    .profile-role {
+      margin-top: 9px;
+
+      color: var(--accent);
+
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .profile-meta {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 19px;
+    }
+
+    .meta-pill {
+      padding: 8px 11px;
+
+      border: 1px solid var(--border);
+
+      border-radius: 999px;
+
+      background: #fafafa;
+
+      color: #555;
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .profile-headline {
+      margin-top: 24px;
+
+      max-width: 700px;
+
+      color: #333;
+
+      font-size: 18px;
+      line-height: 1.6;
+
+      font-weight: 600;
+    }
+
+    .profile-actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-top: 27px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      min-height: 48px;
+
+      padding: 0 19px;
+
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      border-radius: 13px;
+
+      font-size: 13px;
+      font-weight: 900;
+
+      transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+    }
+
+    .primary-btn {
+      border: 1px solid var(--accent);
+
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .primary-btn:hover {
+      background: var(--accent-dark);
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 12px 25px rgba(125,31,43,.18);
+    }
+
+    .secondary-btn {
+      border: 1px solid var(--border);
+
+      background: #fff;
+
+      color: var(--text);
+    }
+
+    .secondary-btn:hover {
+      transform: translateY(-2px);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* =========================
+       INFO CARDS
+    ========================= */
+
+    .info-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 14px;
+
+      margin-top: 14px;
+    }
+
+    .info-card {
+      padding: 22px;
+
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius-md);
+    }
+
+    .info-label {
+      color: #888;
+
+      font-size: 10px;
+      font-weight: 900;
+
+      letter-spacing: .08em;
+
+      text-transform: uppercase;
+    }
+
+    .info-value {
+      margin-top: 7px;
+
+      color: #222;
+
+      font-size: 14px;
+      font-weight: 800;
+
+      word-break: break-word;
+    }
+
+    /* =========================
+       ABOUT
+    ========================= */
+
+    .about-card {
+      margin-top: 14px;
+
+      padding: 27px;
+
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius-md);
+    }
+
+    .card-title {
+      font-size: 18px;
+
+      letter-spacing: -.025em;
+
+      font-weight: 900;
+    }
+
+    .about-text {
+      margin-top: 12px;
+
+      color: #555;
+
+      font-size: 14px;
+
+      line-height: 1.8;
+
+      white-space: pre-line;
+    }
+
+    /* =========================
+       SOCIAL LINKS
+    ========================= */
+
+    .social-links {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: 9px;
+
+      margin-top: 18px;
+    }
+
+    .social-link {
+      min-height: 38px;
+
+      padding: 0 12px;
+
+      display: inline-flex;
+      align-items: center;
+
+      border: 1px solid var(--border);
+
+      border-radius: 10px;
+
+      background: #fff;
+
+      color: #555;
+
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .social-link:hover {
+      color: var(--accent);
+
+      border-color:
+        rgba(125,31,43,.25);
+    }
+
+    /* =========================
+       LOADING / ERROR
+    ========================= */
+
+    .page-state {
+      min-height: 60vh;
+
+      display: grid;
+      place-items: center;
+
+      text-align: center;
+    }
+
+    .state-box {
+      max-width: 500px;
+
+      padding: 40px;
+
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius-lg);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .state-icon {
+      width: 54px;
+      height: 54px;
+
+      margin: 0 auto 15px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 16px;
+
+      background: var(--soft-accent);
+
+      color: var(--accent);
+
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .state-title {
+      font-size: 21px;
+      font-weight: 900;
+    }
+
+    .state-text {
+      margin-top: 8px;
+
+      color: var(--muted);
+
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    /* =========================
+       CREATE PROFILE
+    ========================= */
+
+    .create-page {
+      display: none;
+    }
+
+    .create-page.active {
+      display: block;
+    }
+
+    .create-header {
+      max-width: 760px;
+
+      margin-bottom: 30px;
+    }
+
+    .create-title {
+      margin-top: 12px;
+
+      font-size:
+        clamp(36px, 6vw, 66px);
+
+      line-height: .95;
+
+      letter-spacing: -.06em;
+
+      font-weight: 900;
+    }
+
+    .create-description {
+      margin-top: 17px;
+
+      color: var(--muted);
+
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .form-card {
+      padding: 30px;
+
+      background: #fff;
+
+      border: 1px solid var(--border);
+
+      border-radius: var(--radius-lg);
+
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-section {
+      padding-bottom: 27px;
+
+      margin-bottom: 27px;
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-section:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .form-section-title {
+      font-size: 18px;
+
+      letter-spacing: -.025em;
+
+      font-weight: 900;
+    }
+
+    .form-section-subtitle {
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+    }
+
+    .form-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 16px;
+
+      margin-top: 20px;
+    }
+
+    .form-group {
+      min-width: 0;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: block;
+
+      margin-bottom: 7px;
+
+      color: #333;
+
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .required {
+      color: var(--accent);
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+
+      border: 1px solid var(--border);
+
+      border-radius: 12px;
+
+      background: #fff;
+
+      color: var(--text);
+
+      outline: none;
+
+      font-size: 13px;
+
+      transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+    }
+
+    .form-input,
+    .form-select {
+      height: 48px;
+
+      padding: 0 13px;
+    }
+
+    .form-textarea {
+      min-height: 125px;
+
+      padding: 13px;
+
+      resize: vertical;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      border-color:
+        rgba(125,31,43,.45);
+
+      box-shadow:
+        0 0 0 4px
+        rgba(125,31,43,.07);
+    }
+
+    .form-help {
+      margin-top: 6px;
+
+      color: #888;
+
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    /* =========================
+       PHOTO UPLOAD
+    ========================= */
+
+    .photo-upload {
+      display: grid;
+
+      grid-template-columns:
+        130px minmax(0, 1fr);
+
+      gap: 18px;
+
+      align-items: center;
+
+      margin-top: 20px;
+    }
+
+    .photo-preview {
+      width: 130px;
+      height: 130px;
+
+      overflow: hidden;
+
+      display: grid;
+      place-items: center;
+
+      border: 1px dashed #ccc;
+
+      border-radius: 18px;
+
+      background: #f5f5f3;
+
+      color: #999;
+
+      font-size: 12px;
+
+      text-align: center;
+    }
+
+    .photo-preview img {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+
+    .upload-box {
+      padding: 20px;
+
+      border: 1px dashed #d5d5d1;
+
+      border-radius: 15px;
+
+      background: #fafaf8;
+    }
+
+    .upload-title {
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .upload-text {
+      margin-top: 5px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .file-input {
+      width: 100%;
+
+      margin-top: 13px;
+
+      font-size: 12px;
+    }
+
+    .form-message {
+      display: none;
+
+      padding: 12px 14px;
+
+      margin-bottom: 18px;
+
+      border-radius: 11px;
+
+      font-size: 12px;
+
+      font-weight: 700;
+    }
+
+    .form-message.show {
+      display: block;
+    }
+
+    .form-message.success {
+      background: #eaf7f0;
+      color: var(--success);
+    }
+
+    .form-message.error {
+      background: #fcebea;
+      color: var(--danger);
+    }
+
+    .submit-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 15px;
+
+      margin-top: 25px;
+    }
+
+    .submit-note {
+      max-width: 450px;
+
+      color: #888;
+
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .submit-btn {
+      min-height: 50px;
+
+      padding: 0 22px;
+
+      border: 1px solid var(--accent);
+
+      border-radius: 13px;
+
+      background: var(--accent);
+      color: #fff;
+
+      font-size: 13px;
+      font-weight: 900;
+
+      white-space: nowrap;
+
+      transition:
+        background .2s ease,
+        transform .2s ease,
+        opacity .2s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-dark);
+
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+        /* =========================
+       MOBILE BOTTOM NAV
+    ========================= */
+
+    .mobile-nav {
+      display: none;
+
+      position: fixed;
+
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+
+      z-index: 2000;
+
+      padding: 8px;
+
+      border: 1px solid rgba(0,0,0,.07);
+
+      border-radius: 18px;
+
+      background: rgba(255,255,255,.95);
+
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      box-shadow:
+        0 15px 40px rgba(0,0,0,.15);
+    }
+
+    .mobile-nav-inner {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 5px;
+    }
+
+    .mobile-nav a {
+      min-height: 52px;
+
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 3px;
+
+      border-radius: 12px;
+
+      color: #777;
+
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .mobile-nav a.active {
+      background: var(--soft-accent);
+
+      color: var(--accent);
+    }
+
+    .mobile-nav-icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    /* =========================
+       REVEAL
+    ========================= */
+
+    .reveal {
+      opacity: 0;
+
+      transform: translateY(18px);
+
+      transition:
+        opacity .6s ease,
+        transform .6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+
+      transform: translateY(0);
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 900px) {
+
+      .profile-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-photo-card {
+        position: static;
+
+        max-width: 500px;
+
+        margin: 0 auto;
+
+        width: 100%;
+      }
+
+      .profile-photo-wrap {
+        aspect-ratio: 1 / .95;
+      }
+    }
+
+    @media (max-width: 800px) {
+
+      .container {
+        width: min(
+          calc(100% - 28px),
+          var(--max-width)
+        );
+      }
+
+      .header-inner {
+        min-height: 68px;
+      }
+
+      .main-nav,
+      .header-cta {
+        display: none;
+      }
+
+      .profile-page {
+        padding: 35px 0 90px;
+      }
+
+      .profile-header-card {
+        padding: 23px;
+      }
+
+      .profile-name {
+        font-size:
+          clamp(34px, 11vw, 52px);
+      }
+
+      .profile-headline {
+        font-size: 16px;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-card {
+        padding: 21px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-group.full {
+        grid-column: auto;
+      }
+
+      .photo-upload {
+        grid-template-columns: 1fr;
+      }
+
+      .photo-preview {
+        width: 150px;
+        height: 150px;
+      }
+
+      .submit-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .submit-btn {
+        width: 100%;
+      }
+
+      .mobile-nav {
+        display: block;
+      }
+    }
+
+    @media (max-width: 480px) {
+
+      .profile-actions {
+        display: grid;
+
+        grid-template-columns: 1fr;
+      }
+
+      .primary-btn,
+      .secondary-btn {
+        width: 100%;
+      }
+
+      .profile-photo-info {
+        padding: 16px;
+      }
+
+      .about-card,
+      .info-card {
+        padding: 19px;
+      }
+
+      .form-section {
+        padding-bottom: 22px;
+        margin-bottom: 22px;
+      }
+
+      .create-title {
+        font-size: 43px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div
+    class="scroll-progress"
+    id="scrollProgress"
+  ></div>
+
+  <!-- =========================
+       HEADER
+  ========================= -->
+
+  <header class="site-header">
+
+    <div class="container header-inner">
+
+      <a
+        href="index.html"
+        class="brand"
+        id="brandTap"
+      >
+
+        <div class="brand-text">
+          BGC <span>CLUB</span>
+        </div>
+
+      </a>
+
+      <nav class="main-nav">
+
+        <a href="index.html">
+          Home
+        </a>
+
+        <a href="index.html#bgcLive">
+  BGC LIVE
+        </a>
+
+        <a
+          href="founders.html"
+          class="active"
+        >
+          Founders
+        </a>
+
+      </nav>
+
+      <a
+        href="founder-profile.html?create=1"
+        class="header-cta"
+      >
+        Create Profile
+      </a>
+
+    </div>
+
+  </header>
+
+
+  <!-- =========================
+       VIEW PROFILE
+  ========================= -->
+
+  <main
+    id="viewPage"
+    class="profile-page"
+  >
+
+    <div class="container">
+
+      <a
+        href="founders.html"
+        class="back-link"
+      >
+        ← Back to Founders
+      </a>
+
+      <div
+        id="profileLoading"
+        class="page-state"
+      >
+
+        <div class="state-box">
+
+          <div class="state-icon">
+            …
+          </div>
+
+          <div class="state-title">
+            Loading profile
+          </div>
+
+          <div class="state-text">
+            Fetching founder information
+            from BGC CLUB.
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        id="profileContent"
+        class="profile-shell"
+        style="display:none;"
+      >
+
+        <!-- PHOTO -->
+
+        <aside class="profile-photo-card reveal">
+
+          <div class="profile-photo-wrap">
+
+            <div
+              id="profilePhoto"
+              class="profile-photo-placeholder"
+            >
+              BG
+            </div>
+
+            <div
+              id="verifiedBadge"
+              class="verified-badge"
+              style="display:none;"
+            >
+              ✓ Verified Founder
+            </div>
+
+          </div>
+
+          <div class="profile-photo-info">
+
+            <div class="profile-photo-info-title">
+              BGC CLUB Member
+            </div>
+
+            <div class="profile-photo-info-text">
+              A founder profile inside the
+              BGC CLUB business network.
+            </div>
+
+          </div>
+
+        </aside>
+
+
+        <!-- CONTENT -->
+
+        <section class="profile-content">
+
+          <div class="profile-header-card reveal">
+
+            <div class="profile-eyebrow">
+              Founder Profile
+            </div>
+
+            <h1
+              id="profileName"
+              class="profile-name"
+            >
+              —
+            </h1>
+
+            <div
+              id="profileRole"
+              class="profile-role"
+            >
+              —
+            </div>
+
+            <div
+              id="profileMeta"
+              class="profile-meta"
+            ></div>
+
+            <p
+              id="profileHeadline"
+              class="profile-headline"
+            ></p>
+
+            <div
+  id="socialLinks"
+  class="social-links"
+></div>
+
+            <div class="profile-actions">
+
+              <button
+                type="button"
+                id="connectFounderBtn"
+                class="primary-btn"
+              >
+                Connect Founder ↗
+              </button>
+
+              <a
+                id="websiteBtn"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="secondary-btn"
+                style="display:none;"
+              >
+                Visit Website ↗
+              </a>
+
+            </div>
+
+          </div>
+
+
+          <!-- BASIC INFORMATION -->
+
+          <div
+            id="infoGrid"
+            class="info-grid reveal"
+          ></div>
+
+
+          <!-- ABOUT -->
+
+          <div
+            id="aboutCard"
+            class="about-card reveal"
+            style="display:none;"
+          >
+
+            <h2 class="card-title">
+              About the Founder
+            </h2>
+
+            <div
+              id="aboutText"
+              class="about-text"
+            ></div>
+
+            <div
+              id="socialLinks"
+              class="social-links"
+            ></div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- ERROR -->
+
+      <div
+        id="profileError"
+        class="page-state"
+        style="display:none;"
+      >
+
+        <div class="state-box">
+
+          <div class="state-icon">
+            !
+          </div>
+
+          <div class="state-title">
+            Profile not found
+          </div>
+
+          <div class="state-text">
+            This founder profile may no longer
+            be available or visible.
+          </div>
+
+          <a
+            href="founders.html"
+            class="primary-btn"
+            style="margin-top:20px;"
+          >
+            Browse Founders
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       CREATE PROFILE
+  ========================= -->
+
+  <main
+    id="createPage"
+    class="profile-page create-page"
+  >
+
+    <div class="container">
+
+      <a
+        href="founders.html"
+        class="back-link"
+      >
+        ← Back to Founders
+      </a>
+
+      <div class="create-header reveal">
+
+        <div class="profile-eyebrow">
+          Join BGC CLUB
+        </div>
+
+        <h1 class="create-title">
+          Create your
+          founder profile.
+        </h1>
+
+        <p class="create-description">
+          Tell the BGC CLUB community about yourself,
+          your business and what you are building.
+          Your profile will become visible in the
+          Founders network after successful creation.
+        </p>
+
+      </div>
+
+
+      <div class="form-card reveal">
+
+        <div
+          id="formMessage"
+          class="form-message"
+        ></div>
+
+
+        <!-- =========================
+             PHOTO
+        ========================= -->
+
+        <div class="form-section">
+
+          <div class="form-section-title">
+            Founder Photo
+          </div>
+
+          <div class="form-section-subtitle">
+            Upload a clear photo. JPG, PNG or WEBP.
+            Maximum final size: 1MB.
+          </div>
+
+          <div class="photo-upload">
+
+            <div
+              id="photoPreview"
+              class="photo-preview"
+            >
+              Photo Preview
+            </div>
+
+            <div class="upload-box">
+
+              <div class="upload-title">
+                Add your profile photo
+              </div>
+
+              <div class="upload-text">
+                If your image is larger than 1MB,
+                it will be automatically resized
+                and compressed in your browser.
+              </div>
+
+              <input
+                type="file"
+                id="photoInput"
+                class="file-input"
+                accept="image/jpeg,image/png,image/webp"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             PERSONAL
+        ========================= -->
+
+        <div class="form-section">
+
+          <div class="form-section-title">
+            Founder Information
+          </div>
+
+          <div class="form-section-subtitle">
+            Basic information about you.
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="fullName"
+              >
+                Full Name
+                <span class="required">*</span>
+              </label>
+
+              <input
+                type="text"
+                id="fullName"
+                class="form-input"
+                placeholder="Your full name"
+                maxlength="100"
+                autocomplete="name"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="role"
+              >
+                Role
+              </label>
+
+              <input
+                type="text"
+                id="role"
+                class="form-input"
+                placeholder="Founder / CEO / Director"
+                maxlength="100"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="whatsapp"
+              >
+                WhatsApp Number
+                <span class="required">*</span>
+              </label>
+
+              <input
+                type="tel"
+                id="whatsapp"
+                class="form-input"
+                placeholder="WhatsApp number"
+                maxlength="20"
+                autocomplete="tel"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="email"
+              >
+                Email
+              </label>
+
+              <input
+                type="email"
+                id="email"
+                class="form-input"
+                placeholder="you@example.com"
+                maxlength="160"
+                autocomplete="email"
+              >
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             BUSINESS
+        ========================= -->
+
+        <div class="form-section">
+
+          <div class="form-section-title">
+            Business Information
+          </div>
+
+          <div class="form-section-subtitle">
+            Help other members understand what you do.
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="businessName"
+              >
+                Business Name
+                <span class="required">*</span>
+              </label>
+
+              <input
+                type="text"
+                id="businessName"
+                class="form-input"
+                placeholder="Your business name"
+                maxlength="160"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="businessCategory"
+              >
+                Business Category
+              </label>
+
+              <input
+                type="text"
+                id="businessCategory"
+                class="form-input"
+                placeholder="Technology, Manufacturing, Food..."
+                maxlength="100"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="location"
+              >
+                Location
+              </label>
+
+              <input
+                type="text"
+                id="location"
+                class="form-input"
+                placeholder="Chennai, Tamil Nadu"
+                maxlength="120"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="businessStage"
+              >
+                Business Stage
+              </label>
+
+              <select
+                id="businessStage"
+                class="form-select"
+              >
+
+                <option value="">
+                  Select stage
+                </option>
+
+                <option value="Idea">
+                  Idea
+                </option>
+
+                <option value="Early Stage">
+                  Early Stage
+                </option>
+
+                <option value="Growing">
+                  Growing
+                </option>
+
+                <option value="Established">
+                  Established
+                </option>
+
+                <option value="Scaling">
+                  Scaling
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label
+                class="form-label"
+                for="headline"
+              >
+                One-line Business Headline
+              </label>
+
+              <input
+                type="text"
+                id="headline"
+                class="form-input"
+                placeholder="What are you building?"
+                maxlength="220"
+              >
+
+            </div>
+
+
+            <div class="form-group full">
+
+              <label
+                class="form-label"
+                for="about"
+              >
+                About You / Business
+              </label>
+
+              <textarea
+                id="about"
+                class="form-textarea"
+                placeholder="Tell the community about your business, experience and what you are looking for..."
+                maxlength="1500"
+              ></textarea>
+
+            </div>
+
+          </div>
+
+        </div>
+
+                <!-- =========================
+             SOCIAL / BUSINESS LINKS
+        ========================= -->
+
+        <div class="form-section">
+
+          <div class="form-section-title">
+            Business Links
+          </div>
+
+          <div class="form-section-subtitle">
+            Optional. Add links where people can learn
+            more about your business.
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="websiteUrl"
+              >
+                Website
+              </label>
+
+              <input
+                type="url"
+                id="websiteUrl"
+                class="form-input"
+                placeholder="https://yourwebsite.com"
+                maxlength="300"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="instagramUrl"
+              >
+                Instagram
+              </label>
+
+              <input
+                type="url"
+                id="instagramUrl"
+                class="form-input"
+                placeholder="https://instagram.com/..."
+                maxlength="300"
+              >
+
+            </div>
+
+
+            <div class="form-group">
+
+              <label
+                class="form-label"
+                for="linkedinUrl"
+              >
+                LinkedIn
+              </label>
+
+              <input
+                type="url"
+                id="linkedinUrl"
+                class="form-input"
+                placeholder="https://linkedin.com/in/..."
+                maxlength="300"
+              >
+
+              <div class="form-group">
+
+  <label
+    class="form-label"
+    for="androidAppUrl"
+  >
+    Android App
+  </label>
+
+  <input
+    type="url"
+    id="androidAppUrl"
+    class="form-input"
+    placeholder="https://play.google.com/store/apps/..."
+    maxlength="500"
+  >
+
+</div>
+
+
+<div class="form-group">
+
+  <label
+    class="form-label"
+    for="iosAppUrl"
+  >
+    iOS App
+  </label>
+
+  <input
+    type="url"
+    id="iosAppUrl"
+    class="form-input"
+    placeholder="https://apps.apple.com/..."
+    maxlength="500"
+  >
+
+</div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =========================
+             SUBMIT
+        ========================= -->
+
+        <div class="form-section">
+
+          <div class="submit-row">
+
+            <div class="submit-note">
+              By creating your profile, your submitted
+              information will be stored in BGC CLUB and
+              your profile will be visible in the public
+              Founders network.
+            </div>
+
+            <button
+              type="button"
+              id="createProfileBtn"
+              class="submit-btn"
+            >
+              Create Founder Profile ↗
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================
+       CONNECT FOUNDER MODAL
+  ========================= -->
+
+  <div
+    id="connectModal"
+    style="
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:5000;
+      padding:20px;
+      background:rgba(0,0,0,.55);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      align-items:center;
+      justify-content:center;
+    "
+  >
+
+    <div
+      id="connectModalBox"
+      style="
+        width:min(100%,520px);
+        max-height:90vh;
+        overflow:auto;
+        padding:27px;
+        border-radius:24px;
+        background:#fff;
+        box-shadow:0 25px 80px rgba(0,0,0,.22);
+      "
+    >
+
+      <div
+        style="
+          display:flex;
+          align-items:flex-start;
+          justify-content:space-between;
+          gap:20px;
+        "
+      >
+
+        <div>
+
+          <div class="profile-eyebrow">
+            Connect
+          </div>
+
+          <h2
+            style="
+              margin-top:10px;
+              font-size:30px;
+              line-height:1;
+              letter-spacing:-.045em;
+              font-weight:900;
+            "
+          >
+            Connect with
+            <span id="connectFounderName">
+              Founder
+            </span>
+          </h2>
+
+          <p
+            style="
+              margin-top:10px;
+              color:#777;
+              font-size:13px;
+              line-height:1.65;
+            "
+          >
+            Send your details and a short message.
+            The founder can use your WhatsApp or email
+            to get in touch.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          id="closeConnectModal"
+          aria-label="Close"
+          style="
+            width:38px;
+            height:38px;
+            flex-shrink:0;
+            border:1px solid #e7e7e4;
+            border-radius:11px;
+            background:#fff;
+            color:#555;
+            font-size:20px;
+          "
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div
+        id="connectMessage"
+        class="form-message"
+        style="margin-top:20px;"
+      ></div>
+
+
+      <form
+        id="connectForm"
+        style="margin-top:20px;"
+      >
+
+        <div class="form-group">
+
+          <label
+            class="form-label"
+            for="connectName"
+          >
+            Your Name
+            <span class="required">*</span>
+          </label>
+
+          <input
+            type="text"
+            id="connectName"
+            class="form-input"
+            placeholder="Your name"
+            maxlength="100"
+            required
+          >
+
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-top:15px;"
+        >
+
+          <label
+            class="form-label"
+            for="connectWhatsapp"
+          >
+            WhatsApp Number
+            <span class="required">*</span>
+          </label>
+
+          <input
+            type="tel"
+            id="connectWhatsapp"
+            class="form-input"
+            placeholder="WhatsApp number"
+            maxlength="20"
+            required
+          >
+
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-top:15px;"
+        >
+
+          <label
+            class="form-label"
+            for="connectEmail"
+          >
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="connectEmail"
+            class="form-input"
+            placeholder="you@example.com"
+            maxlength="160"
+          >
+
+        </div>
+
+
+        <div
+          class="form-group"
+          style="margin-top:15px;"
+        >
+
+          <label
+            class="form-label"
+            for="connectMessageText"
+          >
+            Message
+          </label>
+
+          <textarea
+            id="connectMessageText"
+            class="form-textarea"
+            style="min-height:105px;"
+            placeholder="I would like to connect with you regarding..."
+            maxlength="800"
+          ></textarea>
+
+        </div>
+
+
+        <button
+          type="submit"
+          id="connectSubmitBtn"
+          class="submit-btn"
+          style="
+            width:100%;
+            margin-top:18px;
+          "
+        >
+          Send Connection Request
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
+       MOBILE NAV
+  ========================= -->
+
+  <nav class="mobile-nav">
+
+    <div class="mobile-nav-inner">
+
+      <a href="index.html">
+
+        <span class="mobile-nav-icon">
+          ⌂
+        </span>
+
+        Home
+
+      </a>
+
+      <a href="live.html">
+
+        <span class="mobile-nav-icon">
+          ▶
+        </span>
+
+        BGC LIVE
+
+      </a>
+
+      <a
+        href="founders.html"
+        class="active"
+      >
+
+        <span class="mobile-nav-icon">
+          ◉
+        </span>
+
+        Founders
+
+      </a>
+
+    </div>
+
+  </nav>
+
+
+  <script>
+    /* =========================
+       SUPABASE
+    ========================= */
+
+    const SUPABASE_URL =
+      "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+    const { createClient } = supabase;
+
+    const db = createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+
+    /* =========================
+       PAGE STATE
+    ========================= */
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const founderId =
+      params.get("id");
+
+    const isCreateMode =
+      params.get("create") === "1";
+
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const viewPage =
+      document.getElementById(
+        "viewPage"
+      );
+
+    const createPage =
+      document.getElementById(
+        "createPage"
+      );
+
+    const profileLoading =
+      document.getElementById(
+        "profileLoading"
+      );
+
+    const profileContent =
+      document.getElementById(
+        "profileContent"
+      );
+
+    const profileError =
+      document.getElementById(
+        "profileError"
+      );
+
+    const profilePhoto =
+      document.getElementById(
+        "profilePhoto"
+      );
+
+    const verifiedBadge =
+      document.getElementById(
+        "verifiedBadge"
+      );
+
+    const profileName =
+      document.getElementById(
+        "profileName"
+      );
+
+    const profileRole =
+      document.getElementById(
+        "profileRole"
+      );
+
+    const profileMeta =
+      document.getElementById(
+        "profileMeta"
+      );
+
+    const profileHeadline =
+      document.getElementById(
+        "profileHeadline"
+      );
+
+    const infoGrid =
+      document.getElementById(
+        "infoGrid"
+      );
+
+    const aboutCard =
+      document.getElementById(
+        "aboutCard"
+      );
+
+    const aboutText =
+      document.getElementById(
+        "aboutText"
+      );
+
+    const socialLinks =
+      document.getElementById(
+        "socialLinks"
+      );
+
+    const websiteBtn =
+      document.getElementById(
+        "websiteBtn"
+      );
+
+    const connectFounderBtn =
+      document.getElementById(
+        "connectFounderBtn"
+      );
+
+    const connectModal =
+      document.getElementById(
+        "connectModal"
+      );
+
+    const connectModalBox =
+      document.getElementById(
+        "connectModalBox"
+      );
+
+    const closeConnectModal =
+      document.getElementById(
+        "closeConnectModal"
+      );
+
+    const connectFounderName =
+      document.getElementById(
+        "connectFounderName"
+      );
+
+    const connectForm =
+      document.getElementById(
+        "connectForm"
+      );
+
+    const connectMessage =
+      document.getElementById(
+        "connectMessage"
+      );
+
+    const connectSubmitBtn =
+      document.getElementById(
+        "connectSubmitBtn"
+      );
+
+    const photoInput =
+      document.getElementById(
+        "photoInput"
+      );
+
+    const photoPreview =
+      document.getElementById(
+        "photoPreview"
+      );
+
+    const createProfileBtn =
+      document.getElementById(
+        "createProfileBtn"
+      );
+
+    const formMessage =
+      document.getElementById(
+        "formMessage"
+      );
+
+    const scrollProgress =
+      document.getElementById(
+        "scrollProgress"
+      );
+
+
+    /* =========================
+       CURRENT FOUNDER
+    ========================= */
+
+    let currentFounder = null;
+
+    let selectedPhotoFile = null;
+
+    let compressedPhotoBlob = null;
+
+
+    /* =========================
+       HELPERS
+    ========================= */
+
+    function cleanText(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value).trim();
+    }
+
+
+    function escapeHTML(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    function safeURL(value) {
+
+      const url =
+        cleanText(value);
+
+      if (!url) {
+        return "";
+      }
+
+      try {
+
+        const parsed =
+          new URL(url);
+
+        if (
+          parsed.protocol === "https:" ||
+          parsed.protocol === "http:"
+        ) {
+          return parsed.href;
+        }
+
+        return "";
+
+      } catch (error) {
+
+        return "";
+      }
+    }
+
+
+    function getInitials(name) {
+
+      const value =
+        cleanText(name);
+
+      if (!value) {
+        return "BG";
+      }
+
+      const parts =
+        value
+          .split(/\s+/)
+          .filter(Boolean);
+
+      if (parts.length === 1) {
+
+        return parts[0]
+          .substring(0, 2)
+          .toUpperCase();
+      }
+
+      return (
+        parts[0][0] +
+        parts[parts.length - 1][0]
+      ).toUpperCase();
+    }
+
+
+    function normalizeWhatsApp(value) {
+
+      return cleanText(value)
+        .replace(/\D/g, "");
+    }
+
+
+    function validEmail(value) {
+
+      const email =
+        cleanText(value);
+
+      if (!email) {
+        return true;
+      }
+
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(email);
+    }
+
+
+    function normalizeURL(value) {
+
+      const clean =
+        cleanText(value);
+
+      if (!clean) {
+        return "";
+      }
+
+      if (
+        clean.startsWith("http://") ||
+        clean.startsWith("https://")
+      ) {
+        return clean;
+      }
+
+      return `https://${clean}`;
+    }
+
+
+    function showMessage(
+      element,
+      message,
+      type = "error"
+    ) {
+
+      element.textContent =
+        message;
+
+      element.className =
+        `form-message show ${type}`;
+    }
+
+
+    function hideMessage(element) {
+
+      element.textContent = "";
+
+      element.className =
+        "form-message";
+    }
+
+
+    /* =========================
+       SCROLL PROGRESS
+    ========================= */
+
+    function updateScrollProgress() {
+
+      const top =
+        window.scrollY || 0;
+
+      const height =
+        document.documentElement
+          .scrollHeight -
+        window.innerHeight;
+
+      if (height <= 0) {
+
+        scrollProgress.style.width =
+          "0%";
+
+        return;
+      }
+
+      const percentage =
+        Math.min(
+          100,
+          Math.max(
+            0,
+            (top / height) * 100
+          )
+        );
+
+      scrollProgress.style.width =
+        `${percentage}%`;
+    }
+
+    window.addEventListener(
+      "scroll",
+      updateScrollProgress,
+      { passive: true }
+    );
+
+        /* =========================
+       LOAD FOUNDER PROFILE
+    ========================= */
+
+    async function loadFounderProfile() {
+
+      if (!founderId) {
+
+        showProfileError();
+
+        return;
+      }
+
+      try {
+
+        const {
+          data,
+          error
+        } = await db
+          .from("founder_profiles")
+          .select(`
+            id,
+            full_name,
+            role,
+            whatsapp,
+            email,
+            business_name,
+            business_category,
+            about,
+            headline,
+            photo_url,
+            location,
+            business_stage,
+            linkedin_url,
+            instagram_url,
+            website_url,
+            android_app_url,
+            ios_app_url,
+            is_verified,
+            is_visible,
+            member_since,
+            created_at
+          `)
+          .eq("id", founderId)
+          .eq("is_visible", true)
+          .maybeSingle();
+
+        if (error) {
+          throw error;
+        }
+
+        if (!data) {
+
+          showProfileError();
+
+          return;
+        }
+
+        currentFounder = data;
+
+        renderFounderProfile(data);
+
+      } catch (error) {
+
+        console.error(
+          "Profile loading error:",
+          error
+        );
+
+        showProfileError();
+      }
+    }
+
+
+    /* =========================
+       SHOW PROFILE ERROR
+    ========================= */
+
+    function showProfileError() {
+
+      profileLoading.style.display =
+        "none";
+
+      profileContent.style.display =
+        "none";
+
+      profileError.style.display =
+        "grid";
+    }
+
+
+    /* =========================
+       RENDER PROFILE
+    ========================= */
+
+    function renderFounderProfile(
+      founder
+    ) {
+
+      profileLoading.style.display =
+        "none";
+
+      profileError.style.display =
+        "none";
+
+      profileContent.style.display =
+        "grid";
+
+
+      /* NAME */
+
+      profileName.textContent =
+        cleanText(
+          founder.full_name
+        ) || "Founder";
+
+
+      /* ROLE */
+
+      profileRole.textContent =
+        cleanText(
+          founder.role
+        ) || "Founder";
+
+
+      /* HEADLINE */
+
+      const headline =
+        cleanText(
+          founder.headline
+        );
+
+      profileHeadline.textContent =
+        headline;
+
+      profileHeadline.style.display =
+        headline ? "block" : "none";
+
+
+      /* VERIFIED */
+
+      if (
+        founder.is_verified === true
+      ) {
+
+        verifiedBadge.style.display =
+          "block";
+
+      } else {
+
+        verifiedBadge.style.display =
+          "none";
+      }
+
+
+      /* PHOTO */
+
+      const photo =
+        safeURL(
+          founder.photo_url
+        );
+
+      if (photo) {
+
+        profilePhoto.outerHTML = `
+          <img
+            id="profilePhoto"
+            class="profile-photo"
+            src="${escapeHTML(photo)}"
+            alt="${escapeHTML(
+              cleanText(
+                founder.full_name
+              ) || "Founder"
+            )}"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';"
+          >
+
+          <div
+            class="profile-photo-placeholder"
+            style="display:none;"
+          >
+            ${escapeHTML(
+              getInitials(
+                founder.full_name
+              )
+            )}
+          </div>
+        `;
+
+      } else {
+
+        profilePhoto.outerHTML = `
+          <div
+            id="profilePhoto"
+            class="profile-photo-placeholder"
+          >
+            ${escapeHTML(
+              getInitials(
+                founder.full_name
+              )
+            )}
+          </div>
+        `;
+      }
+
+
+      /* META PILLS */
+
+      const meta = [];
+
+      if (
+        cleanText(
+          founder.business_name
+        )
+      ) {
+
+        meta.push(
+          cleanText(
+            founder.business_name
+          )
+        );
+      }
+
+      if (
+        cleanText(
+          founder.business_category
+        )
+      ) {
+
+        meta.push(
+          cleanText(
+            founder.business_category
+          )
+        );
+      }
+
+      if (
+        cleanText(
+          founder.location
+        )
+      ) {
+
+        meta.push(
+          cleanText(
+            founder.location
+          )
+        );
+      }
+
+      if (
+        cleanText(
+          founder.business_stage
+        )
+      ) {
+
+        meta.push(
+          cleanText(
+            founder.business_stage
+          )
+        );
+      }
+
+      profileMeta.innerHTML =
+        meta
+          .map(
+            item => `
+              <span class="meta-pill">
+                ${escapeHTML(item)}
+              </span>
+            `
+          )
+          .join("");
+
+
+      /* INFO GRID */
+
+      const infoItems = [];
+
+      if (
+        cleanText(
+          founder.business_name
+        )
+      ) {
+
+        infoItems.push({
+          label: "Business",
+          value:
+            founder.business_name
+        });
+      }
+
+      if (
+        cleanText(
+          founder.business_category
+        )
+      ) {
+
+        infoItems.push({
+          label: "Category",
+          value:
+            founder.business_category
+        });
+      }
+
+      if (
+        cleanText(
+          founder.location
+        )
+      ) {
+
+        infoItems.push({
+          label: "Location",
+          value:
+            founder.location
+        });
+      }
+
+      if (
+        cleanText(
+          founder.business_stage
+        )
+      ) {
+
+        infoItems.push({
+          label: "Business Stage",
+          value:
+            founder.business_stage
+        });
+      }
+
+      infoGrid.innerHTML =
+        infoItems
+          .map(
+            item => `
+              <div class="info-card">
+
+                <div class="info-label">
+                  ${escapeHTML(
+                    item.label
+                  )}
+                </div>
+
+                <div class="info-value">
+                  ${escapeHTML(
+                    item.value
+                  )}
+                </div>
+
+              </div>
+            `
+          )
+          .join("");
+
+
+      /* ABOUT */
+
+      const about =
+        cleanText(
+          founder.about
+        );
+
+      if (about) {
+
+        aboutCard.style.display =
+          "block";
+
+        aboutText.textContent =
+          about;
+
+      } else {
+
+        aboutCard.style.display =
+          "none";
+      }
+
+
+      /* WEBSITE */
+
+      const website =
+        safeURL(
+          founder.website_url
+        );
+
+      if (website) {
+
+        websiteBtn.href =
+          website;
+
+        websiteBtn.style.display =
+          "inline-flex";
+
+      } else {
+
+        websiteBtn.style.display =
+          "none";
+      }
+
+      const androidApp =
+  safeURL(
+    founder.android_app_url
+  );
+
+const iosApp =
+  safeURL(
+    founder.ios_app_url
+  );
+
+
+      /* SOCIAL LINKS */
+
+      renderSocialLinks(founder);
+
+
+      /* CONNECT BUTTON */
+
+      connectFounderName.textContent =
+        cleanText(
+          founder.full_name
+        ) || "Founder";
+
+
+      /* REVEAL */
+
+      requestAnimationFrame(() => {
+
+        document
+          .querySelectorAll(
+            "#profileContent .reveal"
+          )
+          .forEach(
+            element =>
+              element.classList.add(
+                "visible"
+              )
+          );
+
+      });
+    }
+
+
+    /* =========================
+       SOCIAL LINKS
+    ========================= */
+
+    function renderSocialLinks(
+      founder
+    ) {
+
+      const links = [];
+
+      const instagram =
+        safeURL(
+          founder.instagram_url
+        );
+
+      const linkedin =
+        safeURL(
+          founder.linkedin_url
+        );
+
+      const website =
+        safeURL(
+          founder.website_url
+        );
+
+      const androidApp =
+  safeURL(
+    founder.android_app_url
+  );
+
+const iosApp =
+  safeURL(
+    founder.ios_app_url
+  );
+
+      if (instagram) {
+
+        links.push(`
+          <a
+            class="social-link"
+            href="${escapeHTML(
+              instagram
+            )}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram ↗
+          </a>
+        `);
+      }
+
+
+      if (linkedin) {
+
+        links.push(`
+          <a
+            class="social-link"
+            href="${escapeHTML(
+              linkedin
+            )}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn ↗
+          </a>
+        `);
+      }
+
+
+      if (website) {
+
+        links.push(`
+          <a
+            class="social-link"
+            href="${escapeHTML(
+              website
+            )}"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Website ↗
+          </a>
+        `);
+      }
+
+      if (androidApp) {
+
+  links.push(`
+    <a
+      class="social-link"
+      href="${escapeHTML(androidApp)}"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Android App ↗
+    </a>
+  `);
+
+}
+
+
+if (iosApp) {
+
+  links.push(`
+    <a
+      class="social-link"
+      href="${escapeHTML(iosApp)}"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      iOS App ↗
+    </a>
+  `);
+
+}
+
+
+      socialLinks.innerHTML =
+        links.join("");
+
+      socialLinks.style.display =
+        links.length
+          ? "flex"
+          : "none";
+    }
+
+
+    /* =========================
+       CREATE MODE
+    ========================= */
+
+    function enableCreateMode() {
+
+  viewPage.style.display = "none";
+
+  createPage.classList.add("active");
+
+  document.title =
+    "Create Founder Profile — BGC CLUB";
+
+  /* Make create page content visible */
+  createPage
+    .querySelectorAll(".reveal")
+    .forEach(element => {
+      element.classList.add("visible");
+    });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
+  });
+    }
+
+
+    /* =========================
+       PHOTO PREVIEW
+    ========================= */
+
+    photoInput.addEventListener(
+      "change",
+      async function() {
+
+        const file =
+          this.files &&
+          this.files[0];
+
+        if (!file) {
+
+          selectedPhotoFile = null;
+          compressedPhotoBlob = null;
+
+          photoPreview.innerHTML =
+            "Photo Preview";
+
+          return;
+        }
+
+
+        const allowedTypes = [
+          "image/jpeg",
+          "image/png",
+          "image/webp"
+        ];
+
+        if (
+          !allowedTypes.includes(
+            file.type
+          )
+        ) {
+
+          this.value = "";
+
+          selectedPhotoFile = null;
+          compressedPhotoBlob = null;
+
+          showMessage(
+            formMessage,
+            "Please upload JPG, PNG or WEBP only.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        selectedPhotoFile = file;
+
+        hideMessage(
+          formMessage
+        );
+
+
+        try {
+
+          compressedPhotoBlob =
+            await compressImageTo1MB(
+              file
+            );
+
+
+          const previewURL =
+            URL.createObjectURL(
+              compressedPhotoBlob
+            );
+
+          photoPreview.innerHTML = `
+            <img
+              src="${previewURL}"
+              alt="Photo preview"
+            >
+          `;
+
+        } catch (error) {
+
+          console.error(
+            "Image compression error:",
+            error
+          );
+
+          compressedPhotoBlob =
+            null;
+
+          const previewURL =
+            URL.createObjectURL(
+              file
+            );
+
+          photoPreview.innerHTML = `
+            <img
+              src="${previewURL}"
+              alt="Photo preview"
+            >
+          `;
+        }
+      }
+    );
+
+
+    /* =========================
+       IMAGE COMPRESSION
+    ========================= */
+
+    async function compressImageTo1MB(
+      file
+    ) {
+
+      const MAX_BYTES =
+        1024 * 1024;
+
+      if (
+        file.size <= MAX_BYTES
+      ) {
+
+        return file;
+      }
+
+
+      const image =
+        await loadImage(file);
+
+
+      let width =
+        image.naturalWidth;
+
+      let height =
+        image.naturalHeight;
+
+
+      const MAX_DIMENSION =
+        1800;
+
+
+      if (
+        width > MAX_DIMENSION ||
+        height > MAX_DIMENSION
+      ) {
+
+        const ratio =
+          Math.min(
+            MAX_DIMENSION / width,
+            MAX_DIMENSION / height
+          );
+
+        width =
+          Math.round(
+            width * ratio
+          );
+
+        height =
+          Math.round(
+            height * ratio
+          );
+      }
+
+
+      let quality = 0.86;
+
+      let blob =
+        await canvasToBlob(
+          image,
+          width,
+          height,
+          quality
+        );
+
+
+      while (
+        blob.size > MAX_BYTES &&
+        quality > 0.45
+      ) {
+
+        quality -= 0.08;
+
+        blob =
+          await canvasToBlob(
+            image,
+            width,
+            height,
+            quality
+          );
+      }
+
+
+      while (
+        blob.size > MAX_BYTES &&
+        width > 900
+      ) {
+
+        width =
+          Math.round(
+            width * 0.85
+          );
+
+        height =
+          Math.round(
+            height * 0.85
+          );
+
+        blob =
+          await canvasToBlob(
+            image,
+            width,
+            height,
+            quality
+          );
+      }
+
+
+      return blob;
+    }
+
+
+    function loadImage(file) {
+
+      return new Promise(
+        (resolve, reject) => {
+
+          const image =
+            new Image();
+
+          const url =
+            URL.createObjectURL(
+              file
+            );
+
+          image.onload = () => {
+
+            URL.revokeObjectURL(
+              url
+            );
+
+            resolve(image);
+          };
+
+          image.onerror = () => {
+
+            URL.revokeObjectURL(
+              url
+            );
+
+            reject(
+              new Error(
+                "Unable to read image"
+              )
+            );
+          };
+
+          image.src = url;
+        }
+      );
+    }
+
+
+    function canvasToBlob(
+      image,
+      width,
+      height,
+      quality
+    ) {
+
+      return new Promise(
+        (resolve, reject) => {
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          canvas.width =
+            width;
+
+          canvas.height =
+            height;
+
+          const ctx =
+            canvas.getContext(
+              "2d"
+            );
+
+          if (!ctx) {
+
+            reject(
+              new Error(
+                "Canvas unavailable"
+              )
+            );
+
+            return;
+          }
+
+          ctx.drawImage(
+            image,
+            0,
+            0,
+            width,
+            height
+          );
+
+          canvas.toBlob(
+            blob => {
+
+              if (blob) {
+                resolve(blob);
+              } else {
+                reject(
+                  new Error(
+                    "Image conversion failed"
+                  )
+                );
+              }
+
+            },
+            "image/jpeg",
+            quality
+          );
+        }
+      );
+    }
+
+        /* =========================
+       CREATE FOUNDER PROFILE
+    ========================= */
+
+    createProfileBtn.addEventListener(
+      "click",
+      createFounderProfile
+    );
+
+
+    async function createFounderProfile() {
+
+      hideMessage(formMessage);
+
+
+      /* =========================
+         READ FORM
+      ========================= */
+
+      const fullName =
+        cleanText(
+          document.getElementById(
+            "fullName"
+          ).value
+        );
+
+      const whatsapp =
+        normalizeWhatsApp(
+          document.getElementById(
+            "whatsapp"
+          ).value
+        );
+
+      const email =
+        cleanText(
+          document.getElementById(
+            "email"
+          ).value
+        );
+
+      const role =
+        cleanText(
+          document.getElementById(
+            "role"
+          ).value
+        );
+
+      const businessName =
+        cleanText(
+          document.getElementById(
+            "businessName"
+          ).value
+        );
+
+      const businessCategory =
+        cleanText(
+          document.getElementById(
+            "businessCategory"
+          ).value
+        );
+
+      const location =
+        cleanText(
+          document.getElementById(
+            "location"
+          ).value
+        );
+
+      const businessStage =
+        cleanText(
+          document.getElementById(
+            "businessStage"
+          ).value
+        );
+
+      const headline =
+        cleanText(
+          document.getElementById(
+            "headline"
+          ).value
+        );
+
+      const about =
+        cleanText(
+          document.getElementById(
+            "about"
+          ).value
+        );
+
+      const websiteUrl =
+        normalizeURL(
+          document.getElementById(
+            "websiteUrl"
+          ).value
+        );
+
+      const instagramUrl =
+        normalizeURL(
+          document.getElementById(
+            "instagramUrl"
+          ).value
+        );
+
+      const linkedinUrl =
+        normalizeURL(
+          document.getElementById(
+            "linkedinUrl"
+          ).value
+        );
+
+      const androidAppUrl = normalizeURL(
+  document.getElementById("androidAppUrl").value
+);
+
+const iosAppUrl = normalizeURL(
+  document.getElementById("iosAppUrl").value
+);
+
+
+      /* =========================
+         VALIDATION
+      ========================= */
+
+      if (!fullName) {
+
+        showMessage(
+          formMessage,
+          "Please enter your full name.",
+          "error"
+        );
+
+        document
+          .getElementById("fullName")
+          .focus();
+
+        return;
+      }
+
+
+      if (
+        whatsapp.length < 10 ||
+        whatsapp.length > 15
+      ) {
+
+        showMessage(
+          formMessage,
+          "Please enter a valid WhatsApp number.",
+          "error"
+        );
+
+        document
+          .getElementById("whatsapp")
+          .focus();
+
+        return;
+      }
+
+
+      if (!email) {
+
+        showMessage(
+          formMessage,
+          "Please enter your email address.",
+          "error"
+        );
+
+        document
+          .getElementById("email")
+          .focus();
+
+        return;
+      }
+
+
+      if (!validEmail(email)) {
+
+        showMessage(
+          formMessage,
+          "Please enter a valid email address.",
+          "error"
+        );
+
+        document
+          .getElementById("email")
+          .focus();
+
+        return;
+      }
+
+
+      if (!businessName) {
+
+        showMessage(
+          formMessage,
+          "Please enter your business name.",
+          "error"
+        );
+
+        document
+          .getElementById("businessName")
+          .focus();
+
+        return;
+      }
+
+
+      if (!compressedPhotoBlob) {
+
+        showMessage(
+          formMessage,
+          "Please upload your founder photo.",
+          "error"
+        );
+
+        photoInput.focus();
+
+        return;
+      }
+
+
+      /* =========================
+         DISABLE BUTTON
+      ========================= */
+
+      createProfileBtn.disabled =
+        true;
+
+      createProfileBtn.textContent =
+        "Creating Profile...";
+
+
+      try {
+
+        /* =========================
+           UPLOAD PHOTO
+        ========================= */
+
+        const fileName =
+          `${Date.now()}-${crypto.randomUUID()}.jpg`;
+
+        const storagePath =
+          `founders/${fileName}`;
+
+
+        const {
+          error: uploadError
+        } = await db
+          .storage
+          .from("founder-photos")
+          .upload(
+            storagePath,
+            compressedPhotoBlob,
+            {
+              contentType:
+                "image/jpeg",
+
+              cacheControl:
+                "3600",
+
+              upsert: false
+            }
+          );
+
+
+        if (uploadError) {
+          throw uploadError;
+        }
+
+
+        /* =========================
+           GET PUBLIC PHOTO URL
+        ========================= */
+
+        const {
+          data: publicPhotoData
+        } = db
+          .storage
+          .from("founder-photos")
+          .getPublicUrl(
+            storagePath
+          );
+
+
+        const photoUrl =
+          publicPhotoData &&
+          publicPhotoData.publicUrl
+            ? publicPhotoData.publicUrl
+            : "";
+
+
+        if (!photoUrl) {
+
+          throw new Error(
+            "Unable to create photo URL."
+          );
+        }
+
+
+        /* =========================
+           CREATE PROFILE VIA RPC
+        ========================= */
+
+        const {
+          data,
+          error
+        } = await db.rpc(
+          "create_bgc_founder_profile",
+          {
+            p_full_name:
+              fullName,
+
+            p_whatsapp:
+              whatsapp,
+
+            p_email:
+              email || null,
+
+            p_role:
+              role || null,
+
+            p_business_name:
+              businessName,
+
+            p_business_category:
+              businessCategory || null,
+
+            p_location:
+              location || null,
+
+            p_business_stage:
+              businessStage || null,
+
+            p_headline:
+              headline || null,
+
+            p_about:
+              about || null,
+
+            p_website_url:
+              websiteUrl || null,
+
+            p_instagram_url:
+              instagramUrl || null,
+
+            p_linkedin_url:
+              linkedinUrl || null,
+
+            p_android_app_url:
+  androidAppUrl || null,
+
+p_ios_app_url:
+  iosAppUrl || null,
+
+            p_photo_url:
+              photoUrl
+          }
+        );
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        /* =========================
+           GET CREATED FOUNDER ID
+        ========================= */
+
+        let createdFounderId = null;
+
+
+        if (
+          data &&
+          typeof data === "object"
+        ) {
+
+          createdFounderId =
+            data.id ||
+            data.founder_id ||
+            null;
+        }
+
+
+        /*
+          If RPC returns only a status/message,
+          find the profile using normalized WhatsApp.
+        */
+
+        if (!createdFounderId) {
+
+          const {
+            data: founderData,
+            error: founderLookupError
+          } = await db
+            .from("founder_profiles")
+            .select("id")
+            .eq(
+              "whatsapp",
+              whatsapp
+            )
+            .maybeSingle();
+
+
+          if (
+            !founderLookupError &&
+            founderData
+          ) {
+
+            createdFounderId =
+              founderData.id;
+          }
+        }
+
+
+        /* =========================
+           SUCCESS
+        ========================= */
+
+        showMessage(
+          formMessage,
+          "Your founder profile has been created successfully.",
+          "success"
+        );
+
+
+        createProfileBtn.textContent =
+          "Profile Created ✓";
+
+
+        /*
+          Give the success message a moment,
+          then open the newly created profile.
+        */
+
+        if (createdFounderId) {
+
+          setTimeout(() => {
+
+            window.location.href =
+              `founder-profile.html?id=${encodeURIComponent(
+                createdFounderId
+              )}`;
+
+          }, 900);
+
+        } else {
+
+          setTimeout(() => {
+
+            window.location.href =
+              "founders.html";
+
+          }, 1200);
+        }
+
+
+      } catch (error) {
+
+        console.error(
+          "Create founder error:",
+          error
+        );
+
+
+        let message =
+          "Unable to create your profile. Please try again.";
+
+
+        if (
+          error &&
+          error.message
+        ) {
+
+          const errorText =
+            error.message.toLowerCase();
+
+
+          if (
+            errorText.includes(
+              "photo"
+            )
+          ) {
+
+            message =
+              "Photo upload failed. Please try another image.";
+
+          } else if (
+            errorText.includes(
+              "whatsapp"
+            )
+          ) {
+
+            message =
+              "Please check your WhatsApp number.";
+
+          } else if (
+            errorText.includes(
+              "business"
+            )
+          ) {
+
+            message =
+              "Please check your business details.";
+
+          } else if (
+            errorText.includes(
+              "permission"
+            ) ||
+            errorText.includes(
+              "policy"
+            )
+          ) {
+
+            message =
+              "Profile creation permission is not available right now.";
+
+          } else if (
+            errorText.includes(
+              "duplicate"
+            )
+          ) {
+
+            message =
+              "A founder profile already exists with this WhatsApp number.";
+          }
+        }
+
+
+        showMessage(
+          formMessage,
+          message,
+          "error"
+        );
+
+
+        createProfileBtn.disabled =
+          false;
+
+        createProfileBtn.textContent =
+          "Create Founder Profile ↗";
+      }
+    }
+
+
+    /* =========================
+       CONNECT MODAL
+    ========================= */
+
+    function openConnectModal() {
+
+      if (!currentFounder) {
+        return;
+      }
+
+      connectFounderName.textContent =
+        cleanText(
+          currentFounder.full_name
+        ) || "Founder";
+
+      hideMessage(
+        connectMessage
+      );
+
+      connectModal.style.display =
+        "flex";
+
+      document.body.style.overflow =
+        "hidden";
+
+
+      setTimeout(() => {
+
+        document
+          .getElementById(
+            "connectName"
+          )
+          .focus();
+
+      }, 100);
+    }
+
+
+    function closeConnectModalFn() {
+
+      connectModal.style.display =
+        "none";
+
+      document.body.style.overflow =
+        "";
+
+      connectForm.reset();
+
+      hideMessage(
+        connectMessage
+      );
+    }
+
+
+    connectFounderBtn.addEventListener(
+      "click",
+      openConnectModal
+    );
+
+
+    closeConnectModal.addEventListener(
+      "click",
+      closeConnectModalFn
+    );
+
+
+    connectModal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          connectModal
+        ) {
+
+          closeConnectModalFn();
+        }
+      }
+    );
+
+
+    connectModalBox.addEventListener(
+      "click",
+      event => {
+
+        event.stopPropagation();
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Escape" &&
+          connectModal.style.display ===
+            "flex"
+        ) {
+
+          closeConnectModalFn();
+        }
+      }
+    );
+
+
+/* =========================
+   CONNECT SUBMIT
+========================= */
+
+connectForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+    hideMessage(connectMessage);
+
+
+    if (!currentFounder) {
+
+      showMessage(
+        connectMessage,
+        "Founder information is unavailable.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    const name =
+      cleanText(
+        document
+          .getElementById("connectName")
+          .value
+      );
+
+
+    const whatsapp =
+      normalizeWhatsApp(
+        document
+          .getElementById("connectWhatsapp")
+          .value
+      );
+
+
+    const email =
+      cleanText(
+        document
+          .getElementById("connectEmail")
+          .value
+      );
+
+
+    const message =
+      cleanText(
+        document
+          .getElementById("connectMessageText")
+          .value
+      );
+
+
+    /* VALIDATION */
+
+    if (!name) {
+
+      showMessage(
+        connectMessage,
+        "Please enter your name.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (
+      whatsapp.length < 10 ||
+      whatsapp.length > 15
+    ) {
+
+      showMessage(
+        connectMessage,
+        "Please enter a valid WhatsApp number.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (!validEmail(email)) {
+
+      showMessage(
+        connectMessage,
+        "Please enter a valid email address.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    connectSubmitBtn.disabled = true;
+
+    connectSubmitBtn.textContent =
+      "Sending...";
+
+
+    try {
+
+      /* SAVE CONNECTION */
+
+      const {
+        error
+      } = await db
+        .from("founder_connections")
+        .insert({
+
+          founder_id:
+            currentFounder.id,
+
+          name:
+            name,
+
+          whatsapp:
+            whatsapp,
+
+          email:
+            email || null,
+
+          message:
+            message || null
+
+        });
+
+
+      if (error) {
+        throw error;
+      }
+
+
+      /* SUCCESS */
+
+      showMessage(
+        connectMessage,
+        "Connection request sent successfully.",
+        "success"
+      );
+
+
+      connectSubmitBtn.textContent =
+        "Sent ✓";
+
+
+      /*
+       * OPEN FOUNDER WHATSAPP
+       * after successful database save
+       */
+
+      const founderNumber =
+        normalizeWhatsApp(
+          currentFounder.whatsapp
+        );
+
+
+      if (
+        founderNumber.length >= 10
+      ) {
+
+        const whatsappNumber =
+          founderNumber.length === 10
+            ? "91" + founderNumber
+            : founderNumber;
+
+
+        const whatsappText =
+          "Hello " +
+          (
+            currentFounder.full_name ||
+            "Founder"
+          ) +
+          ",%0A%0A" +
+
+          "I found your profile on BGC CLUB and would like to connect.%0A%0A" +
+
+          "My name: " +
+          encodeURIComponent(name) +
+
+          "%0AWhatsApp: " +
+          encodeURIComponent(whatsapp) +
+
+          (
+            email
+              ? "%0AEmail: " +
+                encodeURIComponent(email)
+              : ""
+          ) +
+
+          "%0AMessage: " +
+          encodeURIComponent(
+            message ||
+            "I would like to connect with you."
+          );
+
+
+        setTimeout(() => {
+
+          window.open(
+            "https://wa.me/" +
+            whatsappNumber +
+            "?text=" +
+            whatsappText,
+            "_blank"
+          );
+
+        }, 500);
+
+      }
+
+
+      /* CLOSE MODAL */
+
+      setTimeout(() => {
+
+        closeConnectModalFn();
+
+        connectSubmitBtn.disabled =
+          false;
+
+        connectSubmitBtn.textContent =
+          "Send Connection Request";
+
+      }, 1200);
+
+
+    } catch (error) {
+
+      console.error(
+        "Connection error:",
+        error
+      );
+
+
+      showMessage(
+        connectMessage,
+        "Unable to send your request. Please try again.",
+        "error"
+      );
+
+
+      connectSubmitBtn.disabled =
+        false;
+
+      connectSubmitBtn.textContent =
+        "Send Connection Request";
+
+    }
+
+  }
+);
+
+        /* =========================
+       BRAND ADMIN SHORTCUT
+       5 TAPS
+    ========================= */
+
+    const brandTap =
+      document.getElementById(
+        "brandTap"
+      );
+
+    let brandTapCount = 0;
+    let brandTapTimer = null;
+
+
+    brandTap.addEventListener(
+      "click",
+      event => {
+
+        brandTapCount++;
+
+        clearTimeout(
+          brandTapTimer
+        );
+
+        brandTapTimer =
+          setTimeout(() => {
+
+            brandTapCount = 0;
+
+          }, 1800);
+
+
+        if (
+          brandTapCount >= 5
+        ) {
+
+          event.preventDefault();
+
+          brandTapCount = 0;
+
+          window.location.href =
+            "admin.html";
+        }
+      }
+    );
+
+
+    /* =========================
+       INITIALIZE PAGE
+    ========================= */
+
+    async function initializePage() {
+
+      updateScrollProgress();
+
+
+      /*
+        CREATE MODE
+        URL:
+        founder-profile.html?create=1
+      */
+
+      if (isCreateMode) {
+
+        enableCreateMode();
+
+        return;
+      }
+
+
+      /*
+        VIEW MODE
+        URL:
+        founder-profile.html?id=FOUNDER_ID
+      */
+
+      if (founderId) {
+
+        await loadFounderProfile();
+
+        return;
+      }
+
+
+      /*
+        No ID and no create mode
+      */
+
+      showProfileError();
+    }
+
+
+    /* =========================
+       DOM READY
+    ========================= */
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      initializePage
+    );
+
+
+    /* =========================
+       MOBILE / KEYBOARD
+    ========================= */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        /*
+          Escape closes connect modal
+        */
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          if (
+            connectModal.style.display ===
+            "flex"
+          ) {
+
+            closeConnectModalFn();
+          }
+        }
+      }
+    );
+
+  </script>
+
+</body>
+</html>
