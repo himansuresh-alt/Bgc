@@ -4454,13 +4454,17 @@ document
           0;
 
 
-        window.location.href =
-          "admin.html";
+const modal = document.getElementById("adminChoiceModal");
+
+if (modal) {
+  modal.style.display = "flex";
+}
 
       }
 
     }
   );
+
 
 
 /* =====================================
@@ -4640,6 +4644,99 @@ window.refreshBGCHome =
 </script>
 
 </main>
+
+  
+<!-- BGC CLUB ADMIN MENU -->
+<div id="adminChoiceModal" class="admin-choice-overlay">
+  <div class="admin-choice-box">
+    <h2>BGC CLUB</h2>
+    <p>Choose your admin panel</p>
+
+    <a href="admin.html" class="admin-choice-btn admin-main">
+      Admin
+    </a>
+
+    <a href="admin-panel.html" class="admin-choice-btn admin-secondary">
+      Admin Panel
+    </a>
+
+    <button
+      type="button"
+      class="admin-choice-cancel"
+      onclick="document.getElementById('adminChoiceModal').style.display='none'">
+      Cancel
+    </button>
+  </div>
+</div>
+
+<style>
+.admin-choice-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.admin-choice-box {
+  width: 100%;
+  max-width: 340px;
+  box-sizing: border-box;
+  padding: 26px 22px;
+  background: #ffffff;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+}
+
+.admin-choice-box h2 {
+  margin: 0 0 8px;
+  color: #8d1831;
+  font-size: 24px;
+}
+
+.admin-choice-box p {
+  margin: 0 0 22px;
+  color: #68716c;
+  font-size: 14px;
+}
+
+.admin-choice-btn {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.admin-main {
+  background: #8d1831;
+  color: #ffffff;
+}
+
+.admin-secondary {
+  background: #f4f5f6;
+  color: #242424;
+  border: 1px solid #e0e0e0;
+}
+
+.admin-choice-cancel {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border: 0;
+  background: transparent;
+  color: #68716c;
+  font-size: 14px;
+}
+</style>
+
 
 </body>
 </html>
