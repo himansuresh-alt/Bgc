@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4f6fb">
+<title>BGC CLUB | My Team</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root {
+  --bg:#f4f6fb;
+  --ink:#171b2c;
+  --muted:#697386;
+  --line:#e4e8f1;
+  --purple:#5b4bdb;
+  --light:#e9e7ff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:linear-gradient(180deg,#f8f9ff,#f1f4fb);
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.wrap{width:min(1100px,calc(100% - 28px));margin:auto}
+header{padding:22px 0 14px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-size:23px;font-weight:900;letter-spacing:-1px}
+.brand span{color:var(--purple)}
+.head-note{
+  font-size:10px;color:var(--muted);
+  border:1px solid var(--line);border-radius:30px;
+  padding:8px 10px;background:#ffffffb8
+}
+.intro{padding:26px 0 24px}
+.eyebrow{
+  color:var(--purple);font-size:11px;
+  font-weight:bold;letter-spacing:1.5px;
+}
+h1{font-size:clamp(34px,7vw,58px);letter-spacing:-2px;margin:12px 0}
+.intro p{color:var(--muted);line-height:1.7;max-width:650px;font-size:14px}
+.hero{
+  background:linear-gradient(135deg,#242344,#5146a8);
+  color:white;border-radius:24px;padding:26px;
+  margin-bottom:34px;overflow:hidden;
+}
+.hero h2{font-size:26px;margin:0 0 10px}
+.hero-description{font-size:13px;line-height:1.7;color:#e4e2ff;max-width:620px}
+.photo-slider{
+  overflow:hidden;margin:20px 0;border-radius:16px;
+  background:#ffffff10;
+}
+.photo-track{
+  display:flex;gap:12px;padding:12px;
+  overflow-x:auto;scroll-snap-type:x mandatory;
+}
+.photo-track img{
+  width:150px;height:170px;object-fit:cover;
+  border-radius:12px;scroll-snap-align:start;
+}
+.slider-message{padding:16px;color:#eeeaff;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px}
+.stat{background:#ffffff12;border:1px solid #ffffff20;border-radius:14px;padding:15px}
+.stat strong{display:block;font-size:21px}
+.stat small{display:block;margin-top:5px;color:#e4e2ff;font-size:11px}
+section{margin-bottom:32px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.section-head h2{font-size:23px;margin:0 0 6px;letter-spacing:-.5px}
+.section-head p{margin:0;color:var(--muted);font-size:12px;line-height:1.6}
+.count{font-size:10px;color:var(--muted);border:1px solid var(--line);padding:8px 10px;border-radius:30px;white-space:nowrap}
+.departments{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.department{
+  border:1px solid var(--line);border-radius:17px;
+  background:white;padding:17px;cursor:pointer;text-align:left;
+  transition:transform .15s,border-color .15s;
+}
+.department:hover{transform:translateY(-2px);border-color:#c9c3ff}
+.department.active{border-color:var(--purple);background:#f2f0ff}
+.dept-icon{font-size:24px}
+.department h3{font-size:13px;line-height:1.5;margin:12px 0 6px}
+.department p{font-size:11px;line-height:1.6;color:var(--muted);margin:0}
+.toolbar{display:flex;gap:10px;margin:16px 0}
+.toolbar input,.toolbar select{
+  min-width:0;width:100%;padding:13px;border:1px solid var(--line);
+  background:white;border-radius:12px;outline-color:var(--purple);
+}
+.toolbar select{max-width:230px}
+.members{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.member{
+  display:flex;gap:14px;background:white;border:1px solid var(--line);
+  border-radius:18px;padding:16px;min-width:0;
+}
+.avatar{
+  width:76px;height:76px;flex-shrink:0;border-radius:15px;
+  background:#eceaff;display:grid;place-items:center;
+  font-size:22px;font-weight:bold;color:var(--purple);overflow:hidden;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.details{min-width:0}
+.details h3{font-size:15px;margin:2px 0 6px;overflow-wrap:anywhere}
+.dept-name{font-size:11px;font-weight:bold;color:var(--purple);line-height:1.5}
+.skills{font-size:12px;line-height:1.6;color:var(--muted);overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.pill{background:#f0efff;color:#5146a8;border-radius:30px;padding:6px 8px;font-size:10px}
+.portfolio{display:inline-block;font-size:11px;color:var(--purple);margin-top:4px;font-weight:bold}
+.empty{
+  grid-column:1/-1;text-align:center;background:white;border:1px dashed var(--line);
+  border-radius:18px;padding:35px 20px;color:var(--muted);
+}
+.empty h3{color:var(--ink);font-size:16px}
+.empty p{font-size:12px;line-height:1.7}
+.notice{font-size:11px;line-height:1.7;color:var(--muted);margin-top:18px}
+footer{padding:24px 0 35px;color:var(--muted);font-size:11px;text-align:center}
+footer a{color:var(--purple);font-weight:bold}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+<header>
+  <div class="head">
+    <div class="brand">BGC <span>CLUB</span></div>
+    <div class="head-note">PEOPLE · SKILLS · OPPORTUNITIES</div>
+  </div>
+</header>
+
+<main>
+  <section class="intro">
+    <div class="eyebrow">BGC CLUB · PEOPLE & EXPERTISE</div>
+    <h1>My Team<span style="color:var(--purple)">.</span></h1>
+    <p>Meet approved professionals connected with BGC CLUB. Discover team members by department, skills and experience.</p>
+  </section>
+
+  <section class="hero">
+    <h2>People behind the work</h2>
+    <p class="hero-description">Explore our network of business professionals, creators, designers and technology specialists. Profiles appear after admin approval.</p>
+
+    <div class="photo-slider" id="teamPhotoSlider">
+      <div class="photo-track" id="teamPhotoTrack"></div>
+    </div>
+    <div class="slider-message" id="sliderMessage" hidden></div>
+
+    <div class="stats">
+      <div class="stat"><strong id="totalCount">—</strong><small>Approved members</small></div>
+      <div class="stat"><strong>09</strong><small>Departments</small></div>
+      <div class="stat"><strong>Public</strong><small>Team directory</small></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div>
+        <h2>Explore expertise</h2>
+        <p>Choose a department to filter team members.</p>
+      </div>
+      <span class="count">09 CATEGORIES</span>
+    </div>
+    <div class="departments" id="departmentGrid"></div>
+  </section>
+
+  <section id="members">
+    <div class="section-head">
+      <div>
+        <h2>Meet the team</h2>
+        <p>Only approved team profiles are displayed.</p>
+      </div>
+      <span class="count" id="resultCount">Loading...</span>
+    </div>
+
+    <div class="toolbar">
+      <input id="searchInput" type="search"
+        placeholder="Search name, skills or experience..."
+        aria-label="Search team members">
+      <select id="departmentFilter" aria-label="Filter by department">
+        <option value="All">All departments</option>
+      </select>
+    </div>
+
+    <div class="members" id="membersGrid">
+      <div class="empty">
+        <h3>Loading team members...</h3>
+        <p>Please wait while approved profiles are loaded.</p>
+      </div>
+    </div>
+
+    <p class="notice">
+      For privacy, members' personal phone numbers and email addresses
+      are not displayed publicly.
+    </p>
+  </section>
+</main>
+</div>
+</body>
+</html>
+
+
+<!-- PART 2: DEPARTMENTS + APPROVED MEMBER LOADING -->
+
+<script>
+(() => {
+  "use strict";
+
+  const SUPABASE_URL =
+    "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  const $ = id => document.getElementById(id);
+
+  const departments = [
+    {
+      name: "Sales & Business Development",
+      icon: "🤝",
+      description: "Clients, sales and project opportunities"
+    },
+    {
+      name: "Marketing & Branding",
+      icon: "📢",
+      description: "Digital marketing and brand growth"
+    },
+    {
+      name: "Graphic Design & Creative",
+      icon: "🎨",
+      description: "Design, posters and creative work"
+    },
+    {
+      name: "Web Development & Technology",
+      icon: "💻",
+      description: "Websites, apps and technical solutions"
+    },
+    {
+      name: "Content Writing & Social Media",
+      icon: "✍️",
+      description: "Content, copywriting and social media"
+    },
+    {
+      name: "Video Editing & Photography",
+      icon: "🎬",
+      description: "Videos, reels and photography"
+    },
+    {
+      name: "Finance & Accounting",
+      icon: "📊",
+      description: "Accounts, finance and business planning"
+    },
+    {
+      name: "Operations & Management",
+      icon: "⚙️",
+      description: "Operations and project coordination"
+    },
+    {
+      name: "Other Services",
+      icon: "🌟",
+      description: "Other professional skills and services"
+    }
+  ];
+
+  let allMembers = [];
+  let selectedDepartment = "All";
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function initials(name) {
+    return String(name || "BGC")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(word => word.charAt(0).toUpperCase())
+      .join("");
+  }
+
+  function renderDepartments() {
+    $("departmentGrid").innerHTML = departments.map(dept => `
+      <button type="button"
+        class="department ${selectedDepartment === dept.name ? "active" : ""}"
+        data-department="${escapeHTML(dept.name)}">
+        <div class="dept-icon">${dept.icon}</div>
+        <h3>${escapeHTML(dept.name)}</h3>
+        <p>${escapeHTML(dept.description)}</p>
+      </button>
+    `).join("");
+
+    const select = $("departmentFilter");
+    const currentValue = selectedDepartment;
+
+    select.innerHTML =
+      '<option value="All">All departments</option>' +
+      departments.map(dept =>
+        `<option value="${escapeHTML(dept.name)}">${
+          escapeHTML(dept.name)
+        }</option>`
+      ).join("");
+
+    select.value = currentValue;
+  }
+
+  function renderMembers() {
+    const search = $("searchInput").value
+      .trim()
+      .toLowerCase();
+
+    const list = allMembers.filter(member => {
+      const matchesDepartment =
+        selectedDepartment === "All" ||
+        member.department === selectedDepartment;
+
+      const searchable = [
+        member.full_name,
+        member.department,
+        member.skills,
+        member.experience_level,
+        member.work_type
+      ].filter(Boolean).join(" ").toLowerCase();
+
+      return matchesDepartment &&
+        searchable.includes(search);
+    });
+
+    $("resultCount").textContent =
+      `${list.length} member${list.length === 1 ? "" : "s"}`;
+
+    if (!list.length) {
+      $("membersGrid").innerHTML = `
+        <div class="empty">
+          <h3>${allMembers.length
+            ? "No matching profiles"
+            : "Team profiles are coming soon"}</h3>
+          <p>${allMembers.length
+            ? "Try another search or department."
+            : "Approved team members will appear here after admin approval."}</p>
+        </div>`;
+      return;
+    }
+
+    $("membersGrid").innerHTML = list.map(member => {
+      const photo = member.photo_url
+        ? `<img src="${escapeHTML(member.photo_url)}"
+             alt="${escapeHTML(member.full_name || "Team member")}"
+             loading="lazy">`
+        : escapeHTML(initials(member.full_name));
+
+      const portfolio =
+        member.portfolio_url &&
+        /^https?:\/\//i.test(member.portfolio_url)
+          ? `<a class="portfolio"
+               href="${escapeHTML(member.portfolio_url)}"
+               target="_blank" rel="noopener noreferrer">
+               View portfolio ↗
+             </a>`
+          : "";
+
+      const experience = member.experience_level
+        ? `<span class="pill">${
+            escapeHTML(member.experience_level)
+          }</span>`
+        : "";
+
+      const work = member.work_type
+        ? `<span class="pill">${
+            escapeHTML(member.work_type)
+          }</span>`
+        : "";
+
+      return `
+        <article class="member">
+          <div class="avatar">${photo}</div>
+          <div class="details">
+            <h3>${escapeHTML(member.full_name || "BGC CLUB Member")}</h3>
+            <div class="dept-name">${
+              escapeHTML(member.department || "Team Member")
+            }</div>
+            ${member.skills
+              ? `<p class="skills">${escapeHTML(member.skills)}</p>`
+              : ""}
+            <div class="meta">${experience}${work}</div>
+            ${portfolio}
+          </div>
+        </article>`;
+    }).join("");
+  }
+
+  async function loadMembers() {
+    try {
+      const { data, error } = await client
+        .from("bgc_team_members")
+        .select(
+          "id,full_name,department,skills,experience_level,work_type,portfolio_url,photo_url,status,created_at"
+        )
+        .eq("status", "approved")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      allMembers = data || [];
+
+      $("totalCount").textContent =
+        String(allMembers.length);
+
+      renderMembers();
+      renderPhotoSlider();
+    } catch (error) {
+      console.error("BGC CLUB member loading error:", error);
+
+      $("totalCount").textContent = "—";
+      $("resultCount").textContent = "Unavailable";
+
+      $("membersGrid").innerHTML = `
+        <div class="empty">
+          <h3>Could not load team members</h3>
+          <p>Check the Supabase table columns and the SELECT policy for approved profiles.</p>
+        </div>`;
+
+      $("sliderMessage").hidden = false;
+      $("sliderMessage").textContent =
+        "Team photos are temporarily unavailable.";
+    }
+  }
+
+  function renderPhotoSlider() {
+    const photos = allMembers.filter(member => member.photo_url);
+
+    if (!photos.length) {
+      $("teamPhotoSlider").hidden = true;
+      $("sliderMessage").hidden = false;
+      $("sliderMessage").textContent =
+        "Approved member photos will appear here.";
+      return;
+    }
+
+    $("teamPhotoSlider").hidden = false;
+    $("sliderMessage").hidden = true;
+
+    $("teamPhotoTrack").innerHTML = photos.map(member => `
+      <img
+        src="${escapeHTML(member.photo_url)}"
+        alt="${escapeHTML(member.full_name || "BGC CLUB member")}"
+        loading="lazy">
+    `).join("");
+  }
+
+  $("searchInput").addEventListener("input", renderMembers);
+
+  $("departmentFilter").addEventListener("change", () => {
+    selectedDepartment = $("departmentFilter").value;
+    renderDepartments();
+    renderMembers();
+  });
+
+  $("departmentGrid").addEventListener("click", event => {
+    const button = event.target.closest("[data-department]");
+    if (!button) return;
+
+    const department = button.dataset.department;
+
+    selectedDepartment =
+      selectedDepartment === department ? "All" : department;
+
+    renderDepartments();
+    renderMembers();
+    $("members").scrollIntoView({ behavior: "smooth" });
+  });
+
+  renderDepartments();
+  loadMembers();
+
+  // Expose a small interface for later chat integration.
+  window.BGC_TEAM = {
+    client,
+    escapeHTML
+  };
+})();
+</script>
+<!-- END PART 2 -->
+
+
+
+<!-- PART 3: BGC CLUB TEAM CHAT -->
+
+<style>
+  #bgcTeamChat {
+    max-width: 1000px;
+    margin: 48px auto;
+    padding: 24px;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 8px 28px rgba(0,0,0,.05);
+    font-family: inherit;
+  }
+
+  #bgcTeamChat * { box-sizing: border-box; }
+
+  #bgcTeamChat .chat-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  #bgcTeamChat h2 {
+    margin: 0;
+    color: #173b30;
+    font-size: 25px;
+  }
+
+  #bgcTeamChat .chat-subtitle {
+    color: #667085;
+    font-size: 14px;
+    margin: 8px 0 18px;
+  }
+
+  #bgcChatStatus {
+    color: #475467;
+    background: #f3f6f4;
+    border-radius: 9px;
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-bottom: 14px;
+  }
+
+  #bgcChatMessages {
+    height: 340px;
+    overflow-y: auto;
+    padding: 14px;
+    background: #f7f9f7;
+    border: 1px solid #e5e9e5;
+    border-radius: 14px;
+  }
+
+  #bgcChatMessages .chat-empty {
+    color: #667085;
+    text-align: center;
+    padding: 35px 8px;
+    font-size: 14px;
+  }
+
+  #bgcChatMessages .chat-message {
+    margin-bottom: 14px;
+    padding: 11px 13px;
+    border-radius: 12px;
+    background: #fff;
+    border: 1px solid #e6e9e6;
+    overflow-wrap: anywhere;
+  }
+
+  #bgcChatMessages .chat-message.mine {
+    background: #eaf5ed;
+    border-color: #d4e8d9;
+  }
+
+  #bgcChatMessages .chat-author {
+    color: #24543f;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  #bgcChatMessages .chat-text {
+    color: #202923;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
+  #bgcChatMessages .chat-time {
+    color: #7b847d;
+    font-size: 11px;
+    margin-top: 7px;
+  }
+
+  #bgcChatForm {
+    display: flex;
+    gap: 10px;
+    margin-top: 13px;
+  }
+
+  #bgcChatInput {
+    flex: 1;
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px;
+    border: 1px solid #d0d5dd;
+    border-radius: 12px;
+    font: inherit;
+    resize: vertical;
+  }
+
+  #bgcChatSend {
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 12px;
+    background: #24543f;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  #bgcChatSend:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  #bgcChatSignIn {
+    display: none;
+    margin-top: 14px;
+    padding: 13px;
+    background: #fff7e8;
+    border-radius: 10px;
+    color: #77551a;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  @media(max-width: 600px) {
+    #bgcTeamChat { margin: 28px 12px; padding: 15px; }
+    #bgcTeamChat h2 { font-size: 21px; }
+    #bgcChatMessages { height: 300px; }
+    #bgcChatForm { flex-direction: column; }
+    #bgcChatSend { min-height: 46px; }
+  }
+</style>
+
+<section id="bgcTeamChat">
+  <div class="chat-heading">
+    <h2>💬 BGC CLUB Team Chat</h2>
+    <span>Private team discussion</span>
+  </div>
+
+  <p class="chat-subtitle">
+    Approved team members and the administrator can communicate here.
+  </p>
+
+  <div id="bgcChatStatus" role="status" aria-live="polite">
+    Checking your access...
+  </div>
+
+  <div id="bgcChatMessages" aria-live="polite">
+    <div class="chat-empty">Loading team chat...</div>
+  </div>
+
+  <form id="bgcChatForm">
+    <textarea
+      id="bgcChatInput"
+      maxlength="2000"
+      rows="2"
+      placeholder="Type your team message..."
+      aria-label="Team chat message"
+      disabled
+      required
+    ></textarea>
+
+    <button id="bgcChatSend" type="submit" disabled>
+      Send
+    </button>
+  </form>
+
+  <div id="bgcChatSignIn">
+    Chat access requires a valid authenticated session and approved
+    team membership. Please sign in through your existing authorized
+    account flow. This page does not create a separate login form.
+  </div>
+</section>
+
+<script>
+(async function initBGCChat() {
+  "use strict";
+
+  const ADMIN_EMAIL = "bgclubusiness@gmail.com";
+  const client = window.BGC_TEAM && window.BGC_TEAM.client;
+
+  const statusBox = document.getElementById("bgcChatStatus");
+  const messagesBox = document.getElementById("bgcChatMessages");
+  const form = document.getElementById("bgcChatForm");
+  const input = document.getElementById("bgcChatInput");
+  const sendButton = document.getElementById("bgcChatSend");
+  const signInNotice = document.getElementById("bgcChatSignIn");
+
+  if (!client) {
+    statusBox.textContent =
+      "Supabase client unavailable. Check Part 1 and Part 2 scripts.";
+    messagesBox.innerHTML =
+      '<div class="chat-empty">Chat could not be initialized.</div>';
+    return;
+  }
+
+  let currentUser = null;
+  let canChat = false;
+  let loadingMessages = false;
+  let realtimeChannel = null;
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function showAccess(message, allowed) {
+    statusBox.textContent = message;
+    input.disabled = !allowed;
+    sendButton.disabled = !allowed;
+    signInNotice.style.display =
+      allowed ? "none" : "block";
+  }
+
+  function formatTime(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "";
+
+    return date.toLocaleString([], {
+      dateStyle: "medium",
+      timeStyle: "short"
+    });
+  }
+
+  async function checkAccess() {
+    const { data, error } = await client.auth.getSession();
+
+    if (error) throw error;
+
+    currentUser = data.session?.user || null;
+
+    if (!currentUser) {
+      canChat = false;
+      showAccess(
+        "You are not signed in. Team chat access is restricted.",
+        false
+      );
+      messagesBox.innerHTML =
+        '<div class="chat-empty">Sign in with an authorized account to use the chat.</div>';
+      return false;
+    }
+
+    const email = (currentUser.email || "").toLowerCase();
+    const isAdmin = email === ADMIN_EMAIL.toLowerCase();
+
+    let isApprovedMember = false;
+
+    if (!isAdmin) {
+      const { data: member, error: memberError } = await client
+        .from("bgc_team_members")
+        .select("id,status,email")
+        .eq("email", email)
+        .eq("status", "approved")
+        .maybeSingle();
+
+      if (memberError) {
+        console.error("Membership verification error:", memberError);
+        canChat = false;
+        showAccess(
+          "Could not verify membership. Check your Supabase access policies.",
+          false
+        );
+        return false;
+      }
+
+      isApprovedMember = Boolean(member);
+    }
+
+    canChat = isAdmin || isApprovedMember;
+
+    if (!canChat) {
+      showAccess(
+        "Access denied. Only approved BGC CLUB members can chat.",
+        false
+      );
+      messagesBox.innerHTML =
+        '<div class="chat-empty">Your account is not an approved team member.</div>';
+      return false;
+    }
+
+    showAccess(
+      isAdmin
+        ? "Signed in as administrator."
+        : "Verified approved team member.",
+      true
+    );
+
+    return true;
+  }
+
+  function renderMessages(rows) {
+    if (!rows || rows.length === 0) {
+      messagesBox.innerHTML =
+        '<div class="chat-empty">No messages yet. Start the team conversation!</div>';
+      return;
+    }
+
+    messagesBox.innerHTML = rows.map(row => {
+      const mine = row.sender_id === currentUser?.id;
+
+      /*
+       * The chat table stores sender_id, not sender name.
+       * Show the authenticated account ID's short form until
+       * a secure sender-profile lookup is implemented.
+       */
+      const senderLabel = mine
+        ? "You"
+        : "Team member · " + String(row.sender_id || "").slice(0, 8);
+
+      return `
+        <article class="chat-message ${mine ? "mine" : ""}">
+          <div class="chat-author">${escapeHTML(senderLabel)}</div>
+          <div class="chat-text">${escapeHTML(row.message)}</div>
+          <div class="chat-time">${escapeHTML(formatTime(row.created_at))}</div>
+        </article>
+      `;
+    }).join("");
+
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  }
+
+  async function loadMessages() {
+    if (!canChat || loadingMessages) return;
+
+    loadingMessages = true;
+
+    try {
+      const { data, error } = await client
+        .from("bgc_team_chat_messages")
+        .select("id,sender_id,message,created_at")
+        .order("created_at", { ascending: true })
+        .limit(100);
+
+      if (error) throw error;
+
+      renderMessages(data || []);
+    } catch (error) {
+      console.error("Chat loading error:", error);
+      messagesBox.innerHTML =
+        '<div class="chat-empty">Could not load messages. Check the chat table RLS policies.</div>';
+    } finally {
+      loadingMessages = false;
+    }
+  }
+
+  function subscribeToMessages() {
+    if (realtimeChannel) {
+      client.removeChannel(realtimeChannel);
+    }
+
+    realtimeChannel = client
+      .channel("bgc-team-chat-live")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "bgc_team_chat_messages"
+        },
+        () => {
+          if (canChat) loadMessages();
+        }
+      )
+      .subscribe();
+  }
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const message = input.value.trim();
+
+    if (!message || !canChat || !currentUser) return;
+
+    sendButton.disabled = true;
+
+    try {
+      /*
+       * Re-check the active session before inserting.
+       * Database RLS must enforce authorization as well.
+       */
+      const { data, error: sessionError } =
+        await client.auth.getSession();
+
+      if (sessionError || !data.session?.user) {
+        throw new Error("Your session has expired. Sign in again.");
+      }
+
+      const { error } = await client
+        .from("bgc_team_chat_messages")
+        .insert({
+          sender_id: data.session.user.id,
+          message: message
+        });
+
+      if (error) throw error;
+
+      input.value = "";
+      await loadMessages();
+    } catch (error) {
+      console.error("Sending message failed:", error);
+      statusBox.textContent =
+        "Message not sent: " + (error.message || "Check database policies.");
+    } finally {
+      sendButton.disabled = !canChat;
+    }
+  });
+
+  try {
+    const allowed = await checkAccess();
+
+    if (allowed) {
+      await loadMessages();
+      subscribeToMessages();
+    }
+
+    client.auth.onAuthStateChange(() => {
+      setTimeout(async () => {
+        try {
+          const allowedNow = await checkAccess();
+
+          if (allowedNow) {
+            await loadMessages();
+            subscribeToMessages();
+          } else if (realtimeChannel) {
+            await client.removeChannel(realtimeChannel);
+            realtimeChannel = null;
+          }
+        } catch (error) {
+          console.error("Chat session update error:", error);
+        }
+      }, 0);
+    });
+  } catch (error) {
+    console.error("Chat initialization error:", error);
+    showAccess(
+      "Could not initialize chat. Check Supabase configuration.",
+      false
+    );
+  }
+})();
+</script>
+
+<!-- END PART 3 -->
+

@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#075e54">
+<title>BGC CLUB — Admin Panel</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--g:#075e54;--g2:#128c7e;--bg:#f2f5f2;--white:#fff;--ink:#192923;--muted:#718078;--line:#e0e8e1;--red:#b42318;--lime:#d9fdd3;--shadow:0 5px 20px #10291b0b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,system-ui,Arial,sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:wait}
+.hidden{display:none!important}
+.topbar{background:var(--g);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 3px 12px #0002}
+.top-inner{max-width:1150px;margin:auto;padding:13px 16px;display:flex;align-items:center;gap:12px}
+.logo{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:var(--lime);color:var(--g);font-weight:1000}
+.brand{font-weight:900;font-size:17px;line-height:1.2}.brand small{display:block;font-weight:500;font-size:10px;color:#cce9dc;margin-top:4px}
+.top-actions{margin-left:auto;display:flex;gap:8px}
+.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:800;font-size:11px}
+.btn-light{background:#fff;color:var(--g)}.btn-green{background:var(--g);color:#fff}
+.btn-soft{background:#e4f4e2;color:#155d43}.btn-red{background:#fff0ef;color:var(--red)}
+.wrap{width:min(1150px,calc(100% - 24px));margin:auto}
+.login-wrap{min-height:calc(100vh - 68px);display:flex;align-items:center;justify-content:center;padding:24px 0}
+.login-card{width:100%;max-width:420px;background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow)}
+.kicker{font-size:10px;font-weight:900;letter-spacing:1.6px;color:var(--g2)}
+.login-card h1{font-size:29px;line-height:1.15;letter-spacing:-1px;margin:9px 0}
+.muted{color:var(--muted);font-size:12px;line-height:1.7}
+.field{display:grid;gap:6px;margin:13px 0}.field label{font-size:11px;font-weight:800}
+.field input,.field select,.field textarea{width:100%;min-width:0;border:1px solid var(--line);border-radius:11px;background:#fbfdfb;padding:12px;font-size:13px;color:var(--ink)}
+.field textarea{min-height:90px;resize:vertical}
+.full-btn{width:100%;padding:13px}
+.notice{padding:12px 14px;border-radius:12px;font-size:12px;line-height:1.6;margin:12px 0}
+.notice.info{background:#e6f7ed;color:#155e40}.notice.err{background:#fff0ef;color:#a12a2a}
+.notice.ok{background:#e6f7ed;color:#155e40}
+.main{padding:22px 0 65px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.page-head h1{font-size:25px;letter-spacing:-.8px;margin:0}
+.page-head p{font-size:12px;color:var(--muted);margin:5px 0 0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px;box-shadow:var(--shadow)}
+.stat strong{display:block;font-size:24px;color:var(--g);line-height:1.2}
+.stat span{display:block;color:var(--muted);font-size:10px;margin-top:6px}
+.tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 0 12px;scrollbar-width:none}
+.tabs button{flex-shrink:0;border:1px solid var(--line);background:#fff;color:#617067;border-radius:25px;padding:10px 14px;font-size:11px;font-weight:850}
+.tabs button.active{background:var(--g);border-color:var(--g);color:#fff}
+.section{display:none}.section.active{display:block}
+.toolbar{display:flex;align-items:center;gap:9px;margin:3px 0 13px;flex-wrap:wrap}
+.toolbar input,.toolbar select{min-width:0;flex:1;border:1px solid var(--line);background:#fff;border-radius:10px;padding:11px;font-size:12px}
+.list{display:grid;gap:11px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);min-width:0}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card h2{font-size:16px;line-height:1.4;margin:8px 0}
+.card p{font-size:12px;line-height:1.7;color:#58685e;white-space:pre-wrap;overflow-wrap:anywhere}
+.tag{display:inline-flex;background:#edf4ee;color:#375e48;border-radius:20px;padding:5px 9px;font-size:10px;font-weight:800;margin:2px 3px 2px 0}
+.tag.pending{background:#fff2d6;color:#815b14}.tag.approved{background:#e0f6e4;color:#16653c}.tag.rejected{background:#ffeded;color:#a12a2a}
+.meta{font-size:10px;color:var(--muted);overflow-wrap:anywhere}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px;padding-top:12px;border-top:1px solid #edf1ed}
+.actions .btn{flex:1}
+.empty{background:#fff;border:1px dashed #cbd8ce;border-radius:14px;padding:28px 15px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}
+.status{display:none;border-radius:10px;padding:11px 12px;font-size:12px;line-height:1.5;margin:10px 0}
+.status.show{display:block}.status.err{background:#fff0ef;color:#a12a2a}.status.ok{background:#e6f7ed;color:#155e40}
+  .member-row{display:flex;gap:12px;align-items:flex-start}
+.photo{width:55px;height:55px;flex-shrink:0;border-radius:16px;overflow:hidden;display:grid;place-items:center;background:#d9f0d7;color:var(--g);font-size:20px;font-weight:900}
+.photo img{width:100%;height:100%;object-fit:cover}
+.member-info{flex:1;min-width:0}
+.member-info h2{margin:2px 0 4px}
+.modal{position:fixed;inset:0;z-index:50;background:#10251cb8;display:none;align-items:center;justify-content:center;padding:14px}
+.modal.open{display:flex}
+.modal-card{width:100%;max-width:550px;max-height:88vh;overflow:auto;background:#fff;border-radius:19px;padding:18px}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.modal-head h2{font-size:18px;margin:0}
+.close{border:0;width:35px;height:35px;border-radius:10px;background:#edf3ed;color:var(--g);font-size:22px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.footer-note{text-align:center;color:var(--muted);font-size:10px;padding:18px 0}
+@media(max-width:650px){
+ .wrap{width:calc(100% - 18px)}.top-inner{padding:10px 12px}
+ .main{padding-top:16px}.page-head{flex-direction:column}
+ .page-head h1{font-size:23px}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .stat{padding:12px}.stat strong{font-size:21px}
+ .card{padding:13px}.actions .btn{min-width:100px}
+ .grid2{grid-template-columns:1fr}.modal-card{padding:14px}
+ .top-actions .btn{padding:9px 10px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+ <div class="top-inner">
+  <div class="logo">BGC</div>
+  <div class="brand">BGC CLUB<small>ADMIN CONTROL PANEL</small></div>
+  <div class="top-actions">
+   <button class="btn btn-light hidden" id="refreshBtn" type="button">↻ Refresh</button>
+   <button class="btn btn-light hidden" id="logoutBtn" type="button">Sign out</button>
+  </div>
+ </div>
+</header>
+
+<div class="wrap">
+ <section class="login-wrap" id="loginScreen">
+  <div class="login-card">
+   <div class="kicker">ADMINISTRATOR ACCESS</div>
+   <h1>Welcome back.</h1>
+   <p class="muted">Sign in with your existing BGC CLUB admin account to manage applications and public posts.</p>
+   <div class="status" id="loginStatus"></div>
+   <form id="loginForm">
+    <div class="field"><label for="adminEmail">Admin email</label><input id="adminEmail" type="email" required autocomplete="username" placeholder="Enter admin email"></div>
+    <div class="field"><label for="adminPassword">Password</label><input id="adminPassword" type="password" required autocomplete="current-password" placeholder="Enter password"></div>
+    <button class="btn btn-green full-btn" id="loginBtn" type="submit">Sign in securely ↗</button>
+   </form>
+   <p class="muted">Only accounts listed in the existing admin_users table can access this panel.</p>
+  </div>
+ </section>
+
+ <main class="main hidden" id="adminApp">
+  <div class="page-head">
+   <div><div class="kicker">BGC CLUB MANAGEMENT</div><h1>Admin dashboard</h1><p>Review applications and moderate public opportunities.</p></div>
+   <button class="btn btn-green" id="refreshMain" type="button">↻ Refresh data</button>
+  </div>
+  <div class="status" id="globalStatus"></div>
+  <div class="stats">
+   <div class="stat"><strong id="statPendingMembers">—</strong><span>Pending applications</span></div>
+   <div class="stat"><strong id="statApprovedMembers">—</strong><span>Approved members</span></div>
+   <div class="stat"><strong id="statRejectedMembers">—</strong><span>Rejected applications</span></div>
+   <div class="stat"><strong id="statPendingPosts">—</strong><span>Public posts pending</span></div>
+  </div>
+  <nav class="tabs" aria-label="Admin sections">
+   <button class="active" data-section="overview" type="button">Overview</button>
+   <button data-section="members" type="button">Member applications</button>
+   <button data-section="posts" type="button">Public post approval</button>
+   <button data-section="allmembers" type="button">All applications</button>
+  </nav>
+
+  <section class="section active" id="section-overview">
+   <div class="notice info">Use the tabs to approve or reject member applications and review public job/opportunity submissions. Admin access is checked against the existing Supabase admin_users table.</div>
+   <div class="section-head" style="margin:18px 0 10px"><h2 style="font-size:17px;margin:0">Pending member applications</h2><button class="btn btn-soft" type="button" onclick="switchSection('members')">View all ↗</button></div>
+   <div class="list" id="overviewMembers"><div class="empty">Loading applications…</div></div>
+   <div class="section-head" style="margin:22px 0 10px"><h2 style="font-size:17px;margin:0">Pending public posts</h2><button class="btn btn-soft" type="button" onclick="switchSection('posts')">Review ↗</button></div>
+   <div class="list" id="overviewPosts"><div class="empty">Loading public posts…</div></div>
+  </section>
+
+  <section class="section" id="section-members">
+   <div class="page-head"><div><h1 style="font-size:20px">Member applications</h1><p>Approve or reject incoming team applications.</p></div></div>
+   <div class="toolbar"><input id="memberSearch" type="search" placeholder="Search name, email, skill…"><select id="memberStatusFilter"><option value="pending">Pending only</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="all">All statuses</option></select></div>
+   <div class="list" id="membersList"><div class="empty">Loading applications…</div></div>
+  </section>
+
+  <section class="section" id="section-posts">
+   <div class="page-head"><div><h1 style="font-size:20px">Public post approval</h1><p>Only public submissions awaiting review are shown here.</p></div></div>
+   <div class="toolbar"><input id="postSearch" type="search" placeholder="Search title, category, location…"><button class="btn btn-soft" id="reloadPosts" type="button">Refresh list</button></div>
+   <div class="list" id="postsList"><div class="empty">Loading posts…</div></div>
+  </section>
+
+  <section class="section" id="section-allmembers">
+   <div class="page-head"><div><h1 style="font-size:20px">All applications</h1><p>Search applications by status.</p></div></div>
+   <div class="toolbar"><input id="allSearch" type="search" placeholder="Search all applications…"><select id="allStatusFilter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select></div>
+   <div class="list" id="allMembersList"><div class="empty">Loading applications…</div></div>
+  </section>
+  <div class="footer-note">BGC CLUB · Admin panel · Existing Supabase project</div>
+ </main>
+</div>
+
+<div class="modal" id="detailModal" role="dialog" aria-modal="true" onclick="if(event.target===this)closeDetail()">
+ <div class="modal-card">
+  <div class="modal-head"><h2 id="detailTitle">Application details</h2><button class="close" type="button" onclick="closeDetail()">×</button></div>
+  <div id="detailBody"></div>
+ </div>
+</div>
+<div class="status" id="toast" style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:90;max-width:92%;box-shadow:0 4px 18px #0002"></div>
+<script>
+const SUPABASE_URL="https://acgbtsfuwybbtzakvmjf.supabase.co";
+const SUPABASE_KEY="sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+let memberRows=[],postRows=[],refreshing=false,toastTimer=null;
+
+function esc(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function notify(message,type="ok",target="globalStatus"){
+ const el=$(target)||$("toast");
+ el.textContent=message;
+ el.className="status show "+(type==="err"?"err":"ok");
+ if(el.id==="toast"){
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.className="status",3200);
+ }
+}
+function clearStatus(id){
+ $(id).textContent="";$(id).className="status";
+}
+function switchSection(name){
+ document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id==="section-"+name));
+ document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("active",b.dataset.section===name));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tabs button").forEach(button=>{
+ button.addEventListener("click",()=>switchSection(button.dataset.section));
+});
+
+function showApp(){
+ $("loginScreen").classList.add("hidden");
+ $("adminApp").classList.remove("hidden");
+ $("logoutBtn").classList.remove("hidden");
+ $("refreshBtn").classList.remove("hidden");
+}
+function showLogin(){
+ $("loginScreen").classList.remove("hidden");
+ $("adminApp").classList.add("hidden");
+ $("logoutBtn").classList.add("hidden");
+ $("refreshBtn").classList.add("hidden");
+}
+async function verifyAdmin(){
+ const {data:{session},error}=await db.auth.getSession();
+ if(error)throw error;
+ if(!session){showLogin();return false;}
+ const {data,error:checkError}=await db.from("admin_users")
+  .select("user_id").eq("user_id",session.user.id).maybeSingle();
+ if(checkError)throw checkError;
+ if(!data){
+  await db.auth.signOut();
+  showLogin();
+  throw new Error("This account is not listed in BGC CLUB admin_users.");
+ }
+ showApp();
+ return true;
+}
+
+$("loginForm").addEventListener("submit",async event=>{
+ event.preventDefault();clearStatus("loginStatus");
+ const button=$("loginBtn");button.disabled=true;button.textContent="Signing in…";
+ try{
+  const {error}=await db.auth.signInWithPassword({
+   email:$("adminEmail").value.trim(),
+   password:$("adminPassword").value
+  });
+  if(error)throw error;
+  const allowed=await verifyAdmin();
+  if(allowed)await refreshAll();
+ }catch(error){
+  console.error(error);notify(error.message||"Login failed.","err","loginStatus");
+ }finally{
+  button.disabled=false;button.textContent="Sign in securely ↗";
+ }
+});
+async function logout(){
+ await db.auth.signOut();showLogin();$("adminPassword").value="";
+}
+$("logoutBtn").addEventListener("click",logout);
+$("refreshBtn").addEventListener("click",refreshAll);
+$("refreshMain").addEventListener("click",refreshAll);
+$("reloadPosts").addEventListener("click",loadPosts);
+$("memberSearch").addEventListener("input",renderMembers);
+$("memberStatusFilter").addEventListener("change",renderMembers);
+$("allSearch").addEventListener("input",renderAllMembers);
+$("allStatusFilter").addEventListener("change",renderAllMembers);
+$("postSearch").addEventListener("input",renderPosts);
+
+function statusTag(status){
+ const label=status==="published"?"published":status||"unknown";
+ const cls=status==="approved"||status==="published"?"approved":status==="rejected"?"rejected":"pending";
+ return `<span class="tag ${cls}">${esc(label)}</span>`;
+}
+function memberCard(m,compact=false){
+ const photo=m.photo_url?`<img src="${esc(m.photo_url)}" alt="">`:esc((m.full_name||"?").charAt(0).toUpperCase());
+ const created=m.created_at?new Date(m.created_at).toLocaleString():"";
+ return `<article class="card">
+  <div class="member-row">
+   <div class="photo">${photo}</div>
+   <div class="member-info">
+    <div class="card-head"><h2>${esc(m.full_name||"Unnamed applicant")}</h2>${statusTag(m.status)}</div>
+    <div class="meta">${esc(m.email)} · ${esc(m.mobile)}</div>
+    <div style="margin-top:6px"><span class="tag">${esc(m.department)}</span><span class="tag">${esc(m.experience_level)}</span></div>
+   </div>
+  </div>
+  <p><b>Skills:</b> ${esc(m.skills||"Not provided")}<br><b>Work preference:</b> ${esc(m.work_type||"Not provided")}<br><b>Portfolio:</b> ${m.portfolio_url?`<a href="${esc(m.portfolio_url)}" target="_blank" rel="noopener">Open portfolio ↗</a>`:"Not provided"}</p>
+  <div class="meta">Applied: ${esc(created)}</div>
+  <div class="actions">
+   <button class="btn btn-soft" type="button" onclick="viewApplication('${esc(m.id)}')">View details</button>
+   ${m.status!=="approved"?`<button class="btn btn-green" type="button" onclick="setMemberStatus('${esc(m.id)}','approved')">✓ Approve</button>`:""}
+   ${m.status!=="rejected"?`<button class="btn btn-red" type="button" onclick="setMemberStatus('${esc(m.id)}','rejected')">✕ Reject</button>`:""}
+  </div>
+ </article>`;
+}
+function filteredMembers(status,query){
+ query=(query||"").trim().toLowerCase();
+ return memberRows.filter(m=>(status==="all"||m.status===status)&&
+  [m.full_name,m.email,m.mobile,m.department,m.skills,m.experience_level,m.work_type].join(" ").toLowerCase().includes(query));
+}
+function renderMembers(){
+ const rows=filteredMembers($("memberStatusFilter").value,$("memberSearch").value);
+ $("membersList").innerHTML=rows.length?rows.map(m=>memberCard(m)).join(""):'<div class="empty">No applications match this filter.</div>';
+}
+function renderAllMembers(){
+ const rows=filteredMembers($("allStatusFilter").value,$("allSearch").value);
+ $("allMembersList").innerHTML=rows.length?rows.map(m=>memberCard(m)).join(""):'<div class="empty">No matching applications.</div>';
+}
+function renderOverviewMembers(){
+ const rows=memberRows.filter(m=>m.status==="pending").slice(0,4);
+ $("overviewMembers").innerHTML=rows.length?rows.map(m=>memberCard(m,true)).join(""):'<div class="empty">No pending member applications.</div>';
+}
+function viewApplication(id){
+ const m=memberRows.find(x=>String(x.id)===String(id));if(!m)return;
+ const photo=m.photo_url?`<img src="${esc(m.photo_url)}" alt="" style="width:82px;height:82px;border-radius:18px;object-fit:cover">`:
+ `<div class="photo" style="width:82px;height:82px;font-size:26px">${esc((m.full_name||"?").charAt(0).toUpperCase())}</div>`;
+ $("detailTitle").textContent="Member application";
+ $("detailBody").innerHTML=`
+  <div style="display:flex;align-items:center;gap:13px;margin-bottom:14px">${photo}<div><h3 style="margin:0 0 5px">${esc(m.full_name)}</h3>${statusTag(m.status)}<div class="meta" style="margin-top:6px">${esc(m.created_at?new Date(m.created_at).toLocaleString():"")}</div></div></div>
+  <p><b>Email:</b> ${esc(m.email)}<br><b>Mobile:</b> ${esc(m.mobile)}<br><b>Department:</b> ${esc(m.department)}<br><b>Experience:</b> ${esc(m.experience_level)}<br><b>Work preference:</b> ${esc(m.work_type)}<br><b>Skills:</b> ${esc(m.skills)}<br><b>Portfolio:</b> ${m.portfolio_url?`<a href="${esc(m.portfolio_url)}" target="_blank" rel="noopener">Open portfolio ↗</a>`:"Not provided"}</p>
+  <div class="actions">${m.status!=="approved"?`<button class="btn btn-green" onclick="setMemberStatus('${esc(m.id)}','approved');closeDetail()">Approve application</button>`:""}${m.status!=="rejected"?`<button class="btn btn-red" onclick="setMemberStatus('${esc(m.id)}','rejected');closeDetail()">Reject application</button>`:""}</div>`;
+ $("detailModal").classList.add("open");
+}
+function closeDetail(){$("detailModal").classList.remove("open");}
+
+async function setMemberStatus(id,status){
+ if(!["approved","rejected"].includes(status))return;
+ const applicant=memberRows.find(m=>String(m.id)===String(id));
+ if(!applicant)return;
+ if(!confirm(`${status==="approved"?"Approve":"Reject"} ${applicant.full_name||"this application"}?`))return;
+ try{
+  const {data,error}=await db.from("bgc_team_members").update({status})
+   .eq("id",id).select("id,status");
+  if(error)throw error;
+  if(!data||!data.length)throw new Error("No application updated. Check admin permissions.");
+  notify(status==="approved"?"Application approved.":"Application rejected.");
+  await loadMembers();
+ }catch(error){
+  console.error(error);notify(error.message||"Could not update application.","err");
+ }
+}
+
+  function postCard(p){
+ return `<article class="card">
+  <div class="card-head"><span class="tag">${esc(p.category)}</span>${statusTag(p.status)}</div>
+  <h2>${esc(p.title)}</h2>
+  <p>${esc(p.description)}</p>
+  <div class="meta">📍 ${esc(p.location||"Not specified")} · Budget: ${esc(p.budget||"Not specified")}</div>
+  <div class="meta" style="margin-top:6px">By ${esc(p.poster_name||"Unknown")} · ${esc(p.whatsapp_number||"No contact")}</div>
+  <div class="meta" style="margin-top:6px">Submitted: ${esc(p.created_at?new Date(p.created_at).toLocaleString():"")}</div>
+  <div class="actions">
+   <button class="btn btn-soft" type="button" onclick="viewPost('${esc(p.id)}')">View details</button>
+   <button class="btn btn-green" type="button" onclick="setPostStatus('${esc(p.id)}','published')">✓ Approve & publish</button>
+   <button class="btn btn-red" type="button" onclick="setPostStatus('${esc(p.id)}','rejected')">✕ Reject</button>
+  </div>
+ </article>`;
+}
+function renderPosts(){
+ const q=$("postSearch").value.trim().toLowerCase();
+ const rows=postRows.filter(p=>[p.title,p.category,p.location,p.description,p.poster_name].join(" ").toLowerCase().includes(q));
+ $("postsList").innerHTML=rows.length?rows.map(postCard).join(""):'<div class="empty">No pending public posts. New submissions will appear here.</div>';
+ const pending=postRows.length;
+ $("statPendingPosts").textContent=pending;
+ $("overviewPosts").innerHTML=postRows.slice(0,3).map(postCard).join("")||'<div class="empty">No public posts waiting for review.</div>';
+}
+function viewPost(id){
+ const p=postRows.find(x=>String(x.id)===String(id));if(!p)return;
+ $("detailTitle").textContent="Public post details";
+ $("detailBody").innerHTML=`<span class="tag">${esc(p.category)}</span><h3>${esc(p.title)}</h3>
+ <p>${esc(p.description)}</p><p><b>Location:</b> ${esc(p.location||"Not specified")}<br>
+ <b>Budget:</b> ${esc(p.budget||"Not specified")}<br>
+ <b>Deadline:</b> ${esc(p.deadline||"Not specified")}<br>
+ <b>Poster:</b> ${esc(p.poster_name)}<br>
+ <b>WhatsApp:</b> ${esc(p.whatsapp_number)}</p>
+ <div class="actions"><button class="btn btn-green" onclick="setPostStatus('${esc(p.id)}','published');closeDetail()">Approve & publish</button><button class="btn btn-red" onclick="setPostStatus('${esc(p.id)}','rejected');closeDetail()">Reject</button></div>`;
+ $("detailModal").classList.add("open");
+}
+async function setPostStatus(id,status){
+ if(!["published","rejected"].includes(status))return;
+ const post=postRows.find(p=>String(p.id)===String(id));if(!post)return;
+ if(!confirm(`${status==="published"?"Approve and publish":"Reject"} "${post.title}"?`))return;
+ try{
+  const {data,error}=await db.from("bgc_job_posts")
+   .update({status,updated_at:new Date().toISOString()})
+   .eq("id",id).eq("source_type","public").select("id,status");
+  if(error)throw error;
+  if(!data||!data.length)throw new Error("No post updated. Check admin permissions and RLS policies.");
+  notify(status==="published"?"Post approved and published.":"Public post rejected.");
+  await loadPosts();
+ }catch(error){
+  console.error(error);notify(error.message||"Could not update post.","err");
+ }
+}
+async function loadMembers(){
+ $("membersList").innerHTML='<div class="empty">Loading member applications…</div>';
+ try{
+  const {data,error}=await db.from("bgc_team_members").select("*").order("created_at",{ascending:false});
+  if(error)throw error;
+  memberRows=data||[];
+  const pending=memberRows.filter(m=>m.status==="pending").length;
+  $("statPendingMembers").textContent=pending;
+  $("statApprovedMembers").textContent=memberRows.filter(m=>m.status==="approved").length;
+  $("statRejectedMembers").textContent=memberRows.filter(m=>m.status==="rejected").length;
+  renderMembers();renderAllMembers();renderOverviewMembers();
+ }catch(error){
+  console.error(error);
+  $("membersList").innerHTML=`<div class="empty"><b>Unable to load applications</b><br>${esc(error.message)}</div>`;
+  $("overviewMembers").innerHTML=`<div class="empty">Unable to load member applications: ${esc(error.message)}</div>`;
+ }
+}
+async function loadPosts(){
+ $("postsList").innerHTML='<div class="empty">Loading public submissions…</div>';
+ try{
+  const {data,error}=await db.from("bgc_job_posts")
+   .select("id,title,category,location,description,budget,deadline,poster_name,whatsapp_number,created_at,status,source_type")
+   .eq("status","pending").eq("source_type","public").order("created_at",{ascending:false});
+  if(error)throw error;
+  postRows=data||[];renderPosts();
+ }catch(error){
+  console.error(error);
+  $("postsList").innerHTML=`<div class="empty"><b>Unable to load public posts</b><br>${esc(error.message)}<br>Check the existing bgc_job_posts table and admin RLS policy.</div>`;
+  $("overviewPosts").innerHTML='<div class="empty">Public submissions could not be loaded.</div>';
+  $("statPendingPosts").textContent="—";
+ }
+}
+async function refreshAll(){
+ if(refreshing)return;
+ refreshing=true;
+ $("refreshMain").disabled=true;$("refreshBtn").disabled=true;
+ try{
+  const allowed=await verifyAdmin();if(!allowed)return;
+  await Promise.all([loadMembers(),loadPosts()]);
+  notify("Admin data refreshed.");
+ }catch(error){
+  console.error(error);notify(error.message||"Unable to refresh dashboard.","err");
+ }finally{
+  refreshing=false;$("refreshMain").disabled=false;$("refreshBtn").disabled=false;
+ }
+}
+
+(async function init(){
+ try{
+  const {data:{session},error}=await db.auth.getSession();
+  if(error)throw error;
+  if(!session){showLogin();return;}
+  const allowed=await verifyAdmin();
+  if(allowed)await refreshAll();
+ }catch(error){
+  console.error(error);
+  showLogin();notify(error.message||"Unable to verify admin session.","err","loginStatus");
+ }
+})();
+document.addEventListener("keydown",event=>{if(event.key==="Escape")closeDetail();});
+</script>
+</body>
+</html>

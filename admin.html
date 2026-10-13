@@ -9,14 +9,14 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>BGC CLUB — Admin</title>
+<title>BGC CLUB â€” Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
 /* =========================================
-   BGC CLUB ADMIN — MODERN 2026
+   BGC CLUB ADMIN â€” MODERN 2026
 ========================================= */
 
 :root{
@@ -786,7 +786,8 @@ img{
         <input
           id="loginPassword"
           type="password"
-          placeholder="Enter password"
+
+                    placeholder="Enter password"
           required
         >
 
@@ -868,6 +869,13 @@ img{
         data-section="connections"
       >
         Connections
+      </button>
+
+      <button
+        class="nav-btn"
+        data-section="team-applications"
+      >
+        Team Applications
       </button>
 
     </nav>
@@ -1299,6 +1307,45 @@ img{
 
     </section>
 
+    <!-- =====================================
+         TEAM APPLICATIONS
+    ====================================== -->
+
+    <section
+      id="section-team-applications"
+      class="admin-section"
+    >
+      <div class="page-top">
+        <div>
+          <h1 class="page-title">Team Applications</h1>
+          <p class="page-subtitle">Review applications and approve or reject applicants.</p>
+        </div>
+        <button class="btn" type="button" onclick="loadTeamApplications()">Refresh</button>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;padding:16px;">
+          <input id="teamSearch" type="search" placeholder="Search name, email, department..." style="flex:1;min-width:200px;padding:11px;border:1px solid #ddd;border-radius:10px;" oninput="renderTeamApplications()">
+          <select id="teamStatusFilter" onchange="renderTeamApplications()" style="padding:11px;border:1px solid #ddd;border-radius:10px;">
+            <option value="all">All applications</option>
+            <option value="pending" selected>Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr>
+              <th>Applicant</th><th>Contact</th><th>Department</th><th>Skills / Experience</th><th>Portfolio</th><th>Applied</th><th>Status</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="teamApplicationsTableBody">
+              <tr><td colspan="8"><div class="loading">Loading applications...</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
   </main>
 
 </div>
@@ -1324,7 +1371,7 @@ img{
         class="modal-close"
         id="closeWebinarModal"
       >
-        ×
+        Ã—
       </button>
 
     </div>
@@ -1434,7 +1481,7 @@ img{
       <div class="field">
 
         <label>
-          Price (₹)
+          Price (â‚¹)
         </label>
 
         <input
@@ -1529,7 +1576,7 @@ img{
           Cancel
         </button>
 
-        <button
+                <button
           type="submit"
           class="btn btn-primary"
           id="saveWebinar"
@@ -1567,7 +1614,7 @@ img{
         class="modal-close"
         id="closeFounderModal"
       >
-        ×
+        Ã—
       </button>
 
     </div>
@@ -1918,7 +1965,8 @@ const state = {
   webinars: [],
   founders: [],
   registrations: [],
-  connections: []
+  connections: [],
+  teamApplications: []
 
 };
 
@@ -1994,7 +2042,7 @@ function formatPrice(value){
     return "Free";
   }
 
-  return "₹" +
+  return "â‚¹" +
     price.toLocaleString("en-IN");
 
 }
@@ -2121,6 +2169,11 @@ function switchSection(name){
     connections:[
       "Connections",
       "Founder connection requests."
+    ],
+
+    "team-applications":[
+      "Team Applications",
+      "Review and manage BGC CLUB team applications."
     ]
 
   };
@@ -2311,7 +2364,7 @@ $("loginForm")
 
         if(error){
 
-          throw error;
+                    throw error;
 
         }
 
@@ -2465,7 +2518,8 @@ async function loadAllData(){
     loadWebinars(),
     loadFounders(),
     loadRegistrations(),
-    loadConnections()
+    loadConnections(),
+    loadTeamApplications()
   ]);
 
   updateStats();
@@ -2740,7 +2794,7 @@ function renderDashboardWebinars(){
                 "
               >
                 ${formatDate(webinar.event_date)}
-                ·
+                Â·
                 ${
                   webinar.interest_count || 0
                 }
@@ -3100,6 +3154,7 @@ $("webinarPoster")
 
       reader.readAsDataURL(file);
 
+      
     }
   );
 
@@ -3887,7 +3942,8 @@ $("founderForm")
           whatsapp:
             $("founderWhatsapp")
               .value
-              .replace(/\D/g,""),
+
+                        .replace(/\D/g,""),
 
           email:
             $("founderEmail")
@@ -4322,6 +4378,88 @@ async function loadRegistrations(){
       })
       .join("");
 
+}
+
+
+/* =========================================
+   TEAM APPLICATIONS
+========================================= */
+
+async function loadTeamApplications(){
+  const body = $("teamApplicationsTableBody");
+  if(!body) return;
+  body.innerHTML = `<tr><td colspan="8"><div class="loading">Loading applications...</div></td></tr>`;
+
+  const { data, error } = await db
+    .from("bgc_team_members")
+    .select("id,full_name,email,mobile,department,skills,experience_level,portfolio_url,photo_url,status,created_at")
+    .order("created_at", { ascending:false });
+
+  if(error){
+    console.error("Team applications load error:", error);
+    body.innerHTML = `<tr><td colspan="8"><div class="empty">Unable to load applications. Check admin RLS access for bgc_team_members.</div></td></tr>`;
+    state.teamApplications = [];
+    return;
+  }
+
+  state.teamApplications = data || [];
+  renderTeamApplications();
+}
+
+function renderTeamApplications(){
+  const body = $("teamApplicationsTableBody");
+  if(!body) return;
+  const filter = $("teamStatusFilter")?.value || "pending";
+  const query = ($("teamSearch")?.value || "").trim().toLowerCase();
+  const rows = (state.teamApplications || []).filter(item => {
+    const matchesStatus = filter === "all" || (item.status || "pending") === filter;
+    const searchable = [item.full_name,item.email,item.mobile,item.department,item.skills,item.experience_level].join(" ").toLowerCase();
+    return matchesStatus && searchable.includes(query);
+  });
+
+  if(!rows.length){
+    body.innerHTML = `<tr><td colspan="8"><div class="empty">No applications found.</div></td></tr>`;
+    return;
+  }
+
+  body.innerHTML = rows.map(item => {
+    const status = item.status || "pending";
+    const photo = item.photo_url ? `<a href="${escapeHTML(item.photo_url)}" target="_blank" rel="noopener">View photo</a>` : "-";
+    const portfolio = item.portfolio_url ? `<a href="${escapeHTML(item.portfolio_url)}" target="_blank" rel="noopener">Open portfolio</a>` : "-";
+    const actions = status === "pending"
+      ? `<button class="btn" type="button" onclick="setTeamApplicationStatus('${escapeHTML(item.id)}','approved')">Approve</button> <button class="btn" type="button" onclick="setTeamApplicationStatus('${escapeHTML(item.id)}','rejected')">Reject</button>`
+      : `<button class="btn" type="button" onclick="setTeamApplicationStatus('${escapeHTML(item.id)}','pending')">Reset to pending</button>`;
+    return `<tr>
+      <td><strong>${escapeHTML(item.full_name || "-")}</strong><br>${photo}</td>
+      <td>${escapeHTML(item.email || "-")}<br>${escapeHTML(item.mobile || "-")}</td>
+      <td>${escapeHTML(item.department || "-")}</td>
+      <td>${escapeHTML(item.skills || "-")}<br><small>${escapeHTML(item.experience_level || "-")}</small></td>
+      <td>${portfolio}</td>
+      <td>${formatDateTime(item.created_at)}</td>
+      <td>${escapeHTML(status)}</td>
+      <td>${actions}</td>
+    </tr>`;
+  }).join("");
+}
+
+async function setTeamApplicationStatus(id, status){
+  if(!["pending","approved","rejected"].includes(status)) return;
+  const label = status === "approved" ? "approve" : status === "rejected" ? "reject" : "reset this application";
+  if(!confirm(`Are you sure you want to ${label}?`)) return;
+
+  const { error } = await db
+    .from("bgc_team_members")
+    .update({ status })
+    .eq("id", id);
+
+  if(error){
+    console.error("Team application update error:", error);
+    showToast("Unable to update status. Check admin RLS access.");
+    return;
+  }
+
+  showToast(`Application status updated: ${status}`);
+  await loadTeamApplications();
 }
 
 

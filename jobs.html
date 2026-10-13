@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#075e54">
+
+<title>Jobs, Projects &amp; Business Requirements | BGC CLUB</title>
+<meta name="description" content="Explore published jobs, freelance projects and business requirements on BGC CLUB. Search opportunities by category and location.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.bgcclub.info/jobs.html">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BGC CLUB">
+<meta property="og:title" content="Jobs, Projects &amp; Business Requirements | BGC CLUB">
+<meta property="og:description" content="Find jobs, projects and business requirements shared with BGC CLUB.">
+<meta property="og:url" content="https://www.bgcclub.info/jobs.html">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jobs, Projects &amp; Business Requirements | BGC CLUB">
+<meta name="twitter:description" content="Find jobs, projects and business requirements with BGC CLUB.">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Jobs, Projects & Business Requirements",
+  "url": "https://www.bgcclub.info/jobs.html",
+  "description": "Published jobs, projects and business requirements shared with BGC CLUB."
+}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--g:#075e54;--g2:#128c7e;--bg:#f3f6f5;--ink:#182229;--muted:#667781;--line:#e0e7e5}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,system-ui,Arial,sans-serif}button,input,textarea,select{font:inherit}button,a{cursor:pointer}a{color:inherit;text-decoration:none}.wrap{width:min(900px,calc(100% - 24px));margin:auto}.top{background:linear-gradient(120deg,var(--g),var(--g2));color:#fff;padding:17px 0}.topinner{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:18px;font-weight:900}.brand small{display:block;color:#d1f5e7;font-size:11px;font-weight:500}.btn{border:0;border-radius:11px;padding:10px 13px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:6px}.light{background:#fff;color:var(--g)}.main{padding:20px 0 40px}.intro{margin-bottom:16px}.intro h1{margin:0;font-size:26px;letter-spacing:-.6px}.intro p{margin:5px 0;color:var(--muted);font-size:12px}.tools{display:flex;gap:8px;margin:14px 0;flex-wrap:wrap}.tools input,.tools select{min-width:0;flex:1;border:1px solid var(--line);background:white;border-radius:11px;padding:11px;outline:none}.feed{display:grid;gap:12px}.card,.form-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 5px 20px #112d2406}.meta{font-size:11px;color:var(--muted)}.card h2{font-size:18px;line-height:1.35;margin:10px 0 7px}.card p{font-size:13px;white-space:pre-wrap;color:#52636b}.tags{display:flex;flex-wrap:wrap;gap:6px}.tag{background:#eef5f1;border-radius:8px;padding:5px 8px;font-size:10px;color:#456359}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.green{background:#d9fdd3;color:#075e54}.empty{background:white;border:1px dashed #cad7d2;border-radius:14px;text-align:center;padding:28px;color:var(--muted);font-size:12px}.empty b{display:block;color:var(--ink);font-size:14px;margin-bottom:4px}.form-card{margin-top:22px}.form-card h2{margin:0;font-size:19px}.form-card>p{color:var(--muted);font-size:12px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:11px;font-weight:850}.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;outline:none;background:white}.field textarea{min-height:90px;resize:vertical}.submit{background:var(--g);color:white;width:100%;padding:13px}.status{display:none;border-radius:10px;padding:10px 12px;font-size:12px;margin:10px 0}.status.show{display:block}.status.err{background:#fff0ef;color:#a12a2a}.status.ok{background:#e6f7ed;color:#155e40}.note{font-size:11px;color:var(--muted);margin-top:9px}@media(min-width:650px){.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.full{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap topinner"><a class="brand" href="index.html">BGC CLUB <small>Jobs · Projects · Business Requirements</small></a><a class="btn light" href="jobs-admin.html">Admin Review</a></div></header>
+<main class="wrap main">
+<section class="intro"><h1>Latest Opportunities</h1><p>Find jobs, projects and business requirements shared with BGC CLUB.</p></section>
+<div class="tools"><input id="search" placeholder="Search jobs, skills, location..."><select id="category"><option value="">All categories</option><option>Business Consultancy</option><option>Architecture & Interior Design</option><option>Construction & Installation</option><option>Equipment & Furniture</option><option>Branding & Printing</option><option>Legal, Licensing & Accounts</option><option>Technology & Software</option><option>Digital Marketing</option><option>Suppliers & Distributors</option><option>Recruitment & Operations</option><option>Influencers & Content Creators</option></select><button class="btn green" id="refresh">Refresh</button></div>
+<div class="meta" id="count">Loading published posts…</div><div class="feed" id="feed" style="margin-top:12px"><div class="empty">Loading jobs feed…</div></div>
+<section class="form-card"><h2>Post a Public Requirement</h2><p>Public submissions are sent to admin for approval. They won't appear in the feed until approved.</p><div id="formStatus" class="status"></div><form id="publicForm"><div class="grid"><div class="field"><label for="title">Requirement title *</label><input id="title" required maxlength="160" placeholder="e.g. Need interior designer"></div><div class="field"><label for="categoryInput">Category *</label><select id="categoryInput" required><option value="">Choose category</option><option>Business Consultancy</option><option>Architecture & Interior Design</option><option>Construction & Installation</option><option>Equipment & Furniture</option><option>Branding & Printing</option><option>Legal, Licensing & Accounts</option><option>Technology & Software</option><option>Digital Marketing</option><option>Suppliers & Distributors</option><option>Recruitment & Operations</option><option>Influencers & Content Creators</option></select></div><div class="field full"><label for="description">Details *</label><textarea id="description" required maxlength="5000" placeholder="Describe the work or requirement"></textarea></div><div class="field"><label for="budget">Budget</label><input id="budget" maxlength="100" placeholder="e.g. ₹15,000"></div><div class="field"><label for="location">Location</label><input id="location" maxlength="120" placeholder="Chennai"></div><div class="field"><label for="poster">Your name *</label><input id="poster" required maxlength="120" placeholder="Full name"></div><div class="field"><label for="whatsapp">WhatsApp number *</label><input id="whatsapp" required inputmode="tel" maxlength="20" placeholder="10-digit mobile number"></div></div><button class="btn submit" id="submitBtn" type="submit">Submit for Admin Approval</button><div class="note">Please submit genuine requirements only. Approval is required before publication.</div></form></section>
+</main>
+<script>
+const SUPABASE_URL="https://acgbtsfuwybbtzakvmjf.supabase.co";
+const SUPABASE_KEY="sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const $=id=>document.getElementById(id);let posts=[];
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function status(text,type){$('formStatus').textContent=text;$('formStatus').className='status show '+type;}
+function render(){const q=$('search').value.trim().toLowerCase(),cat=$('category').value;const rows=posts.filter(p=>(!cat||p.category===cat)&&[p.title,p.description,p.category,p.location,p.poster_name].join(' ').toLowerCase().includes(q));$('count').textContent=rows.length+' published post'+(rows.length===1?'':'s');$('feed').innerHTML=rows.length?rows.map(p=>`<article class="card"><div class="meta">${esc(p.poster_name)} · ${p.created_at?new Date(p.created_at).toLocaleDateString():''}</div><h2>${esc(p.title)}</h2><div class="tags"><span class="tag">${esc(p.category)}</span><span class="tag">📍 ${esc(p.location||'Location not specified')}</span>${p.budget?`<span class="tag">💰 ${esc(p.budget)}</span>`:''}</div><p>${esc(p.description)}</p><div class="actions"><a class="btn green" href="https://wa.me/${String(p.whatsapp_number||'').replace(/\D/g,'')}" target="_blank" rel="noopener">WhatsApp Contact</a></div></article>`).join(''):'<div class="empty"><b>No published posts yet</b>Approved public requirements will appear here.</div>';}
+async function loadPosts(){ $('feed').innerHTML='<div class="empty">Loading jobs feed…</div>';const {data,error}=await db.from('bgc_job_posts').select('id,title,category,location,description,budget,poster_name,whatsapp_number,created_at').eq('status','published').order('created_at',{ascending:false});if(error){posts=[];$('count').textContent='Could not load feed';$('feed').innerHTML='<div class="empty"><b>Jobs Feed connection needs setup</b>'+esc(error.message)+'<br><br>Supabase table and read permissions need to be verified.</div>';return;}posts=data||[];render();}
+$('search').addEventListener('input',render);$('category').addEventListener('change',render);$('refresh').addEventListener('click',loadPosts);
+$('publicForm').addEventListener('submit',async e=>{e.preventDefault();const phone=$('whatsapp').value.trim();if(phone.replace(/\D/g,'').length<10){status('Valid WhatsApp number enter pannunga.','err');return;}const payload={title:$('title').value.trim(),category:$('categoryInput').value,description:$('description').value.trim(),budget:$('budget').value.trim()||null,location:$('location').value.trim()||null,poster_name:$('poster').value.trim(),whatsapp_number:phone,source_type:'public',status:'pending'};$('submitBtn').disabled=true;$('submitBtn').textContent='Submitting…';const {error}=await db.from('bgc_job_posts').insert(payload);$('submitBtn').disabled=false;$('submitBtn').textContent='Submit for Admin Approval';if(error){status('Submission save aagala: '+error.message,'err');return;}$('publicForm').reset();status('Requirement submitted. Admin approval-ku pending-la irukku.','ok');});
+loadPosts();
+</script>
+</body>
+</html>
