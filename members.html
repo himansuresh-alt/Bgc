@@ -1,0 +1,789 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#183c30">
+  <title>BGC CLUB | Members</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --forest: #183c30;
+      --forest2: #285642;
+      --cream: #f7f6f0;
+      --ink: #1d2b23;
+      --muted: #6e7b72;
+      --line: #dce5dc;
+      --gold: #c7a66a;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .topbar {
+      background: var(--forest);
+      color: white;
+      padding: 18px 20px;
+    }
+
+    .topbar-inner {
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 43px;
+      height: 43px;
+      border: 1px solid #8aa897;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: #f4e7c7;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      font-size: 18px;
+    }
+
+    .tagline {
+      font-size: 11px;
+      letter-spacing: 1.1px;
+      color: #c6d7cb;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .home-link {
+      color: white;
+      text-decoration: none;
+      border: 1px solid #718f7e;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #183c30, #2d6047);
+      color: white;
+      padding: 34px 20px 62px;
+    }
+
+    .hero-inner {
+      max-width: 1000px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 1.3fr .7fr;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #f0dfb8;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .eyebrow:before {
+      content: "";
+      width: 22px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    h1 {
+      font-family: Georgia, serif;
+      font-size: clamp(32px, 5vw, 50px);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -1.2px;
+      margin: 14px 0;
+    }
+
+    .hero p {
+      color: #d8e4da;
+      line-height: 1.7;
+      max-width: 560px;
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .hero-note {
+      border: 1px solid #557764;
+      background: #ffffff0b;
+      border-radius: 18px;
+      padding: 20px;
+    }
+
+    .hero-note strong {
+      display: block;
+      font-family: Georgia, serif;
+      font-size: 21px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .hero-note span {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #d4e1d7;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: -30px auto 0;
+      padding: 0 16px 50px;
+      position: relative;
+    }
+
+    .directory-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 50px #183c3010;
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 24px 26px 18px;
+      border-bottom: 1px solid #edf1ec;
+    }
+
+    .card-head h2 {
+      font-size: 20px;
+      margin: 0 0 7px;
+    }
+
+    .card-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .directory-body {
+      padding: 22px 26px 26px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    input, select {
+      width: 100%;
+      min-width: 0;
+      padding: 13px 14px;
+      border: 1px solid #d8e1d8;
+      border-radius: 11px;
+      background: #fcfdfb;
+      color: var(--ink);
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #568269;
+      box-shadow: 0 0 0 3px #56826917;
+    }
+
+    .count {
+      font-size: 12px;
+      color: #65756a;
+      margin: 14px 0 12px;
+    }
+
+    .member-list {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .member-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px;
+      background: white;
+      border: 1px solid #e0e8df;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px #183c3008;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .member-card:hover {
+      transform: translateY(-1px);
+      border-color: #b9cdbd;
+    }
+
+    .avatar {
+      width: 82px;
+      height: 82px;
+      min-width: 82px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #e5ede6;
+      border: 3px solid white;
+      box-shadow: 0 0 0 1px #d7e2d8;
+    }
+
+    .member-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .member-name {
+      font-family: Georgia, serif;
+      font-size: 21px;
+      font-weight: 500;
+      margin: 2px 0 9px;
+      overflow-wrap: anywhere;
+      color: #203b2c;
+    }
+
+    .department {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #e8f2e9;
+      color: #285b3a;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+
+    .detail {
+      margin: 6px 0;
+      color: #56645a;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .portfolio {
+      display: inline-flex;
+      margin-top: 10px;
+      color: #24633d;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px solid #b7cfbc;
+      padding-bottom: 2px;
+    }
+
+    .portfolio:hover {
+      color: var(--forest);
+      border-color: var(--forest);
+    }
+
+    .message {
+      background: #f8faf7;
+      border: 1px solid #e2e9e0;
+      padding: 24px 16px;
+      border-radius: 13px;
+      text-align: center;
+      color: #647066;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .retry {
+      margin-top: 12px;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 16px;
+      background: var(--forest);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      padding: 23px 12px 30px;
+      color: #7b887d;
+      font-size: 11px;
+      letter-spacing: .3px;
+    }
+
+    @media (max-width: 700px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-note { display: none; }
+      .hero { padding: 29px 18px 55px; }
+      .topbar { padding: 14px; }
+      .brand { font-size: 16px; }
+      .brand-mark { width: 39px; height: 39px; }
+      main { padding-left: 12px; padding-right: 12px; }
+      .directory-body { padding: 18px 14px 20px; }
+      .card-head { padding: 21px 18px 16px; }
+      .toolbar { grid-template-columns: 1fr; gap: 10px; }
+      .member-card { gap: 13px; padding: 14px; }
+      .avatar { width: 70px; height: 70px; min-width: 70px; }
+      .member-name { font-size: 18px; }
+    }
+
+    @media (max-width: 380px) {
+      .member-card { gap: 10px; padding: 12px; }
+      .avatar { width: 58px; height: 58px; min-width: 58px; }
+      .member-name { font-size: 16px; }
+    }
+
+    
+/* Same fixed navigation CSS as feeds.html */
+.bottom-nav{
+  position:fixed;
+  z-index:30;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(247,248,242,.97);
+  backdrop-filter:blur(18px);
+  border-top:1px solid #dce5dc;
+  box-shadow:0 -8px 24px rgba(24,60,48,.09);
+}
+
+.bottom-inner{
+  max-width:760px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;
+}
+
+.nav-item{
+  min-width:0;
+  border:1px solid #dce5dc;
+  background:linear-gradient(145deg,#fff,#f0f4ec);
+  color:#6b796f;
+  border-radius:15px;
+  padding:7px 1px 6px;
+  font-size:10px;
+  font-weight:800;
+  box-shadow:0 4px 0 #d3ded2;
+}
+
+.nav-item .nav-icon{
+  display:block;
+  font-size:19px;
+  line-height:1.25;
+  margin-bottom:4px;
+}
+
+.nav-item.active{
+  background:linear-gradient(145deg,#2b6549,#183c30);
+  color:#fff;
+  border-color:#183c30;
+  box-shadow:0 4px 0 #102e23;
+}
+
+@media(max-width:500px){
+  body{padding-bottom:100px}
+  .bottom-inner{gap:5px}
+  .nav-item{padding:7px 1px 6px;font-size:9px}
+}
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand-wrap">
+        <div class="brand-mark">BG</div>
+        <div>
+          <div class="brand">BGC CLUB</div>
+          <div class="tagline">Connect · Collaborate · Grow</div>
+        </div>
+      </div>
+      <a class="home-link" href="index.html">← Home</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="eyebrow">Our community</div>
+        <h1>People who make<br>great work happen.</h1>
+        <p>Meet approved freelancers, professionals and service providers. Discover people by their skills, city and department.</p>
+      </div>
+      <aside class="hero-note">
+        <strong>Find your people.<br>Build together.</strong>
+        <span>Explore the BGC CLUB network of approved professionals and discover skills for your next collaboration.</span>
+      </aside>
+    </div>
+  </section>
+
+  <main>
+    <section class="directory-card">
+      <div class="card-head">
+        <h2>Member directory</h2>
+        <p>Search the community or filter members by department.</p>
+      </div>
+      <div class="directory-body">
+        <div class="toolbar">
+          <input id="searchInput" type="search"
+            placeholder="Search name, skills or city..."
+            aria-label="Search members">
+          <select id="departmentFilter" aria-label="Filter by department">
+            <option value="">All Departments</option>
+          </select>
+        </div>
+        <div id="memberCount" class="count">Loading members...</div>
+        <section id="memberList" class="member-list">
+          <div class="message">Loading approved members...</div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer>BGC CLUB · A network for people who make work happen</footer>
+
+  
+<script>
+  // Existing BGC CLUB Supabase project
+  const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+  const SUPABASE_KEY =
+    "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  const memberList = document.getElementById("memberList");
+  const memberCount = document.getElementById("memberCount");
+  const searchInput = document.getElementById("searchInput");
+  const departmentFilter = document.getElementById("departmentFilter");
+
+  let allMembers = [];
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function (char) {
+      const entities = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      };
+
+      return entities[char];
+    });
+  }
+
+  function safeWebURL(value) {
+    try {
+      const url = new URL(value);
+
+      if (url.protocol === "https:" || url.protocol === "http:") {
+        return url.href;
+      }
+    } catch (error) {
+      // Invalid URL: do not display a clickable link.
+    }
+
+    return "";
+  }
+
+  function getCityAndSkills(skillsValue) {
+    const lines = String(skillsValue || "")
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(Boolean);
+
+    let city = "";
+
+    const remainingSkills = lines.filter(line => {
+      const match = line.match(/^City\s*:\s*(.*)$/i);
+
+      if (match) {
+        city = match[1].trim();
+        return false;
+      }
+
+      return true;
+    });
+
+    return {
+      city: city,
+      skills: remainingSkills.join(", ")
+    };
+  }
+
+  function makeInitials(name) {
+    const parts = String(name || "Member")
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+    return parts.slice(0, 2)
+      .map(part => part[0])
+      .join("")
+      .toUpperCase();
+  }
+
+  function avatarPlaceholder(name) {
+    const initials = escapeHTML(makeInitials(name));
+
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
+      '<rect width="100" height="100" rx="50" fill="#e3ece4"/>' +
+      '<text x="50" y="57" text-anchor="middle" font-size="30" ' +
+      'font-family="Arial" fill="#285b3a">' + initials + '</text>' +
+      '</svg>';
+
+    return "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(svg);
+  }
+
+  function getMemberPhoto(member) {
+    const url = safeWebURL(member.photo_url);
+    return url || avatarPlaceholder(member.full_name);
+  }
+
+  function populateDepartments() {
+    const departments = [...new Set(
+      allMembers
+        .map(member => String(member.department || "").trim())
+        .filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b));
+
+    departmentFilter.innerHTML =
+      '<option value="">All Departments</option>';
+
+    departments.forEach(department => {
+      const option = document.createElement("option");
+      option.value = department;
+      option.textContent = department;
+      departmentFilter.appendChild(option);
+    });
+  }
+
+  function renderMembers() {
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    const selectedDepartment = departmentFilter.value;
+
+    const filteredMembers = allMembers.filter(member => {
+      const locationAndSkills = getCityAndSkills(member.skills);
+
+      const searchableText = [
+        member.full_name,
+        member.department,
+        locationAndSkills.city,
+        locationAndSkills.skills,
+        member.experience_level,
+        member.work_type
+      ].join(" ").toLowerCase();
+
+      const matchesSearch = searchableText.includes(searchTerm);
+
+      const matchesDepartment =
+        !selectedDepartment ||
+        member.department === selectedDepartment;
+
+      return matchesSearch && matchesDepartment;
+    });
+
+    memberCount.textContent =
+      filteredMembers.length + " approved member(s)";
+
+    if (filteredMembers.length === 0) {
+      memberList.innerHTML =
+        '<div class="message">' +
+        'No matching members found.<br>' +
+        'Try another name, skill or department.' +
+        '</div>';
+
+      return;
+    }
+
+    memberList.innerHTML = filteredMembers.map(member => {
+      const locationAndSkills = getCityAndSkills(member.skills);
+      const photo = escapeHTML(getMemberPhoto(member));
+      const portfolioURL = safeWebURL(member.portfolio_url);
+
+      const departmentHTML = member.department
+        ? '<div class="department">' +
+          escapeHTML(member.department) +
+          '</div>'
+        : "";
+
+      const cityHTML = locationAndSkills.city
+        ? '<div class="detail">📍 ' +
+          escapeHTML(locationAndSkills.city) +
+          '</div>'
+        : "";
+
+      const skillsHTML = locationAndSkills.skills
+        ? '<div class="detail"><strong>Skills:</strong> ' +
+          escapeHTML(locationAndSkills.skills) +
+          '</div>'
+        : "";
+
+      const experienceHTML = member.experience_level
+        ? '<div class="detail"><strong>Experience:</strong> ' +
+          escapeHTML(member.experience_level) +
+          '</div>'
+        : "";
+
+      const workTypeHTML = member.work_type
+        ? '<div class="detail"><strong>Work type:</strong> ' +
+          escapeHTML(member.work_type) +
+          '</div>'
+        : "";
+
+      const portfolioHTML = portfolioURL
+        ? '<a class="portfolio" href="' +
+          escapeHTML(portfolioURL) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          'View Portfolio ↗</a>'
+        : "";
+
+      return `
+        <article class="member-card">
+          <img
+            class="avatar"
+            src="${photo}"
+            alt="${escapeHTML(member.full_name || "Member")}"
+            loading="lazy"
+            onerror="this.onerror=null;this.src=avatarPlaceholder(this.alt)"
+          >
+
+          <div class="member-info">
+            <div class="member-name">
+              ${escapeHTML(member.full_name || "BGC Member")}
+            </div>
+
+            ${departmentHTML}
+            ${cityHTML}
+            ${skillsHTML}
+            ${experienceHTML}
+            ${workTypeHTML}
+            ${portfolioHTML}
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+
+  async function loadMembers() {
+    memberList.innerHTML =
+      '<div class="message">Loading approved members...</div>';
+
+    memberCount.textContent = "Loading members...";
+
+    try {
+      const { data, error } = await db
+        .from("bgc_team_members")
+        .select(
+          "id, full_name, department, skills, experience_level, work_type, portfolio_url, photo_url, status"
+        )
+        .eq("status", "approved")
+        .order("full_name", { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      allMembers = data || [];
+
+      populateDepartments();
+      renderMembers();
+
+    } catch (error) {
+      console.error("Could not load BGC CLUB members:", error);
+
+      memberCount.textContent = "Members could not be loaded.";
+
+      memberList.innerHTML =
+        '<div class="message">' +
+        'Members list load ஆகவில்லை.<br>' +
+        'Supabase connection மற்றும் table permissions-ஐச் சரிபார்க்க வேண்டும்.' +
+        '<br><button class="retry" onclick="loadMembers()">' +
+        'Try Again</button></div>';
+    }
+  }
+
+  searchInput.addEventListener("input", renderMembers);
+  departmentFilter.addEventListener("change", renderMembers);
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) {
+      loadMembers();
+    }
+  });
+
+  loadMembers();
+</script>
+
+  
+<nav class="bottom-nav" aria-label="Main navigation">
+  <div class="bottom-inner">
+
+    <button class="nav-item"
+      onclick="window.location.href='members.html'">
+      <span class="nav-icon">👥</span>
+      Members
+    </button>
+
+    <button class="nav-item"
+      onclick="window.location.href='bgc-event-planner.html'">
+      <span class="nav-icon">📅</span>
+      Event Planner
+    </button>
+
+    <button class="nav-item"
+      onclick="window.location.href='feeds.html'">
+      <span class="nav-icon">▤</span>
+      Feeds
+    </button>
+
+    <button class="nav-item active"
+      onclick="window.location.href='post.html'">
+      <span class="nav-icon">＋</span>
+      Post
+    </button>
+
+    <button class="nav-item"
+      onclick="window.location.href='index.html'">
+      <span class="nav-icon">⌂</span>
+      Home
+    </button>
+
+  </div>
+</nav>
+
+
+</body>
+</html>

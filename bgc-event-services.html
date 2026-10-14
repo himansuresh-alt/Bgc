@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8b1731">
+<title>BGC EVENTS - Services</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --wine: #8b1731;
+    --wine-light: #f8e9ed;
+    --ink: #202432;
+    --muted: #747987;
+    --line: #ececf0;
+    --page: #f7f7fa;
+    --white: #ffffff;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    padding-bottom: 24px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font: inherit;
+}
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,.97);
+    border-bottom: 1px solid var(--line);
+    backdrop-filter: blur(12px);
+}
+
+.nav {
+    max-width: 900px;
+    min-height: 68px;
+    margin: auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    background: var(--wine);
+    color: white;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.brand-name {
+    font-size: 16px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.brand-name span {
+    color: var(--wine);
+}
+
+.add-service {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: var(--wine);
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.page {
+    max-width: 900px;
+    margin: auto;
+}
+
+.hero {
+    margin: 18px 14px 22px;
+    padding: 25px 20px;
+    border-radius: 23px;
+    color: white;
+    background: linear-gradient(135deg, #8b1731, #641327);
+    box-shadow: 0 12px 28px rgba(139,23,49,.13);
+}
+
+.eyebrow {
+    margin-bottom: 9px;
+    color: #f5cbd5;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+}
+
+.hero h1 {
+    font-size: 27px;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+}
+
+.hero p {
+    margin-top: 9px;
+    color: #f7e7eb;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.section-heading {
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.section-heading h2 {
+    font-size: 19px;
+}
+
+#count {
+    color: var(--muted);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.grid {
+    padding: 14px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+}
+
+.service {
+    min-width: 0;
+    min-height: 143px;
+    padding: 15px 13px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid #ededf1;
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: 0 3px 12px rgba(24,28,40,.025);
+    transition: transform .15s ease, border-color .15s ease;
+}
+
+.service:active {
+    transform: scale(.98);
+}
+
+.svcicon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: var(--wine-light);
+    font-size: 23px;
+}
+
+.service h3 {
+    font-size: 13px;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+}
+
+.service p {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+.combo {
+    grid-column: 1 / -1;
+    min-height: 125px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    border-color: #e7c6cf;
+    background: linear-gradient(120deg, #fff0f4, white);
+}
+
+.combo .combo-content {
+    min-width: 0;
+}
+
+.combo-tag {
+    margin-bottom: 6px;
+    color: var(--wine);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+  .empty {
+    grid-column: 1 / -1;
+    padding: 30px 18px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: white;
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+}
+
+.footer {
+    max-width: 900px;
+    margin: 10px auto 0;
+    padding: 18px 14px 8px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.footer a {
+    padding: 6px 0;
+}
+
+.footer a:active {
+    color: var(--wine);
+}
+
+@media (min-width: 600px) {
+    .hero {
+        margin: 24px 18px;
+        padding: 32px;
+    }
+
+    .hero h1 {
+        font-size: 34px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 18px;
+        gap: 14px;
+    }
+
+    .service {
+        min-height: 155px;
+        padding: 18px;
+    }
+
+    .section-heading {
+        padding: 0 18px;
+    }
+}
+
+@media (max-width: 360px) {
+    .brand-name {
+        font-size: 14px;
+    }
+
+    .brand-mark {
+        width: 36px;
+        height: 36px;
+    }
+
+    .add-service {
+        padding: 0 9px;
+        font-size: 11px;
+    }
+
+    .grid {
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .service {
+        padding: 12px 10px;
+    }
+}
+
+  
+/* ===== BGC EVENTS 3D FIXED NAVIGATION ===== */
+
+body {
+    padding-bottom: 105px;
+}
+
+.bgc-bottom-nav {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 9999;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    gap: 4px;
+
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 9px 7px;
+
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid #eee1e4;
+    border-radius: 22px;
+
+    box-shadow:
+        0 8px 0 #e5d8dc,
+        0 12px 28px rgba(60, 20, 30, 0.16);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.bgc-bottom-nav a {
+    min-width: 0;
+    min-height: 58px;
+    padding: 7px 2px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    border-radius: 15px;
+    color: #77717a;
+    text-decoration: none;
+
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.1;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.bgc-bottom-nav a .nav-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.bgc-bottom-nav a.active {
+    color: #ffffff;
+    background: linear-gradient(145deg, #a52645, #741329);
+
+    box-shadow:
+        0 4px 0 #541020,
+        0 7px 12px rgba(139, 23, 49, 0.25);
+
+    transform: translateY(-3px);
+}
+
+.bgc-bottom-nav a:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+@media (min-width: 700px) {
+    .bgc-bottom-nav {
+        bottom: 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .bgc-bottom-nav {
+        left: 7px;
+        right: 7px;
+        padding: 7px 4px;
+        gap: 2px;
+        border-radius: 18px;
+    }
+
+    .bgc-bottom-nav a {
+        font-size: 9px;
+        min-height: 54px;
+    }
+
+    .bgc-bottom-nav a .nav-icon {
+        font-size: 18px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+    <nav class="nav">
+        <a class="brand" href="bgc-event-planner.html">
+            <div class="brand-mark">BGC</div>
+            <div class="brand-name">BGC <span>EVENTS</span></div>
+        </a>
+
+        <a class="add-service" href="event-register.html">
+            + Add Your Service
+        </a>
+    </nav>
+</header>
+
+<main class="page">
+    <section class="hero">
+        <div class="eyebrow">BGC Events Directory</div>
+        <h1 id="title">Marriage</h1>
+        <p>Choose a service to find registered providers for your event.</p>
+    </section>
+
+    <section class="section-heading">
+        <h2>Explore Services</h2>
+        <span id="count"></span>
+    </section>
+
+    <section class="grid" id="grid"></section>
+
+    <footer class="footer">
+        <a href="bgc-event-planner.html">Events</a>
+        <a href="bgc-event-providers.html">Providers</a>
+        <a href="event-register.html">Register</a>
+        <a href="index.html">Home</a>
+    </footer>
+</main>
+
+<script>
+"use strict";
+
+/*
+  Service format:
+  [icon, display label, category slug]
+*/
+
+const serviceData = {
+    "Marriage": [
+        ["🏛️", "Marriage Hall / Venue", "marriage-hall"],
+        ["🍽️", "Catering", "catering"],
+        ["🎨", "Decoration", "event-decoration"],
+        ["📸", "Photography", "event-photography"],
+        ["🎥", "Videography", "videography"],
+        ["💄", "Bridal Makeup", "bridal-makeup"],
+        ["🌿", "Mehendi", "mehendi-artist"],
+        ["👗", "Wedding Dress", "bridal-wear"],
+        ["💎", "Jewellery", "wedding-jewellery"],
+        ["💌", "Invitation Printing", "invitation-printing"],
+        ["🎵", "DJ / Music", "dj-sound"],
+        ["💡", "Light & Sound", "stage-sound-equipment"],
+        ["💐", "Flower Decoration", "flower-decoration"],
+        ["🚗", "Wedding Car", "luxury-car-rental"],
+        ["🎁", "Return Gifts", "return-gifts"],
+        ["🍰", "Cake / Sweets", "bakery-cakes"],
+        ["💃", "Choreography", "wedding-choreography"],
+        ["🪔", "Traditional Services", "traditional-services"]
+    ],
+
+    "Birthday": [
+        ["🏛️", "Birthday Hall / Venue", "event-hall"],
+        ["🎨", "Birthday Decoration", "event-decoration"],
+        ["🎈", "Balloon Decoration", "balloon-decoration"],
+        ["🍰", "Birthday Cake", "bakery-cakes"],
+        ["📸", "Photography", "event-photography"],
+        ["🎥", "Videography", "videography"],
+        ["🍽️", "Catering", "catering"],
+        ["🎵", "DJ / Music", "dj-sound"],
+        ["🎪", "Entertainment", "entertainment"],
+        ["🎩", "Magic Show", "magic-show"],
+        ["🧸", "Mascot Characters", "mascot-clown"],
+        ["🎁", "Return Gifts", "return-gifts"],
+        ["💌", "Invitation", "invitation-printing"],
+        ["💄", "Makeup", "makeup-artist"],
+        ["🧒", "Kids Entertainment", "kids-entertainment"],
+        ["🛝", "Giants Toys", "giants-toys"]
+    ],
+
+    "Engagement": [
+        ["🏛️", "Engagement Venue", "event-hall"],
+        ["🎨", "Decoration", "event-decoration"],
+        ["🎤", "Stage Setup", "stage-decoration"],
+        ["🍽️", "Catering", "catering"],
+        ["📸", "Photography", "event-photography"],
+        ["🎥", "Videography", "videography"],
+        ["💄", "Makeup", "makeup-artist"],
+        ["🌿", "Mehendi", "mehendi-artist"],
+        ["👗", "Dress", "bridal-wear"],
+        ["💎", "Jewellery", "wedding-jewellery"],
+        ["💌", "Invitation", "invitation-printing"],
+        ["🎵", "DJ / Music", "dj-sound"],
+        ["💐", "Flower Decoration", "flower-decoration"],
+        ["🎁", "Return Gifts", "return-gifts"],
+        ["🍰", "Cake", "bakery-cakes"]
+    ],
+
+      "Puberty Function": [
+        ["🏛️", "Function Hall / Venue", "event-hall"],
+        ["🎨", "Decoration", "event-decoration"],
+        ["🍽️", "Catering", "catering"],
+        ["📸", "Photography", "event-photography"],
+        ["🎥", "Videography", "videography"],
+        ["💄", "Makeup", "makeup-artist"],
+        ["👗", "Saree / Dress", "bridal-wear"],
+        ["💎", "Jewellery", "wedding-jewellery"],
+        ["💐", "Flower Decoration", "flower-decoration"],
+        ["🎤", "Stage Setup", "stage-decoration"],
+        ["💌", "Invitation", "invitation-printing"],
+        ["🎵", "DJ / Music", "dj-sound"],
+        ["🎁", "Return Gifts", "return-gifts"],
+        ["🌿", "Mehendi", "mehendi-artist"],
+        ["🪔", "Traditional Function Services", "traditional-services"]
+    ],
+
+    "Surprise Events": [
+        ["🎨", "Surprise Decoration", "event-decoration"],
+        ["🎈", "Balloon Decoration", "balloon-decoration"],
+        ["🍰", "Cake", "bakery-cakes"],
+        ["💐", "Flowers / Bouquet", "flower-decoration"],
+        ["🎁", "Gift Delivery", "gift-delivery"],
+        ["📸", "Photography", "event-photography"],
+        ["🎥", "Videography", "videography"],
+        ["🎵", "Music / DJ", "dj-sound"],
+        ["🛏️", "Room Decoration", "room-decoration"],
+        ["🍽️", "Restaurant / Private Dining", "private-dining"],
+        ["✨", "Event Planner", "event-management"],
+        ["💍", "Proposal Setup", "proposal-setup"],
+        ["🕯️", "Candle Light Setup", "candle-light-setup"],
+        ["🎁", "Custom Gifts", "custom-gifts"],
+        ["🎭", "Surprise Performers", "surprise-performers"]
+    ]
+};
+
+
+/* =========================================
+   READ EVENT FROM URL
+   Example:
+   bgc-event-services.html?event=Birthday
+========================================= */
+
+const params = new URLSearchParams(window.location.search);
+const requestedEvent = params.get("event");
+
+const validEvents = [
+    "Marriage",
+    "Birthday",
+    "Engagement",
+    "Puberty Function",
+    "Surprise Events"
+];
+
+const eventName = validEvents.includes(requestedEvent)
+    ? requestedEvent
+    : "Marriage";
+
+
+/* =========================================
+   PAGE ELEMENTS
+========================================= */
+
+const titleElement = document.getElementById("title");
+const gridElement = document.getElementById("grid");
+const countElement = document.getElementById("count");
+
+titleElement.textContent = eventName;
+
+
+/* =========================================
+   BUILD PROVIDER PAGE URL
+========================================= */
+
+function createProviderUrl(label, slug) {
+    const url = new URL(
+        "bgc-event-providers.html",
+        window.location.href
+    );
+
+    url.searchParams.set("event", eventName);
+    url.searchParams.set("category", slug);
+    url.searchParams.set("label", label);
+
+    return url.href;
+}
+
+
+/* =========================================
+   CREATE SERVICE CARD
+========================================= */
+
+function createServiceCard(service) {
+    const icon = service[0];
+    const label = service[1];
+    const slug = service[2];
+
+    const card = document.createElement("a");
+    card.className = "service";
+    card.href = createProviderUrl(label, slug);
+    card.setAttribute(
+        "aria-label",
+        "View providers for " + label
+    );
+
+    const iconElement = document.createElement("div");
+    iconElement.className = "svcicon";
+    iconElement.textContent = icon;
+
+    const content = document.createElement("div");
+
+    const heading = document.createElement("h3");
+    heading.textContent = label;
+
+    const description = document.createElement("p");
+    description.textContent = "View service providers →";
+
+    content.appendChild(heading);
+    content.appendChild(description);
+
+    card.appendChild(iconElement);
+    card.appendChild(content);
+
+    return card;
+}
+
+
+/* =========================================
+   CREATE COMBO PACK CARD
+========================================= */
+
+function createComboCard() {
+    const card = document.createElement("a");
+
+    card.className = "service combo";
+    card.href = createProviderUrl(
+        "Combo Pack",
+        "combo-pack"
+    );
+
+    const iconElement = document.createElement("div");
+    iconElement.className = "svcicon";
+    iconElement.textContent = "✨";
+
+    const content = document.createElement("div");
+    content.className = "combo-content";
+
+    const tag = document.createElement("div");
+    tag.className = "combo-tag";
+    tag.textContent = "POPULAR";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Combo Pack";
+
+    const description = document.createElement("p");
+    description.textContent =
+        "Explore complete event packages →";
+
+    content.appendChild(tag);
+    content.appendChild(heading);
+    content.appendChild(description);
+
+    card.appendChild(iconElement);
+    card.appendChild(content);
+
+    return card;
+  }
+
+  /* =========================================
+   DISPLAY SERVICES
+========================================= */
+
+function renderServices() {
+    gridElement.replaceChildren();
+
+    const services = serviceData[eventName] || [];
+
+    if (services.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent =
+            "No services are currently available for this event.";
+
+        gridElement.appendChild(empty);
+        countElement.textContent = "0 services";
+        return;
+    }
+
+    services.forEach(function(service) {
+        gridElement.appendChild(
+            createServiceCard(service)
+        );
+    });
+
+    gridElement.appendChild(createComboCard());
+
+    countElement.textContent =
+        (services.length + 1) + " categories";
+}
+
+
+/* =========================================
+   INITIALIZE PAGE
+========================================= */
+
+renderServices();
+
+</script>
+
+  
+<nav class="bgc-bottom-nav" aria-label="Main navigation">
+
+    <a href="bgc-event-planner.html"
+       data-page="events">
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
+    </a>
+
+    <a href="bgc-event-providers.html"
+       data-page="providers">
+        <span class="nav-icon">👥</span>
+        <span>Providers</span>
+    </a>
+
+    <a href="event-register.html"
+       data-page="register">
+        <span class="nav-icon">➕</span>
+        <span>Register</span>
+    </a>
+
+    <a href="bgc-event-services.html"
+       data-page="services">
+        <span class="nav-icon">▦</span>
+        <span>Services</span>
+    </a>
+
+    <a href="index.html"
+       data-page="home">
+        <span class="nav-icon">⌂</span>
+        <span>Home</span>
+    </a>
+
+</nav>
+
+<script>
+(function () {
+    const currentFile = (
+        window.location.pathname
+        .split("/")
+        .pop()
+        .toLowerCase()
+    );
+
+    const pageMap = {
+        "bgc-event-planner.html": "events",
+        "bgc-event-providers.html": "providers",
+        "event-register.html": "register",
+        "bgc-event-services.html": "services",
+        "index.html": "home"
+    };
+
+    const activePage = pageMap[currentFile];
+
+    document.querySelectorAll(
+        ".bgc-bottom-nav a"
+    ).forEach(function (link) {
+        if (link.dataset.page === activePage) {
+            link.classList.add("active");
+            link.setAttribute("aria-current", "page");
+        }
+    });
+})();
+</script>
+
+</body>
+</html>

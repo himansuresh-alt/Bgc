@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#8b1731">
+<title>BGC EVENTS — Service Providers</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --accent:#8b1731;
+ --bg:#f7f7f5;
+ --ink:#202027;
+ --muted:#74747b;
+ --line:#e7e7e7
+}
+body{
+ font-family:Arial,Helvetica,sans-serif;
+ background:var(--bg);
+ color:var(--ink);
+ line-height:1.5
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.site-header{
+ position:sticky;top:0;z-index:10;
+ background:#fff;border-bottom:1px solid var(--line)
+}
+.container{width:min(1100px,100%);margin:auto;padding:0 16px}
+.nav{
+ min-height:68px;display:flex;align-items:center;
+ justify-content:space-between;gap:12px
+}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-mark{
+ width:42px;height:42px;flex-shrink:0;border-radius:12px;
+ background:var(--accent);color:white;display:grid;
+ place-items:center;font-size:12px;font-weight:900
+}
+.brand-name{font-size:16px;font-weight:900;white-space:nowrap}
+.brand-name span{color:var(--accent)}
+.home-btn{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:40px;padding:0 13px;border:1px solid var(--line);
+ border-radius:11px;background:#fff;font-size:12px;
+ font-weight:800;white-space:nowrap
+}
+.home-btn:hover{background:var(--accent);color:#fff}
+.wrap{width:min(1100px,100%);margin:auto;padding-bottom:45px}
+.hero{
+ margin:22px 16px;padding:28px 22px;
+ border-radius:22px;background:var(--accent);color:#fff
+}
+.eyebrow{
+ font-size:11px;font-weight:800;letter-spacing:1px;
+ text-transform:uppercase;color:#f4cbd4;margin-bottom:9px
+}
+.hero h1{
+ font-size:clamp(25px,5vw,36px);
+ line-height:1.2;margin-bottom:8px
+}
+.hero p{font-size:13px;color:#f8e7eb;line-height:1.6}
+.tools{padding:0 16px 20px}
+.filter-label{
+ display:block;margin:0 0 6px;font-size:11px;
+ font-weight:800;color:var(--muted)
+}
+.search-box{
+ display:block;width:100%;height:48px;padding:0 14px;
+ border:1px solid #dedee3;border-radius:13px;
+ background:#fff;color:var(--ink);outline:none
+}
+.search-box:focus{border-color:var(--accent)}
+.filter-grid{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:10px;margin-bottom:10px
+}
+.list{
+ display:grid;grid-template-columns:1fr;
+ gap:13px;padding:0 16px
+}
+.provider{
+ min-width:0;background:#fff;border:1px solid var(--line);
+ border-radius:19px;padding:14px
+}
+.provider-top{display:flex;align-items:flex-start;gap:12px}
+.photo{
+ width:76px;height:76px;flex:0 0 76px;
+ border-radius:15px;background:#f0eeee;
+ display:grid;place-items:center;overflow:hidden;font-size:27px
+}
+.photo img{width:100%;height:100%;object-fit:cover}
+.info{flex:1;min-width:0}
+.verified{font-size:9px;font-weight:800;color:#16804b;margin-bottom:4px}
+.info h2{font-size:16px;line-height:1.3;overflow-wrap:anywhere}
+.role{font-size:12px;color:var(--accent);font-weight:800;margin-top:5px}
+.location{font-size:11px;color:var(--muted);margin-top:4px}
+.actions{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:8px;margin-top:13px
+}
+.actions a{
+ min-height:41px;border-radius:11px;display:flex;
+ align-items:center;justify-content:center;font-size:12px;
+ font-weight:800;text-align:center;padding:6px
+}
+.call-btn{background:#fff0e9;color:#b64721}
+.whatsapp-btn{background:#eaf7ee;color:#13783e}
+.instagram-btn{
+ grid-column:1/-1;background:#f1edff;color:#6845b8
+}
+.website-btn{
+ grid-column:1/-1;background:#edf3ff;color:#2854a1
+}
+.empty,.loading{
+ margin:0 16px;padding:32px 18px;text-align:center;
+ background:#fff;border:1px solid var(--line);
+ border-radius:16px;color:var(--muted);font-size:13px
+}
+.error{color:#a52222}
+.count{font-size:11px;color:var(--muted);padding:0 16px 12px}
+footer{text-align:center;padding:25px 12px;color:var(--muted);font-size:11px}
+
+@media(min-width:650px){
+ .list{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .tools{max-width:900px;margin:auto}
+}
+@media(max-width:380px){
+ .container{padding:0 12px}
+ .hero{margin:16px 12px;padding:23px 17px}
+ .tools,.list{padding-left:12px;padding-right:12px}
+ .empty,.loading{margin-left:12px;margin-right:12px}
+ .brand-name{font-size:14px}
+ .home-btn{padding:0 9px;font-size:10px}
+ .filter-grid{grid-template-columns:1fr}
+}
+
+  
+/* ===== BGC EVENTS 3D FIXED NAVIGATION ===== */
+
+body {
+    padding-bottom: 105px;
+}
+
+.bgc-bottom-nav {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 9999;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    gap: 4px;
+
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 9px 7px;
+
+    background: rgba(255, 255, 255, 0.97);
+    border: 1px solid #eee1e4;
+    border-radius: 22px;
+
+    box-shadow:
+        0 8px 0 #e5d8dc,
+        0 12px 28px rgba(60, 20, 30, 0.16);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.bgc-bottom-nav a {
+    min-width: 0;
+    min-height: 58px;
+    padding: 7px 2px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    border-radius: 15px;
+    color: #77717a;
+    text-decoration: none;
+
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.1;
+
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.bgc-bottom-nav a .nav-icon {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.bgc-bottom-nav a.active {
+    color: #ffffff;
+    background: linear-gradient(145deg, #a52645, #741329);
+
+    box-shadow:
+        0 4px 0 #541020,
+        0 7px 12px rgba(139, 23, 49, 0.25);
+
+    transform: translateY(-3px);
+}
+
+.bgc-bottom-nav a:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+@media (min-width: 700px) {
+    .bgc-bottom-nav {
+        bottom: 20px;
+    }
+}
+
+@media (max-width: 360px) {
+    .bgc-bottom-nav {
+        left: 7px;
+        right: 7px;
+        padding: 7px 4px;
+        gap: 2px;
+        border-radius: 18px;
+    }
+
+    .bgc-bottom-nav a {
+        font-size: 9px;
+        min-height: 54px;
+    }
+
+    .bgc-bottom-nav a .nav-icon {
+        font-size: 18px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header class="site-header">
+ <div class="container nav">
+  <a href="bgc-event-planner.html" class="brand">
+   <div class="brand-mark">BGC</div>
+
+       <div class="brand-name">BGC <span>EVENTS</span></div>
+  </a>
+  <a href="event-register.html" class="home-btn">+ Add Service</a>
+ </div>
+</header>
+
+<section class="hero">
+ <div class="eyebrow" id="eventName">BGC EVENTS</div>
+ <h1 id="categoryName">Service Providers</h1>
+ <p>Discover event service providers and contact them directly.</p>
+</section>
+
+<section class="tools">
+ <div class="filter-grid">
+  <div>
+   <label class="filter-label" for="cityFilter">Choose city</label>
+   <select class="search-box" id="cityFilter">
+    <option value="">All cities</option>
+   </select>
+  </div>
+  <div>
+   <label class="filter-label" for="search">Search providers</label>
+   <input class="search-box" id="search" type="search"
+    placeholder="Business or service..." autocomplete="off">
+  </div>
+ </div>
+</section>
+
+<div class="count" id="resultCount">Loading providers...</div>
+
+<section class="list" id="list">
+ <div class="loading">Finding registered providers...</div>
+</section>
+
+<div class="empty" id="empty" hidden>No providers found.</div>
+
+<footer>BGC CLUB · BGC EVENTS</footer>
+</div>
+
+<script>
+"use strict";
+
+/* URL PARAMETERS */
+const params = new URLSearchParams(window.location.search);
+const eventName = params.get("event") || "Marriage";
+const rawCategory = (params.get("category") || "").trim();
+const rawLabel = (params.get("label") || "").trim();
+
+/* EXISTING CATEGORY MAP */
+const categoryMap = {
+ "Marriage Hall / Venue":"marriage-hall",
+ "Catering":"catering",
+ "Decoration":"event-decoration",
+ "Photography":"event-photography",
+ "Videography":"videography",
+ "Bridal Makeup":"bridal-makeup",
+ "Mehendi":"mehendi-artist",
+ "Wedding Dress":"bridal-wear",
+ "Jewellery":"wedding-jewellery",
+ "Invitation Printing":"invitation-printing",
+ "DJ / Music":"dj-sound",
+ "Light & Sound":"stage-sound-equipment",
+ "Flower Decoration":"flower-decoration",
+ "Wedding Car":"luxury-car-rental",
+ "Return Gifts":"return-gifts",
+ "Cake / Sweets":"bakery-cakes",
+ "Choreography":"wedding-choreography",
+ "Traditional Services":"traditional-services",
+
+ "Birthday Hall / Venue":"event-hall",
+ "Birthday Decoration":"event-decoration",
+ "Balloon Decoration":"balloon-decoration",
+ "Birthday Cake":"bakery-cakes",
+ "Entertainment":"entertainment",
+ "Magic Show":"magic-show",
+ "Mascot Characters":"mascot-clown",
+ "Invitation":"invitation-printing",
+ "Makeup":"makeup-artist",
+ "Kids Entertainment":"kids-entertainment",
+ "Giants Toys":"giants-toys",
+
+ "Engagement Venue":"event-hall",
+ "Stage Setup":"stage-decoration",
+ "Dress":"bridal-wear",
+
+ "Function Hall / Venue":"event-hall",
+ "Saree / Dress":"bridal-wear",
+ "Traditional Function Services":"traditional-services",
+
+ "Surprise Decoration":"event-decoration",
+ "Cake":"bakery-cakes",
+ "Flowers / Bouquet":"flower-decoration",
+ "Gift Delivery":"gift-delivery",
+ "Music / DJ":"dj-sound",
+ "Room Decoration":"room-decoration",
+ "Restaurant / Private Dining":"private-dining",
+ "Event Planner":"event-management",
+ "Proposal Setup":"proposal-setup",
+ "Candle Light Setup":"candle-light-setup",
+ "Custom Gifts":"custom-gifts",
+ "Surprise Performers":"surprise-performers",
+ "Combo Pack":"combo-pack"
+};
+
+function normalize(value) {
+ return String(value || "").trim().toLowerCase();
+}
+
+const requestedCategory = rawLabel || rawCategory;
+
+const categoryEntry = Object.entries(categoryMap).find(([label, slug]) =>
+ normalize(label) === normalize(requestedCategory) ||
+ normalize(slug) === normalize(requestedCategory)
+);
+
+const categorySlug = categoryEntry ? categoryEntry[1] : requestedCategory;
+const categoryLabel = categoryEntry ? categoryEntry[0] : requestedCategory;
+
+const validEvents = [
+ "Marriage",
+ "Birthday",
+ "Engagement",
+ "Puberty Function",
+ "Surprise Events"
+];
+
+const selectedEvent = validEvents.find(
+ item => normalize(item) === normalize(eventName)
+) || "Marriage";
+
+/* PAGE ELEMENTS */
+const eventElement = document.getElementById("eventName");
+const categoryElement = document.getElementById("categoryName");
+const list = document.getElementById("list");
+const empty = document.getElementById("empty");
+const search = document.getElementById("search");
+const cityFilter = document.getElementById("cityFilter");
+const resultCount = document.getElementById("resultCount");
+
+eventElement.textContent = selectedEvent;
+categoryElement.textContent = categoryLabel || "Event Providers";
+
+/* EXISTING SUPABASE PROJECT */
+const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+let providers = [];
+
+  function escapeHtml(value) {
+ return String(value ?? "")
+  .replace(/&/g, "&amp;")
+  .replace(/</g, "&lt;")
+  .replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;")
+  .replace(/'/g, "&#039;");
+}
+
+function cleanPhone(value) {
+ return String(value || "").replace(/\D/g, "");
+}
+
+function whatsappNumber(value) {
+ let number = cleanPhone(value);
+ if (!number) return "";
+ if (number.length === 10) return "91" + number;
+ return number;
+}
+
+/* MATCH SERVICE CATEGORY (EVENT-INDEPENDENT) */
+function canonicalServiceCategory(value) {
+ const key = normalize(value)
+  .replace(/&/g, "and")
+  .replace(/\s+/g, " ")
+  .trim();
+
+ const aliases = {
+  "marriage hall / venue": "event hall / venue",
+  "birthday hall / venue": "event hall / venue",
+  "engagement venue": "event hall / venue",
+  "function hall / venue": "event hall / venue",
+  "event hall": "event hall / venue",
+  "venue": "event hall / venue",
+
+  "bridal makeup": "makeup",
+  "makeup artist": "makeup",
+  "wedding dress": "dress",
+  "saree / dress": "dress",
+  "birthday cake": "cake",
+  "cake / sweets": "cake",
+  "flowers / bouquet": "flower decoration",
+  "birthday decoration": "decoration",
+  "surprise decoration": "decoration",
+  "invitation": "invitation printing",
+  "music / dj": "dj / music",
+  "stage decoration": "stage setup"
+ };
+
+ return aliases[key] || key;
+}
+
+function providerMatchesSelectedCategory(provider) {
+ const stored = String(provider.event_category || "").trim();
+
+ if (!stored || !categoryLabel) return false;
+
+ /*
+  * Older registrations may store "Marriage — Catering".
+  * New registrations store only "Catering".
+  * Remove the legacy event prefix, then match by service category only.
+  */
+ const parts = stored.split(/\s*[—–-]\s*/);
+ const storedService = parts.length >= 2
+  ? parts.slice(1).join(" — ").trim()
+  : stored;
+
+ const requestedValues = [
+  categoryLabel,
+  categorySlug,
+  rawCategory,
+  rawLabel
+ ];
+
+ const requestedCategories = requestedValues
+  .filter(Boolean)
+  .map(canonicalServiceCategory);
+
+ return requestedCategories.includes(canonicalServiceCategory(storedService));
+}
+
+/* CITY FILTER */
+function populateCityFilter() {
+ const previousCity = cityFilter.value;
+
+ const cities = [...new Set(
+  providers.map(p => String(p.city || "").trim()).filter(Boolean)
+ )].sort((a, b) => a.localeCompare(b));
+
+ cityFilter.innerHTML = '<option value="">All cities</option>';
+
+ cities.forEach(city => {
+  const option = document.createElement("option");
+  option.value = city;
+  option.textContent = city;
+  cityFilter.appendChild(option);
+ });
+
+ if (cities.includes(previousCity)) {
+  cityFilter.value = previousCity;
+ }
+}
+
+/* LOAD PROVIDERS FROM EXISTING TABLE */
+async function loadProviders() {
+ list.innerHTML =
+  '<div class="loading">Finding registered providers...</div>';
+
+ empty.hidden = true;
+ empty.classList.remove("error");
+ resultCount.textContent = "Loading providers...";
+
+ if (!categoryLabel) {
+  list.innerHTML = "";
+  empty.textContent =
+   "Service category is missing. Please open this page from BGC EVENTS.";
+  empty.hidden = false;
+  resultCount.textContent = "0 providers";
+  return;
+ }
+
+ try {
+  const queryUrl = SUPABASE_URL +
+   "/rest/v1/bgc_eventers" +
+   "?select=id,name,company_name,phone,whatsapp,event_category,instagram,image_url,city,website" +
+   "&order=company_name.asc.nullslast,name.asc";
+
+  const response = await fetch(queryUrl, {
+   method: "GET",
+   headers: {
+    "apikey": SUPABASE_KEY,
+    "Content-Type": "application/json"
+   }
+  });
+
+  if (!response.ok) {
+   const detail = await response.text();
+   throw new Error("Supabase " + response.status + ": " + detail);
+  }
+
+  const data = await response.json();
+
+  if (!Array.isArray(data)) {
+   throw new Error("Unexpected provider data returned from Supabase.");
+  }
+
+     providers = data;
+  populateCityFilter();
+  renderProviders();
+
+ } catch (error) {
+  console.error("Provider load error:", error);
+
+  providers = [];
+  list.innerHTML = "";
+  empty.textContent =
+   "Unable to load providers. Check your connection and Supabase permissions.";
+  empty.hidden = false;
+  empty.classList.add("error");
+  resultCount.textContent = "Unable to load providers";
+ }
+}
+
+/* RENDER PROVIDER CARDS */
+function renderProviders() {
+ const searchText = normalize(search.value);
+ const selectedCity = cityFilter.value;
+
+ const filtered = providers.filter(provider => {
+  if (!providerMatchesSelectedCategory(provider)) return false;
+
+  const city = String(provider.city || "").trim();
+
+  if (selectedCity && city !== selectedCity) return false;
+
+  const searchableText = [
+   provider.name,
+   provider.company_name,
+   provider.phone,
+   provider.whatsapp,
+   provider.event_category,
+   provider.city,
+   provider.instagram,
+   provider.website
+  ].join(" ").toLowerCase();
+
+  return !searchText || searchableText.includes(searchText);
+ });
+
+ resultCount.textContent = filtered.length +
+  (filtered.length === 1 ? " provider found" : " providers found");
+
+ list.innerHTML = "";
+ empty.hidden = filtered.length > 0;
+ empty.classList.remove("error");
+
+ if (!filtered.length) {
+  empty.textContent = "No providers found for this service and city yet.";
+  return;
+ }
+
+ filtered.forEach(provider => {
+  const businessName =
+   provider.company_name || provider.name || "Event Service Provider";
+
+  const phone = cleanPhone(provider.phone);
+  const whatsapp = whatsappNumber(provider.whatsapp || provider.phone);
+  const city = String(provider.city || "").trim();
+  const imageUrl = String(provider.image_url || "").trim();
+  const instagram = String(provider.instagram || "").trim();
+  const website = String(provider.website || "").trim();
+
+  const card = document.createElement("article");
+  card.className = "provider";
+
+  const photo = imageUrl
+   ? `<div class="photo">
+       <img src="${escapeHtml(imageUrl)}"
+        alt="${escapeHtml(businessName)}"
+        loading="lazy"
+        onerror="this.parentElement.textContent='🏢'">
+      </div>`
+   : '<div class="photo">🏢</div>';
+
+  let actions = "";
+
+  if (phone) {
+   actions += `<a class="call-btn"
+    href="tel:${escapeHtml(phone)}">☎ Call</a>`;
+  }
+
+  if (whatsapp) {
+   actions += `<a class="whatsapp-btn"
+    href="https://wa.me/${escapeHtml(whatsapp)}"
+    target="_blank" rel="noopener noreferrer">WhatsApp</a>`;
+  }
+
+  if (instagram) {
+   let instagramUrl = instagram;
+
+   if (instagram.startsWith("@")) {
+    instagramUrl = "https://www.instagram.com/" +
+     encodeURIComponent(instagram.slice(1));
+   } else if (!/^https?:\/\//i.test(instagram)) {
+    instagramUrl = "https://" + instagram;
+   }
+
+   actions += `<a class="instagram-btn"
+    href="${escapeHtml(instagramUrl)}"
+    target="_blank" rel="noopener noreferrer">Instagram</a>`;
+  }
+
+  if (website) {
+   let websiteUrl = website;
+
+   if (!/^https?:\/\//i.test(websiteUrl)) {
+    websiteUrl = "https://" + websiteUrl;
+   }
+
+   actions += `<a class="website-btn"
+    href="${escapeHtml(websiteUrl)}"
+    target="_blank" rel="noopener noreferrer">Visit Website</a>`;
+  }
+
+  card.innerHTML = `
+   <div class="provider-top">
+    ${photo}
+    <div class="info">
+     <div class="verified">● REGISTERED BUSINESS</div>
+     <h2>${escapeHtml(businessName)}</h2>
+     <div class="role">${escapeHtml(categoryLabel)}</div>
+     <div class="location">
+      📍 ${escapeHtml(city || "Location not provided")}
+     </div>
+    </div>
+   </div>
+   ${actions ? `<div class="actions">${actions}</div>` : ""}
+  `;
+
+  list.appendChild(card);
+ });
+}
+
+/* SEARCH + CITY FILTER */
+search.addEventListener("input", renderProviders);
+cityFilter.addEventListener("change", renderProviders);
+
+/* START */
+loadProviders();
+</script>
+
+  
+<nav class="bgc-bottom-nav" aria-label="Main navigation">
+
+    <a href="bgc-event-planner.html"
+       data-page="events">
+        <span class="nav-icon">📅</span>
+        <span>Events</span>
+    </a>
+
+    <a href="bgc-event-providers.html"
+       data-page="providers">
+        <span class="nav-icon">👥</span>
+        <span>Providers</span>
+    </a>
+
+    <a href="event-register.html"
+       data-page="register">
+        <span class="nav-icon">➕</span>
+        <span>Register</span>
+    </a>
+
+    <a href="bgc-event-services.html"
+       data-page="services">
+        <span class="nav-icon">▦</span>
+        <span>Services</span>
+    </a>
+
+    <a href="index.html"
+       data-page="home">
+        <span class="nav-icon">⌂</span>
+        <span>Home</span>
+    </a>
+
+</nav>
+
+<script>
+(function () {
+    const currentFile = (
+        window.location.pathname
+        .split("/")
+        .pop()
+        .toLowerCase()
+    );
+
+    const pageMap = {
+        "bgc-event-planner.html": "events",
+        "bgc-event-providers.html": "providers",
+        "event-register.html": "register",
+        "bgc-event-services.html": "services",
+        "index.html": "home"
+    };
+
+    const activePage = pageMap[currentFile];
+
+    document.querySelectorAll(
+        ".bgc-bottom-nav a"
+    ).forEach(function (link) {
+        if (link.dataset.page === activePage) {
+            link.classList.add("active");
+            link.setAttribute("aria-current", "page");
+        }
+    });
+})();
+</script>
+
+  
+</body>
+</html>

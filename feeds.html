@@ -1,184 +1,155 @@
+
 <!-- PART 1 START -->
-<!-- இந்த code-ஐ முழுமையாக paste செய்யவும் -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#075e54">
-
+<meta name="theme-color" content="#183c30">
 <title>BGC CLUB | Business Networking, Jobs &amp; Projects</title>
-<meta name="description" content="BGC CLUB is a business community to connect with professionals, discover jobs and projects, share business requirements, and grow through networking.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.bgcclub.info/">
-
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="BGC CLUB">
-<meta property="og:title" content="BGC CLUB | Business Networking, Jobs &amp; Projects">
-<meta property="og:description" content="Connect with professionals, discover jobs and projects, and grow together with BGC CLUB.">
-<meta property="og:url" content="https://www.bgcclub.info/">
-
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BGC CLUB | Business Networking, Jobs &amp; Projects">
-<meta name="twitter:description" content="Connect with professionals, discover jobs and projects, and grow together with BGC CLUB.">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "BGC CLUB",
-  "url": "https://www.bgcclub.info/",
-  "description": "A business community for networking, jobs, projects and professional connections."
-}
-</script>
+<meta name="description" content="BGC CLUB business community for networking, jobs and projects.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-:root{--green:#075e54;--green2:#128c7e;--mint:#d9fdd3;--bg:#efeae2;--white:#fff;--ink:#182923;--muted:#74817a;--line:#e4e9e4;--lime:#c8f36a;--shadow:0 3px 12px #122d2010}
+:root{
+  --green:#183c30;
+  --green2:#2b6549;
+  --mint:#e4efe3;
+  --bg:#f7f6f0;
+  --white:#fff;
+  --ink:#1d2b23;
+  --muted:#6e7b72;
+  --line:#dce5dc;
+  --lime:#d6ee9a;
+  --shadow:0 8px 26px rgba(24,60,48,.07);
+}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;padding-bottom:94px}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,Arial,Helvetica,sans-serif;padding-bottom:100px
+}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #128c7e;outline-offset:2px}
-.header{position:sticky;top:0;z-index:20;background:var(--green);color:#fff;box-shadow:0 3px 12px #0002}
-.header-inner{max-width:900px;margin:auto;padding:13px 16px;display:flex;align-items:center;gap:12px}
-.logo{width:43px;height:43px;flex-shrink:0;display:grid;place-items:center;border-radius:14px;background:var(--lime);color:#163e2b;font-weight:1000;box-shadow:inset 0 -4px 0 #8fb541}
-.brand-title{font-size:18px;font-weight:900;letter-spacing:-.4px}
-.brand-sub{font-size:9px;letter-spacing:1.7px;color:#c6e4d9;margin-top:4px}
-.header-status{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:10px;color:#d8f7e7}
-.dot{width:7px;height:7px;border-radius:50%;background:#7df29b}
-main{max-width:900px;margin:auto;padding:14px 12px 22px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:2px solid #2b6549;outline-offset:2px
+}
+.header{
+  position:sticky;top:0;z-index:20;background:var(--green);
+  color:#fff;box-shadow:0 5px 18px rgba(24,60,48,.12)
+}
+.header-inner{
+  max-width:1000px;margin:auto;padding:14px 16px;
+  display:flex;align-items:center;gap:12px
+}
+.logo{
+  width:43px;height:43px;flex-shrink:0;display:grid;place-items:center;
+  border-radius:13px;background:var(--lime);color:var(--green);
+  font-weight:1000;box-shadow:inset 0 -3px 0 #a8c96c
+}
+.brand-title{font-size:18px;font-weight:900;letter-spacing:-.35px}
+.brand-sub{font-size:9px;letter-spacing:1.7px;color:#d2e2d6;margin-top:4px}
+main{max-width:1000px;margin:auto;padding:18px 14px 28px}
 .panel{display:none}
 .panel.active{display:block;animation:fade .18s ease}
-@keyframes fade{from{opacity:.55;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-.welcome{background:linear-gradient(135deg,#075e54,#128c7e);border-radius:22px;padding:21px 18px;color:#fff;box-shadow:var(--shadow)}
-.welcome-label{font-size:10px;letter-spacing:1.7px;font-weight:800;color:#d9fdd3}
-.welcome h1{font-size:29px;line-height:1.12;letter-spacing:-1px;margin:12px 0 9px}
-.welcome p{font-size:12px;line-height:1.7;color:#e1f2ec;margin:0;max-width:500px}
-.welcome-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}
+@keyframes fade{
+  from{opacity:.55;transform:translateY(4px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.welcome{
+  background:linear-gradient(125deg,#183c30 0%,#286448 68%,#357b5a 100%);
+  border-radius:24px;padding:clamp(22px,4vw,36px);color:#fff;
+  box-shadow:0 12px 28px rgba(24,60,48,.12);
+  position:relative;overflow:hidden
+}
+.welcome:after{
+  content:"";position:absolute;width:230px;height:230px;
+  border:1px solid #ffffff1c;border-radius:50%;right:-78px;top:-95px;
+  box-shadow:0 0 0 24px #ffffff09,0 0 0 50px #ffffff07;
+  pointer-events:none
+}
+.welcome-label{font-size:10px;letter-spacing:2px;font-weight:800;color:var(--lime)}
+.welcome h1{
+  font-size:clamp(29px,4.5vw,43px);line-height:1.08;
+  letter-spacing:-1.3px;margin:12px 0 9px;max-width:620px
+}
+.welcome p{font-size:13px;line-height:1.7;color:#e0ebe2;margin:0;max-width:570px}
+.welcome-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:17px}
 .btn{border:0;border-radius:12px;padding:11px 14px;font-size:12px;font-weight:800}
-.btn-lime{background:var(--lime);color:#183d2a}
+.btn:active{transform:translateY(1px)}
+.btn-lime{background:var(--lime);color:var(--green)}
 .btn-white{background:#fff;color:var(--green)}
-.btn-outline{background:#ffffff12;color:#fff;border:1px solid #ffffff40}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:22px 2px 12px}
-.section-head h2{font-size:19px;letter-spacing:-.5px;margin:0}
-.section-head p{font-size:11px;color:var(--muted);margin:5px 0 0;line-height:1.5}
-.text-btn{border:0;background:transparent;color:var(--green);font-size:11px;font-weight:800}
-.search{display:flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:0 13px;margin-bottom:12px}
+.btn-outline{background:#ffffff0c;color:#fff;border:1px solid #ffffff55}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin:27px 2px 13px
+}
+.section-head h2{font-size:21px;letter-spacing:-.6px;margin:0}
+.section-head p{font-size:12px;color:var(--muted);margin:5px 0 0;line-height:1.5}
+.text-btn{
+  border:0;background:#e5eee2;color:var(--green);font-size:12px;
+  font-weight:800;padding:9px 11px;border-radius:10px
+}
+.search{
+  display:flex;align-items:center;gap:9px;background:#fff;
+  border:1px solid var(--line);border-radius:15px;padding:0 13px;
+  margin-bottom:13px;box-shadow:0 3px 12px #183c3006
+}
 .search span{font-size:19px;color:var(--muted)}
-.search input{width:100%;min-width:0;border:0;outline:0;padding:13px 0;background:transparent;font-size:13px}
-.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 12px;scrollbar-width:none}
+.search input{
+  width:100%;min-width:0;border:0;outline:0;padding:14px 0;
+  background:transparent;font-size:14px
+}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 14px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chip{flex-shrink:0;border:1px solid #dfe8df;background:#fff;color:#596a61;padding:8px 12px;border-radius:30px;font-size:10px;font-weight:800}
+.chip{
+  flex-shrink:0;border:1px solid var(--line);background:#fff;color:#52645a;
+  padding:9px 14px;border-radius:30px;font-size:11px;font-weight:800
+}
 .chip.active{background:var(--green);border-color:var(--green);color:#fff}
-.feed-list{display:grid;gap:10px}
-.feed-card{background:#fff;border:1px solid #e8eee7;border-radius:17px;padding:15px;box-shadow:var(--shadow)}
+.feed-list{display:grid;gap:13px}
+.feed-card{
+  background:#fff;border:1px solid #e0e8df;border-radius:20px;padding:18px;
+  box-shadow:0 5px 18px rgba(24,60,48,.045);
+  transition:transform .16s ease,box-shadow .16s ease
+}
+.feed-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px #183c3014}
 .feed-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.tag{display:inline-flex;background:#e5f6e4;color:#246345;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:800}
-.small-muted{font-size:10px;color:var(--muted)}
-.feed-card h3{font-size:15px;line-height:1.45;margin:12px 0 7px}
-.feed-card p{font-size:12px;line-height:1.7;color:#64736b;margin:0 0 12px;white-space:pre-wrap}
-.meta{display:flex;flex-wrap:wrap;gap:8px 13px;color:#66756c;font-size:10px}
-.card-actions{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}
-.card-actions .btn{padding:9px 12px}
-.btn-green{background:#e2f4df;color:#155b43}
+.tag{
+  display:inline-flex;background:#e8f2e7;color:#285b3a;border-radius:20px;
+  padding:7px 10px;font-size:10px;font-weight:800
+}
+.small-muted{font-size:11px;color:var(--muted)}
+.feed-card h3{font-size:17px;line-height:1.4;letter-spacing:-.25px;margin:14px 0 8px}
+.feed-card p{
+  font-size:13px;line-height:1.7;color:#59685e;margin:0 0 12px;
+  white-space:pre-wrap;overflow-wrap:anywhere
+}
+.meta{display:flex;flex-wrap:wrap;gap:8px 14px;color:#66756c;font-size:11px}
+.card-actions{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
+.card-actions .btn{padding:10px 14px;font-size:12px}
+.btn-green{background:#e5efe2;color:#214f37}
 .btn-dark{background:var(--green);color:#fff}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:13px}
-.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px 10px}
-.stat strong{display:block;font-size:20px;color:var(--green)}
-.stat span{display:block;font-size:9px;color:var(--muted);margin-top:4px;line-height:1.4}
-.member-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.member-card{min-width:0;background:#fff;border:1px solid var(--line);border-radius:17px;padding:15px 10px;text-align:center;box-shadow:var(--shadow)}
-.member-avatar{width:62px;height:62px;border-radius:20px;background:#d9efd4;color:var(--green);display:grid;place-items:center;margin:0 auto 10px;font-size:23px;font-weight:900;overflow:hidden}
-.member-avatar img{width:100%;height:100%;object-fit:cover}
-.member-card h3{font-size:13px;margin:5px 0}
-.member-role{font-size:10px;font-weight:800;color:var(--green2)}
-.member-city{font-size:10px;color:var(--muted);margin:8px 0}
-.member-skill{font-size:10px;line-height:1.5;color:#65746a;overflow-wrap:anywhere;min-height:30px}
-.member-card .btn{width:100%;margin-top:11px;padding:9px 4px;font-size:10px}
-.form-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{min-width:0}
-.field.full{grid-column:1/-1}
-.field label{display:block;font-size:11px;font-weight:800;margin-bottom:6px}
-.field input,.field select,.field textarea{width:100%;min-width:0;border:1px solid #dce5dd;background:#fbfdfb;border-radius:11px;padding:11px;font-size:12px;color:var(--ink)}
-.field textarea{min-height:100px;resize:vertical}
-.form-note{font-size:10px;line-height:1.6;color:var(--muted);margin:12px 0}
-.submit-btn{width:100%;border:0;border-radius:13px;background:var(--green);color:#fff;padding:13px;font-weight:900;font-size:12px}
-.photo-box{display:flex;align-items:center;gap:12px;background:#f4f9f2;padding:12px;border:1px dashed #cbdcc8;border-radius:14px}
-.photo-preview{width:65px;height:65px;flex-shrink:0;border-radius:18px;display:grid;place-items:center;background:#d9efd4;overflow:hidden;font-size:23px}
-.photo-preview img{width:100%;height:100%;object-fit:cover}
-.photo-info{min-width:0;flex:1}
-.photo-info strong{font-size:11px}
-.photo-info p{font-size:10px;line-height:1.5;color:var(--muted);margin:5px 0}
-.empty{background:#fff;border:1px dashed #cbd9ce;border-radius:15px;padding:24px 14px;text-align:center;color:var(--muted);font-size:12px;line-height:1.7}
-.notice{background:#e3f3df;color:#285b3b;border-radius:13px;padding:12px;font-size:11px;line-height:1.7;margin-bottom:12px}
-.bottom-nav{position:fixed;z-index:30;bottom:0;left:0;right:0;padding:9px 8px calc(9px + env(safe-area-inset-bottom));background:linear-gradient(180deg,#fffffffa,#edf5ee);backdrop-filter:blur(18px);border-top:1px solid #d3e3d5;box-shadow:0 -8px 24px #123b3018}
-.bottom-inner{max-width:650px;margin:auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;perspective:700px}
-.nav-item{min-width:0;border:1px solid #dce8dd;background:linear-gradient(145deg,#fff,#eaf3eb);color:#718078;border-radius:14px;padding:7px 1px 6px;font-size:10px;font-weight:800;box-shadow:0 4px 0 #cbd9cd,0 7px 12px #123b3010;transform:translateY(0);transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
-.nav-item:active{transform:translateY(3px);box-shadow:0 1px 0 #cbd9cd}
-.nav-item .nav-icon{display:block;font-size:19px;line-height:1.25;margin-bottom:4px;text-shadow:0 1px 0 #fff}
-.nav-item.active{background:linear-gradient(145deg,#128c7e,#075e54);color:#fff;border-color:#075e54;box-shadow:0 4px 0 #043e38,0 8px 16px #075e5433;transform:translateY(-3px)}
-.nav-item.active .nav-icon{text-shadow:0 2px 0 #043e38}
-.chat-wrap{display:flex;flex-direction:column;gap:12px;min-height:52vh}
-.chat-intro{background:linear-gradient(135deg,#075e54,#128c7e);color:#fff;border-radius:20px;padding:18px;box-shadow:0 7px 0 #064a42,0 12px 22px #075e5425}
-.chat-intro h2{margin:0 0 6px;font-size:20px}
-.chat-intro p{font-size:12px;line-height:1.6;margin:0;color:#e0f3eb}
-.chat-messages{display:flex;flex-direction:column;gap:8px;min-height:160px}
-.chat-note{background:#fff;border:1px solid var(--line);padding:13px;border-radius:14px;color:var(--muted);font-size:12px;line-height:1.7;text-align:center}
-.chat-bubble{align-self:flex-end;max-width:88%;background:#d9fdd3;border-radius:14px 14px 3px 14px;padding:10px 12px;font-size:12px;line-height:1.6;overflow-wrap:anywhere;box-shadow:0 2px 0 #b9dfb5}
-.chat-compose{
-  display:flex;
-  gap:8px;
-  position:static;
-  bottom:auto;
-  margin-top:auto;
-  background:#efeae2;
-  padding:12px 0 5px;
-  width:100%;
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.stat{
+  background:#fff;border:1px solid var(--line);border-radius:17px;
+  padding:15px 14px;box-shadow:0 4px 16px #183c3009
 }
-.chat-wrap{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  min-height:calc(100dvh - 250px);
+.stat strong{display:block;font-size:clamp(21px,3vw,27px);color:var(--green)}
+.stat span{display:block;font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.empty{
+  background:#fff;border:1px dashed #cddbcf;border-radius:18px;
+  padding:30px 16px;text-align:center;color:var(--muted);
+  font-size:12px;line-height:1.7
 }
-.chat-messages{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  min-height:160px;
-  flex:1;
-}
-.chat-compose input{min-width:0;flex:1;border:1px solid #d7e2d8;border-radius:24px;padding:12px 14px;background:#fff;font-size:12px}
-.chat-compose button{border:0;border-radius:50%;width:44px;height:44px;background:var(--green);color:#fff;font-size:18px;box-shadow:0 4px 0 #043e38}
-.modal{position:fixed;inset:0;z-index:60;background:#071c16a8;display:none;align-items:center;justify-content:center;padding:14px}
-.modal.open{display:flex}
-.modal-card{width:100%;max-width:480px;max-height:85vh;overflow:auto;background:#fff;border-radius:20px;padding:18px}
-.modal-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.modal-head h2{font-size:18px;margin:0}
-.close-btn{border:0;border-radius:10px;background:#edf3ed;color:var(--green);font-size:22px;width:35px;height:35px}
-.toast{position:fixed;z-index:90;left:50%;bottom:100px;transform:translateX(-50%);display:none;max-width:90%;padding:12px 15px;border-radius:12px;background:#123b30;color:#fff;font-size:11px;text-align:center;box-shadow:var(--shadow)}
-.toast.show{display:block}
-.post-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.post-choice{width:100%;border:1px solid #dce5dd;border-radius:15px;background:#fff;color:var(--ink);padding:15px 12px;text-align:left;box-shadow:var(--shadow)}
-.post-choice .choice-icon{display:block;font-size:23px;margin-bottom:8px}
-.post-choice strong{display:block;font-size:13px;margin-bottom:5px}
-.post-choice small{display:block;color:var(--muted);font-size:10px;line-height:1.5}
-.post-choice.active{border:2px solid var(--green);background:#eaf6e7;padding:14px 11px}
-.post-choice.active strong{color:var(--green)}
-.post-form-panel{display:none}
-.post-form-panel.active{display:block}
-.post-kind-label{display:inline-flex;padding:6px 10px;border-radius:20px;background:#e5f6e4;color:#246345;font-size:10px;font-weight:800;margin-bottom:12px}
-.form-feedback{display:none;margin:12px 0;padding:11px 12px;border-radius:11px;font-size:11px;line-height:1.6;overflow-wrap:anywhere}
-.form-feedback.show{display:block}
-.form-feedback.success{background:#e3f5e6;color:#155b36;border:1px solid #bce5c6}
-.form-feedback.error{background:#fff0ee;color:#922b21;border:1px solid #f1c5bf}
-@media(min-width:650px){.welcome{padding:28px}.member-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.feed-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:390px){main{padding-left:9px;padding-right:9px}.welcome h1{font-size:26px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.member-grid{gap:8px}.member-card{padding:12px 8px}.post-choice-grid{gap:7px}.post-choice{padding:12px 9px}.post-choice.active{padding:11px 8px}}
 </style>
+<!-- PART 1 END -->
 </head>
+
+  
+<!-- PART 2 START -->
 <body>
+
 <header class="header">
   <div class="header-inner">
     <div class="logo">BGC</div>
@@ -186,734 +157,610 @@ main{max-width:900px;margin:auto;padding:14px 12px 22px}
       <div class="brand-title">BGC CLUB</div>
       <div class="brand-sub">BUSINESS · NETWORK · GROW</div>
     </div>
-    <button class="btn btn-lime" style="margin-left:auto;padding:10px 12px;white-space:nowrap" onclick="showPanel('joinPanel')">Join Member</button>
+    <button class="btn btn-lime" style="margin-left:auto;white-space:nowrap"
+      onclick="showPanel('joinPanel')">Join Member</button>
   </div>
 </header>
+
 <main>
+
+  <!-- FEEDS PANEL -->
   <section class="panel active" id="feedsPanel">
+
     <div class="welcome">
       <div class="welcome-label">WELCOME TO BGC CLUB</div>
       <h1>Let's find work.<br>Let's grow together.</h1>
-      <p>Connect with business people, find projects, share opportunities and build your network.</p>
+      <p>
+        Connect with business people, find projects, share opportunities
+        and build your professional network.
+      </p>
       <div class="welcome-actions">
-        <button class="btn btn-lime" onclick="showPanel('postPanel')">＋ Share opportunity</button>
-        <button class="btn btn-outline" onclick="showPanel('membersPanel')">Find members ↗</button>
+        <button class="btn btn-lime"
+          onclick="showPanel('postPanel')">＋ Share opportunity</button>
+        <button class="btn btn-outline"
+          onclick="showPanel('membersPanel')">Find members ↗</button>
       </div>
     </div>
-    <div class="stats">
-      <div class="stat"><strong id="memberCount">0</strong><span>Members</span></div>
-      <div class="stat"><strong id="postCount">0</strong><span>Published posts</span></div>
-      <div class="stat"><strong>11</strong><span>Business categories</span></div>
-    </div>
+
     <div class="section-head">
-      <div><h2>Community feeds</h2><p>Jobs, projects and business opportunities</p></div>
+      <div>
+        <h2>Community feeds</h2>
+        <p>Jobs, projects and business opportunities</p>
+      </div>
       <button class="text-btn" onclick="showPanel('postPanel')">＋ Post</button>
     </div>
-    <div class="search"><span>⌕</span><input id="feedSearch" placeholder="Search opportunities…" oninput="renderFeed()"></div>
-    <div class="chips" id="feedChips">
-      <button class="chip active" data-category="All" onclick="setCategory('All',this)">All</button>
-      <button class="chip" data-category="Jobs" onclick="setCategory('Jobs',this)">Jobs</button>
-      <button class="chip" data-category="Projects" onclick="setCategory('Projects',this)">Projects</button>
-      <button class="chip" data-category="Business" onclick="setCategory('Business',this)">Business</button>
-      <button class="chip" data-category="Freelance" onclick="setCategory('Freelance',this)">Freelance</button>
-      <button class="chip" data-category="Partnership" onclick="setCategory('Partnership',this)">Partnership</button>
-    </div>
-    <div class="feed-list" id="feedList"></div>
-  </section>
-<!-- PART 1 END -->
 
-  <!-- PART 2 START -->
-  <section class="panel" id="membersPanel">
-    <div class="section-head">
-      <div><h2>Members</h2><p>Find people by skill, business or city</p></div>
-    </div>
     <div class="search">
       <span>⌕</span>
-      <input id="memberSearch" placeholder="Search members…" oninput="renderMembers()">
+      <input id="feedSearch" placeholder="Search opportunities…"
+        oninput="renderFeed()">
     </div>
-    <div class="member-grid" id="membersGrid"></div>
-    <button class="submit-btn" style="margin-top:15px" onclick="showPanel('joinPanel')">
-      ＋ Create your member profile
-    </button>
+
+    <div class="chips" id="feedChips">
+      <button class="chip active" data-category="All"
+        onclick="setCategory('All',this)">All</button>
+      <button class="chip" data-category="Jobs"
+        onclick="setCategory('Jobs',this)">Jobs</button>
+      <button class="chip" data-category="Projects"
+        onclick="setCategory('Projects',this)">Projects</button>
+      <button class="chip" data-category="Requirements"
+        onclick="setCategory('Requirements',this)">Requirements</button>
+    </div>
+
+    <div id="feedList" class="feed-list">
+      <div class="empty">Loading opportunities…</div>
+    </div>
+
   </section>
 
-  <section class="panel" id="chatPanel">
-    <div class="chat-wrap">
-      <div class="chat-intro">
-        <div class="welcome-label">BGC CLUB COMMUNITY</div>
-        <h2>Team Chat</h2>
-        <p>Share ideas, coordinate work and discuss projects with your team.</p>
+  <!-- MEMBERS PANEL -->
+  <section class="panel" id="membersPanel">
+    <div class="welcome">
+      <div class="welcome-label">BGC CLUB NETWORK</div>
+      <h1>Find the right people.</h1>
+      <p>Discover professionals, freelancers and collaborators in our community.</p>
+      <div class="welcome-actions">
+        <button class="btn btn-lime"
+          onclick="window.location.href='members.html'">
+          Browse members ↗
+        </button>
+        <button class="btn btn-outline"
+          onclick="showPanel('joinPanel')">Join community</button>
       </div>
-      <div class="notice">This is a front-end preview. Messages are shown only in this browser and are not sent to other members yet.</div>
-      <div class="chat-messages" id="chatMessages" aria-live="polite">
-        <div class="chat-note">No messages yet. Start the conversation below.</div>
+    </div>
+    <div class="section-head">
+      <div>
+        <h2>Member directory</h2>
+        <p>Find people by skills and profession.</p>
       </div>
-      <form class="chat-compose" id="chatForm">
-        <input id="chatInput" maxlength="1000" placeholder="Type a message…" autocomplete="off" aria-label="Type a chat message" required>
-        <button type="submit" aria-label="Send message">➤</button>
-      </form>
+    </div>
+    <div class="feed-card">
+      <h3>Build your professional network</h3>
+      <p>Explore approved BGC CLUB members and connect with people for your next project.</p>
+      <div class="card-actions">
+        <button class="btn btn-dark"
+          onclick="window.location.href='members.html'">View members</button>
+        <button class="btn btn-green"
+          onclick="showPanel('joinPanel')">Become a member</button>
+      </div>
     </div>
   </section>
 
+  <!-- JOIN MEMBER PANEL -->
+  <section class="panel" id="joinPanel">
+    <div class="welcome">
+      <div class="welcome-label">JOIN OUR COMMUNITY</div>
+      <h1>Let's build together.</h1>
+      <p>Join BGC CLUB and connect with professionals across business categories.</p>
+    </div>
+    <div class="section-head">
+      <div>
+        <h2>Become a member</h2>
+        <p>Register your professional profile.</p>
+      </div>
+    </div>
+    <div class="feed-card">
+      <h3>Join BGC CLUB</h3>
+      <p>Submit your details through the member registration page. Your application may require admin approval before your profile appears in the directory.</p>
+      <div class="card-actions">
+        <button class="btn btn-dark"
+          onclick="window.location.href='join-member.html'">
+          Register now ↗
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- POST PANEL -->
   <section class="panel" id="postPanel">
+    <div class="welcome">
+      <div class="welcome-label">SHARE AN OPPORTUNITY</div>
+      <h1>Good work starts with a post.</h1>
+      <p>Share jobs, projects and work requirements with the BGC CLUB community.</p>
+    </div>
     <div class="section-head">
       <div>
         <h2>Create a post</h2>
-        <p>Choose what you want to share with BGC CLUB</p>
+        <p>Submit an opportunity for review.</p>
       </div>
     </div>
-
-    <div class="post-choice-grid" role="group" aria-label="Choose post type">
-      <button type="button" class="post-choice active" id="requirementChoice"
-        onclick="switchPostForm('requirement')">
-        <span class="choice-icon">📋</span>
-        <strong>Requirement</strong>
-        <small>Need a service, supplier, freelancer or business solution</small>
-      </button>
-
-      <button type="button" class="post-choice" id="jobChoice"
-        onclick="switchPostForm('job')">
-        <span class="choice-icon">💼</span>
-        <strong>Job Post</strong>
-        <small>Hire staff or share an employment opportunity</small>
-      </button>
+    <div class="feed-card">
+      <h3>What opportunity do you have?</h3>
+      <p>Use the post form to add the title, category, work details, budget and contact information.</p>
+      <div class="card-actions">
+        <button class="btn btn-dark"
+          onclick="window.location.href='post.html'">Create post ↗</button>
+      </div>
     </div>
-
-    <form class="form-card post-form-panel active" id="requirementForm">
-      <span class="post-kind-label">REQUIREMENT</span>
-      <div class="form-grid">
-        <div class="field full">
-          <label for="reqTitle">Requirement title *</label>
-          <input id="reqTitle" required maxlength="120" placeholder="e.g. Web Developer Required">
-        </div>
-        <div class="field full">
-          <label for="reqWorkType">Type of work / service needed *</label>
-          <input id="reqWorkType" required maxlength="100" placeholder="e.g. Website development, AC work, welding, supplier">
-        </div>
-        <div class="field">
-          <label for="reqLocation">Location *</label>
-          <input id="reqLocation" required maxlength="120" placeholder="Chennai / Remote">
-        </div>
-        <div class="field">
-          <label for="reqBudget">Budget (optional)</label>
-          <input id="reqBudget" maxlength="100" placeholder="₹10,000 / Negotiable">
-        </div>
-        <div class="field full">
-          <label for="reqDescription">Requirement details *</label>
-          <textarea id="reqDescription" required maxlength="3000" placeholder="Describe what you need, skills, quantity or expected timeline..."></textarea>
-        </div>
-        <div class="field">
-          <label for="reqName">Your name / business *</label>
-          <input id="reqName" required maxlength="100" placeholder="Your name">
-        </div>
-        <div class="field">
-          <label for="reqWhatsapp">WhatsApp number *</label>
-          <input id="reqWhatsapp" required inputmode="tel" maxlength="20" placeholder="+91 XXXXXXXXXX">
-        </div>
-      </div>
-      <div class="form-feedback" id="reqFeedback" role="status" aria-live="polite"></div>
-      <p class="form-note">Your requirement will be sent for admin approval before appearing in Feeds.</p>
-      <button class="submit-btn" id="reqSubmit" type="submit">Submit Requirement ↗</button>
-    </form>
-
-    <form class="form-card post-form-panel" id="jobForm">
-      <span class="post-kind-label">JOB POST</span>
-      <div class="form-grid">
-        <div class="field full">
-          <label for="jobTitle">Job title *</label>
-          <input id="jobTitle" required maxlength="120" placeholder="e.g. Web Developer Required">
-        </div>
-        <div class="field">
-          <label for="jobCompany">Company / business name</label>
-          <input id="jobCompany" maxlength="120" placeholder="Company name (optional)">
-        </div>
-        <div class="field">
-          <label for="jobLocation">Job location *</label>
-          <input id="jobLocation" required maxlength="120" placeholder="Chennai / Remote">
-        </div>
-        <div class="field full">
-          <label for="jobDescription">Job description *</label>
-          <textarea id="jobDescription" required maxlength="3000" placeholder="Responsibilities, required skills and experience..."></textarea>
-        </div>
-        <div class="field">
-          <label for="jobSalary">Salary / payment (optional)</label>
-          <input id="jobSalary" maxlength="100" placeholder="₹15,000/month / Negotiable">
-        </div>
-        <div class="field">
-          <label for="jobEmployment">Employment type *</label>
-          <select id="jobEmployment" required>
-            <option value="">Choose type</option>
-            <option>Full-time</option>
-            <option>Part-time</option>
-            <option>Freelance / Contract</option>
-            <option>Internship</option>
-            <option>Temporary</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="jobPosterName">Contact person *</label>
-          <input id="jobPosterName" required maxlength="100" placeholder="Your name">
-        </div>
-        <div class="field">
-          <label for="jobWhatsapp">WhatsApp number *</label>
-          <input id="jobWhatsapp" required inputmode="tel" maxlength="20" placeholder="+91 XXXXXXXXXX">
-        </div>
-      </div>
-      <div class="form-feedback" id="jobFeedback" role="status" aria-live="polite"></div>
-      <p class="form-note">Your job post will be sent for admin approval before appearing in Feeds.</p>
-      <button class="submit-btn" id="jobSubmit" type="submit">Submit Job Post ↗</button>
-    </form>
   </section>
 
-  <section class="panel" id="joinPanel">
-    <div class="section-head">
-      <div>
-        <h2>Join BGC CLUB</h2>
-        <p>Introduce yourself to the community</p>
-      </div>
-    </div>
-    <div class="notice">Choose your business category, add your details and create a member profile preview.</div>
-
-    <form class="form-card" id="joinForm">
-      <div class="form-grid">
-        <div class="field full">
-          <label for="joinPhoto">Profile photo (optional)</label>
-          <div class="photo-box">
-            <div class="photo-preview" id="photoPreview">♙</div>
-            <div class="photo-info">
-              <strong>Your profile picture</strong>
-              <p id="photoStatus">Choose an image from your device.</p>
-              <input id="joinPhoto" type="file" accept="image/*">
-              <button type="button" class="btn btn-green" id="removePhoto" style="margin-top:7px">Remove photo</button>
-            </div>
-          </div>
-        </div>
-        <div class="field">
-          <label for="joinName">Full name *</label>
-          <input id="joinName" required maxlength="70" placeholder="Your name">
-        </div>
-        <div class="field">
-          <label for="joinRole">Member role *</label>
-          <select id="joinRole" required>
-            <option value="">Choose role</option>
-            <option>BGC Explorer</option>
-            <option>BGC Entrepreneur</option>
-            <option>BGC Founder</option>
-            <option>Professional</option>
-            <option>Freelancer</option>
-            <option>Job Seeker</option>
-          </select>
-        </div>
-        <div class="field full">
-          <label for="joinSkills">Business category *</label>
-          <select id="joinSkills" required>
-            <option value="">Choose category</option>
-            <option>Business Consultancy</option>
-            <option>Architecture &amp; Interior Design</option>
-            <option>Construction &amp; Installation</option>
-            <option>Equipment &amp; Furniture</option>
-            <option>Branding &amp; Printing</option>
-            <option>Legal, Licensing &amp; Accounts</option>
-            <option>Technology &amp; Software</option>
-            <option>Digital Marketing</option>
-            <option>Suppliers &amp; Distributors</option>
-            <option>Recruitment &amp; Operations</option>
-            <option>Influencers &amp; Content Creators</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="joinCity">City *</label>
-          <input id="joinCity" required maxlength="80" placeholder="e.g. Chennai">
-        </div>
-        <div class="field">
-          <label for="joinContact">WhatsApp / email *</label>
-          <input id="joinContact" required maxlength="120" placeholder="Your contact detail">
-        </div>
-        <div class="field full">
-          <label for="joinAbout">About you</label>
-          <textarea id="joinAbout" maxlength="500" placeholder="Your business, skills and interests"></textarea>
-        </div>
-      </div>
-      <p class="form-note">This prototype stores the profile preview in this browser session only. Member database submission must be connected separately.</p>
-      <button class="submit-btn" id="joinSubmit" type="submit">Create member preview ↗</button>
-    </form>
-  </section>
-<!-- PART 2 END -->
-
-  <!-- PART 3 START -->
 </main>
 
+<!-- PART 2 END -->
+
+  
+<!-- PART 3 START -->
+
+<style>
+/* Bottom navigation */
+.bottom-nav{
+  position:fixed;
+  z-index:30;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(247,248,242,.97);
+  backdrop-filter:blur(18px);
+  border-top:1px solid #dce5dc;
+  box-shadow:0 -8px 24px rgba(24,60,48,.09);
+}
+.bottom-inner{
+  max-width:760px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:7px;
+}
+.nav-item{
+  min-width:0;
+  border:1px solid #dce5dc;
+  background:linear-gradient(145deg,#fff,#f0f4ec);
+  color:#6b796f;
+  border-radius:15px;
+  padding:7px 1px 6px;
+  font-size:10px;
+  font-weight:800;
+  box-shadow:0 4px 0 #d3ded2;
+}
+.nav-item .nav-icon{
+  display:block;
+  font-size:19px;
+  line-height:1.25;
+  margin-bottom:4px;
+}
+.nav-item.active{
+  background:linear-gradient(145deg,#2b6549,#183c30);
+  color:#fff;
+  border-color:#183c30;
+  box-shadow:0 4px 0 #102e23;
+}
+
+/* Modal */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:60;
+  background:#071c16a8;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:14px;
+}
+.modal.open{display:flex}
+.modal-card{
+  width:100%;
+  max-width:480px;
+  max-height:85vh;
+  overflow:auto;
+  background:#fff;
+  border:1px solid #e0e8df;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 12px 35px rgba(24,60,48,.1);
+}
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+}
+.modal-head h2{font-size:18px;margin:0}
+.close-btn{
+  border:0;
+  border-radius:10px;
+  background:#e8f0e6;
+  color:#183c30;
+  font-size:22px;
+  width:35px;
+  height:35px;
+}
+.toast{
+  position:fixed;
+  z-index:90;
+  left:50%;
+  bottom:110px;
+  transform:translateX(-50%);
+  display:none;
+  max-width:90%;
+  padding:12px 15px;
+  border-radius:12px;
+  background:#183c30;
+  color:#fff;
+  font-size:11px;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+.toast.show{display:block}
+
+@media(min-width:650px){
+  .feed-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:500px){
+  body{padding-bottom:100px}
+  main{padding:12px 10px 22px}
+  .welcome{border-radius:21px;padding:23px 18px}
+  .welcome h1{font-size:30px}
+  .stats{gap:7px}
+  .stat{padding:12px 9px;border-radius:14px}
+  .stat strong{font-size:21px}
+  .stat span{font-size:9px}
+  .feed-card{padding:15px;border-radius:18px}
+  .feed-card h3{font-size:16px}
+  .bottom-inner{gap:5px}
+  .nav-item{padding:7px 1px 6px;font-size:9px}
+}
+</style>
+
+<!-- BOTTOM NAVIGATION -->
 <nav class="bottom-nav" aria-label="Main navigation">
   <div class="bottom-inner">
-    <button class="nav-item" data-panel="membersPanel" onclick="showPanel('membersPanel')">
-      <span class="nav-icon">♙</span>Members
+
+    <button class="nav-item"
+      onclick="window.location.href='members.html'">
+      <span class="nav-icon">👥</span>
+      Members
     </button>
-    <button class="nav-item" data-panel="chatPanel" onclick="showPanel('chatPanel')">
-      <span class="nav-icon">💬</span>Chat
+
+    <button class="nav-item"
+      onclick="window.location.href='bgc-event-planner.html'">
+      <span class="nav-icon">📅</span>
+      Event Planner
     </button>
-    <button class="nav-item active" data-panel="feedsPanel" onclick="showPanel('feedsPanel')">
-      <span class="nav-icon">▤</span>Feeds
+
+    <button class="nav-item active"
+      onclick="showPanel('feedsPanel')">
+      <span class="nav-icon">▤</span>
+      Feeds
     </button>
-    <button class="nav-item" data-panel="postPanel" onclick="showPanel('postPanel')">
-      <span class="nav-icon">＋</span>Post
+
+    <button class="nav-item"
+      onclick="window.location.href='post.html'">
+      <span class="nav-icon">＋</span>
+      Post
     </button>
-  
-<a class="nav-item" href="index.html" style="text-decoration:none;text-align:center">
-  <span class="nav-icon">⌂</span>Home
-</a>
+
+    <button class="nav-item"
+      onclick="window.location.href='index.html'">
+      <span class="nav-icon">⌂</span>
+      Home
+    </button>
 
   </div>
 </nav>
 
-<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" onclick="if(event.target===this)closeDetail()">
+<!-- MESSAGE TOAST -->
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- PART 3 END -->
+
+  
+<!-- PART 4 START -->
+
+<!-- Opportunity details modal -->
+<div class="modal" id="detailModal" onclick="if(event.target===this)closeDetail()">
   <div class="modal-card">
     <div class="modal-head">
-      <h2 id="detailTitle">Details</h2>
+      <h2 id="detailTitle">Opportunity details</h2>
       <button class="close-btn" onclick="closeDetail()" aria-label="Close">×</button>
     </div>
     <div id="detailBody"></div>
   </div>
 </div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
 <script>
 "use strict";
 
-/* Supabase connection */
-const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
-const bgcSupabase = window.supabase
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  : null;
+/* Existing BGC CLUB Supabase project */
+const SUPABASE_URL =
+  "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+const bgcSupabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+let publishedPosts = [];
+let activeCategory = "All";
+let currentPost = null;
 
 const $ = id => document.getElementById(id);
-const safe = value => String(value ?? "").replace(/[&<>"']/g, char => ({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-}[char]));
 
-let currentCategory = "All";
-let livePosts = [];
-let feedLoading = true;
-let feedLoadError = "";
-let selectedPhotoData = "";
+/* Safe HTML output */
+function safe(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
 
+/* Notifications */
 function toast(message) {
   const element = $("toast");
+  if (!element) {
+    alert(message);
+    return;
+  }
+
   element.textContent = message;
   element.classList.add("show");
+
   clearTimeout(window.bgcToastTimer);
-  window.bgcToastTimer = setTimeout(() => element.classList.remove("show"), 3000);
+  window.bgcToastTimer = setTimeout(() => {
+    element.classList.remove("show");
+  }, 3000);
 }
 
+/* Panel navigation */
 function showPanel(panelId) {
-  document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
-  const panel = $(panelId);
-  if (!panel) return;
-  panel.classList.add("active");
-
-  document.querySelectorAll(".nav-item").forEach(button => {
-    button.classList.toggle("active", button.dataset.panel === panelId);
+  document.querySelectorAll(".panel").forEach(panel => {
+    panel.classList.toggle("active", panel.id === panelId);
   });
 
-  window.scrollTo({top:0, behavior:"smooth"});
+  document.querySelectorAll(".nav-item").forEach(button => {
+    button.classList.remove("active");
+  });
+
+  if (panelId === "feedsPanel") {
+    const feedButton = document.querySelectorAll(".nav-item")[2];
+    if (feedButton) feedButton.classList.add("active");
+    renderFeed();
+  }
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function displayCategory(category) {
-  const value = String(category || "Business");
-  if (value.startsWith("Job-")) return "Jobs";
-  if (value.startsWith("Requirement-")) return "Projects";
-  return value;
+/* Convert database category into feed filter */
+function getPostGroup(category) {
+  const value = String(category || "").trim();
+
+  if (/^job\s*-/i.test(value)) return "Jobs";
+  if (/^requirement\s*-/i.test(value)) return "Requirements";
+  if (/^project\s*-/i.test(value)) return "Projects";
+
+  return "Requirements";
 }
 
+/* Load only published opportunities */
+async function loadPublishedPosts() {
+  const list = $("feedList");
+  if (list) {
+    list.innerHTML = '<div class="empty">Loading opportunities…</div>';
+  }
+
+  try {
+    const { data, error } = await bgcSupabase
+      .from("bgc_job_posts")
+      .select(
+        "id,title,category,location,description,budget,deadline,poster_name,whatsapp_number,source_type,status,created_at"
+      )
+      .eq("status", "published")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    publishedPosts = data || [];
+
+    if ($("postCount")) {
+      $("postCount").textContent = publishedPosts.length;
+    }
+
+    renderFeed();
+
+  } catch (error) {
+    console.error("Feed loading error:", error);
+
+    if (list) {
+      list.innerHTML =
+        '<div class="empty">Unable to load feeds. Please check your internet connection and Supabase SELECT policy.</div>';
+    }
+
+    if ($("postCount")) $("postCount").textContent = "—";
+  }
+}
+
+/* Category filter */
 function setCategory(category, button) {
-  currentCategory = category;
-  document.querySelectorAll(".chip").forEach(chip => chip.classList.remove("active"));
-  if (button) button.classList.add("active");
+  activeCategory = category;
+
+  document.querySelectorAll("#feedChips .chip").forEach(chip => {
+    chip.classList.toggle("active", chip === button);
+  });
+
   renderFeed();
 }
 
+/* Format date */
+function formatDate(value) {
+  if (!value) return "";
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+/* Render feed cards */
 function renderFeed() {
   const list = $("feedList");
   if (!list) return;
 
-  if (feedLoading) {
-    list.innerHTML = '<div class="empty">Loading published opportunities…</div>';
-    return;
-  }
+  const query = ($("feedSearch")?.value || "")
+    .trim()
+    .toLowerCase();
 
-  if (feedLoadError) {
-    list.innerHTML = `<div class="empty">
-      Could not load the feed.<br>${safe(feedLoadError)}
-      <br><br><button class="btn btn-dark" onclick="loadPublishedPosts()">Try again</button>
-    </div>`;
-    return;
-  }
+  const filtered = publishedPosts.filter(post => {
+    const searchable = [
+      post.title,
+      post.category,
+      post.location,
+      post.description,
+      post.poster_name,
+      post.budget
+    ].join(" ").toLowerCase();
 
-  const query = $("feedSearch").value.trim().toLowerCase();
-  const posts = livePosts.filter(post => {
-    const category = displayCategory(post.category);
-    const text = [post.title, post.description, post.location, post.budget,
-      post.poster_name, category].join(" ").toLowerCase();
-    return (!query || text.includes(query)) &&
-      (currentCategory === "All" || category.toLowerCase() === currentCategory.toLowerCase());
+    const matchesSearch = searchable.includes(query);
+
+    const group = getPostGroup(post.category);
+    const matchesCategory =
+      activeCategory === "All" ||
+      group === activeCategory;
+
+    return matchesSearch && matchesCategory;
   });
 
-  $("postCount").textContent = livePosts.length;
-
-  if (!posts.length) {
-    list.innerHTML = '<div class="empty">No published opportunities yet.<br>Approved posts will appear here.</div>';
+  if (!filtered.length) {
+    list.innerHTML = `
+      <div class="empty" style="grid-column:1/-1">
+        <strong>No opportunities found.</strong><br>
+        Try another search or category. Published posts will appear here.
+      </div>`;
     return;
   }
 
-  list.innerHTML = posts.map(post => `
-    <article class="feed-card">
-      <div class="feed-top">
-        <span class="tag">${safe(displayCategory(post.category))}</span>
-        <span class="small-muted">${safe(post.createdLabel || "")}</span>
-      </div>
-      <h3>${safe(post.title || "Opportunity")}</h3>
-      <p>${safe(post.description || "No additional details provided.")}</p>
-      <div class="meta">
-        ${post.location ? `<span>📍 ${safe(post.location)}</span>` : ""}
-        ${post.budget ? `<span>💰 ${safe(post.budget)}</span>` : ""}
-        ${post.poster_name ? `<span>👤 ${safe(post.poster_name)}</span>` : ""}
-      </div>
-      <div class="card-actions">
-        <button class="btn btn-green" onclick="viewPost('${safe(post.id)}')">View details</button>
-        ${post.whatsapp_number ? `<button class="btn btn-dark" onclick="whatsapp('${safe(post.whatsapp_number)}')">WhatsApp ↗</button>` : ""}
-      </div>
-    </article>
-  `).join("");
+  list.innerHTML = filtered.map(post => {
+    const group = getPostGroup(post.category);
+    const phone = String(post.whatsapp_number || "")
+      .replace(/\D/g, "");
+
+    return `
+      <article class="feed-card">
+        <div class="feed-top">
+          <span class="tag">${safe(group)}</span>
+          <span class="small-muted">${safe(formatDate(post.created_at))}</span>
+        </div>
+
+        <h3>${safe(post.title)}</h3>
+
+        <p>${safe(post.description)}</p>
+
+        <div class="meta">
+          ${post.location
+            ? `<span>📍 ${safe(post.location)}</span>` : ""}
+          ${post.budget
+            ? `<span>💰 ₹${safe(post.budget)}</span>` : ""}
+          ${post.deadline
+            ? `<span>📅 Deadline: ${safe(post.deadline)}</span>` : ""}
+          ${post.poster_name
+            ? `<span>👤 ${safe(post.poster_name)}</span>` : ""}
+        </div>
+
+        <div class="card-actions">
+          <button class="btn btn-green"
+            onclick="viewPost('${safe(post.id)}')">
+            View details
+          </button>
+
+          ${phone.length >= 10 && phone.length <= 15
+            ? `<button class="btn btn-dark"
+                onclick="whatsapp('${phone}')">
+                WhatsApp ↗
+              </button>`
+            : ""}
+        </div>
+      </article>`;
+  }).join("");
 }
 
-async function loadPublishedPosts() {
-  if (!bgcSupabase) {
-    feedLoading = false;
-    feedLoadError = "Supabase client could not load. Check your internet connection.";
-    renderFeed();
-    return;
-  }
-
-  feedLoading = true;
-  feedLoadError = "";
-  renderFeed();
-
-  try {
-    const {data, error} = await bgcSupabase
-      .from("bgc_job_posts")
-      .select("id,title,category,location,description,budget,poster_name,whatsapp_number,status,created_at")
-      .eq("status", "published")
-      .order("created_at", {ascending:false});
-
-    if (error) throw error;
-
-    livePosts = (data || []).map(row => ({
-      ...row,
-      createdLabel: row.created_at
-        ? new Date(row.created_at).toLocaleDateString("en-IN", {day:"numeric",month:"short"})
-        : ""
-    }));
-  } catch (error) {
-    console.error("BGC feed load error:", error);
-    feedLoadError = error.message || "Unable to connect to the database.";
-  } finally {
-    feedLoading = false;
-    renderFeed();
-  }
-}
-
+/* Opportunity detail popup */
 function viewPost(id) {
-  const post = livePosts.find(item => String(item.id) === String(id));
+  const post = publishedPosts.find(item => item.id === id);
   if (!post) return;
 
-  $("detailTitle").textContent = post.title || "Opportunity";
+  currentPost = post;
+
+  $("detailTitle").textContent = post.title || "Opportunity details";
+
   $("detailBody").innerHTML = `
-    <span class="tag">${safe(displayCategory(post.category))}</span>
-    <p style="font-size:13px;line-height:1.8;white-space:pre-wrap">${safe(post.description || "")}</p>
-    ${post.location ? `<p><b>Location:</b> ${safe(post.location)}</p>` : ""}
-    ${post.budget ? `<p><b>Budget:</b> ${safe(post.budget)}</p>` : ""}
-    ${post.poster_name ? `<p><b>Posted by:</b> ${safe(post.poster_name)}</p>` : ""}
-    ${post.whatsapp_number ? `<button class="submit-btn" onclick="whatsapp('${safe(post.whatsapp_number)}')">Contact on WhatsApp ↗</button>` : ""}
+    <span class="tag">${safe(getPostGroup(post.category))}</span>
+    <p style="white-space:pre-wrap;line-height:1.8">${safe(post.description)}</p>
+    ${post.location
+      ? `<p>📍 <strong>Location:</strong> ${safe(post.location)}</p>` : ""}
+    ${post.budget
+      ? `<p>💰 <strong>Budget:</strong> ₹${safe(post.budget)}</p>` : ""}
+    ${post.deadline
+      ? `<p>📅 <strong>Deadline:</strong> ${safe(post.deadline)}</p>` : ""}
+    ${post.poster_name
+      ? `<p>👤 <strong>Posted by:</strong> ${safe(post.poster_name)}</p>` : ""}
+    ${post.whatsapp_number
+      ? `<button class="btn btn-dark" onclick="whatsapp('${safe(post.whatsapp_number)}')">Contact on WhatsApp ↗</button>`
+      : ""}
   `;
+
   $("detailModal").classList.add("open");
 }
 
 function closeDetail() {
   $("detailModal").classList.remove("open");
+  currentPost = null;
 }
 
+/* WhatsApp contact */
 function whatsapp(number) {
-  const clean = String(number || "").replace(/[^\d]/g, "");
-  if (clean.length < 8) {
+  const clean = String(number || "").replace(/\D/g, "");
+
+  if (clean.length < 10 || clean.length > 15) {
     toast("A valid WhatsApp number is not available.");
     return;
   }
-  window.open("https://wa.me/" + clean, "_blank", "noopener");
-}
-<!-- PART 3 END -->
 
-  /* Members: demo profiles removed */
-const sampleMembers = [];
-
-function renderMembers() {
-  const grid = $("membersGrid");
-  if (!grid) return;
-
-  const query = $("memberSearch").value.trim().toLowerCase();
-  const members = sampleMembers.filter(member =>
-    [member.name, member.role, member.skills, member.city, member.about]
-      .join(" ").toLowerCase().includes(query)
+  window.open(
+    "https://wa.me/" + clean,
+    "_blank",
+    "noopener,noreferrer"
   );
-
-  $("memberCount").textContent = sampleMembers.length;
-
-  grid.innerHTML = members.length
-    ? members.map((member, index) => `
-        <article class="member-card">
-          <div class="member-avatar">
-            ${member.photo
-              ? `<img src="${safe(member.photo)}" alt="">`
-              : safe(member.name.charAt(0).toUpperCase())}
-          </div>
-          <h3>${safe(member.name)}</h3>
-          <div class="member-role">${safe(member.role)}</div>
-          <div class="member-city">📍 ${safe(member.city)}</div>
-          <div class="member-skill">${safe(member.skills)}</div>
-          <button class="btn btn-green" onclick="viewMember(${index})">View profile</button>
-        </article>
-      `).join("")
-    : '<div class="empty" style="grid-column:1/-1">No members yet. Join BGC CLUB to create your profile.</div>';
 }
 
-function viewMember(index) {
-  const member = sampleMembers[index];
-  if (!member) return;
-
-  $("detailTitle").textContent = "Member profile";
-  $("detailBody").innerHTML = `
-    <div style="text-align:center">
-      <div class="member-avatar">
-        ${member.photo
-          ? `<img src="${safe(member.photo)}" alt="">`
-          : safe(member.name.charAt(0).toUpperCase())}
-      </div>
-      <h3>${safe(member.name)}</h3>
-      <span class="tag">${safe(member.role)}</span>
-    </div>
-    <p><b>Category:</b> ${safe(member.skills)}</p>
-    <p><b>City:</b> ${safe(member.city)}</p>
-    <p>${safe(member.about || "")}</p>
-  `;
-  $("detailModal").classList.add("open");
-}
-
-/* Switch between Requirement and Job Post */
-function switchPostForm(kind) {
-  const isRequirement = kind === "requirement";
-  $("requirementChoice").classList.toggle("active", isRequirement);
-  $("jobChoice").classList.toggle("active", !isRequirement);
-  $("requirementForm").classList.toggle("active", isRequirement);
-  $("jobForm").classList.toggle("active", !isRequirement);
-}
-
-/* Profile photo preview */
-$("joinPhoto").addEventListener("change", event => {
-  const file = event.target.files && event.target.files[0];
-  if (!file) return;
-
-  if (!file.type.startsWith("image/")) {
-    toast("Please select an image.");
-    event.target.value = "";
-    return;
-  }
-
-  if (file.size > 10 * 1024 * 1024) {
-    toast("Choose an image smaller than 10 MB.");
-    event.target.value = "";
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    selectedPhotoData = reader.result;
-    $("photoPreview").innerHTML =
-      `<img src="${safe(selectedPhotoData)}" alt="Profile preview">`;
-    $("photoStatus").textContent = file.name + " · Preview ready";
-  };
-  reader.onerror = () => toast("Unable to read this photo.");
-  reader.readAsDataURL(file);
-});
-
-$("removePhoto").addEventListener("click", () => {
-  selectedPhotoData = "";
-  $("joinPhoto").value = "";
-  $("photoPreview").textContent = "♙";
-  $("photoStatus").textContent = "Choose an image from your device.";
-});
-
-/* Local Chat preview — messages are not shared with other members */
-const localChatMessages = [];
-
-$("chatForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const input = $("chatInput");
-  const message = input.value.trim();
-  if (!message) return;
-
-  localChatMessages.push(message);
-
-  $("chatMessages").innerHTML = localChatMessages.map(text =>
-    `<div class="chat-bubble">${safe(text)}</div>`
-  ).join("");
-
-  input.value = "";
-});
-
-/* Join form — local profile preview only */
-$("joinForm").addEventListener("submit", event => {
-  event.preventDefault();
-
-  const member = {
-    name: $("joinName").value.trim(),
-    role: $("joinRole").value,
-    skills: $("joinSkills").value,
-    city: $("joinCity").value.trim(),
-    contact: $("joinContact").value.trim(),
-    about: $("joinAbout").value.trim(),
-    photo: selectedPhotoData
-  };
-
-  sampleMembers.push(member);
-  event.target.reset();
-
-  selectedPhotoData = "";
-  $("photoPreview").textContent = "♙";
-  $("photoStatus").textContent = "Choose an image from your device.";
-
-  renderMembers();
-  showPanel("membersPanel");
-  toast("Profile preview created in this browser only.");
-});
-
-/* Post feedback */
-function setPostFeedback(id, message, type) {
-  const element = $(id);
-  element.textContent = message;
-  element.className = "form-feedback show " + type;
-}
-
-function validWhatsApp(value) {
-  const digits = String(value || "").replace(/\D/g, "");
-  return digits.length >= 10 && digits.length <= 15 ? digits : "";
-}
-
-async function submitPublicPost(form, button, feedbackId, data) {
-  if (button.disabled) return;
-
-  const phone = validWhatsApp(data.whatsapp_number);
-  if (!phone) {
-    setPostFeedback(feedbackId, "Enter a valid WhatsApp number with 10–15 digits.", "error");
-    return;
-  }
-
-  if (!bgcSupabase) {
-    setPostFeedback(feedbackId, "Supabase did not load. Check your internet and reload the page.", "error");
-    return;
-  }
-
-  button.disabled = true;
-  const originalText = button.textContent;
-  button.textContent = "Submitting...";
-
-  try {
-    const payload = {
-      title: data.title,
-      category: data.category,
-      location: data.location,
-      description: data.description,
-      budget: data.budget || null,
-      poster_name: data.poster_name,
-      whatsapp_number: phone,
-      status: "pending",
-      source_type: "public"
-    };
-
-    const {error} = await bgcSupabase
-      .from("bgc_job_posts")
-      .insert(payload);
-
-    if (error) throw error;
-
-    form.reset();
-    setPostFeedback(
-      feedbackId,
-      "Submitted successfully! Your post is waiting for admin approval.",
-      "success"
-    );
-    toast("Post submitted for admin approval.");
-  } catch (error) {
-    console.error("BGC CLUB submission error:", error);
-    setPostFeedback(
-      feedbackId,
-      "Submission failed: " + (error.message || "Please check Supabase policies and table columns."),
-      "error"
-    );
-  } finally {
-    button.disabled = false;
-    button.textContent = originalText;
-  }
-}
-
-/* Submit Requirement */
-$("requirementForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const workType = $("reqWorkType").value.trim();
-  const details = $("reqDescription").value.trim();
-
-  submitPublicPost(this, $("reqSubmit"), "reqFeedback", {
-    title: $("reqTitle").value.trim(),
-    category: "Requirement - " + workType,
-    location: $("reqLocation").value.trim(),
-    description: "Type of work needed: " + workType + "\n\n" + details,
-    budget: $("reqBudget").value.trim(),
-    poster_name: $("reqName").value.trim(),
-    whatsapp_number: $("reqWhatsapp").value.trim()
-  });
-});
-
-/* Submit Job */
-$("jobForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-
-  const company = $("jobCompany").value.trim();
-  const employment = $("jobEmployment").value;
-  const details = $("jobDescription").value.trim();
-
-  submitPublicPost(this, $("jobSubmit"), "jobFeedback", {
-    title: $("jobTitle").value.trim(),
-    category: "Job - " + employment,
-    location: $("jobLocation").value.trim(),
-    description:
-      (company ? "Company / business: " + company + "\n\n" : "") +
-      "Employment type: " + employment + "\n\n" + details,
-    budget: $("jobSalary").value.trim(),
-    poster_name: $("jobPosterName").value.trim(),
-    whatsapp_number: $("jobWhatsapp").value.trim()
-  });
-});
-
-/* Close popup with Escape */
+/* Close modal with Escape */
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") closeDetail();
 });
 
-/* Start the app */
-renderFeed();
-renderMembers();
+/* Start */
 loadPublishedPosts();
 </script>
+
 </body>
 </html>
+<!-- PART 4 END -->
