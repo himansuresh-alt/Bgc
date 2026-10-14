@@ -759,6 +759,40 @@ document.addEventListener("keydown", event => {
 
 /* Start */
 loadPublishedPosts();
+
+/* BGC CLUB — Hidden Admin Access */
+(function () {
+  const logo = document.querySelector(".header .logo");
+  if (!logo) return;
+
+  let tapCount = 0;
+  let resetTimer = null;
+
+  logo.style.cursor = "pointer";
+
+  logo.addEventListener("click", function (event) {
+    event.preventDefault();
+    tapCount++;
+
+    if (resetTimer) clearTimeout(resetTimer);
+
+    resetTimer = setTimeout(function () {
+      tapCount = 0;
+      resetTimer = null;
+    }, 3000);
+
+    if (tapCount >= 5) {
+      tapCount = 0;
+      clearTimeout(resetTimer);
+      resetTimer = null;
+
+      window.location.href = "admin-panel.html";
+    }
+  });
+})();
+</script>
+
+  
 </script>
 
 </body>
