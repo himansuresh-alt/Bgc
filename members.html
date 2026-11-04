@@ -80,7 +80,8 @@ h1{
   font-size:16px;
   line-height:1.7;
   max-width:650px;
-  margin:0;
+  margin:0 auto;
+  text-align:center;
 }
 main{
   max-width:1100px;
@@ -248,7 +249,7 @@ input:focus,select:focus{
   padding:13px 1px;
 }
 .back-detail{
-  margin:0 0 12px;
+    margin:0 0 12px;
   color:#d0cfd3;
   font-size:12px;
   line-height:1.6;
@@ -262,27 +263,8 @@ input:focus,select:focus{
   text-transform:uppercase;
   margin-bottom:3px;
 }
-  .back-actions{
-  display:flex;
-  gap:8px;
-  padding-top:12px;
-  border-top:1px solid #ffffff20;
-}
-.back-btn{
-  flex:1;
-  border:1px solid #a34b60;
-  border-radius:10px;
-  padding:11px 8px;
-  background:#8d1831;
-  color:#fff;
-  font-size:11px;
-  font-weight:800;
-  cursor:pointer;
-}
-.back-btn.secondary{
-  background:transparent;
-  border-color:#55545a;
-}
+  .back-actions{display:flex;gap:8px;padding-top:12px;border-top:1px solid #ffffff20}
+.back-btn{width:100%;border:1px solid #a34b60;border-radius:10px;padding:12px 8px;background:#8d1831;color:#fff;font-size:12px;font-weight:800;cursor:pointer}
 .message{
   grid-column:1/-1;
   padding:28px 18px;
@@ -302,41 +284,21 @@ input:focus,select:focus{
   color:#fff;
   font-weight:700;
 }
-.modal-overlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:10001;
-  background:#000b;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-.modal-overlay.show{display:flex}
-.modal-box{
-  width:min(100%,390px);
-  background:#252529;
-  border:1px solid #55545a;
-  border-radius:18px;
-  padding:24px;
-  text-align:center;
-}
-.modal-box h3{margin:0 0 10px}
-.modal-box p{
-  color:#c3c1c7;
-  font-size:13px;
-  line-height:1.7;
-}
-.modal-close{
-  width:100%;
-  padding:13px;
-  background:var(--burgundy);
-  color:white;
-  border:0;
-  border-radius:10px;
-  font-weight:700;
-  margin-top:12px;
-}
+.profile-modal-overlay{display:none;position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.82);align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.profile-modal-overlay.show{display:flex}
+.profile-modal-box{position:relative;width:min(100%,520px);max-height:88vh;overflow:auto;background:radial-gradient(circle at top right,#54202f 0,transparent 42%),#222225;border:1px solid #55545a;border-radius:22px;padding:24px;text-align:left;box-shadow:0 25px 80px #0009}
+.profile-modal-x{position:absolute;right:14px;top:12px;width:36px;height:36px;border:1px solid #55545a;border-radius:50%;background:#ffffff10;color:#fff;font-size:24px;cursor:pointer}
+.profile-modal-heading{display:flex;align-items:center;gap:14px;padding:8px 34px 18px 0;border-bottom:1px solid #ffffff20}
+.profile-modal-heading img{width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid #b34a63}
+.profile-modal-heading h2{margin:5px 0;font-size:22px;overflow-wrap:anywhere}
+.profile-modal-heading p{margin:0;color:#c7c4ca;font-size:13px}
+.profile-modal-details{padding:16px 0 4px}
+.profile-modal-details .back-detail{font-size:13px;margin-bottom:14px}
+.profile-link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.profile-link{display:flex;align-items:center;justify-content:center;min-height:46px;padding:10px;border:1px solid #754052;border-radius:11px;background:#8d183122;color:#f0a7b7;text-decoration:none;font-size:12px;font-weight:800;text-align:center;overflow-wrap:anywhere}
+.profile-link:hover{background:#8d1831;color:#fff}
+.modal-close{width:100%;padding:13px;background:var(--burgundy);color:white;border:0;border-radius:10px;font-weight:700;margin-top:18px;cursor:pointer}
+@media(max-width:420px){.profile-modal-box{padding:19px;border-radius:18px}.profile-modal-heading img{width:62px;height:62px}.profile-modal-heading h2{font-size:19px}.profile-link-grid{grid-template-columns:1fr 1fr}}
 footer{
   text-align:center;
   color:#898990;
@@ -564,21 +526,25 @@ footer{
   }
 
   }
+
+  /* CENTER HERO HEADING */
+.hero .eyebrow {
+    text-align: center;
+}
+
+.hero h1 {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
 </style>
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">BGC <span>CLUB</span></div>
-    <a class="home-link" href="index.html">Join Member</a>
-  </div>
-</header>
-
 <section class="hero">
   <div class="eyebrow">BGC Members</div>
-  <h1>Meet the people<br>building businesses.</h1>
-  <p>Discover business owners and entrepreneurs who are part of the BGC CLUB network. Connect, exchange referrals and grow together.</p>
+  <h1>Where Business<br>Minds Connect.</h1>
+  <p>Exchange Opportunities & Grow Together..</p>
 </section>
 
 <main>
@@ -603,11 +569,16 @@ footer{
 
 <footer>BGC CLUB · Business Referral Network</footer>
 
-<div class="modal-overlay" id="editNotice" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <h3>Member Login Required</h3>
-    <p>Secure Edit Profile வசதியை இயக்க member login மற்றும் account ownership இணைப்பு தேவை. இது அமைக்கப்பட்ட பிறகு உங்கள் profile-ஐ மட்டும் edit செய்ய முடியும்.</p>
-    <button class="modal-close" id="closeNotice">Close</button>
+<div class="profile-modal-overlay" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="profileModalName">
+  <div class="profile-modal-box">
+    <button class="profile-modal-x" type="button" id="closeProfileModal" aria-label="Close">×</button>
+    <div class="profile-modal-heading">
+      <img id="profileModalPhoto" src="" alt="">
+      <div><div class="back-label">BGC CLUB BUSINESS MEMBER</div><h2 id="profileModalName">Member Name</h2><p id="profileModalCategory"></p></div>
+    </div>
+    <div id="profileModalDetails" class="profile-modal-details"></div>
+    <div id="profileModalLinks" class="profile-link-grid"></div>
+    <button class="modal-close" id="closeProfileModalBottom" type="button">Close Profile</button>
   </div>
 </div>
 
@@ -757,20 +728,50 @@ function flipCard(card) {
   );
 }
 
-function showEditNotice(event) {
-  event.stopPropagation();
-  editNotice.classList.add("show");
+function getMemberLinks(member, details) {
+  const fields = details.linkFields || {};
+  const candidates = [
+    ["Website", member.website_url || member.website || member.portfolio_url || fields.website],
+    ["Instagram", member.instagram_url || member.instagram || fields.instagram],
+    ["LinkedIn", member.linkedin_url || member.linkedin || fields.linkedin],
+    ["Play Store App", member.play_store_url || member.playstore_url || member.google_play_url || fields.playstore],
+    ["iOS App Store", member.app_store_url || member.ios_app_url || member.apple_app_store_url || fields.appstore]
+  ];
+  return candidates.map(([label,value]) => ({label,url:safeWebURL(String(value || "").trim())})).filter(item => item.url);
 }
 
-document.getElementById("closeNotice").addEventListener("click", () => {
-  editNotice.classList.remove("show");
-});
+function openMemberProfile(member) {
+  const details = parseMemberDetails(member);
+  document.getElementById("profileModalPhoto").src = getMemberPhoto(member);
+  document.getElementById("profileModalName").textContent = member.full_name || "BGC Member";
+  document.getElementById("profileModalCategory").textContent =
+    (details.category || "BGC CLUB Member") + (details.subcategory ? " · " + details.subcategory : "");
+  const rows = [
+    ["Business Location",details.city],
+    ["Business Experience",details.experience],
+    ["Products & Services",details.services.join(", ")]
+  ].filter(row => row[1]);
+  document.getElementById("profileModalDetails").innerHTML = rows.map(([label,value]) =>
+    `<div class="back-detail"><strong>${escapeHTML(label)}</strong>${escapeHTML(value)}</div>`
+  ).join("");
+  const links = getMemberLinks(member,details);
 
-editNotice.addEventListener("click", event => {
-  if (event.target === editNotice) {
-    editNotice.classList.remove("show");
-  }
+    document.getElementById("profileModalLinks").innerHTML = links.length
+    ? links.map(item => `<a class="profile-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(item.label)} ↗</a>`).join("")
+    : '<div class="back-detail">இந்த member இன்னும் website / social / app links சேர்க்கவில்லை.</div>';
+  document.getElementById("profileModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function closeMemberProfile() {
+  document.getElementById("profileModal").classList.remove("show");
+  document.body.style.overflow = "";
+}
+document.getElementById("closeProfileModal").addEventListener("click",closeMemberProfile);
+document.getElementById("closeProfileModalBottom").addEventListener("click",closeMemberProfile);
+document.getElementById("profileModal").addEventListener("click",event => {
+  if(event.target.id === "profileModal") closeMemberProfile();
 });
+document.addEventListener("keydown",event => { if(event.key === "Escape") closeMemberProfile(); });
 
 function renderMembers() {
   const term = searchInput.value.trim().toLowerCase();
@@ -879,15 +880,9 @@ function renderMembers() {
               ${portfolioHTML}
             </div>
                         <div class="back-actions">
-              <button class="back-btn secondary"
-                type="button"
-                onclick="event.stopPropagation();flipCard(this.closest('.flip-card'))">
-                ← Back
-              </button>
-              <button class="back-btn"
-                type="button"
-                onclick="showEditNotice(event)">
-                ✎ Edit Profile
+              <button class="back-btn" type="button"
+                onclick="event.stopPropagation();openMemberProfile(allMembers.find(item => String(item.id) === String('${escapeHTML(member.id)}')) || {})">
+                ↗ View Profile
               </button>
             </div>
           </div>
@@ -908,9 +903,7 @@ async function loadMembers() {
   try {
     const { data, error } = await db
       .from("bgc_team_members")
-      .select(
-        "id, full_name, department, skills, experience_level, work_type, portfolio_url, photo_url, status"
-      )
+      .select("*")
       .eq("status", "approved")
       .order("full_name", { ascending:true });
 
