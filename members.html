@@ -642,6 +642,25 @@ footer{
   }
 }
 
+  .back-flip-zone {
+  flex: 1 1 80%;
+  min-height: 0;
+}
+
+.back-actions {
+  flex: 0 0 20%;
+  min-height: 60px;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+}
+
+.back-actions .back-btn {
+  position: relative;
+  z-index: 21;
+  pointer-events: auto;
+  touch-action: manipulation;
+}
 /* BGC MEMBERS PAGE - CENTERED HERO + HORIZONTAL CATEGORY FILTERS */
 .hero{
   text-align:center;
@@ -1248,9 +1267,7 @@ function renderMembers() {
                 ${subcategory ? " · " + escapeHTML(subcategory) : ""}
               </div>
 
-              <div class="flip-hint">
-                ↻ Tap to view business profile
-              </div>
+              
             </div>
           </div>
 
