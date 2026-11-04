@@ -528,18 +528,14 @@ async function uploadEventImage() {
 
 /* INSERT INTO EXISTING TABLE */
 async function insertEventer(data) {
- const { data: inserted, error } = await bgcEventsSupabase
-  .from(EVENT_TABLE)
-  .insert([data])
-  .select()
-  .single();
+  const { error } = await bgcEventsSupabase
+    .from(EVENT_TABLE)
+    .insert([data]);
 
- if (error) {
-  console.error("Eventer database error:", error);
-  throw new Error(error.message || "Unable to register your business.");
- }
-
- return inserted;
+  if (error) {
+    console.error("Eventer database error:", error);
+    throw new Error(error.message || "Unable to register your business.");
+  }
 }
 
 /* FORM SUBMIT */
