@@ -437,6 +437,133 @@ footer{
   .mobile-nav-item{height:62px;font-size:10px;gap:4px}
   .mobile-nav-icon,.mobile-nav-icon svg{width:25px;height:25px}
 }
+
+  @media(max-width:560px){
+
+  .topbar{
+    padding:15px 20px;
+  }
+
+  .brand{
+    font-size:23px;
+  }
+
+  .hero{
+    padding:32px 20px 22px;
+  }
+
+  .hero p{
+    font-size:15px;
+  }
+
+  main{
+    padding:17px 12px 45px;
+  }
+
+  .toolbar{
+    grid-template-columns:1fr;
+  }
+
+  /* TWO PROFILES IN MOBILE */
+
+  .member-list{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+
+  /* PROFILE CARD SIZE */
+
+  .flip-card{
+    height:300px;
+    min-width:0;
+  }
+
+  .flip-front,
+  .flip-back{
+    border-radius:16px;
+  }
+
+  /* FRONT PROFILE */
+
+  .front-content{
+    padding:12px;
+  }
+
+  .front-name{
+    font-size:17px;
+    line-height:1.2;
+    margin-bottom:6px;
+  }
+
+  .front-category{
+    font-size:10px;
+    line-height:1.4;
+  }
+
+  .flip-hint{
+    margin-top:10px;
+    padding:6px 8px;
+    font-size:8px;
+    letter-spacing:.3px;
+  }
+
+  /* BACK PROFILE */
+
+  .flip-back{
+    padding:12px;
+  }
+
+  .back-top{
+    gap:8px;
+    padding-bottom:11px;
+  }
+
+  .back-avatar{
+    width:38px;
+    height:38px;
+  }
+
+  .back-name{
+    font-size:13px;
+    line-height:1.25;
+  }
+
+  .back-label{
+    font-size:8px;
+    letter-spacing:.6px;
+  }
+
+  .back-details{
+    padding:10px 1px;
+  }
+
+  .back-detail{
+    font-size:10px;
+    line-height:1.45;
+    margin-bottom:9px;
+  }
+
+  .back-detail strong{
+    font-size:9px;
+  }
+
+  .back-actions{
+    gap:6px;
+    padding-top:9px;
+  }
+
+  .back-btn{
+    padding:9px 5px;
+    font-size:9px;
+    border-radius:8px;
+  }
+
+  .member-count{
+    font-size:10px;
+  }
+
+  }
 </style>
 </head>
 <body>
