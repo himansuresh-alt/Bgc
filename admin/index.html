@@ -1,1 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171717">
+<title>BGC CLUB | Central Admin</title>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+ --bg:#f5f5f3;
+ --ink:#171717;
+ --muted:#737373;
+ --line:#e7e7e3;
+ --accent:#7b1722;
+ --rose:#e69aa2;
+ --white:#fff;
+ --shadow:0 14px 38px rgba(0,0,0,.06)
+}
+
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--ink);
+ font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif
+}
+
+button,input{font:inherit}
+a{text-decoration:none;color:inherit}
+.hidden{display:none!important}
+
+.topbar{
+ background:#171717;
+ color:#fff
+}
+
+.topinner{
+ width:min(1080px,calc(100% - 28px));
+ margin:auto;
+ padding:16px 0;
+ display:flex;
+ align-items:center;
+ gap:12px
+}
+
+.logo{
+ width:44px;
+ height:44px;
+ border-radius:14px;
+ background:#f0d9dc;
+ color:var(--accent);
+ display:grid;
+ place-items:center;
+ font-weight:1000
+}
+
+.brand{
+ font-weight:900;
+ font-size:17px;
+ line-height:1.2
+}
+
+.brand small{
+ display:block;
+ color:#d7b7bc;
+ font-size:10px;
+ letter-spacing:.1em;
+ margin-top:4px
+}
+
+.top-actions{
+ margin-left:auto;
+ display:flex;
+ gap:8px
+}
+
+.btn{
+ border:0;
+ border-radius:11px;
+ padding:11px 15px;
+ font-size:12px;
+ font-weight:850;
+ cursor:pointer
+}
+
+.btn-light{
+ background:#fff;
+ color:#171717
+}
+
+.btn-primary{
+ background:var(--accent);
+ color:#fff
+}
+
+.btn:disabled{
+ opacity:.6;
+ cursor:wait
+}
+
+.wrap{
+ width:min(1080px,calc(100% - 28px));
+ margin:auto
+}
+
+.login-wrap{
+ min-height:calc(100vh - 76px);
+ display:grid;
+ place-items:center;
+ padding:28px 0
+}
+
+.login-card{
+ width:100%;
+ max-width:440px;
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:24px;
+ padding:27px;
+ box-shadow:var(--shadow)
+}
+
+.kicker{
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:.16em;
+ color:var(--accent)
+}
+
+h1{
+ font-size:31px;
+ line-height:1.1;
+ letter-spacing:-1px;
+ margin:10px 0
+}
+
+.muted{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.7
+}
+
+.field{
+ display:grid;
+ gap:6px;
+ margin:15px 0
+}
+
+.field label{
+ font-size:11px;
+ font-weight:850
+}
+
+.field input{
+ width:100%;
+ padding:13px;
+ border:1px solid var(--line);
+ border-radius:12px;
+ background:#fbfbfa
+}
+
+.full{width:100%}
+
+.status{
+ display:none;
+ padding:11px 13px;
+ margin:12px 0;
+ border-radius:11px;
+ font-size:12px;
+ line-height:1.5;
+ overflow-wrap:anywhere
+}
+
+.status.show{display:block}
+.status.err{background:#fff0ee;color:#a12a2a}
+.status.ok{background:#e6f7ed;color:#155e40}
+
+main{padding:28px 0 54px}
+
+.hero{
+ background:#171717;
+ color:#fff;
+ border-radius:22px;
+ padding:24px;
+ margin-bottom:18px
+}
+
+.hero .kicker{color:var(--rose)}
+
+.hero h1{
+ margin:8px 0;
+ font-size:29px
+}
+
+.hero p{
+ margin:0;
+ color:#d0d0d0;
+ font-size:12px
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px
+}
+
+.module{
+ display:block;
+ background:#fff;
+ border:1px solid var(--line);
+ border-radius:18px;
+ padding:19px;
+ box-shadow:var(--shadow);
+ transition:transform .15s,border-color .15s
+}
+
+.module:active{transform:scale(.99)}
+.module:hover{border-color:#d7b7bc}
+
+.module-icon{
+ width:42px;
+ height:42px;
+ border-radius:13px;
+ background:#f5e9eb;
+ color:var(--accent);
+ display:grid;
+ place-items:center;
+ font-size:21px;
+ margin-bottom:13px
+}
+
+.module h2{
+ font-size:16px;
+ margin:0 0 5px
+}
+
+.module p{
+ font-size:12px;
+ color:var(--muted);
+ margin:0;
+ line-height:1.6
+}
+
+.open{
+ display:inline-block;
+ margin-top:14px;
+ color:var(--accent);
+ font-size:11px;
+ font-weight:900
+}
+
+.note{
+ text-align:center;
+ color:var(--muted);
+ font-size:10px;
+ margin-top:20px
+}
+
+@media(max-width:560px){
+ .grid{grid-template-columns:1fr}
+ .topinner{padding:12px 0}
+ .hero{padding:20px}
+ .module{padding:17px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+ <div class="topinner">
+
+  <div class="logo">BGC</div>
+
+  <div class="brand">
+   BGC CLUB
+   <small>CENTRAL ADMIN CONTROL</small>
+  </div>
+
+  <div class="top-actions">
+   <button
+    class="btn btn-light hidden"
+    id="logoutBtn"
+    type="button">
+    Sign out
+   </button>
+  </div>
+
+ </div>
+</header>
+
+<div class="wrap">
+
+ <!-- LOGIN SCREEN -->
+
+ <section class="login-wrap" id="loginScreen">
+
+  <div class="login-card">
+
+   <div class="kicker">
+    PRIVATE ADMIN ACCESS
+   </div>
+
+   <h1>Welcome back.</h1>
+
+   <p class="muted">
+    Sign in once to access all BGC CLUB admin modules.
+   </p>
+
+   <div class="status" id="loginStatus"></div>
+
+   <form id="loginForm">
+
+    <div class="field">
+     <label for="email">Admin email</label>
+     <input
+      id="email"
+      type="email"
+      autocomplete="username"
+      placeholder="Enter admin email"
+      required>
+    </div>
+
+    <div class="field">
+     <label for="password">Password</label>
+     <input
+      id="password"
+      type="password"
+      autocomplete="current-password"
+      placeholder="Enter password"
+      required>
+    </div>
+
+    <button
+     class="btn btn-primary full"
+     id="loginBtn"
+     type="submit">
+     Sign in securely ↗
+    </button>
+
+   </form>
+
+   <p class="muted">
+    Access is checked against your existing admin email and admin_users table.
+   </p>
+
+  </div>
+
+ </section>
+
+
+ <!-- CENTRAL ADMIN HOME -->
+
+ <main id="adminHome" class="hidden">
+
+  <section class="hero">
+
+   <div class="kicker">
+    CENTRAL ADMIN CONTROL
+   </div>
+
+   <h1>BGC CLUB Admin Dashboard</h1>
+
+   <p>
+    Manage all BGC CLUB operations from one place.
+   </p>
+
+  </section>
+
+
+  <div class="grid">
+
+   <!-- MAIN DASHBOARD -->
+
+   <a class="module" href="../admin.html">
+
+    <div class="module-icon">▦</div>
+
+    <h2>Main Dashboard</h2>
+
+    <p>
+     Manage BGC LIVE webinars, founder profiles,
+     registrations, connections and team applications.
+    </p>
+
+    <span class="open">
+     Open Main Admin ↗
+    </span>
+
+   </a>
+
+
+   <!-- MEMBER ADMIN -->
+
+   <a class="module" href="../admin-panel.html">
+
+    <div class="module-icon">♙</div>
+
+    <h2>Member &amp; Job Posts</h2>
+
+    <p>
+     Review member applications, approvals
+     and public job or opportunity posts.
+    </p>
+
+    <span class="open">
+     Open Member Admin ↗
+    </span>
+
+   </a>
+
+
+   <!-- EVENTS ADMIN -->
+
+   <a class="module" href="../admin-events.html">
+
+    <div class="module-icon">▦</div>
+
+    <h2>BGC Events</h2>
+
+    <p>
+     View and manage event service provider registrations.
+    </p>
+
+    <span class="open">
+     Open Events Admin ↗
+    </span>
+
+   </a>
+
+
+   <!-- OVERVIEW -->
+
+   <a class="module" href="../admin.html">
+
+    <div class="module-icon">⌂</div>
+
+    <h2>Return to Overview</h2>
+
+    <p>
+     Open the main BGC CLUB admin dashboard.
+    </p>
+
+    <span class="open">
+     Open Overview ↗
+    </span>
+
+   </a>
+
+  </div>
+
+  <p class="note">
+   One sign-in · Three existing admin modules · Existing Supabase data retained
+  </p>
+
+ </main>
+
+</div>
+
+
+<script>
+"use strict";
+
+const SUPABASE_URL =
+"https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+const ADMIN_EMAIL =
+"bgclubusiness@gmail.com";
+
+const db = window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+
+function showStatus(message,type="err"){
+
+ const el = $("loginStatus");
+
+ el.textContent = message;
+
+ el.className =
+  "status show " +
+  (type==="err" ? "err" : "ok");
+
+}
+
+
+function showHome(){
+
+ $("loginScreen").classList.add("hidden");
+
+ $("adminHome").classList.remove("hidden");
+
+ $("logoutBtn").classList.remove("hidden");
+
+}
+
+
+function showLogin(){
+
+ $("loginScreen").classList.remove("hidden");
+
+ $("adminHome").classList.add("hidden");
+
+ $("logoutBtn").classList.add("hidden");
+
+}
+
+
+async function verifyCentralAdmin(){
+
+ const {
+  data:{session},
+  error
+ } = await db.auth.getSession();
+
+ if(error) throw error;
+
+ if(!session){
+
+  showLogin();
+
+  return false;
+
+ }
+
+
+ if(
+  !session.user.email ||
+  session.user.email.toLowerCase() !==
+  ADMIN_EMAIL.toLowerCase()
+ ){
+
+  await db.auth.signOut();
+
+  showLogin();
+
+  throw new Error(
+   "This account is not the configured BGC CLUB admin email."
+  );
+
+ }
+
+
+ const {
+  data,
+  error:checkError
+ } = await db
+  .from("admin_users")
+  .select("user_id")
+  .eq("user_id",session.user.id)
+  .maybeSingle();
+
+
+ if(checkError) throw checkError;
+
+
+ if(!data){
+
+  await db.auth.signOut();
+
+  showLogin();
+
+  throw new Error(
+   "This account is not listed in the existing admin_users table."
+  );
+
+ }
+
+
+ showHome();
+
+ return true;
+
+}
+
+
+// LOGIN
+
+$("loginForm").addEventListener(
+ "submit",
+ async event => {
+
+  event.preventDefault();
+
+  $("loginStatus").className = "status";
+
+  const button = $("loginBtn");
+
+  button.disabled = true;
+
+  button.textContent = "Signing in…";
+
+
+  try{
+
+   const {error} = await db.auth.signInWithPassword({
+
+    email:$("email").value.trim(),
+
+    password:$("password").value
+
+   });
+
+   if(error) throw error;
+
+   await verifyCentralAdmin();
+
+
+  }catch(error){
+
+   console.error(error);
+
+   showStatus(
+    error.message || "Login failed.",
+    "err"
+   );
+
+  }finally{
+
+   button.disabled = false;
+
+   button.textContent = "Sign in securely ↗";
+
+  }
+
+ });
+
+
+// LOGOUT
+
+$("logoutBtn").addEventListener(
+ "click",
+ async () => {
+
+  await db.auth.signOut();
+
+  $("password").value = "";
+
+  showLogin();
+
+ });
+
+
+// AUTH SESSION LISTENER
+
+db.auth.onAuthStateChange((event)=>{
+
+ if(event==="SIGNED_OUT"){
+
+  showLogin();
+
+ }
+
+});
+
+
+// CHECK EXISTING SESSION
+
+(async()=>{
+
+ try{
+
+  await verifyCentralAdmin();
+
+ }catch(error){
+
+  console.error(error);
+
+  showStatus(
+   error.message || "Unable to verify admin session.",
+   "err"
+  );
+
+ }
+
+})();
+
+</script>
+
+</body>
+</html>
