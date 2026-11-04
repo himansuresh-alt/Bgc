@@ -1,789 +1,889 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#183c30">
-  <title>BGC CLUB | Members</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171719">
+<title>BGC CLUB | Business Members</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <style>
-    :root {
-      --forest: #183c30;
-      --forest2: #285642;
-      --cream: #f7f6f0;
-      --ink: #1d2b23;
-      --muted: #6e7b72;
-      --line: #dce5dc;
-      --gold: #c7a66a;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      background: var(--cream);
-      color: var(--ink);
-      font-family: Inter, Arial, sans-serif;
-    }
-
-    .topbar {
-      background: var(--forest);
-      color: white;
-      padding: 18px 20px;
-    }
-
-    .topbar-inner {
-      max-width: 1000px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .brand-mark {
-      width: 43px;
-      height: 43px;
-      border: 1px solid #8aa897;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      font-weight: 800;
-      color: #f4e7c7;
-    }
-
-    .brand {
-      font-weight: 800;
-      letter-spacing: 1.3px;
-      font-size: 18px;
-    }
-
-    .tagline {
-      font-size: 11px;
-      letter-spacing: 1.1px;
-      color: #c6d7cb;
-      margin-top: 4px;
-      text-transform: uppercase;
-    }
-
-    .home-link {
-      color: white;
-      text-decoration: none;
-      border: 1px solid #718f7e;
-      padding: 10px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #183c30, #2d6047);
-      color: white;
-      padding: 34px 20px 62px;
-    }
-
-    .hero-inner {
-      max-width: 1000px;
-      margin: auto;
-      display: grid;
-      grid-template-columns: 1.3fr .7fr;
-      align-items: center;
-      gap: 25px;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #f0dfb8;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .eyebrow:before {
-      content: "";
-      width: 22px;
-      height: 1px;
-      background: var(--gold);
-    }
-
-    h1 {
-      font-family: Georgia, serif;
-      font-size: clamp(32px, 5vw, 50px);
-      font-weight: 500;
-      line-height: 1.08;
-      letter-spacing: -1.2px;
-      margin: 14px 0;
-    }
-
-    .hero p {
-      color: #d8e4da;
-      line-height: 1.7;
-      max-width: 560px;
-      margin: 0;
-      font-size: 14px;
-    }
-
-    .hero-note {
-      border: 1px solid #557764;
-      background: #ffffff0b;
-      border-radius: 18px;
-      padding: 20px;
-    }
-
-    .hero-note strong {
-      display: block;
-      font-family: Georgia, serif;
-      font-size: 21px;
-      font-weight: 500;
-      margin-bottom: 8px;
-    }
-
-    .hero-note span {
-      font-size: 13px;
-      line-height: 1.6;
-      color: #d4e1d7;
-    }
-
-    main {
-      max-width: 1000px;
-      margin: -30px auto 0;
-      padding: 0 16px 50px;
-      position: relative;
-    }
-
-    .directory-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      box-shadow: 0 16px 50px #183c3010;
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 24px 26px 18px;
-      border-bottom: 1px solid #edf1ec;
-    }
-
-    .card-head h2 {
-      font-size: 20px;
-      margin: 0 0 7px;
-    }
-
-    .card-head p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    .directory-body {
-      padding: 22px 26px 26px;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    input, select {
-      width: 100%;
-      min-width: 0;
-      padding: 13px 14px;
-      border: 1px solid #d8e1d8;
-      border-radius: 11px;
-      background: #fcfdfb;
-      color: var(--ink);
-      font-size: 14px;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: #568269;
-      box-shadow: 0 0 0 3px #56826917;
-    }
-
-    .count {
-      font-size: 12px;
-      color: #65756a;
-      margin: 14px 0 12px;
-    }
-
-    .member-list {
-      display: flex;
-      flex-direction: column;
-      gap: 13px;
-    }
-
-    .member-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 18px;
-      background: white;
-      border: 1px solid #e0e8df;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px #183c3008;
-      transition: transform .2s, border-color .2s;
-    }
-
-    .member-card:hover {
-      transform: translateY(-1px);
-      border-color: #b9cdbd;
-    }
-
-    .avatar {
-      width: 82px;
-      height: 82px;
-      min-width: 82px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: #e5ede6;
-      border: 3px solid white;
-      box-shadow: 0 0 0 1px #d7e2d8;
-    }
-
-    .member-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .member-name {
-      font-family: Georgia, serif;
-      font-size: 21px;
-      font-weight: 500;
-      margin: 2px 0 9px;
-      overflow-wrap: anywhere;
-      color: #203b2c;
-    }
-
-    .department {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #e8f2e9;
-      color: #285b3a;
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 9px;
-    }
-
-    .detail {
-      margin: 6px 0;
-      color: #56645a;
-      font-size: 13px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .portfolio {
-      display: inline-flex;
-      margin-top: 10px;
-      color: #24633d;
-      font-size: 13px;
-      font-weight: 700;
-      text-decoration: none;
-      border-bottom: 1px solid #b7cfbc;
-      padding-bottom: 2px;
-    }
-
-    .portfolio:hover {
-      color: var(--forest);
-      border-color: var(--forest);
-    }
-
-    .message {
-      background: #f8faf7;
-      border: 1px solid #e2e9e0;
-      padding: 24px 16px;
-      border-radius: 13px;
-      text-align: center;
-      color: #647066;
-      line-height: 1.7;
-      font-size: 13px;
-    }
-
-    .retry {
-      margin-top: 12px;
-      border: none;
-      border-radius: 9px;
-      padding: 11px 16px;
-      background: var(--forest);
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    footer {
-      text-align: center;
-      padding: 23px 12px 30px;
-      color: #7b887d;
-      font-size: 11px;
-      letter-spacing: .3px;
-    }
-
-    @media (max-width: 700px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-note { display: none; }
-      .hero { padding: 29px 18px 55px; }
-      .topbar { padding: 14px; }
-      .brand { font-size: 16px; }
-      .brand-mark { width: 39px; height: 39px; }
-      main { padding-left: 12px; padding-right: 12px; }
-      .directory-body { padding: 18px 14px 20px; }
-      .card-head { padding: 21px 18px 16px; }
-      .toolbar { grid-template-columns: 1fr; gap: 10px; }
-      .member-card { gap: 13px; padding: 14px; }
-      .avatar { width: 70px; height: 70px; min-width: 70px; }
-      .member-name { font-size: 18px; }
-    }
-
-    @media (max-width: 380px) {
-      .member-card { gap: 10px; padding: 12px; }
-      .avatar { width: 58px; height: 58px; min-width: 58px; }
-      .member-name { font-size: 16px; }
-    }
-
-    
-/* Same fixed navigation CSS as feeds.html */
-.bottom-nav{
+<style>
+:root{
+  --black:#171719;
+  --panel:#222225;
+  --burgundy:#8d1831;
+  --burgundy2:#a92743;
+  --white:#fff;
+  --muted:#a7a7ad;
+  --line:#39393e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--black);
+  color:var(--white);
+  font-family:Inter,Arial,sans-serif;
+  padding-bottom:120px;
+}
+.topbar{
+  background:#f3f1ef;
+  color:#171719;
+  padding:17px 20px;
+  border-top:5px solid var(--burgundy);
+}
+.topbar-inner{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+}
+.brand{
+  font-family:Georgia,serif;
+  font-size:24px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+.brand span{color:var(--burgundy)}
+.home-link{
+  text-decoration:none;
+  color:#fff;
+  background:var(--burgundy);
+  border-radius:13px;
+  padding:13px 19px;
+  font-size:13px;
+  font-weight:700;
+}
+.hero{
+  max-width:1100px;
+  margin:auto;
+  padding:34px 20px 28px;
+}
+.eyebrow{
+  color:#e49aab;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+h1{
+  font-size:clamp(34px,6vw,54px);
+  line-height:1.02;
+  letter-spacing:-2px;
+  margin:24px 0;
+  max-width:650px;
+}
+.hero p{
+  color:#b7b7bd;
+  font-size:16px;
+  line-height:1.7;
+  max-width:650px;
+  margin:0;
+}
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:18px 20px 60px;
+}
+.directory-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+.directory-head h2{
+  margin:0;
+  font-size:21px;
+}
+.member-count{
+  color:#e7a0b0;
+  font-size:12px;
+}
+.toolbar{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:22px;
+}
+input,select{
+  width:100%;
+  min-width:0;
+  padding:14px 15px;
+  border:1px solid #414147;
+  border-radius:12px;
+  background:#242428;
+  color:#fff;
+  font-size:14px;
+  outline:none;
+}
+input::placeholder{color:#9999a1}
+input:focus,select:focus{
+  border-color:#b34a63;
+  box-shadow:0 0 0 3px #8d183122;
+}
+.member-list{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+}
+.flip-card{
+  perspective:1200px;
+  min-width:0;
+  height:420px;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.flip-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+  transition:transform .7s cubic-bezier(.2,.75,.25,1);
+  transform-style:preserve-3d;
+}
+.flip-card.flipped .flip-inner{
+  transform:rotateY(180deg);
+}
+.flip-front,.flip-back{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  border-radius:24px;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  border:1px solid #414147;
+  background:#252529;
+}
+.flip-front{
+  display:flex;
+  align-items:flex-end;
+  background:#29292d;
+}
+.front-photo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#303036;
+}
+.front-shade{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,.94) 0%,
+    rgba(0,0,0,.48) 35%,
+    rgba(0,0,0,.02) 75%
+  );
+}
+.front-content{
+  position:relative;
+  z-index:2;
+  padding:22px;
+  width:100%;
+}
+.front-name{
+  font-size:25px;
+  font-weight:800;
+  margin-bottom:9px;
+  overflow-wrap:anywhere;
+}
+.front-category{
+  color:#e5dfe1;
+  font-size:13px;
+  line-height:1.5;
+}
+.flip-hint{
+  display:inline-flex;
+  margin-top:17px;
+  border:1px solid #ffffff66;
+  border-radius:30px;
+  padding:7px 11px;
+  color:#fff;
+  font-size:10px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+.flip-back{
+  transform:rotateY(180deg);
+  padding:22px;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(circle at top right,#54202f 0,transparent 45%),
+    #222225;
+}
+.back-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding-bottom:17px;
+  border-bottom:1px solid #ffffff20;
+}
+.back-avatar{
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #b34a63;
+}
+.back-name{
+  font-size:18px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+.back-label{
+  color:#e5a2b1;
+  font-size:10px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+  margin-top:5px;
+}
+.back-details{
+  overflow:auto;
+  flex:1;
+  padding:13px 1px;
+}
+.back-detail{
+  margin:0 0 12px;
+  color:#d0cfd3;
+  font-size:12px;
+  line-height:1.6;
+  overflow-wrap:anywhere;
+}
+.back-detail strong{
+  display:block;
+  color:#fff;
+  font-size:10px;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  margin-bottom:3px;
+}
+  .back-actions{
+  display:flex;
+  gap:8px;
+  padding-top:12px;
+  border-top:1px solid #ffffff20;
+}
+.back-btn{
+  flex:1;
+  border:1px solid #a34b60;
+  border-radius:10px;
+  padding:11px 8px;
+  background:#8d1831;
+  color:#fff;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+}
+.back-btn.secondary{
+  background:transparent;
+  border-color:#55545a;
+}
+.message{
+  grid-column:1/-1;
+  padding:28px 18px;
+  border:1px solid #39393e;
+  border-radius:15px;
+  text-align:center;
+  color:#b9b8bf;
+  line-height:1.7;
+  font-size:13px;
+}
+.retry{
+  margin-top:12px;
+  padding:11px 16px;
+  border:0;
+  border-radius:9px;
+  background:var(--burgundy);
+  color:#fff;
+  font-weight:700;
+}
+.modal-overlay{
+  display:none;
   position:fixed;
-  z-index:30;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
-  background:rgba(247,248,242,.97);
-  backdrop-filter:blur(18px);
-  border-top:1px solid #dce5dc;
-  box-shadow:0 -8px 24px rgba(24,60,48,.09);
+  inset:0;
+  z-index:10001;
+  background:#000b;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.modal-overlay.show{display:flex}
+.modal-box{
+  width:min(100%,390px);
+  background:#252529;
+  border:1px solid #55545a;
+  border-radius:18px;
+  padding:24px;
+  text-align:center;
+}
+.modal-box h3{margin:0 0 10px}
+.modal-box p{
+  color:#c3c1c7;
+  font-size:13px;
+  line-height:1.7;
+}
+.modal-close{
+  width:100%;
+  padding:13px;
+  background:var(--burgundy);
+  color:white;
+  border:0;
+  border-radius:10px;
+  font-weight:700;
+  margin-top:12px;
+}
+footer{
+  text-align:center;
+  color:#898990;
+  font-size:11px;
+  padding:25px 12px 35px;
+}
+@media(max-width:800px){
+  .member-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .topbar{padding:15px 20px}
+  .brand{font-size:23px}
+  .hero{padding:32px 20px 22px}
+  .hero p{font-size:15px}
+  main{padding:17px 20px 45px}
+  .toolbar{grid-template-columns:1fr}
+  .member-list{grid-template-columns:1fr}
+  .flip-card{height:490px}
+  .front-name{font-size:27px}
+  .flip-back{padding:20px}
+}
+@media(min-width:561px) and (max-width:800px){
+  .flip-card{height:390px}
+}
+@media(prefers-reduced-motion:reduce){
+  .flip-inner{transition:none}
 }
 
-.bottom-inner{
-  max-width:760px;
-  margin:auto;
+/* Existing BGC CLUB fixed bottom navigation */
+.mobile-bottom-nav{
+  position:fixed;
+  left:50%;
+  bottom:calc(12px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  z-index:9999;
+  width:min(94%,520px);
+  min-height:82px;
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:7px;
+  align-items:center;
+  gap:4px;
+  padding:9px 8px;
+  border:1px solid rgba(255,255,255,.85);
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(239,242,247,.91));
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:0 15px 35px #0002,0 4px 9px #0001,
+    inset 0 1px 1px #ffffff,inset 0 -2px 4px #0000000b;
 }
-
-.nav-item{
+.mobile-nav-item{
   min-width:0;
-  border:1px solid #dce5dc;
-  background:linear-gradient(145deg,#fff,#f0f4ec);
-  color:#6b796f;
-  border-radius:15px;
-  padding:7px 1px 6px;
-  font-size:10px;
-  font-weight:800;
-  box-shadow:0 4px 0 #d3ded2;
+  height:64px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border-radius:18px;
+  color:#656a73;
+  text-decoration:none;
+  font-size:11px;
+  font-weight:700;
 }
-
-.nav-item .nav-icon{
-  display:block;
-  font-size:19px;
-  line-height:1.25;
-  margin-bottom:4px;
+.mobile-nav-item.active{
+  color:#8d1831;
+  background:linear-gradient(145deg,#fff,#f0e9ec);
+  box-shadow:0 5px 10px #0002,inset 0 1px 2px #fff;
 }
-
-.nav-item.active{
-  background:linear-gradient(145deg,#2b6549,#183c30);
-  color:#fff;
-  border-color:#183c30;
-  box-shadow:0 4px 0 #102e23;
+.mobile-nav-icon{
+  width:29px;
+  height:29px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-
-@media(max-width:500px){
-  body{padding-bottom:100px}
-  .bottom-inner{gap:5px}
-  .nav-item{padding:7px 1px 6px;font-size:9px}
+.mobile-nav-icon svg{
+  width:27px;
+  height:27px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
-
-  </style>
+@media(min-width:701px){
+  .mobile-bottom-nav{bottom:22px;width:min(560px,80%)}
+}
+@media(max-width:700px){
+  body{padding-bottom:120px}
+  .mobile-bottom-nav{
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    width:calc(100% - 24px);
+    min-height:78px;
+    padding:7px 5px;
+    border-radius:23px;
+  }
+  .mobile-nav-item{height:62px;font-size:10px;gap:4px}
+  .mobile-nav-icon,.mobile-nav-icon svg{width:25px;height:25px}
+}
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand-wrap">
-        <div class="brand-mark">BG</div>
-        <div>
-          <div class="brand">BGC CLUB</div>
-          <div class="tagline">Connect · Collaborate · Grow</div>
-        </div>
-      </div>
-      <a class="home-link" href="index.html">← Home</a>
-    </div>
-  </header>
 
-  <section class="hero">
-    <div class="hero-inner">
-      <div>
-        <div class="eyebrow">Our community</div>
-        <h1>People who make<br>great work happen.</h1>
-        <p>Meet approved freelancers, professionals and service providers. Discover people by their skills, city and department.</p>
-      </div>
-      <aside class="hero-note">
-        <strong>Find your people.<br>Build together.</strong>
-        <span>Explore the BGC CLUB network of approved professionals and discover skills for your next collaboration.</span>
-      </aside>
-    </div>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">BGC <span>CLUB</span></div>
+    <a class="home-link" href="index.html">Join Member</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">BGC Members</div>
+  <h1>Meet the people<br>building businesses.</h1>
+  <p>Discover business owners and entrepreneurs who are part of the BGC CLUB network. Connect, exchange referrals and grow together.</p>
+</section>
+
+<main>
+  <div class="directory-head">
+    <h2>Member Directory</h2>
+    <span class="member-count" id="memberCount">Loading...</span>
+  </div>
+
+  <div class="toolbar">
+    <input id="searchInput" type="search"
+      placeholder="Search business, member or city..."
+      aria-label="Search members">
+    <select id="categoryFilter" aria-label="Filter by business category">
+      <option value="">All Business Categories</option>
+    </select>
+  </div>
+
+  <section id="memberList" class="member-list">
+    <div class="message">Loading approved members...</div>
   </section>
+</main>
 
-  <main>
-    <section class="directory-card">
-      <div class="card-head">
-        <h2>Member directory</h2>
-        <p>Search the community or filter members by department.</p>
-      </div>
-      <div class="directory-body">
-        <div class="toolbar">
-          <input id="searchInput" type="search"
-            placeholder="Search name, skills or city..."
-            aria-label="Search members">
-          <select id="departmentFilter" aria-label="Filter by department">
-            <option value="">All Departments</option>
-          </select>
-        </div>
-        <div id="memberCount" class="count">Loading members...</div>
-        <section id="memberList" class="member-list">
-          <div class="message">Loading approved members...</div>
-        </section>
-      </div>
-    </section>
-  </main>
+<footer>BGC CLUB · Business Referral Network</footer>
 
-  <footer>BGC CLUB · A network for people who make work happen</footer>
+<div class="modal-overlay" id="editNotice" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <h3>Member Login Required</h3>
+    <p>Secure Edit Profile வசதியை இயக்க member login மற்றும் account ownership இணைப்பு தேவை. இது அமைக்கப்பட்ட பிறகு உங்கள் profile-ஐ மட்டும் edit செய்ய முடியும்.</p>
+    <button class="modal-close" id="closeNotice">Close</button>
+  </div>
+</div>
 
-  
-<script>
-  // Existing BGC CLUB Supabase project
-  const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
+  <script>
+const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
 
-  const SUPABASE_KEY =
-    "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const memberList = document.getElementById("memberList");
+const memberCount = document.getElementById("memberCount");
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const editNotice = document.getElementById("editNotice");
 
-  const memberList = document.getElementById("memberList");
-  const memberCount = document.getElementById("memberCount");
-  const searchInput = document.getElementById("searchInput");
-  const departmentFilter = document.getElementById("departmentFilter");
+let allMembers = [];
 
-  let allMembers = [];
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function (char) {
-      const entities = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      };
-
-      return entities[char];
-    });
-  }
-
-  function safeWebURL(value) {
-    try {
-      const url = new URL(value);
-
-      if (url.protocol === "https:" || url.protocol === "http:") {
-        return url.href;
-      }
-    } catch (error) {
-      // Invalid URL: do not display a clickable link.
+function safeWebURL(value) {
+  try {
+    const url = new URL(value);
+    if (url.protocol === "https:" || url.protocol === "http:") {
+      return url.href;
     }
+  } catch (error) {}
+  return "";
+}
 
-    return "";
-  }
+function parseMemberDetails(member) {
+  const lines = String(member.skills || "")
+    .split(/\r?\n/)
+    .map(line => line.trim())
+    .filter(Boolean);
 
-  function getCityAndSkills(skillsValue) {
-    const lines = String(skillsValue || "")
-      .split(/\r?\n/)
-      .map(line => line.trim())
-      .filter(Boolean);
+  const result = {
+    city:"",
+    category:"",
+    subcategory:"",
+    experience:"",
+    services:[]
+  };
 
-    let city = "";
-
-    const remainingSkills = lines.filter(line => {
-      const match = line.match(/^City\s*:\s*(.*)$/i);
-
-      if (match) {
-        city = match[1].trim();
-        return false;
-      }
-
-      return true;
-    });
-
-    return {
-      city: city,
-      skills: remainingSkills.join(", ")
-    };
-  }
-
-  function makeInitials(name) {
-    const parts = String(name || "Member")
-      .trim()
-      .split(/\s+/)
-      .filter(Boolean);
-
-    return parts.slice(0, 2)
-      .map(part => part[0])
-      .join("")
-      .toUpperCase();
-  }
-
-  function avatarPlaceholder(name) {
-    const initials = escapeHTML(makeInitials(name));
-
-    const svg =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
-      '<rect width="100" height="100" rx="50" fill="#e3ece4"/>' +
-      '<text x="50" y="57" text-anchor="middle" font-size="30" ' +
-      'font-family="Arial" fill="#285b3a">' + initials + '</text>' +
-      '</svg>';
-
-    return "data:image/svg+xml;charset=UTF-8," +
-      encodeURIComponent(svg);
-  }
-
-  function getMemberPhoto(member) {
-    const url = safeWebURL(member.photo_url);
-    return url || avatarPlaceholder(member.full_name);
-  }
-
-  function populateDepartments() {
-    const departments = [...new Set(
-      allMembers
-        .map(member => String(member.department || "").trim())
-        .filter(Boolean)
-    )].sort((a, b) => a.localeCompare(b));
-
-    departmentFilter.innerHTML =
-      '<option value="">All Departments</option>';
-
-    departments.forEach(department => {
-      const option = document.createElement("option");
-      option.value = department;
-      option.textContent = department;
-      departmentFilter.appendChild(option);
-    });
-  }
-
-  function renderMembers() {
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    const selectedDepartment = departmentFilter.value;
-
-    const filteredMembers = allMembers.filter(member => {
-      const locationAndSkills = getCityAndSkills(member.skills);
-
-      const searchableText = [
-        member.full_name,
-        member.department,
-        locationAndSkills.city,
-        locationAndSkills.skills,
-        member.experience_level,
-        member.work_type
-      ].join(" ").toLowerCase();
-
-      const matchesSearch = searchableText.includes(searchTerm);
-
-      const matchesDepartment =
-        !selectedDepartment ||
-        member.department === selectedDepartment;
-
-      return matchesSearch && matchesDepartment;
-    });
-
-    memberCount.textContent =
-      filteredMembers.length + " approved member(s)";
-
-    if (filteredMembers.length === 0) {
-      memberList.innerHTML =
-        '<div class="message">' +
-        'No matching members found.<br>' +
-        'Try another name, skill or department.' +
-        '</div>';
-
+  lines.forEach(line => {
+    const match = line.match(/^([^:]+)\s*:\s*(.*)$/);
+    if (!match) {
+      result.services.push(line);
       return;
     }
 
-    memberList.innerHTML = filteredMembers.map(member => {
-      const locationAndSkills = getCityAndSkills(member.skills);
-      const photo = escapeHTML(getMemberPhoto(member));
-      const portfolioURL = safeWebURL(member.portfolio_url);
+    const key = match[1].trim().toLowerCase();
+    const value = match[2].trim();
 
-      const departmentHTML = member.department
-        ? '<div class="department">' +
-          escapeHTML(member.department) +
-          '</div>'
-        : "";
-
-      const cityHTML = locationAndSkills.city
-        ? '<div class="detail">📍 ' +
-          escapeHTML(locationAndSkills.city) +
-          '</div>'
-        : "";
-
-      const skillsHTML = locationAndSkills.skills
-        ? '<div class="detail"><strong>Skills:</strong> ' +
-          escapeHTML(locationAndSkills.skills) +
-          '</div>'
-        : "";
-
-      const experienceHTML = member.experience_level
-        ? '<div class="detail"><strong>Experience:</strong> ' +
-          escapeHTML(member.experience_level) +
-          '</div>'
-        : "";
-
-      const workTypeHTML = member.work_type
-        ? '<div class="detail"><strong>Work type:</strong> ' +
-          escapeHTML(member.work_type) +
-          '</div>'
-        : "";
-
-      const portfolioHTML = portfolioURL
-        ? '<a class="portfolio" href="' +
-          escapeHTML(portfolioURL) +
-          '" target="_blank" rel="noopener noreferrer">' +
-          'View Portfolio ↗</a>'
-        : "";
-
-      return `
-        <article class="member-card">
-          <img
-            class="avatar"
-            src="${photo}"
-            alt="${escapeHTML(member.full_name || "Member")}"
-            loading="lazy"
-            onerror="this.onerror=null;this.src=avatarPlaceholder(this.alt)"
-          >
-
-          <div class="member-info">
-            <div class="member-name">
-              ${escapeHTML(member.full_name || "BGC Member")}
-            </div>
-
-            ${departmentHTML}
-            ${cityHTML}
-            ${skillsHTML}
-            ${experienceHTML}
-            ${workTypeHTML}
-            ${portfolioHTML}
-          </div>
-        </article>
-      `;
-    }).join("");
-  }
-
-  async function loadMembers() {
-    memberList.innerHTML =
-      '<div class="message">Loading approved members...</div>';
-
-    memberCount.textContent = "Loading members...";
-
-    try {
-      const { data, error } = await db
-        .from("bgc_team_members")
-        .select(
-          "id, full_name, department, skills, experience_level, work_type, portfolio_url, photo_url, status"
-        )
-        .eq("status", "approved")
-        .order("full_name", { ascending: true });
-
-      if (error) {
-        throw error;
-      }
-
-      allMembers = data || [];
-
-      populateDepartments();
-      renderMembers();
-
-    } catch (error) {
-      console.error("Could not load BGC CLUB members:", error);
-
-      memberCount.textContent = "Members could not be loaded.";
-
-      memberList.innerHTML =
-        '<div class="message">' +
-        'Members list load ஆகவில்லை.<br>' +
-        'Supabase connection மற்றும் table permissions-ஐச் சரிபார்க்க வேண்டும்.' +
-        '<br><button class="retry" onclick="loadMembers()">' +
-        'Try Again</button></div>';
-    }
-  }
-
-  searchInput.addEventListener("input", renderMembers);
-  departmentFilter.addEventListener("change", renderMembers);
-
-  document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) {
-      loadMembers();
+    if (key === "city") {
+      result.city = value;
+    } else if (key === "business category") {
+      result.category = value;
+    } else if (key === "subcategory") {
+      result.subcategory = value;
+    } else if (key === "experience") {
+      result.experience = value;
+    } else {
+      result.services.push(line);
     }
   });
 
-  loadMembers();
+  if (!result.experience) {
+    result.experience = member.experience_level || "";
+  }
+
+  if (!result.city) {
+    result.city = member.city || "";
+  }
+
+  if (!result.category) {
+    result.category = member.business_category || member.department || "";
+  }
+
+  if (!result.subcategory) {
+    result.subcategory = member.business_subcategory || "";
+  }
+
+  return result;
+}
+
+function makeInitials(name) {
+  return String(name || "Member")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(part => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function avatarPlaceholder(name) {
+  const initials = escapeHTML(makeInitials(name));
+  const svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
+    '<rect width="100" height="100" rx="50" fill="#393940"/>' +
+    '<text x="50" y="57" text-anchor="middle" font-size="30" ' +
+    'font-family="Arial" fill="#ffffff">' + initials + '</text></svg>';
+
+  return "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(svg);
+}
+
+function getMemberPhoto(member) {
+  return safeWebURL(member.photo_url) ||
+    avatarPlaceholder(member.full_name);
+}
+
+function populateCategories() {
+  const categories = [...new Set(
+    allMembers
+      .map(member => parseMemberDetails(member).category)
+      .filter(Boolean)
+  )].sort((a,b) => a.localeCompare(b));
+
+  categoryFilter.innerHTML =
+    '<option value="">All Business Categories</option>';
+
+  categories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    categoryFilter.appendChild(option);
+  });
+}
+
+function flipCard(card) {
+  card.classList.toggle("flipped");
+  card.setAttribute(
+    "aria-label",
+    card.classList.contains("flipped")
+      ? "Business details. Tap to see photo"
+      : "Member photo. Tap to see business details"
+  );
+}
+
+function showEditNotice(event) {
+  event.stopPropagation();
+  editNotice.classList.add("show");
+}
+
+document.getElementById("closeNotice").addEventListener("click", () => {
+  editNotice.classList.remove("show");
+});
+
+editNotice.addEventListener("click", event => {
+  if (event.target === editNotice) {
+    editNotice.classList.remove("show");
+  }
+});
+
+function renderMembers() {
+  const term = searchInput.value.trim().toLowerCase();
+  const selectedCategory = categoryFilter.value;
+
+  const filtered = allMembers.filter(member => {
+    const details = parseMemberDetails(member);
+
+    const searchable = [
+      member.full_name,
+      details.city,
+      details.category,
+      details.subcategory,
+      details.experience,
+      details.services.join(" "),
+      member.department,
+      member.work_type
+    ].join(" ").toLowerCase();
+
+    return searchable.includes(term) &&
+      (!selectedCategory || details.category === selectedCategory);
+  });
+
+  memberCount.textContent = filtered.length + " approved member(s)";
+
+  if (!filtered.length) {
+    memberList.innerHTML =
+      '<div class="message">No matching business members found.<br>Try another search.</div>';
+    return;
+  }
+
+  memberList.innerHTML = filtered.map(member => {
+    const details = parseMemberDetails(member);
+    const photo = escapeHTML(getMemberPhoto(member));
+    const portfolio = safeWebURL(member.portfolio_url);
+
+    const category = details.category || "BGC CLUB Member";
+    const subcategory = details.subcategory || "";
+
+    const cityHTML = details.city
+      ? `<div class="back-detail"><strong>Business Location</strong>${escapeHTML(details.city)}</div>`
+      : "";
+
+    const subHTML = subcategory
+      ? `<div class="back-detail"><strong>Subcategory</strong>${escapeHTML(subcategory)}</div>`
+      : "";
+
+    const experienceHTML = details.experience
+      ? `<div class="back-detail"><strong>Business Experience</strong>${escapeHTML(details.experience)}</div>`
+      : "";
+
+    const servicesHTML = details.services.length
+      ? `<div class="back-detail"><strong>Products & Services</strong>${escapeHTML(details.services.join(", "))}</div>`
+      : "";
+
+    const portfolioHTML = portfolio
+      ? `<div class="back-detail"><strong>Website / Portfolio</strong><a href="${escapeHTML(portfolio)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color:#efa4b4;position:relative;z-index:10">Visit website ↗</a></div>`
+      : "";
+
+    return `
+      <article class="flip-card"
+        tabindex="0"
+        role="button"
+        aria-label="View ${escapeHTML(member.full_name)} business details"
+        onclick="flipCard(this)"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard(this)}">
+
+        <div class="flip-inner">
+
+          <div class="flip-front">
+            <img class="front-photo"
+              src="${photo}"
+              alt="${escapeHTML(member.full_name || "Member")}"
+              loading="lazy"
+              onerror="this.onerror=null;this.src=avatarPlaceholder(this.alt)">
+            <div class="front-shade"></div>
+
+            <div class="front-content">
+              <div class="front-name">${escapeHTML(member.full_name || "BGC Member")}</div>
+              <div class="front-category">${escapeHTML(category)}${subcategory ? " · " + escapeHTML(subcategory) : ""}</div>
+              <div class="flip-hint">↻ Tap to view business profile</div>
+            </div>
+          </div>
+
+          <div class="flip-back">
+            <div class="back-top">
+              <img class="back-avatar"
+                src="${photo}"
+                alt=""
+                loading="lazy">
+              <div>
+                <div class="back-name">${escapeHTML(member.full_name || "BGC Member")}</div>
+                <div class="back-label">BGC CLUB Business Member</div>
+              </div>
+            </div>
+
+            <div class="back-details">
+              <div class="back-detail">
+                <strong>Main Business Category</strong>
+                ${escapeHTML(category)}
+              </div>
+              ${subHTML}
+              ${cityHTML}
+              ${experienceHTML}
+              ${servicesHTML}
+              ${portfolioHTML}
+            </div>
+                        <div class="back-actions">
+              <button class="back-btn secondary"
+                type="button"
+                onclick="event.stopPropagation();flipCard(this.closest('.flip-card'))">
+                ← Back
+              </button>
+              <button class="back-btn"
+                type="button"
+                onclick="showEditNotice(event)">
+                ✎ Edit Profile
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </article>
+    `;
+  }).join("");
+}
 </script>
 
-  
-<nav class="bottom-nav" aria-label="Main navigation">
-  <div class="bottom-inner">
+<script>
+async function loadMembers() {
+  memberList.innerHTML =
+    '<div class="message">Loading approved business members...</div>';
+  memberCount.textContent = "Loading members...";
 
-    <button class="nav-item"
-      onclick="window.location.href='members.html'">
-      <span class="nav-icon">👥</span>
-      Members
-    </button>
+  try {
+    const { data, error } = await db
+      .from("bgc_team_members")
+      .select(
+        "id, full_name, department, skills, experience_level, work_type, portfolio_url, photo_url, status"
+      )
+      .eq("status", "approved")
+      .order("full_name", { ascending:true });
 
-    <button class="nav-item"
-      onclick="window.location.href='bgc-event-planner.html'">
-      <span class="nav-icon">📅</span>
-      Event Planner
-    </button>
+    if (error) throw error;
 
-    <button class="nav-item"
-      onclick="window.location.href='feeds.html'">
-      <span class="nav-icon">▤</span>
-      Feeds
-    </button>
+    allMembers = data || [];
+    populateCategories();
+    renderMembers();
 
-    <button class="nav-item active"
-      onclick="window.location.href='post.html'">
-      <span class="nav-icon">＋</span>
-      Post
-    </button>
+  } catch (error) {
+    console.error("Could not load BGC CLUB members:", error);
 
-    <button class="nav-item"
-      onclick="window.location.href='index.html'">
-      <span class="nav-icon">⌂</span>
-      Home
-    </button>
+    memberCount.textContent = "Members could not be loaded.";
 
-  </div>
+    memberList.innerHTML =
+      '<div class="message">' +
+      'Members list load ஆகவில்லை.<br>' +
+      'Supabase connection மற்றும் table permissions-ஐச் சரிபார்க்கவும்.' +
+      '<br><button class="retry" onclick="loadMembers()">Try Again</button>' +
+      '</div>';
+  }
+}
+
+searchInput.addEventListener("input", renderMembers);
+categoryFilter.addEventListener("change", renderMembers);
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) loadMembers();
+});
+
+loadMembers();
+</script>
+
+<nav class="mobile-bottom-nav" aria-label="BGC CLUB main navigation">
+
+  <a href="index.html" class="mobile-nav-item" aria-label="Home">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m3 10 9-7 9 7"></path>
+        <path d="M5 9v12h14V9"></path>
+        <path d="M9 21v-7h6v7"></path>
+      </svg>
+    </span>
+    <span>Home</span>
+  </a>
+
+  <a href="members.html" class="mobile-nav-item active" aria-label="Members">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+    </span>
+    <span>Members</span>
+  </a>
+
+  <a href="post.html" class="mobile-nav-item" aria-label="Post">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+        <path d="M12 8v8"></path>
+        <path d="M8 12h8"></path>
+      </svg>
+    </span>
+    <span>Post</span>
+  </a>
+
+  <a href="feeds.html" class="mobile-nav-item" aria-label="Feeds">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="3" width="16" height="18" rx="2"></rect>
+        <path d="M3 7v13a2 2 0 0 0 2 2h12"></path>
+        <path d="M9 8h8"></path>
+        <path d="M9 12h8"></path>
+        <path d="M9 16h5"></path>
+      </svg>
+    </span>
+    <span>Feeds</span>
+  </a>
+
+  <a href="bgc-event-planner.html" class="mobile-nav-item" aria-label="Events">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M16 3v4"></path>
+        <path d="M8 3v4"></path>
+        <path d="M3 10h18"></path>
+        <path d="M8 14h.01"></path>
+        <path d="M12 14h.01"></path>
+        <path d="M16 14h.01"></path>
+        <path d="M8 17h.01"></path>
+        <path d="M12 17h.01"></path>
+        <path d="M16 17h.01"></path>
+      </svg>
+    </span>
+    <span>Events</span>
+  </a>
+
 </nav>
-
-
 </body>
 </html>

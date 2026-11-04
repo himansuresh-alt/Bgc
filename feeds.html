@@ -1,4 +1,3 @@
-
 <!-- PART 1 START -->
 <!DOCTYPE html>
 <html lang="en">
@@ -146,8 +145,7 @@ main{max-width:1000px;margin:auto;padding:18px 14px 28px}
 <!-- PART 1 END -->
 </head>
 
-  
-<!-- PART 2 START -->
+  <!-- PART 2 START -->
 <body>
 
 <header class="header">
@@ -298,52 +296,230 @@ main{max-width:1000px;margin:auto;padding:18px 14px 28px}
 
 <!-- PART 2 END -->
 
-  
-<!-- PART 3 START -->
+  <!-- PART 3 START -->
 
 <style>
-/* Bottom navigation */
-.bottom-nav{
+/* BGC CLUB — SAME PREMIUM 3D BOTTOM NAVIGATION AS INDEX */
+
+.mobile-bottom-nav{
+
   position:fixed;
-  z-index:30;
-  bottom:0;
-  left:0;
-  right:0;
-  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
-  background:rgba(247,248,242,.97);
-  backdrop-filter:blur(18px);
-  border-top:1px solid #dce5dc;
-  box-shadow:0 -8px 24px rgba(24,60,48,.09);
-}
-.bottom-inner{
-  max-width:760px;
-  margin:auto;
+
+  left:50%;
+
+  bottom:calc(12px + env(safe-area-inset-bottom));
+
+  transform:translateX(-50%);
+
+  z-index:9999;
+
+  width:min(94%,520px);
+
+  min-height:82px;
+
   display:grid;
+
   grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:7px;
+
+  align-items:center;
+
+  gap:4px;
+
+  padding:9px 8px;
+
+  border:1px solid rgba(255,255,255,.85);
+
+  border-radius:25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.97),
+      rgba(239,242,247,.91)
+    );
+
+  backdrop-filter:blur(24px) saturate(180%);
+
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.13),
+    0 4px 9px rgba(0,0,0,.07),
+    inset 0 1px 1px rgba(255,255,255,.95),
+    inset 0 -2px 4px rgba(0,0,0,.045);
+
 }
-.nav-item{
+
+.mobile-nav-item{
+
+  position:relative;
+
   min-width:0;
-  border:1px solid #dce5dc;
-  background:linear-gradient(145deg,#fff,#f0f4ec);
-  color:#6b796f;
-  border-radius:15px;
-  padding:7px 1px 6px;
-  font-size:10px;
-  font-weight:800;
-  box-shadow:0 4px 0 #d3ded2;
+
+  height:64px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:5px;
+
+  border-radius:18px;
+
+  color:#656a73;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  text-decoration:none;
+
+  transition:
+    transform .22s ease,
+    color .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+
+  -webkit-tap-highlight-color:transparent;
+
 }
-.nav-item .nav-icon{
+
+.mobile-nav-icon{
+
+  width:29px;
+
+  height:29px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:0;
+
+}
+
+.mobile-nav-icon svg{
+
+  width:27px;
+
+  height:27px;
+
   display:block;
-  font-size:19px;
-  line-height:1.25;
-  margin-bottom:4px;
+
+  fill:none;
+
+  stroke:currentColor;
+
+  stroke-width:2.2;
+
+  stroke-linecap:round;
+
+  stroke-linejoin:round;
+
 }
-.nav-item.active{
-  background:linear-gradient(145deg,#2b6549,#183c30);
-  color:#fff;
-  border-color:#183c30;
-  box-shadow:0 4px 0 #102e23;
+
+.mobile-nav-item.active{
+
+  color:#8d1831;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f0e9ec
+    );
+
+  box-shadow:
+    0 5px 10px rgba(0,0,0,.10),
+    inset 0 1px 2px #ffffff,
+    inset 0 -2px 3px rgba(141,24,49,.08);
+
+  transform:translateY(-2px);
+
+}
+
+.mobile-nav-item:active{
+
+  transform:scale(.94);
+
+}
+
+@media(min-width:701px){
+
+  .mobile-bottom-nav{
+
+    left:50%;
+
+    bottom:22px;
+
+    width:min(560px,80%);
+
+  }
+
+}
+
+@media(max-width:700px){
+
+  body{
+
+    padding-bottom:120px;
+
+  }
+
+  .mobile-bottom-nav{
+
+    left:50%;
+
+    right:auto;
+
+    bottom:calc(10px + env(safe-area-inset-bottom));
+
+    width:calc(100% - 24px);
+
+    min-height:78px;
+
+    height:auto;
+
+    grid-template-columns:repeat(5,minmax(0,1fr));
+
+    padding:7px 5px;
+
+    border-radius:23px;
+
+  }
+
+  .mobile-nav-item{
+
+    height:62px;
+
+    font-size:10px;
+
+    gap:4px;
+
+  }
+
+  .mobile-nav-icon{
+
+    width:27px;
+
+    height:27px;
+
+  }
+
+  .mobile-nav-icon svg{
+
+    width:25px;
+
+    height:25px;
+
+  }
+
 }
 
 /* Modal */
@@ -408,7 +584,6 @@ main{max-width:1000px;margin:auto;padding:18px 14px 28px}
   .feed-list{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:500px){
-  body{padding-bottom:100px}
   main{padding:12px 10px 22px}
   .welcome{border-radius:21px;padding:23px 18px}
   .welcome h1{font-size:30px}
@@ -418,46 +593,77 @@ main{max-width:1000px;margin:auto;padding:18px 14px 28px}
   .stat span{font-size:9px}
   .feed-card{padding:15px;border-radius:18px}
   .feed-card h3{font-size:16px}
-  .bottom-inner{gap:5px}
-  .nav-item{padding:7px 1px 6px;font-size:9px}
 }
 </style>
 
-<!-- BOTTOM NAVIGATION -->
-<nav class="bottom-nav" aria-label="Main navigation">
-  <div class="bottom-inner">
+<!-- BGC CLUB FIXED BOTTOM NAVIGATION -->
+<nav class="mobile-bottom-nav" aria-label="BGC CLUB main navigation">
 
-    <button class="nav-item"
-      onclick="window.location.href='members.html'">
-      <span class="nav-icon">👥</span>
-      Members
-    </button>
+  <a href="index.html" class="mobile-nav-item" aria-label="Home">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m3 10 9-7 9 7"></path>
+        <path d="M5 9v12h14V9"></path>
+        <path d="M9 21v-7h6v7"></path>
+      </svg>
+    </span>
+    <span>Home</span>
+  </a>
 
-    <button class="nav-item"
-      onclick="window.location.href='bgc-event-planner.html'">
-      <span class="nav-icon">📅</span>
-      Event Planner
-    </button>
+  <a href="members.html" class="mobile-nav-item" aria-label="Members">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+    </span>
+    <span>Members</span>
+  </a>
 
-    <button class="nav-item active"
-      onclick="showPanel('feedsPanel')">
-      <span class="nav-icon">▤</span>
-      Feeds
-    </button>
+  <a href="post.html" class="mobile-nav-item" aria-label="Post">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+        <path d="M12 8v8"></path>
+        <path d="M8 12h8"></path>
+      </svg>
+    </span>
+    <span>Post</span>
+  </a>
 
-    <button class="nav-item"
-      onclick="window.location.href='post.html'">
-      <span class="nav-icon">＋</span>
-      Post
-    </button>
+  <a href="feeds.html" class="mobile-nav-item active" aria-label="Feeds" aria-current="page">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="3" width="16" height="18" rx="2"></rect>
+        <path d="M3 7v13a2 2 0 0 0 2 2h12"></path>
+        <path d="M9 8h8"></path>
+        <path d="M9 12h8"></path>
+        <path d="M9 16h5"></path>
+      </svg>
+    </span>
+    <span>Feeds</span>
+  </a>
 
-    <button class="nav-item"
-      onclick="window.location.href='index.html'">
-      <span class="nav-icon">⌂</span>
-      Home
-    </button>
+  <a href="bgc-event-planner.html" class="mobile-nav-item" aria-label="Events">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M16 3v4"></path>
+        <path d="M8 3v4"></path>
+        <path d="M3 10h18"></path>
+        <path d="M8 14h.01"></path>
+        <path d="M12 14h.01"></path>
+        <path d="M16 14h.01"></path>
+        <path d="M8 17h.01"></path>
+        <path d="M12 17h.01"></path>
+        <path d="M16 17h.01"></path>
+      </svg>
+    </span>
+    <span>Events</span>
+  </a>
 
-  </div>
 </nav>
 
 <!-- MESSAGE TOAST -->
@@ -465,8 +671,7 @@ main{max-width:1000px;margin:auto;padding:18px 14px 28px}
 
 <!-- PART 3 END -->
 
-  
-<!-- PART 4 START -->
+  <!-- PART 4 START -->
 
 <!-- Opportunity details modal -->
 <div class="modal" id="detailModal" onclick="if(event.target===this)closeDetail()">
@@ -790,9 +995,6 @@ loadPublishedPosts();
     }
   });
 })();
-</script>
-
-  
 </script>
 
 </body>

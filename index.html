@@ -691,7 +691,7 @@ img{
 
   letter-spacing:-4px;
 
-  font-weight:650;
+    font-weight:650;
 
   color:#111111;
 
@@ -716,7 +716,8 @@ img{
   line-height:1.55;
 
 }
-  .bgc-hero-content .hero-actions{
+
+.bgc-hero-content .hero-actions{
 
   margin-top:28px;
 
@@ -1232,7 +1233,7 @@ img{
 
 }
 
-/* ACTIONS */
+  }
 
 .webinar-actions{
 
@@ -1434,7 +1435,8 @@ img{
     box-shadow .3s ease;
 
 }
-  .founder-card:hover{
+
+.founder-card:hover{
 
   transform:
     translateY(-5px);
@@ -2038,6 +2040,8 @@ img{
 
   }
 
+    }
+
   .mobile-bottom-nav{
 
     position:fixed;
@@ -2123,7 +2127,8 @@ img{
   }
 
 }
-  /* =====================================
+
+/* =====================================
    SMALL MOBILE
 ===================================== */
 
@@ -2368,8 +2373,232 @@ img{
 
 }
 
+/* =====================================
+   PREMIUM IPHONE 3D FIXED NAVIGATION
+===================================== */
+
+.mobile-bottom-nav{
+
+  position:fixed;
+
+  left:50%;
+
+  bottom:calc(12px + env(safe-area-inset-bottom));
+
+  transform:translateX(-50%);
+
+  z-index:9999;
+
+  width:min(94%,520px);
+
+  min-height:82px;
+
+  display:grid;
+
+  grid-template-columns:repeat(5,minmax(0,1fr));
+
+  align-items:center;
+
+  gap:4px;
+
+  padding:9px 8px;
+
+  border:1px solid rgba(255,255,255,.85);
+
+  border-radius:25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.97),
+      rgba(239,242,247,.91)
+    );
+
+  backdrop-filter:blur(24px) saturate(180%);
+
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.13),
+    0 4px 9px rgba(0,0,0,.07),
+    inset 0 1px 1px rgba(255,255,255,.95),
+    inset 0 -2px 4px rgba(0,0,0,.045);
+
+}
+
+.mobile-nav-item{
+
+  position:relative;
+
+  min-width:0;
+
+  height:64px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:5px;
+
+  border-radius:18px;
+
+  color:#656a73;
+
+  font-size:11px;
+
+  font-weight:700;
+
+  transition:
+    transform .22s ease,
+    color .22s ease,
+    background .22s ease,
+    box-shadow .22s ease;
+
+  -webkit-tap-highlight-color:transparent;
+
+}
+
+.mobile-nav-icon{
+
+  width:29px;
+
+  height:29px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:0;
+
+}
+
+.mobile-nav-icon svg{
+
+  width:27px;
+
+  height:27px;
+
+  display:block;
+
+  fill:none;
+
+  stroke:currentColor;
+
+  stroke-width:2.2;
+
+  stroke-linecap:round;
+
+  stroke-linejoin:round;
+
+}
+
+.mobile-nav-item.active{
+
+  color:#8d1831;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f0e9ec
+    );
+
+  box-shadow:
+    0 5px 10px rgba(0,0,0,.10),
+    inset 0 1px 2px #ffffff,
+    inset 0 -2px 3px rgba(141,24,49,.08);
+
+  transform:translateY(-2px);
+
+}
+
+.mobile-nav-item:active{
+
+  transform:scale(.94);
+
+}
+
+@media(min-width:701px){
+
+  .mobile-bottom-nav{
+
+    left:50%;
+
+    bottom:22px;
+
+    width:min(560px,80%);
+
+  }
+
+}
+
+@media(max-width:700px){
+
+  body{
+
+    padding-bottom:120px;
+
+  }
+
+  .mobile-bottom-nav{
+
+    left:50%;
+
+    right:auto;
+
+    bottom:calc(10px + env(safe-area-inset-bottom));
+
+    width:calc(100% - 24px);
+
+    min-height:78px;
+
+    height:auto;
+
+    grid-template-columns:repeat(5,minmax(0,1fr));
+
+    padding:7px 5px;
+
+    border-radius:23px;
+
+  }
+
+  .mobile-nav-item{
+
+    height:62px;
+
+    font-size:10px;
+
+    gap:4px;
+
+  }
+
+  .mobile-nav-icon{
+
+    width:27px;
+
+    height:27px;
+
+  }
+
+  .mobile-nav-icon svg{
+
+    width:25px;
+
+    height:25px;
+
+  }
+
+}
+
 </style>
-</head>
+
+  </head>
 
 <body>
 
@@ -2410,16 +2639,6 @@ img{
         <a href="founders.html">
           Founders
         </a>
-
-        <button
-          class="nav-cta"
-          type="button"
-          onclick="goToFounderCreate()"
-        >
-
-          Join as founder
-
-        </button>
 
         <a href="join-member.html" class="nav-cta">
           Join Member
@@ -2483,23 +2702,20 @@ img{
 
           <div class="hero-actions">
 
-            <button
-              class="primary-btn"
-              type="button"
-              onclick="goToFounderCreate()"
-            >
-
-              Join Free
-              <span>→</span>
-
-            </button>
+           <a
+  href="join-member.html"
+  class="primary-btn"
+>
+  Join Free
+  <span>→</span>
+           </a>
 
             <a
-              href="#founders"
+              href="#members"
               class="secondary-btn"
             >
 
-              Explore Founders
+              Explore Members
 
             </a>
 
@@ -2596,7 +2812,7 @@ img{
 
     <section
       class="section dark"
-      id="founders"
+      id="me"
     >
 
       <div class="container">
@@ -2607,7 +2823,7 @@ img{
 
             <div class="section-label">
 
-              FOUNDERS
+              BGC MEMBERS
 
             </div>
 
@@ -2637,7 +2853,7 @@ img{
 
           <div class="loading">
 
-            Loading founders...
+          Loading members...
 
           </div>
 
@@ -2721,69 +2937,90 @@ img{
       </div>
 
     </footer>
-        <!-- =====================================
-         MOBILE NAV
+
+    <!-- =====================================
+         PREMIUM FIXED NAVIGATION
     ===================================== -->
 
-    <nav class="mobile-bottom-nav">
+    <nav class="mobile-bottom-nav" aria-label="BGC CLUB main navigation">
 
-      <a
-        href="#"
-        class="mobile-nav-item active"
-      >
+      <a href="index.html" class="mobile-nav-item active" aria-label="Home">
 
         <span class="mobile-nav-icon">
-          ⌂
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 10 9-7 9 7"></path>
+            <path d="M5 9v12h14V9"></path>
+            <path d="M9 21v-7h6v7"></path>
+          </svg>
         </span>
 
-        <span>
-          Home
-        </span>
+        <span>Home</span>
 
       </a>
 
-      <a
-        href="feeds.html"
-        class="mobile-nav-item"
-      >
+     <a href="members.html" class="mobile-nav-item" aria-label="Members">
+
+  <span class="mobile-nav-icon">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+      <circle cx="9" cy="7" r="4"></circle>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+    </svg>
+  </span>
+
+  <span>Members</span>
+
+     </a>
+
+      <a href="post.html" class="mobile-nav-item" aria-label="Post">
 
         <span class="mobile-nav-icon">
-          ◉
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+            <path d="M12 8v8"></path>
+            <path d="M8 12h8"></path>
+          </svg>
         </span>
 
-        <span>
-          BGC LIVE
-        </span>
+        <span>Post</span>
 
       </a>
 
-      <a
-        href="founders.html"
-        class="mobile-nav-item"
-      >
+      <a href="feeds.html" class="mobile-nav-item" aria-label="Feeds">
 
         <span class="mobile-nav-icon">
-          ◎
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="3" width="16" height="18" rx="2"></rect>
+            <path d="M3 7v13a2 2 0 0 0 2 2h12"></path>
+            <path d="M9 8h8"></path>
+            <path d="M9 12h8"></path>
+            <path d="M9 16h5"></path>
+          </svg>
         </span>
 
-        <span>
-          Founders
-        </span>
+        <span>Feeds</span>
 
       </a>
 
-      <a
-        href="founder-profile.html?create=1"
-        class="mobile-nav-item"
-      >
+      <a href="bgc-event-planner.html" class="mobile-nav-item" aria-label="Events">
 
         <span class="mobile-nav-icon">
-          +
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+            <path d="M16 3v4"></path>
+            <path d="M8 3v4"></path>
+            <path d="M3 10h18"></path>
+            <path d="M8 14h.01"></path>
+            <path d="M12 14h.01"></path>
+            <path d="M16 14h.01"></path>
+            <path d="M8 17h.01"></path>
+            <path d="M12 17h.01"></path>
+            <path d="M16 17h.01"></path>
+          </svg>
         </span>
 
-        <span>
-          Join
-        </span>
+        <span>Events</span>
 
       </a>
 
@@ -2796,7 +3033,7 @@ img{
 
     <script>
 
-    /* =====================================
+          /* =====================================
        SUPABASE
     ===================================== */
 
@@ -3285,7 +3522,7 @@ img{
                   </div>
 
                   <h3 class="webinar-title">
-                    ${escapeHTML(webinar.title)}
+                    ${escapeHTML(webinar.title || "BGC LIVE Session")}
                   </h3>
 
                   <p class="webinar-description">
@@ -3295,24 +3532,33 @@ img{
                   <div class="webinar-meta">
 
                     <div class="meta-item">
+
                       <span class="meta-icon">📅</span>
-                      <span>
+
+                      <strong>
                         ${formatDate(webinar.event_date)}
-                      </span>
+                      </strong>
+
                     </div>
 
                     <div class="meta-item">
+
                       <span class="meta-icon">🕒</span>
-                      <span>
-                        ${escapeHTML(formatTime(webinar.event_time))}
-                      </span>
+
+                      <strong>
+                        ${formatTime(webinar.event_time) || "Time to be announced"}
+                      </strong>
+
                     </div>
 
                     <div class="meta-item">
+
                       <span class="meta-icon">⏱</span>
-                      <span>
-                        ${escapeHTML(formatDuration(webinar.duration_minutes))}
-                      </span>
+
+                      <strong>
+                        ${formatDuration(webinar.duration_minutes) || "Duration to be announced"}
+                      </strong>
+
                     </div>
 
                   </div>
@@ -3320,6 +3566,7 @@ img{
                   <div class="webinar-criteria">
 
                     <strong>Suitable for:</strong>
+
                     ${getCriteriaText(webinar)}
 
                   </div>
@@ -3327,8 +3574,11 @@ img{
                   <div class="webinar-bottom">
 
                     <div class="interest-count">
+
                       <span class="interest-dot"></span>
+
                       ${interest} interested
+
                     </div>
 
                     <div class="webinar-actions">
@@ -3336,17 +3586,21 @@ img{
                       <button
                         class="interest-btn"
                         type="button"
-                        data-webinar-id="${escapeHTML(webinar.id)}"
+                        onclick="registerInterest('${webinar.id}',this)"
                       >
-                        I'm interested
+
+                        I'm Interested
+
                       </button>
 
                       <button
                         class="view-details-btn"
                         type="button"
-                        data-webinar-id="${escapeHTML(webinar.id)}"
+                        onclick="viewWebinar('${webinar.id}')"
                       >
-                        View details
+
+                        Register Now →
+
                       </button>
 
                     </div>
@@ -3362,242 +3616,244 @@ img{
           .join("");
 
     }
-          /* =====================================
-       WEBINAR BUTTON ACTIONS
+
+    /* =====================================
+       REGISTER INTEREST
     ===================================== */
 
-    document.addEventListener(
-      "click",
-      async function(event){
+    async function registerInterest(
+      webinarId,
+      button
+    ){
 
-        const interestButton =
-          event.target.closest(
-            ".interest-btn"
-          );
+      if(button){
 
-        const detailsButton =
-          event.target.closest(
-            ".view-details-btn"
-          );
+        button.disabled = true;
 
-        if(interestButton){
+      }
 
-          const webinarId =
-            interestButton.dataset.webinarId;
+      try{
 
-          if(!webinarId){
+        const {
+          data:userData
+        } =
+          await supabaseClient.auth.getUser();
 
-            return;
+        const user =
+          userData?.user;
 
-          }
-
-          /*
-            Registration/interest flow must be
-            connected to the existing database
-            schema before enabling writes.
-          */
+        if(!user){
 
           alert(
-            "Interest registration needs to be connected to the existing BGC LIVE registration flow."
+            "Please login to register your interest."
           );
 
           return;
 
         }
 
-        if(detailsButton){
+        const {
+          error
+        } =
+          await supabaseClient
+            .from("webinar_interests")
+            .insert({
 
-          const webinarId =
-            detailsButton.dataset.webinarId;
+              webinar_id:webinarId,
 
-          const webinar =
-            allWebinars.find(
-              item =>
-                String(item.id) ===
-                String(webinarId)
+              user_id:user.id
+
+            });
+
+        if(error){
+
+          if(error.code === "23505"){
+
+            alert(
+              "You have already shown interest."
             );
-
-          if(!webinar){
 
             return;
 
           }
-
-          alert(
-            webinar.title +
-            "\n\n" +
-            (webinar.description || "") +
-            "\n\nDate: " +
-            formatDate(webinar.event_date) +
-            "\nTime: " +
-            formatTime(webinar.event_time) +
-            "\nPrice: " +
-            formatPrice(webinar.price)
-          );
-
-        }
-
-      }
-    );
-
-    /* =====================================
-       LOAD FOUNDERS
-    ===================================== */
-
-    async function loadFounders(){
-
-      const grid =
-        document.getElementById(
-          "founderGrid"
-        );
-
-      const peopleStrip =
-        document.getElementById(
-          "peopleStrip"
-        );
-
-      try{
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .from("founder_profiles")
-            .select("*")
-            .limit(7);
-
-        if(error){
 
           throw error;
 
         }
 
-        const founders =
-          data || [];
+        alert(
+          "Your interest has been registered!"
+        );
 
-        if(!founders.length){
-
-          grid.innerHTML = `
-            <div class="founder-empty">
-              <strong>No founder profiles yet</strong>
-              Founder profiles will appear here.
-            </div>
-          `;
-
-          peopleStrip.innerHTML = "";
-
-          return;
-
-        }
-
-        grid.innerHTML =
-          founders.map(
-            founder => {
-
-              const name =
-                founder.name ||
-                founder.full_name ||
-                "Founder";
-
-              const role =
-                founder.role ||
-                founder.designation ||
-                "Entrepreneur";
-
-              const business =
-                founder.business_name ||
-                founder.company_name ||
-                "";
-
-              const photo =
-                founder.photo_url ||
-                founder.profile_photo ||
-                founder.avatar_url ||
-                "";
-
-              return `
-                <article class="founder-card">
-
-                  ${
-                    photo
-                      ? `<img src="${escapeHTML(photo)}" alt="${escapeHTML(name)}" loading="lazy">`
-                      : ""
-                  }
-
-                  <div class="founder-gradient"></div>
-
-                  <div class="founder-info">
-
-                    <div class="founder-name">
-                      ${escapeHTML(name)}
-                    </div>
-
-                    <div class="founder-role">
-                      ${escapeHTML(role)}
-                    </div>
-
-                    <div class="founder-business">
-                      ${escapeHTML(business)}
-                    </div>
-
-                  </div>
-
-                </article>
-              `;
-
-            }
-          ).join("");
-
-        peopleStrip.innerHTML =
-          founders.slice(0,7).map(
-            founder => {
-
-              const name =
-                founder.name ||
-                founder.full_name ||
-                "Founder";
-
-              const photo =
-                founder.photo_url ||
-                founder.profile_photo ||
-                founder.avatar_url ||
-                "";
-
-              return `
-                <div class="person-thumb">
-
-                  ${
-                    photo
-                      ? `<img src="${escapeHTML(photo)}" alt="${escapeHTML(name)}" loading="lazy">`
-                      : ""
-                  }
-
-                </div>
-              `;
-
-            }
-          ).join("");
+        await loadWebinars();
 
       }catch(error){
 
         console.error(
-          "Founder loading error:",
+          "Interest registration error:",
           error
         );
 
-        grid.innerHTML = `
-          <div class="founder-empty">
-            <strong>Unable to load founders</strong>
-            Please refresh and try again.
-          </div>
-        `;
+        alert(
+          "Unable to register. Please try again."
+        );
 
-        peopleStrip.innerHTML = "";
+      }finally{
+
+        if(button){
+
+          button.disabled = false;
+
+        }
 
       }
 
     }
+
+    /* =====================================
+       VIEW WEBINAR
+    ===================================== */
+
+    function viewWebinar(webinarId){
+
+      window.location.href =
+        "webinar-details.html?id=" +
+        encodeURIComponent(webinarId);
+
+    }
+
+ /* =====================================
+   LOAD BGC MEMBERS
+===================================== */
+
+async function loadFounders(){
+
+  const strip =
+    document.getElementById("peopleStrip");
+
+  const grid =
+    document.getElementById("founderGrid");
+
+  try{
+
+    const { data, error } =
+      await supabaseClient
+        .from("bgc_team_members")
+        .select(`
+          id,
+          full_name,
+          department,
+          skills,
+          photo_url,
+          status,
+          created_at
+        `)
+        .eq("status", "approved")
+        .order("created_at", {
+          ascending:false
+        })
+        .limit(12);
+
+    if(error) throw error;
+
+    const members = data || [];
+
+    const withPhoto =
+      members.filter(member => member.photo_url);
+
+    /* HERO IMAGES */
+
+    if(strip){
+
+      strip.innerHTML =
+        withPhoto.slice(0,7).map(member => `
+
+          <div class="person-thumb">
+
+            <img
+              src="${escapeHTML(member.photo_url)}"
+              alt="${escapeHTML(member.full_name)}"
+              loading="lazy"
+            >
+
+          </div>
+
+        `).join("");
+
+    }
+
+    /* MEMBER CARDS */
+
+    if(!grid) return;
+
+    if(!members.length){
+
+      grid.innerHTML = `
+        <div class="founder-empty">
+          <strong>Members joining soon</strong>
+          Be the first to join BGC CLUB.
+        </div>
+      `;
+
+      return;
+
+    }
+
+    grid.innerHTML =
+      members.slice(0,6).map(member => `
+
+        <article class="founder-card">
+
+          ${
+            member.photo_url
+              ? `
+                <img
+                  src="${escapeHTML(member.photo_url)}"
+                  alt="${escapeHTML(member.full_name)}"
+                  loading="lazy"
+                >
+              `
+              : ""
+          }
+
+          <div class="founder-gradient"></div>
+
+          <div class="founder-info">
+
+            <div class="founder-name">
+              ${escapeHTML(member.full_name || "BGC Member")}
+            </div>
+
+            <div class="founder-role">
+              ${escapeHTML(member.department || "Member")}
+            </div>
+
+          </div>
+
+        </article>
+
+      `).join("");
+
+  }catch(error){
+
+    console.error("BGC Member loading error:", error);
+
+    if(strip) strip.innerHTML = "";
+
+    if(grid){
+
+      grid.innerHTML = `
+        <div class="founder-empty">
+          <strong>Unable to load members</strong>
+          Please try again.
+        </div>
+      `;
+
+    }
+
+  }
+
+}
 
     /* =====================================
        LOGO ADMIN ACCESS
