@@ -136,7 +136,6 @@ footer{text-align:center;padding:25px 12px;color:var(--muted);font-size:11px}
  .filter-grid{grid-template-columns:1fr}
 }
 
-  
 /* ===== BGC EVENTS 3D FIXED NAVIGATION ===== */
 
 body {
@@ -242,28 +241,135 @@ body {
         font-size: 18px;
     }
 }
+  /* ===== BGC CLUB STYLE PROFILE FLIP CARDS ===== */
 
+:root{
+ --accent:#df6b91;
+ --bg:#0d1117;
+ --ink:#f4f1f5;
+ --muted:#aaa4af;
+ --line:#303744
+}
+
+html,body{background:#0d1117;color:#f4f1f5}
+body{padding-bottom:125px}
+.site-header{position:relative;top:auto;background:#111720;border-bottom:1px solid #303744}
+.nav{min-height:72px}
+.brand-mark{width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#b63860,#741329);box-shadow:0 5px 14px rgba(182,56,96,.25)}
+.brand-name{color:#f8f3f6;font-size:16px;letter-spacing:-.3px}
+.brand-name span{color:#f18aa8}
+.home-btn{min-height:42px;padding:0 16px;color:#f8edf2;background:#211923;border:1px solid #633044;border-radius:999px}
+.home-btn:hover{background:#8b1731;color:#fff;border-color:#8b1731}
+.hero{margin:22px 16px 20px;padding:30px 25px;border:1px solid #633044;border-radius:24px;background:radial-gradient(circle at 90% 0%,rgba(223,107,145,.22),transparent 35%),linear-gradient(135deg,#251923,#151b24 72%);color:#fff;box-shadow:0 18px 45px rgba(0,0,0,.2)}
+.eyebrow{color:#f18aa8;font-size:10px;letter-spacing:1.5px}
+.hero h1{font-size:clamp(28px,5vw,42px);font-weight:900;letter-spacing:-1.3px}
+.hero p{color:#bdb4be;font-size:13px}
+.tools{padding:0 16px 20px}
+.filter-label{color:#c4bac4;font-size:11px}
+.search-box{height:49px;padding:0 15px;border:1px solid #39414e;border-radius:13px;background:#151b24;color:#f5f1f5;outline:none}
+.search-box::placeholder{color:#85818b}
+.search-box:focus{border-color:#df6b91;box-shadow:0 0 0 3px rgba(223,107,145,.12)}
+.list{display:grid;grid-template-columns:1fr;gap:17px;padding:0 16px}
+.provider{min-width:0;padding:0;border:0;background:transparent;box-shadow:none;perspective:1200px}
+.provider:hover{transform:none;box-shadow:none}
+.profile-flip{position:relative;min-height:330px;border-radius:23px;transform-style:preserve-3d;transition:transform .72s cubic-bezier(.2,.75,.25,1);cursor:pointer;outline:none}
+.provider.is-flipped .profile-flip{transform:rotateY(180deg)}
+.profile-face{position:absolute;inset:0;min-height:330px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid #303744;border-radius:23px;background:linear-gradient(145deg,#1a222e,#121923);box-shadow:0 13px 32px rgba(0,0,0,.2)}
+.profile-front{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;text-align:center}
+.profile-avatar{width:112px;height:112px;margin-bottom:16px;border:3px solid #633044;border-radius:50%;overflow:hidden;background:#29212c;display:grid;place-items:center;color:#f18aa8;font-size:38px;font-weight:900;box-shadow:0 0 0 6px rgba(223,107,145,.08)}
+.profile-avatar img{width:100%;height:100%;object-fit:cover}
+.profile-verified{margin-bottom:8px;color:#8be0ad;font-size:9px;font-weight:900;letter-spacing:1.1px}
+.profile-front h2{max-width:100%;color:#fff;font-size:20px;line-height:1.25;font-weight:900;overflow-wrap:anywhere}
+.profile-business{margin-top:6px;color:#f18aa8;font-size:12px;font-weight:800}
+.profile-city{margin-top:8px;color:#aaa4af;font-size:11px}
+.flip-hint{margin-top:18px;padding:7px 13px;border:1px solid #633044;border-radius:999px;background:#2a1c26;color:#f4a2ba;font-size:10px;font-weight:800}
+.profile-back{transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;padding:23px}
+.profile-back-title{margin-bottom:16px;color:#f18aa8;font-size:10px;font-weight:900;letter-spacing:1.3px;text-transform:uppercase}
+.detail-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #303744;font-size:11px}
+.detail-row:last-of-type{border-bottom:0}
+.detail-label{flex:0 0 88px;color:#9994a0;font-weight:700}
+.detail-value{min-width:0;color:#f5eff4;text-align:right;overflow-wrap:anywhere;font-weight:700}
+.detail-value a{color:#f18aa8;text-decoration:underline}
+.back-hint{margin-top:16px;color:#aaa4af;font-size:10px;text-align:center}
+.profile-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:11px}
+.profile-actions a{min-height:47px;display:flex;align-items:center;justify-content:center;gap:7px;border-radius:13px;font-size:12px;font-weight:900;text-decoration:none;transition:transform .18s ease}
+.profile-actions a:active{transform:scale(.98)}
+.profile-call{background:#30231f;color:#ffb18e;border:1px solid #604032}
+.profile-whatsapp{background:#172b24;color:#8be0ad;border:1px solid #315b48}
+.profile-extra{display:flex;justify-content:center;gap:15px;margin-top:9px}
+.profile-extra a{color:#c5a9ff;font-size:11px;font-weight:800;text-decoration:underline}
+.empty,.loading{margin:0 16px;padding:32px 18px;text-align:center;background:#151b24;border:1px solid #303744;border-radius:18px;color:#aaa4af;font-size:13px}
+.error{color:#ff9c9c}
+.count{padding:0 16px 12px;color:#aaa4af;font-size:11px}
+footer{padding:25px 12px;color:#918a96}
+@media(min-width:650px){.list{grid-template-columns:repeat(2,minmax(0,1fr))}.tools{max-width:900px;margin:auto}}
+@media(max-width:380px){.hero{margin:16px 12px;padding:23px 17px}.tools,.list{padding-left:12px;padding-right:12px}.empty,.loading{margin-left:12px;margin-right:12px}.brand-name{font-size:14px}.home-btn{padding:0 11px;font-size:11px}.filter-grid{grid-template-columns:1fr}.profile-flip,.profile-face{min-height:315px}.profile-avatar{width:100px;height:100px}}
+@media(prefers-reduced-motion:reduce){.profile-flip{transition:none}}
+
+/* ===== MEMBERS-STYLE EVENT PROVIDER DESIGN ===== */
+
+html,body{background:#151515;color:#f8f7f8}
+body{padding-bottom:130px}
+.site-header{background:#151515;border:0}
+.nav{min-height:62px}
+.brand-mark{background:linear-gradient(145deg,#a71943,#71132e);border-radius:50%}
+.brand-name{color:#fff}
+.brand-name span{color:#e58ca7}
+.home-btn{background:#242226;border:1px solid #454148;color:#eee;border-radius:999px}
+.hero{margin:20px auto 28px;max-width:850px;padding:28px 20px 22px;border:0;border-radius:0;background:transparent;box-shadow:none;text-align:center}
+.eyebrow{font-size:11px;letter-spacing:2.2px;color:#e58ca7;margin-bottom:30px}
+.hero h1{max-width:620px;margin:0 auto 34px;font-size:clamp(34px,7vw,54px);line-height:1.08;letter-spacing:-1.8px;font-weight:900}
+.hero p{font-size:clamp(15px,2.8vw,20px);color:#bdb9c0}
+.tools{max-width:980px;margin:0 auto;padding:0 20px 24px}
+.filter-grid{display:flex;flex-direction:column;gap:12px}
+.filter-label{display:none}
+.search-box{height:66px;border-radius:18px;background:#242226;border:1px solid #454148;color:#fff;font-size:16px;padding:0 22px}
+.search-box::placeholder{color:#aaa5ad}
+.list{max-width:980px;margin:0 auto;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:22px;padding:0 20px}
+.provider{width:100%;max-width:440px;justify-self:start}
+.profile-flip{min-height:580px;border-radius:34px}
+.profile-face{min-height:580px;border:1px solid #49434b;border-radius:34px;background:#242226}
+.profile-front{position:relative;display:flex;align-items:stretch;justify-content:flex-end;padding:0;text-align:left;background:#242226;isolation:isolate}
+.profile-front::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.12) 48%,rgba(0,0,0,.92) 100%);pointer-events:none}
+.profile-cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.profile-cover-fallback{position:absolute;inset:0;display:grid;place-items:center;background:linear-gradient(135deg,#39313a,#17171a);color:#f1a0b7;font-size:100px;font-weight:900;z-index:0}
+.profile-front-content{position:relative;z-index:2;padding:26px 28px 30px;width:100%;color:#fff}
+.profile-avatar{display:none}
+.profile-verified{font-size:9px;color:#f4a0ba;margin-bottom:8px;letter-spacing:1.3px}
+.profile-front h2{font-size:clamp(26px,5vw,36px);font-weight:900;line-height:1.15;color:#fff}
+.profile-business{font-size:16px;color:#e8e2e8;font-weight:500;margin-top:10px}
+.profile-city{font-size:13px;color:#d4cfd5;margin-top:8px}
+.flip-hint{display:inline-flex;margin-top:25px;padding:12px 18px;border:1px solid rgba(255,255,255,.5);border-radius:999px;background:rgba(10,10,10,.25);color:#fff;font-size:11px;letter-spacing:1px;font-weight:800}
+  .profile-back{padding:26px;justify-content:center;background:linear-gradient(145deg,#242226,#17171a)}
+.profile-back-title{font-size:12px;letter-spacing:1.8px}
+.detail-row{font-size:13px;padding:12px 0}
+.detail-label{flex-basis:105px}
+.profile-actions{margin-top:13px;gap:12px}
+.profile-actions a{min-height:54px;border-radius:16px;font-size:14px}
+.profile-extra a{font-size:13px}
+.count{max-width:980px;margin:auto;padding:0 20px 15px;color:#aaa5ad;font-size:12px}
+.empty,.loading{background:#242226;border-color:#454148;color:#c8c3ca}
+footer{color:#77727a}
+.bgc-bottom-nav{background:rgba(244,244,246,.96);border:1px solid #fff;box-shadow:0 8px 0 #d6d6da,0 12px 28px rgba(0,0,0,.25)}
+.bgc-bottom-nav a{color:#686b73}
+.bgc-bottom-nav a.active{background:#f5e9ee;color:#8b1731;box-shadow:0 4px 12px rgba(0,0,0,.12);transform:none}
+@media(max-width:520px){.hero{padding:26px 18px 22px;margin:14px auto 24px}.eyebrow{margin-bottom:26px}.hero h1{font-size:38px;margin-bottom:27px}.tools{padding-left:20px;padding-right:20px}.search-box{height:68px}.list{padding:0 20px;grid-template-columns:1fr}.provider{max-width:100%}.profile-flip,.profile-face{min-height:580px}.profile-front-content{padding:24px 27px 30px}}
+@media(max-width:380px){.hero h1{font-size:33px}.profile-flip,.profile-face{min-height:520px}.profile-front-content{padding:22px}.profile-front h2{font-size:27px}}
+
+  /* Hide City Filter and Search */
+.tools{
+    display:none !important;
+}
 </style>
 </head>
 
 <body>
 <div class="wrap">
 
-<header class="site-header">
- <div class="container nav">
-  <a href="bgc-event-planner.html" class="brand">
-   <div class="brand-mark">BGC</div>
-
-       <div class="brand-name">BGC <span>EVENTS</span></div>
-  </a>
-  <a href="event-register.html" class="home-btn">+ Add Service</a>
- </div>
-</header>
-
 <section class="hero">
  <div class="eyebrow" id="eventName">BGC EVENTS</div>
- <h1 id="categoryName">Service Providers</h1>
- <p>Discover event service providers and contact them directly.</p>
+ <h1 id="categoryName">Where Event Professionals Connect.</h1>
+ <p>Discover Event Services &amp; Grow Together.</p>
 </section>
 
 <section class="tools">
@@ -393,8 +499,11 @@ const search = document.getElementById("search");
 const cityFilter = document.getElementById("cityFilter");
 const resultCount = document.getElementById("resultCount");
 
-eventElement.textContent = selectedEvent;
-categoryElement.textContent = categoryLabel || "Event Providers";
+eventElement.textContent = "BGC EVENTS";
+categoryElement.textContent = "Where Event Professionals Connect.";
+document.querySelector(".hero p").textContent = categoryLabel
+ ? "Discover " + categoryLabel + " services for " + selectedEvent + " & grow together."
+ : "Discover Event Services & Grow Together.";
 
 /* EXISTING SUPABASE PROJECT */
 const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
@@ -402,16 +511,14 @@ const SUPABASE_KEY = "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
 
 let providers = [];
 
-  function escapeHtml(value) {
+function escapeHtml(value) {
  return String(value ?? "")
   .replace(/&/g, "&amp;")
   .replace(/</g, "&lt;")
   .replace(/>/g, "&gt;")
   .replace(/"/g, "&quot;")
   .replace(/'/g, "&#039;");
-}
-
-function cleanPhone(value) {
+}function cleanPhone(value) {
  return String(value || "").replace(/\D/g, "");
 }
 
@@ -457,7 +564,8 @@ function canonicalServiceCategory(value) {
 function providerMatchesSelectedCategory(provider) {
  const stored = String(provider.event_category || "").trim();
 
- if (!stored || !categoryLabel) return false;
+ if (!stored) return false;
+if (!categoryLabel) return true;
 
  /*
   * Older registrations may store "Marriage — Catering".
@@ -515,12 +623,9 @@ async function loadProviders() {
  resultCount.textContent = "Loading providers...";
 
  if (!categoryLabel) {
-  list.innerHTML = "";
-  empty.textContent =
-   "Service category is missing. Please open this page from BGC EVENTS.";
-  empty.hidden = false;
-  resultCount.textContent = "0 providers";
-  return;
+  // No category selected: show all registered providers.
+  // If category exists in URL, show matching providers only.
+  console.log("Showing all registered event providers.");
  }
 
  try {
@@ -548,7 +653,7 @@ async function loadProviders() {
    throw new Error("Unexpected provider data returned from Supabase.");
   }
 
-     providers = data;
+  providers = data;
   populateCityFilter();
   renderProviders();
 
@@ -607,79 +712,131 @@ function renderProviders() {
   const businessName =
    provider.company_name || provider.name || "Event Service Provider";
 
+  const contactName = String(provider.name || "").trim();
   const phone = cleanPhone(provider.phone);
   const whatsapp = whatsappNumber(provider.whatsapp || provider.phone);
   const city = String(provider.city || "").trim();
   const imageUrl = String(provider.image_url || "").trim();
   const instagram = String(provider.instagram || "").trim();
   const website = String(provider.website || "").trim();
+  const service = String(provider.event_category || categoryLabel || "").trim();
 
   const card = document.createElement("article");
   card.className = "provider";
 
-  const photo = imageUrl
-   ? `<div class="photo">
-       <img src="${escapeHtml(imageUrl)}"
-        alt="${escapeHtml(businessName)}"
-        loading="lazy"
-        onerror="this.parentElement.textContent='🏢'">
-      </div>`
-   : '<div class="photo">🏢</div>';
+  function detail(label, value, href) {
+   if (!value) return "";
 
-  let actions = "";
+   const shown = href
+    ? `<a href="${escapeHtml(href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(value)}</a>`
+    : escapeHtml(value);
 
-  if (phone) {
-   actions += `<a class="call-btn"
-    href="tel:${escapeHtml(phone)}">☎ Call</a>`;
+   return `<div class="detail-row"><span class="detail-label">${escapeHtml(label)}</span><span class="detail-value">${shown}</span></div>`;
   }
 
-  if (whatsapp) {
-   actions += `<a class="whatsapp-btn"
-    href="https://wa.me/${escapeHtml(whatsapp)}"
-    target="_blank" rel="noopener noreferrer">WhatsApp</a>`;
-  }
+  let instagramUrl = "";
 
   if (instagram) {
-   let instagramUrl = instagram;
-
-   if (instagram.startsWith("@")) {
-    instagramUrl = "https://www.instagram.com/" +
-     encodeURIComponent(instagram.slice(1));
-   } else if (!/^https?:\/\//i.test(instagram)) {
-    instagramUrl = "https://" + instagram;
-   }
-
-   actions += `<a class="instagram-btn"
-    href="${escapeHtml(instagramUrl)}"
-    target="_blank" rel="noopener noreferrer">Instagram</a>`;
+   instagramUrl = instagram.startsWith("@")
+    ? "https://www.instagram.com/" + encodeURIComponent(instagram.slice(1))
+    : (/^https?:\/\//i.test(instagram) ? instagram : "https://" + instagram);
   }
+
+  let websiteUrl = "";
 
   if (website) {
-   let websiteUrl = website;
-
-   if (!/^https?:\/\//i.test(websiteUrl)) {
-    websiteUrl = "https://" + websiteUrl;
-   }
-
-   actions += `<a class="website-btn"
-    href="${escapeHtml(websiteUrl)}"
-    target="_blank" rel="noopener noreferrer">Visit Website</a>`;
+   websiteUrl = /^https?:\/\//i.test(website)
+    ? website
+    : "https://" + website;
   }
 
+  const callAction = phone
+   ? `<a class="profile-call" href="tel:${escapeHtml(phone)}">☎ Call</a>`
+   : `<a class="profile-call" href="javascript:void(0)" aria-disabled="true" style="opacity:.45;pointer-events:none">☎ Call unavailable</a>`;
+
+  const whatsappAction = whatsapp
+   ? `<a class="profile-whatsapp" href="https://wa.me/${escapeHtml(whatsapp)}" target="_blank" rel="noopener noreferrer">◉ WhatsApp</a>`
+   : `<a class="profile-whatsapp" href="javascript:void(0)" aria-disabled="true" style="opacity:.45;pointer-events:none">WhatsApp unavailable</a>`;
+
   card.innerHTML = `
-   <div class="provider-top">
-    ${photo}
-    <div class="info">
-     <div class="verified">● REGISTERED BUSINESS</div>
-     <h2>${escapeHtml(businessName)}</h2>
-     <div class="role">${escapeHtml(categoryLabel)}</div>
-     <div class="location">
-      📍 ${escapeHtml(city || "Location not provided")}
+   <div class="profile-flip" role="button" tabindex="0"
+    aria-label="View business details for ${escapeHtml(businessName)}"
+    aria-pressed="false">
+
+    <div class="profile-face profile-front">
+     ${imageUrl
+      ? `<img class="profile-cover-img" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(businessName)}" loading="lazy" onerror="this.style.display='none'">`
+      : `<div class="profile-cover-fallback">${escapeHtml((businessName.charAt(0) || "B").toUpperCase())}</div>`}
+
+     <div class="profile-front-content">
+      <div class="profile-verified">● REGISTERED EVENT PROFESSIONAL</div>
+
+      <h2>${escapeHtml(businessName)}</h2>
+
+      ${contactName && normalize(contactName) !== normalize(businessName)
+       ? `<div class="profile-business">${escapeHtml(contactName)} · ${escapeHtml(categoryLabel)}</div>`
+       : `<div class="profile-business">${escapeHtml(categoryLabel)}</div>`}
+
+      <div class="profile-city">
+       📍 ${escapeHtml(city || "Location not provided")}
+      </div>
+
+      <div class="flip-hint">
+       ↻ TAP TO VIEW BUSINESS PROFILE
+      </div>
+     </div>
+    </div>
+
+    <div class="profile-face profile-back">
+     <div class="profile-back-title">Business details</div>
+
+     ${detail("Business", businessName)}
+     ${detail("Contact person", contactName)}
+     ${detail("Service", service)}
+     ${detail("City", city || "Not provided")}
+     ${detail("Phone", phone)}
+     ${detail("WhatsApp", whatsapp ? "+" + whatsapp : "")}
+     ${detail("Instagram", instagram)}
+     ${detail("Website", website)}
+
+     <div class="back-hint">
+      Tap card to return to profile
      </div>
     </div>
    </div>
-   ${actions ? `<div class="actions">${actions}</div>` : ""}
+
+   <div class="profile-actions">
+    ${callAction}
+    ${whatsappAction}
+   </div>
+
+   ${(instagramUrl || websiteUrl) ? `
+    <div class="profile-extra">
+     ${instagramUrl
+      ? `<a href="${escapeHtml(instagramUrl)}" target="_blank" rel="noopener noreferrer">Instagram</a>`
+      : ""}
+     ${websiteUrl
+      ? `<a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener noreferrer">Website</a>`
+      : ""}
+    </div>
+   ` : ""}
   `;
+
+  const flip = card.querySelector(".profile-flip");
+
+  function toggleFlip() {
+   const flipped = card.classList.toggle("is-flipped");
+   flip.setAttribute("aria-pressed", String(flipped));
+  }
+
+  flip.addEventListener("click", toggleFlip);
+
+  flip.addEventListener("keydown", function(event) {
+   if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    toggleFlip();
+   }
+  });
 
   list.appendChild(card);
  });
@@ -693,7 +850,6 @@ cityFilter.addEventListener("change", renderProviders);
 loadProviders();
 </script>
 
-  
 <nav class="bgc-bottom-nav" aria-label="Main navigation">
 
     <a href="bgc-event-planner.html"
@@ -758,6 +914,5 @@ loadProviders();
 })();
 </script>
 
-  
 </body>
 </html>

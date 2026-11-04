@@ -1,218 +1,146 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#8b1731">
+<meta name="theme-color" content="#171923">
 <title>Register Your Business | BGC EVENTS</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f7f7f5;color:#171719;line-height:1.5}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#0d1117;color:#f4f1f5;line-height:1.5;padding-bottom:120px}
 a{color:inherit;text-decoration:none}
 button,input,select{font:inherit}
 button{cursor:pointer}
 .container{width:min(1120px,calc(100% - 32px));margin:0 auto}
-.site-header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.94);border-bottom:1px solid #e8e8e8;backdrop-filter:blur(16px)}
-.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:flex;align-items:center;gap:11px}
-.brand-mark{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#8b1731;color:#fff;font-size:12px;font-weight:900;letter-spacing:.5px}
-.brand-name{font-size:17px;font-weight:900;letter-spacing:-.4px}
-.brand-name span{color:#8b1731}
-.home-btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 15px;border:1px solid #dedede;border-radius:10px;background:#fff;font-size:12px;font-weight:800;transition:.2s ease}
-.home-btn:hover{border-color:#8b1731;color:#8b1731;transform:translateY(-1px)}
-.hero{padding:72px 0 38px;text-align:center}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:17px;color:#8b1731;font-size:11px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase}
-.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#8b1731}
-.hero h1{max-width:760px;margin:0 auto;font-size:clamp(34px,5vw,56px);line-height:1.03;letter-spacing:-2.4px;font-weight:900}
-.hero h1 span{color:#8b1731}
-.hero-description{max-width:620px;margin:18px auto 0;color:#707074;font-size:15px;line-height:1.7}
-.form-wrap{padding:20px 0 80px}
-.form-card{width:min(760px,100%);margin:0 auto;padding:34px;background:#fff;border:1px solid #e7e7e7;border-radius:24px;box-shadow:0 18px 50px rgba(0,0,0,.055)}
-.form-heading{margin-bottom:28px}
-.form-heading h2{font-size:22px;font-weight:900;letter-spacing:-.5px}
-.form-heading p{margin-top:6px;color:#777;font-size:13px;line-height:1.6}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.hero{max-width:1120px;margin:0 auto;padding:34px 22px 30px;text-align:left}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:17px;color:#f18aa8;font-size:10px;font-weight:900;letter-spacing:1.5px;padding:8px 12px;border:1px solid #633044;border-radius:999px;background:#261923;width:max-content;text-transform:uppercase}
+.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:#f18aa8}
+.hero h1{max-width:760px;margin:12px 0 0;color:#fff;font-size:clamp(32px,5vw,48px);line-height:1.08;letter-spacing:-1.7px;font-weight:900}
+.hero h1 span{color:#f18aa8}
+.hero-description{max-width:650px;margin:13px 0 0;color:#aaa4af;font-size:14px;line-height:1.75}
+.form-wrap{padding:8px 0 40px}
+.form-card{width:min(850px,100%);margin:0 auto;padding:0;overflow:hidden;background:#151b24;border:1px solid #303744;border-radius:24px;box-shadow:0 22px 65px rgba(0,0,0,.28)}
+.form-heading{margin:0;padding:24px 26px 20px;background:linear-gradient(135deg,#211923,#171c26);border-bottom:1px solid #303744}
+.form-heading h2{font-size:21px;font-weight:900;color:#fff}
+.form-heading p{margin-top:6px;color:#aaa4af;font-size:12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:25px 26px 4px;gap:20px}
 .field{display:flex;flex-direction:column;gap:8px;min-width:0}
 .field.full{grid-column:1/-1}
-.field-label{font-size:13px;font-weight:800;color:#29292c}
-.required{color:#8b1731}
-input,select{width:100%;height:48px;padding:0 14px;border:1px solid #dedee1;border-radius:11px;outline:none;background:#fff;color:#202024;font-size:13px;transition:.2s ease}
-input::placeholder{color:#a1a1a5}
-input:focus,select:focus{border-color:#8b1731;box-shadow:0 0 0 3px rgba(139,23,49,.08)}
+.field-label{font-size:12px;font-weight:800;color:#eee8ef}
+.required{color:#f18aa8}
+input,select{width:100%;min-height:50px;height:50px;padding:0 15px;border:1px solid #39414e;border-radius:12px;outline:none;background:#10151d;color:#f5f1f5;font-size:13px;transition:.2s ease}
+input::placeholder{color:#777d88}
+input:focus,select:focus{border-color:#e16b91;box-shadow:0 0 0 3px rgba(217,93,131,.13)}
 select{appearance:auto}
-.helper,.category-note{color:#858589;font-size:11px;line-height:1.5}
-#eventCategory:not(:disabled){border-color:#8b1731}
+.helper,.category-note{color:#9994a0;font-size:11px;line-height:1.5}
+#eventCategory:not(:disabled){border-color:#a83259}
 .combo-option{font-weight:800}
-.upload-box{padding:22px;border:1.5px dashed #cfcfd2;border-radius:16px;background:#fafafa;transition:.2s ease}
-.upload-box:hover{border-color:#8b1731;background:#fffafb}
+.upload-box{padding:22px;border:1.5px dashed #4a3a46;border-radius:16px;background:#111720;transition:.2s ease}
+.upload-box:hover{border-color:#d95d83;background:#191923}
 .upload-title{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.upload-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:12px;background:#f6e9ed;color:#8b1731;font-size:19px;font-weight:900}
-.upload-title strong{font-size:14px;font-weight:900}
-.upload-description{margin-bottom:16px;color:#777;font-size:12px;line-height:1.6}
+.upload-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:12px;background:#38202c;color:#f18aa8;font-size:19px;font-weight:900}
+.upload-title strong{font-size:14px;font-weight:900;color:#f4eef3}
+.upload-description{margin-bottom:16px;color:#aaa4af;font-size:12px;line-height:1.6}
 .file-input{display:none}
-.upload-button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 17px;border:1px solid #d8d8da;border-radius:10px;background:#fff;color:#27272a;font-size:12px;font-weight:800;cursor:pointer;transition:.2s ease}
-.upload-button:hover{border-color:#8b1731;color:#8b1731;transform:translateY(-1px)}
+.upload-button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 17px;border:1px solid #46505d;border-radius:999px;background:#202631;color:#f5eff4;font-size:12px;font-weight:800;cursor:pointer;transition:.2s ease}
+.upload-button:hover{border-color:#d95d83;color:#f18aa8;transform:translateY(-1px)}
 .preview-area{display:none;margin-top:18px}
 .preview-area.show{display:block}
-.preview-card{display:flex;align-items:center;gap:14px;padding:12px;border:1px solid #e5e5e5;border-radius:13px;background:#fff}
+.preview-card{display:flex;align-items:center;gap:14px;padding:12px;border:1px solid #39414e;border-radius:13px;background:#171e28}
 .preview-image{width:72px;height:72px;flex:0 0 72px;object-fit:cover;border-radius:10px;border:1px solid #eee;background:#f4f4f4}
 .preview-info{min-width:0}
-.preview-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:800}
-.preview-size{margin-top:4px;color:#777;font-size:11px}
-.compress-status{margin-top:4px;color:#8b1731;font-size:11px;font-weight:800}
-.submit-area{margin-top:30px;padding-top:24px;border-top:1px solid #ededed}
-.submit-button{width:100%;height:52px;border:0;border-radius:12px;background:#8b1731;color:#fff;font-size:14px;font-weight:900;transition:.2s ease}
-.submit-button:hover{background:#741329;transform:translateY(-1px)}
+.preview-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:800;color:#fff}
+.preview-size{margin-top:4px;color:#aaa4af;font-size:11px}
+.compress-status{margin-top:4px;color:#f18aa8;font-size:11px;font-weight:800}
+.submit-area{margin:25px 26px 26px;padding-top:20px;border-top:1px solid #303744}
+.submit-button{width:100%;height:52px;border:0;border-radius:999px;background:linear-gradient(110deg,#b63860,#e66e91);color:#fff;font-size:14px;font-weight:900;transition:.2s ease;box-shadow:0 10px 25px rgba(165,43,84,.22)}
+.submit-button:hover{background:linear-gradient(110deg,#c44770,#ed7b9e);transform:translateY(-1px)}
 .submit-button:disabled{opacity:.65;cursor:not-allowed;transform:none}
-.submit-note{margin-top:10px;color:#858589;text-align:center;font-size:11px}
-.success-message{display:none;padding:30px 10px 10px;text-align:center}
+.submit-note{margin-top:10px;color:#9994a0;text-align:center;font-size:11px}
+.success-message{display:none;padding:30px 20px;text-align:center;color:#fff}
 .success-message.show{display:block}
 .success-icon{width:60px;height:60px;display:grid;place-items:center;margin:0 auto 15px;border-radius:50%;background:#eaf7ef;color:#20834a;font-size:25px;font-weight:900}
 .success-message h3{font-size:22px;font-weight:900}
-.success-message p{max-width:430px;margin:7px auto 18px;color:#777;font-size:13px;line-height:1.6}
-.success-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:10px;background:#8b1731;color:#fff;font-size:12px;font-weight:900}
-footer{padding:25px 0;background:#fff;border-top:1px solid #e8e8e8}
+.success-message p{max-width:430px;margin:7px auto 18px;color:#aaa4af;font-size:13px;line-height:1.6}
+.success-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:999px;background:linear-gradient(110deg,#b63860,#e66e91);color:#fff;font-size:12px;font-weight:900}
+footer{padding:25px 0;background:#10151d;border-top:1px solid #303744}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:15px}
-.footer-brand{font-size:13px;font-weight:900}
-.footer-text{color:#858589;font-size:11px}
+.footer-brand{font-size:13px;font-weight:900;color:#eee8ef}
+.footer-text{color:#9994a0;font-size:11px}
+  /* BGC EVENTS BOTTOM NAVIGATION */
+.bgc-bottom-nav{
+ position:fixed;
+ left:12px;
+ right:12px;
+ bottom:calc(12px + env(safe-area-inset-bottom,0px));
+ z-index:9999;
+ display:grid;
+ grid-template-columns:repeat(5,minmax(0,1fr));
+ align-items:center;
+ gap:4px;
+ max-width:560px;
+ margin:0 auto;
+ padding:9px 7px;
+ background:rgba(255,255,255,.97);
+ border:1px solid #eee1e4;
+ border-radius:22px;
+ box-shadow:0 8px 0 #e5d8dc,0 12px 28px rgba(60,20,30,.16);
+ backdrop-filter:blur(16px);
+ -webkit-backdrop-filter:blur(16px);
+}
+.bgc-bottom-nav a{
+ min-width:0;
+ min-height:58px;
+ padding:7px 2px;
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ justify-content:center;
+ gap:4px;
+ border-radius:15px;
+ color:#77717a;
+ text-decoration:none;
+ font-family:Arial,sans-serif;
+ font-size:10px;
+ font-weight:700;
+ line-height:1.1;
+ transition:transform .18s ease,background .18s ease,box-shadow .18s ease;
+}
+.bgc-bottom-nav a .nav-icon{font-size:20px;line-height:1}
+.bgc-bottom-nav a.active{
+ color:#fff;
+ background:linear-gradient(145deg,#a52645,#741329);
+ box-shadow:0 4px 0 #541020,0 7px 12px rgba(139,23,49,.25);
+ transform:translateY(-3px);
+}
+.bgc-bottom-nav a:active{transform:translateY(1px);box-shadow:none}
+@media(min-width:700px){
+ .bgc-bottom-nav{bottom:20px}
+}
+@media(max-width:360px){
+ .bgc-bottom-nav{left:7px;right:7px;padding:7px 4px;gap:2px;border-radius:18px}
+ .bgc-bottom-nav a{font-size:9px;min-height:54px}
+ .bgc-bottom-nav a .nav-icon{font-size:18px}
+}
+/* MEMBER-STYLE DARK THEME */
 @media(max-width:650px){
  .container{width:min(100% - 22px,1120px)}
- .nav{min-height:68px}
- .brand-name{font-size:15px}
- .home-btn{min-height:38px;padding:0 11px;font-size:11px}
- .hero{padding:48px 0 25px}
- .hero h1{letter-spacing:-1.5px}
- .hero-description{padding:0 8px;font-size:13px}
- .form-card{padding:22px 17px;border-radius:19px}
- .form-grid{grid-template-columns:1fr;gap:18px}
- .field.full{grid-column:auto}
- .upload-box{padding:18px}
+ .hero{padding:30px 17px 24px}
+ .hero h1{letter-spacing:-1.2px}
+ .hero-description{font-size:13px}
+ .form-wrap{padding:5px 0 30px}
+ .form-card{border-radius:20px}
+ .form-heading{padding:21px 18px 16px}
+ .form-grid{padding:21px 17px 2px;gap:17px}
+ .submit-area{margin:22px 17px 20px}
  .footer-inner{flex-direction:column;text-align:center}
 }
-
-
-/* ===== BGC EVENTS 3D FIXED NAVIGATION ===== */
-
-body {
-    padding-bottom: 105px;
-}
-
-.bgc-bottom-nav {
-    position: fixed;
-    left: 12px;
-    right: 12px;
-    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
-    z-index: 9999;
-
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    align-items: center;
-    gap: 4px;
-
-    max-width: 560px;
-    margin: 0 auto;
-    padding: 9px 7px;
-
-    background: rgba(255, 255, 255, 0.97);
-    border: 1px solid #eee1e4;
-    border-radius: 22px;
-
-    box-shadow:
-        0 8px 0 #e5d8dc,
-        0 12px 28px rgba(60, 20, 30, 0.16);
-
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-}
-
-.bgc-bottom-nav a {
-    min-width: 0;
-    min-height: 58px;
-    padding: 7px 2px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-
-    border-radius: 15px;
-    color: #77717a;
-    text-decoration: none;
-
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1.1;
-
-    transition:
-        transform 0.18s ease,
-        background 0.18s ease,
-        box-shadow 0.18s ease;
-}
-
-.bgc-bottom-nav a .nav-icon {
-    font-size: 20px;
-    line-height: 1;
-}
-
-.bgc-bottom-nav a.active {
-    color: #ffffff;
-    background: linear-gradient(145deg, #a52645, #741329);
-
-    box-shadow:
-        0 4px 0 #541020,
-        0 7px 12px rgba(139, 23, 49, 0.25);
-
-    transform: translateY(-3px);
-}
-
-.bgc-bottom-nav a:active {
-    transform: translateY(1px);
-    box-shadow: none;
-}
-
-@media (min-width: 700px) {
-    .bgc-bottom-nav {
-        bottom: 20px;
-    }
-}
-
-@media (max-width: 360px) {
-    .bgc-bottom-nav {
-        left: 7px;
-        right: 7px;
-        padding: 7px 4px;
-        gap: 2px;
-        border-radius: 18px;
-    }
-
-    .bgc-bottom-nav a {
-        font-size: 9px;
-        min-height: 54px;
-    }
-
-    .bgc-bottom-nav a .nav-icon {
-        font-size: 18px;
-    }
-}
-
-  
 </style>
 </head>
 <body>
-<header class="site-header">
- <div class="container nav">
-  <a href="bgc-event-planner.html" class="brand">
-   <div class="brand-mark">BGC</div>
-   <div class="brand-name">BGC <span>EVENTS</span></div>
-  </a>
-  <a href="bgc-event-planner.html" class="home-btn">← Back to Events</a>
- </div>
-</header>
+
 <section class="hero">
  <div class="container">
   <div class="eyebrow"><span class="eyebrow-dot"></span>BGC EVENTS</div>
@@ -220,6 +148,7 @@ body {
   <p class="hero-description">Register your event service business on BGC EVENTS and let people connect with you directly.</p>
  </div>
 </section>
+
 <main class="form-wrap">
  <div class="container">
   <div class="form-card">
@@ -227,45 +156,53 @@ body {
     <h2>Business details</h2>
     <p>Keep it simple. Add only the details people need to contact your business.</p>
    </div>
+
    <form id="eventRegisterForm">
     <div class="form-grid">
+
      <div class="field">
       <label class="field-label" for="personName">Name <span class="required">*</span></label>
       <input type="text" id="personName" placeholder="Your name" autocomplete="name" required>
      </div>
+
      <div class="field">
       <label class="field-label" for="companyName">Company Name <span class="required">*</span></label>
       <input type="text" id="companyName" placeholder="Your company / business name" autocomplete="organization" required>
      </div>
+
      <div class="field">
       <label class="field-label" for="phoneNumber">Phone Number <span class="required">*</span></label>
       <input type="tel" id="phoneNumber" placeholder="10 digit mobile number" inputmode="numeric" maxlength="10" autocomplete="tel" required>
      </div>
+
      <div class="field">
       <label class="field-label" for="whatsappNumber">WhatsApp Number <span class="required">*</span></label>
-      <input type="tel" id="whatsappNumber" placeholder="WhatsApp number" inputmode="numeric" maxlength="10" autocomplete="tel" required>
+      <input type="tel" id="whatsappNumber" placeholder="WhatsApp number" inputmode="numeric" maxlength="10" required>
      </div>
-     <div class="field full">
-       <label class="field-label" for="eventCategory">Service Category <span class="required">*</span></label>
-       <select id="eventCategory" required>
-        <option value="">Select service category</option>
-       </select>
-       <div class="category-note">Register your business once under its service category. It will appear in every event where that service is listed.</div>
-      </div>
 
-      
+     <div class="field full">
+      <label class="field-label" for="eventCategory">Service Category <span class="required">*</span></label>
+      <select id="eventCategory" required>
+       <option value="">Select service category</option>
+      </select>
+      <div class="category-note">Register your business once under its service category. It will appear in every event where that service is listed.</div>
+     </div>
+
      <div class="field">
       <label class="field-label" for="city">City <span class="required">*</span></label>
       <input type="text" id="city" placeholder="e.g. Chennai" autocomplete="address-level2" required>
      </div>
+
      <div class="field">
       <label class="field-label" for="instagram">Instagram ID / Link</label>
       <input type="text" id="instagram" placeholder="@yourbusiness or Instagram link" autocomplete="off">
      </div>
+
      <div class="field">
       <label class="field-label" for="website">Website</label>
       <input type="url" id="website" placeholder="https://yourwebsite.com" autocomplete="url">
      </div>
+
      <div class="field full">
       <label class="field-label" for="businessImage">Business Photo / Visiting Card</label>
       <div class="upload-box">
@@ -289,21 +226,26 @@ body {
       </div>
       <div class="helper">You can upload your own photo or a visiting card. Final image size will be kept at 200 KB or less.</div>
      </div>
+
     </div>
+
     <div class="submit-area">
      <button type="submit" class="submit-button" id="submitButton">Register My Business</button>
      <div class="submit-note">Your details will be securely submitted to BGC EVENTS.</div>
     </div>
    </form>
+
    <div class="success-message" id="successMessage">
     <div class="success-icon">✓</div>
     <h3>Registration successful</h3>
     <p>Your business has been added to BGC EVENTS. People can now discover and contact your business.</p>
     <a href="bgc-event-planner.html" class="success-button">View BGC EVENTS</a>
    </div>
+
   </div>
  </div>
 </main>
+
 <footer>
  <div class="container footer-inner">
   <div class="footer-brand">BGC CLUB · BGC EVENTS</div>
@@ -312,10 +254,12 @@ body {
 </footer>
 <script>
 "use strict";
+
 const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
 const SUPABASE_KEY = "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
 const { createClient } = window.supabase;
 const bgcEventsSupabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const EVENT_TABLE = "bgc_eventers";
 const EVENT_BUCKET = "bgc-eventers";
 const MAX_IMAGE_SIZE = 200 * 1024;
@@ -330,6 +274,7 @@ const compressStatus = document.getElementById("compressStatus");
 const submitButton = document.getElementById("submitButton");
 const successMessage = document.getElementById("successMessage");
 const categorySelect = document.getElementById("eventCategory");
+
 let compressedImageBlob = null;
 
 /* COMMON SERVICE CATEGORIES */
@@ -384,16 +329,20 @@ BGC_EVENT_CATEGORIES.forEach(function(category) {
 imageInput.addEventListener("change", async function() {
  const file = this.files[0];
  if (!file) return;
+
  const allowedTypes = ["image/jpeg","image/png","image/webp"];
+
  if (!allowedTypes.includes(file.type)) {
   alert("Please upload a JPG, PNG or WEBP image.");
   this.value = "";
   return;
  }
+
  previewArea.classList.add("show");
  previewName.textContent = file.name;
  previewSize.textContent = "Preparing image...";
  compressStatus.textContent = "Compressing...";
+
  try {
   compressedImageBlob = await compressImage(file, MAX_IMAGE_SIZE);
   const previewURL = URL.createObjectURL(compressedImageBlob);
@@ -409,47 +358,61 @@ imageInput.addEventListener("change", async function() {
  }
 });
 
-  
+/* IMAGE COMPRESSION */
 async function compressImage(file, maxBytes) {
  const image = await loadImage(file);
  let width = image.naturalWidth;
  let height = image.naturalHeight;
  const MAX_DIMENSION = 1800;
+
  if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
   const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
   width = Math.round(width * ratio);
   height = Math.round(height * ratio);
  }
+
  let quality = 0.9;
  let blob = await canvasToBlob(image, width, height, quality);
+
  while (blob.size > maxBytes && quality > 0.35) {
   quality -= 0.05;
   blob = await canvasToBlob(image, width, height, quality);
  }
+
  while (blob.size > maxBytes && width > 700) {
   width = Math.round(width * 0.85);
   height = Math.round(height * 0.85);
   blob = await canvasToBlob(image, width, height, 0.75);
  }
+
  while (blob.size > maxBytes && width > 400) {
   width = Math.round(width * 0.85);
   height = Math.round(height * 0.85);
   blob = await canvasToBlob(image, width, height, 0.65);
  }
- if (blob.size > maxBytes) throw new Error("Image could not be compressed below 200 KB.");
+
+ if (blob.size > maxBytes) {
+  throw new Error("Image could not be compressed below 200 KB.");
+ }
+
  return blob;
 }
 
 function loadImage(file) {
  return new Promise(function(resolve, reject) {
   const reader = new FileReader();
+
   reader.onload = function() {
    const image = new Image();
    image.onload = function() { resolve(image); };
    image.onerror = function() { reject(new Error("Invalid image file.")); };
    image.src = reader.result;
   };
-  reader.onerror = function() { reject(new Error("Unable to read image.")); };
+
+  reader.onerror = function() {
+   reject(new Error("Unable to read image."));
+  };
+
   reader.readAsDataURL(file);
  });
 }
@@ -459,10 +422,12 @@ function canvasToBlob(image, width, height, quality) {
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
+
   const ctx = canvas.getContext("2d");
   ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, width, height);
   ctx.drawImage(image, 0, 0, width, height);
+
   canvas.toBlob(function(blob) {
    if (blob) resolve(blob);
    else reject(new Error("Image conversion failed."));
@@ -474,23 +439,29 @@ function canvasToBlob(image, width, height, quality) {
 function cleanPhone(number) {
  return number.replace(/\D/g, "").slice(0, 10);
 }
+
 function validPhone(number) {
  return /^[6-9]\d{9}$/.test(number);
 }
+
 const phoneInput = document.getElementById("phoneNumber");
 const whatsappInput = document.getElementById("whatsappNumber");
+
 phoneInput.addEventListener("input", function() {
  this.value = cleanPhone(this.value);
 });
+
 whatsappInput.addEventListener("input", function() {
  this.value = cleanPhone(this.value);
 });
 
 /* WEBSITE NORMALIZATION */
 const websiteInput = document.getElementById("website");
+
 websiteInput.addEventListener("blur", function() {
  let value = this.value.trim();
  if (!value) return;
+
  if (!value.startsWith("http://") && !value.startsWith("https://")) {
   this.value = "https://" + value;
  }
@@ -498,16 +469,17 @@ websiteInput.addEventListener("blur", function() {
 
 /* INSTAGRAM NORMALIZATION */
 const instagramInput = document.getElementById("instagram");
+
 instagramInput.addEventListener("blur", function() {
  let value = this.value.trim();
  if (!value) return;
  if (value.startsWith("@")) return;
+
  if (!value.startsWith("http://") && !value.startsWith("https://")) {
   if (!value.includes("/")) this.value = "@" + value;
  }
 });
-
-/* IMAGE RESET */
+  /* IMAGE RESET */
 function resetSelectedImage() {
  compressedImageBlob = null;
  imageInput.value = "";
@@ -517,9 +489,11 @@ function resetSelectedImage() {
  compressStatus.textContent = "";
  previewArea.classList.remove("show");
 }
+
 imageInput.addEventListener("click", function() {
  this.value = "";
 });
+
 imageInput.addEventListener("change", function() {
  if (!this.files.length) resetSelectedImage();
 });
@@ -528,28 +502,38 @@ imageInput.addEventListener("change", function() {
 function createSafeFileName() {
  return "eventer-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8) + ".jpg";
 }
+
 function normalizeWebsite(value) {
  value = (value || "").trim();
  if (!value) return null;
- if (!value.startsWith("http://") && !value.startsWith("https://")) value = "https://" + value;
+
+ if (!value.startsWith("http://") && !value.startsWith("https://")) {
+  value = "https://" + value;
+ }
+
  return value;
 }
+
 function normalizeInstagram(value) {
  value = (value || "").trim();
  if (!value) return null;
  return value;
 }
+
 function createStoragePath() {
  return "business-images/" + new Date().toISOString().slice(0, 10) + "/" + createSafeFileName();
 }
 
-  
+/* UPLOAD IMAGE TO EXISTING STORAGE BUCKET */
 async function uploadEventImage() {
  if (!compressedImageBlob) return null;
+
  if (compressedImageBlob.size > MAX_IMAGE_SIZE) {
   throw new Error("Image size is above 200 KB.");
  }
+
  const filePath = createStoragePath();
+
  const { error: uploadError } = await bgcEventsSupabase
   .storage.from(EVENT_BUCKET)
   .upload(filePath, compressedImageBlob, {
@@ -557,27 +541,42 @@ async function uploadEventImage() {
    cacheControl: "3600",
    upsert: false
   });
+
  if (uploadError) {
   console.error("Storage upload error:", uploadError);
   throw new Error(uploadError.message || "Image upload failed. Please try again.");
  }
- const { data } = bgcEventsSupabase.storage.from(EVENT_BUCKET).getPublicUrl(filePath);
- if (!data || !data.publicUrl) throw new Error("Unable to create image URL.");
+
+ const { data } = bgcEventsSupabase.storage
+  .from(EVENT_BUCKET)
+  .getPublicUrl(filePath);
+
+ if (!data || !data.publicUrl) {
+  throw new Error("Unable to create image URL.");
+ }
+
  return data.publicUrl;
 }
 
+/* INSERT INTO EXISTING TABLE */
 async function insertEventer(data) {
  const { data: inserted, error } = await bgcEventsSupabase
-  .from(EVENT_TABLE).insert([data]).select().single();
+  .from(EVENT_TABLE)
+  .insert([data])
+  .select()
+  .single();
+
  if (error) {
   console.error("Eventer database error:", error);
   throw new Error(error.message || "Unable to register your business.");
  }
+
  return inserted;
 }
 
 /* FORM SUBMIT */
 let submitting = false;
+
 form.addEventListener("submit", async function(event) {
  event.preventDefault();
  if (submitting) return;
@@ -595,34 +594,41 @@ form.addEventListener("submit", async function(event) {
   alert("Please enter your name.");
   return;
  }
+
  if (!companyName) {
   alert("Please enter your company name.");
   return;
  }
+
  if (!validPhone(phoneNumber)) {
   alert("Please enter a valid 10 digit phone number.");
   phoneInput.focus();
   return;
  }
+
  if (!validPhone(whatsappNumber)) {
   alert("Please enter a valid 10 digit WhatsApp number.");
   whatsappInput.focus();
   return;
  }
+
  if (!category) {
   alert("Please select your service category.");
   categorySelect.focus();
   return;
  }
+
  if (!cityName) {
   alert("Please enter your city.");
   document.getElementById("city").focus();
   return;
  }
+
  if (imageInput.files.length && !compressedImageBlob) {
   alert("Please wait until the image compression is completed.");
   return;
  }
+
  if (compressedImageBlob && compressedImageBlob.size > MAX_IMAGE_SIZE) {
   alert("Image is still above 200 KB. Please choose another image.");
   return;
@@ -634,12 +640,14 @@ form.addEventListener("submit", async function(event) {
 
  try {
   let imageUrl = null;
+
   if (compressedImageBlob) {
    submitButton.textContent = "Uploading image...";
    imageUrl = await uploadEventImage();
   }
 
   submitButton.textContent = "Saving business...";
+
   const eventerData = {
    name: personName,
    company_name: companyName,
@@ -653,6 +661,7 @@ form.addEventListener("submit", async function(event) {
   };
 
   await insertEventer(eventerData);
+
   form.style.display = "none";
   successMessage.classList.add("show");
 
@@ -673,101 +682,81 @@ console.log("Storage:", EVENT_BUCKET);
 async function testBGCEventsBackend() {
  try {
   const { error } = await bgcEventsSupabase
-   .from(EVENT_TABLE).select("id").limit(1);
+   .from(EVENT_TABLE)
+   .select("id")
+   .limit(1);
+
   if (error) {
    console.warn("BGC EVENTS backend check:", error.message);
    return false;
   }
+
   console.log("✓ BGC EVENTS database connected.");
   return true;
+
  } catch (error) {
   console.warn("BGC EVENTS backend check failed:", error);
   return false;
  }
 }
+
 testBGCEventsBackend();
-
-/*
-BGC EVENTS EXISTING BACKEND
-
-Table: bgc_eventers
-Storage bucket: bgc-eventers
-
-Preserved fields:
-name, company_name, phone, whatsapp, event_category,
-city, instagram, website, image_url
-
-New registrations save only the selected service category.
-The provider page must support old values such as "Marriage — Catering"
-as well as new values such as "Catering".
-*/
 </script>
-
 
 <nav class="bgc-bottom-nav" aria-label="Main navigation">
 
-    <a href="bgc-event-planner.html"
-       data-page="events">
-        <span class="nav-icon">📅</span>
-        <span>Events</span>
-    </a>
+ <a href="bgc-event-planner.html" data-page="events">
+  <span class="nav-icon">📅</span>
+  <span>Events</span>
+ </a>
 
-    <a href="bgc-event-providers.html"
-       data-page="providers">
-        <span class="nav-icon">👥</span>
-        <span>Providers</span>
-    </a>
+ <a href="bgc-event-providers.html" data-page="providers">
+  <span class="nav-icon">👥</span>
+  <span>Providers</span>
+ </a>
 
-    <a href="event-register.html"
-       data-page="register">
-        <span class="nav-icon">➕</span>
-        <span>Register</span>
-    </a>
+ <a href="event-register.html" data-page="register">
+  <span class="nav-icon">➕</span>
+  <span>Register</span>
+ </a>
 
-    <a href="bgc-event-services.html"
-       data-page="services">
-        <span class="nav-icon">▦</span>
-        <span>Services</span>
-    </a>
+ <a href="bgc-event-services.html" data-page="services">
+  <span class="nav-icon">▦</span>
+  <span>Services</span>
+ </a>
 
-    <a href="index.html"
-       data-page="home">
-        <span class="nav-icon">⌂</span>
-        <span>Home</span>
-    </a>
+ <a href="index.html" data-page="home">
+  <span class="nav-icon">⌂</span>
+  <span>Home</span>
+ </a>
 
 </nav>
 
 <script>
 (function () {
-    const currentFile = (
-        window.location.pathname
-        .split("/")
-        .pop()
-        .toLowerCase()
-    );
+ const currentFile = window.location.pathname
+  .split("/")
+  .pop()
+  .toLowerCase();
 
-    const pageMap = {
-        "bgc-event-planner.html": "events",
-        "bgc-event-providers.html": "providers",
-        "event-register.html": "register",
-        "bgc-event-services.html": "services",
-        "index.html": "home"
-    };
+ const pageMap = {
+  "bgc-event-planner.html": "events",
+  "bgc-event-providers.html": "providers",
+  "event-register.html": "register",
+  "bgc-event-services.html": "services",
+  "index.html": "home"
+ };
 
-    const activePage = pageMap[currentFile];
+ const activePage = pageMap[currentFile];
 
-    document.querySelectorAll(
-        ".bgc-bottom-nav a"
-    ).forEach(function (link) {
-        if (link.dataset.page === activePage) {
-            link.classList.add("active");
-            link.setAttribute("aria-current", "page");
-        }
-    });
+ document.querySelectorAll(".bgc-bottom-nav a").forEach(function(link) {
+  if (link.dataset.page === activePage) {
+   link.classList.add("active");
+   link.setAttribute("aria-current", "page");
+  }
+ });
 })();
 </script>
 
-  
 </body>
 </html>
