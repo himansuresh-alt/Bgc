@@ -1004,20 +1004,21 @@ $("founderForm").addEventListener("submit", async event => {
 
     showMessage("Founder profile save ஆகிறது...", "info");
 
-    const { error } = await db
-      .from("bgc_team_members")
-      .insert([{
-        full_name: fullName,
-        email: email || null,
-        mobile: mobile,
-        skills: profileDetails,
-        experience_level: "BGC CLUB Founder",
-        portfolio_url: website || null,
-        photo_url: photoURL,
-        status: "pending"
-      }]);
+  const { error } = await db
+  .from("bgc_team_members")
+  .insert([{
+    full_name: fullName,
+    email: email || null,
+    mobile: mobile,
+    department: category || "Business Founder",
+    skills: profileDetails,
+    experience_level: "BGC CLUB Founder",
+    portfolio_url: website || null,
+    photo_url: photoURL,
+    status: "pending"
+  }]);
 
-    if (error) throw error;
+if (error) throw error;
 
     $("founderForm").reset();
 
