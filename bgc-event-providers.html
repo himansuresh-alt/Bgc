@@ -514,6 +514,188 @@ footer{color:#77727a}
     text-decoration: none;
   }
 }
+
+  /* PREMIUM IPHONE 3D FIXED BOTTOM NAVIGATION */
+
+.mobile-bottom-nav {
+    position: fixed;
+    left: 50%;
+    bottom: calc(12px + env(safe-area-inset-bottom));
+    transform: translateX(-50%);
+    z-index: 9999;
+
+    width: min(94%, 520px);
+    min-height: 82px;
+
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    gap: 4px;
+    padding: 9px 8px;
+
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 25px;
+
+    background: linear-gradient(
+        145deg,
+        rgba(255,255,255,.97),
+        rgba(239,242,247,.91)
+    );
+
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.13),
+        0 4px 9px rgba(0,0,0,.07),
+        inset 0 1px 1px rgba(255,255,255,.95),
+        inset 0 -2px 4px rgba(0,0,0,.045);
+}
+
+.mobile-nav-item {
+    position: relative;
+    min-width: 0;
+    height: 64px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    border-radius: 18px;
+    color: #656a73;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition:
+        transform .22s ease,
+        color .22s ease,
+        background .22s ease,
+        box-shadow .22s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav-icon {
+    width: 29px;
+    height: 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 0;
+}
+
+.mobile-nav-icon svg {
+    width: 27px;
+    height: 27px;
+
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.mobile-nav-item.active {
+    color: #8d1831;
+
+    background: linear-gradient(
+        145deg,
+        #fff,
+        #f0e9ec
+    );
+
+    box-shadow:
+        0 5px 10px rgba(0,0,0,.10),
+        inset 0 1px 2px #fff,
+        inset 0 -2px 3px rgba(141,24,49,.08);
+
+    transform: translateY(-2px);
+}
+
+.mobile-nav-item:active {
+    transform: scale(.94);
+}
+
+/* DESKTOP */
+
+@media (min-width: 701px) {
+    .mobile-bottom-nav {
+        left: 50%;
+        bottom: 22px;
+        width: min(560px, 80%);
+    }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+    body {
+        padding-bottom: 120px;
+    }
+
+    .mobile-bottom-nav {
+        left: 50%;
+        right: auto;
+        bottom: calc(10px + env(safe-area-inset-bottom));
+
+        width: calc(100% - 24px);
+        min-height: 78px;
+        height: auto;
+
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        padding: 7px 5px;
+        border-radius: 23px;
+    }
+
+    .mobile-nav-item {
+        height: 62px;
+        font-size: 10px;
+        gap: 4px;
+    }
+
+    .mobile-nav-icon {
+        width: 27px;
+        height: 27px;
+    }
+
+    .mobile-nav-icon svg {
+        width: 25px;
+        height: 25px;
+    }
+}
+
+  /* JOIN FREE BUTTON */
+.join-free-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 50px;
+    margin-top: 25px;
+    padding: 0 27px;
+    border-radius: 999px;
+    background: linear-gradient(110deg, #b63860, #e66e91);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0 9px 25px rgba(182, 56, 96, .25);
+    transition: .2s ease;
+}
+
+.join-free-btn span {
+    font-size: 19px;
+    line-height: 1;
+}
+
+.join-free-btn:active {
+    transform: scale(.96);
+}
 </style>
 </head>
 
@@ -524,6 +706,11 @@ footer{color:#77727a}
  <div class="eyebrow" id="eventName">BGC EVENTS</div>
  <h1 id="categoryName">Where Event Professionals Connect.</h1>
  <p>Discover Event Services &amp; Grow Together.</p>
+
+  <a href="event-register.html" class="join-free-btn">
+    Join Free <span>→</span>
+  </a>
+  
 </section>
 
 <section class="tools">
@@ -1013,67 +1200,102 @@ cityFilter.addEventListener("change", renderProviders);
 loadProviders();
 </script>
 
-<nav class="bgc-bottom-nav" aria-label="Main navigation">
+<!-- PREMIUM FIXED NAVIGATION -->
 
-    <a href="bgc-event-planner.html"
-       data-page="events">
-        <span class="nav-icon">📅</span>
-        <span>Events</span>
-    </a>
+<nav class="mobile-bottom-nav" aria-label="BGC CLUB main navigation">
 
-    <a href="bgc-event-providers.html"
-       data-page="providers">
-        <span class="nav-icon">👥</span>
-        <span>Providers</span>
-    </a>
+  <a href="index.html" class="mobile-nav-item" aria-label="Home">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m3 10 9-7 9 7"></path>
+        <path d="M5 9v12h14V9"></path>
+        <path d="M9 21v-7h6v7"></path>
+      </svg>
+    </span>
+    <span>Home</span>
+  </a>
 
-    <a href="event-register.html"
-       data-page="register">
-        <span class="nav-icon">➕</span>
-        <span>Register</span>
-    </a>
+  <a href="members.html" class="mobile-nav-item" aria-label="Members">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+    </span>
+    <span>Members</span>
+  </a>
 
-    <a href="bgc-event-services.html"
-       data-page="services">
-        <span class="nav-icon">▦</span>
-        <span>Services</span>
-    </a>
+  <a href="post.html" class="mobile-nav-item" aria-label="Post">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="4"></rect>
+        <path d="M12 8v8"></path>
+        <path d="M8 12h8"></path>
+      </svg>
+    </span>
+    <span>Post</span>
+  </a>
 
-    <a href="index.html"
-       data-page="home">
-        <span class="nav-icon">⌂</span>
-        <span>Home</span>
-    </a>
+  <a href="feeds.html" class="mobile-nav-item" aria-label="Feeds">
+    <span class="mobile-nav-icon">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="5" y="3" width="16" height="18" rx="2"></rect>
+        <path d="M3 7v13a2 2 0 0 0 2 2h12"></path>
+        <path d="M9 8h8"></path>
+        <path d="M9 12h8"></path>
+        <path d="M9 16h5"></path>
+      </svg>
+    </span>
+    <span>Feeds</span>
+  </a>
 
+<a href="bgc-event-providers.html"
+   class="mobile-nav-item"
+   aria-label="Events">
+
+    <span class="mobile-nav-icon">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+            <path d="M16 3v4"></path>
+            <path d="M8 3v4"></path>
+            <path d="M3 10h18"></path>
+            <path d="M8 14h.01"></path>
+            <path d="M12 14h.01"></path>
+            <path d="M16 14h.01"></path>
+        </svg>
+    </span>
+
+    <span>Events</span>
+</a>
 </nav>
 
 <script>
 (function () {
-    const currentFile = (
-        window.location.pathname
-        .split("/")
-        .pop()
-        .toLowerCase()
-    );
+  const currentFile = window.location.pathname
+    .split("/")
+    .pop()
+    .toLowerCase();
 
-    const pageMap = {
-        "bgc-event-planner.html": "events",
-        "bgc-event-providers.html": "providers",
-        "event-register.html": "register",
-        "bgc-event-services.html": "services",
-        "index.html": "home"
-    };
+  const pageMap = {
+    "index.html": "home",
+    "members.html": "members",
+    "post.html": "post",
+    "feeds.html": "feeds",
+    "bgc-event-providers.html": "events"
+    
+};
+  const activePage = pageMap[currentFile];
 
-    const activePage = pageMap[currentFile];
+  document.querySelectorAll(".mobile-nav-item").forEach(function(link) {
+    const linkFile = link.getAttribute("href").toLowerCase();
 
-    document.querySelectorAll(
-        ".bgc-bottom-nav a"
-    ).forEach(function (link) {
-        if (link.dataset.page === activePage) {
-            link.classList.add("active");
-            link.setAttribute("aria-current", "page");
-        }
-    });
+    if (linkFile === currentFile) {
+      link.classList.add("active");
+      link.setAttribute("aria-current", "page");
+    }
+  });
 })();
 </script>
 

@@ -789,38 +789,41 @@ function getMemberPhoto(member) {
   return safeWebURL(member.photo_url) || avatarPlaceholder(member.full_name);
 }
 
-/* All 29 categories from Join Member page */
+
+/* BGC CLUB - BUSINESS CATEGORIES */
 const BUSINESS_CATEGORIES = [
+  "Manufacturing",
+  "Trading & Wholesale",
+  "Retail Business",
   "Construction & Real Estate",
   "Electrical & Electronics",
   "AC, HVAC & Refrigeration",
-  "Plumbing & Sanitary",
-  "Manufacturing & Industrial",
-  "Trading, Wholesale & Distribution",
-  "IT & Software Technology",
-  "Digital Marketing & Media",
-  "Graphic Design & Creative",
-  "Video, Photography & Production",
-  "Sales & Business Development",
-  "Finance, Accounts & Taxation",
-  "Legal & Compliance",
+  "IT & Software",
+  "Digital Marketing",
+  "Design & Creative",
+  "Photography & Videography",
+  "Event Management",
+  "Food & Beverage",
+  "Agriculture & Farming",
+  "Automobile",
+  "Logistics & Transportation",
+  "Finance & Accounting",
+  "Legal Services",
   "HR & Recruitment",
   "Education & Training",
-  "Food & Beverage",
-  "Automobile & Transportation",
-  "Logistics & Supply Chain",
-  "Event Management & Entertainment",
-  "Fashion, Clothing & Textile",
-  "Beauty, Wellness & Personal Care",
-  "Healthcare & Medical",
+  "Healthcare",
+  "Beauty & Wellness",
   "Cleaning & Facility Management",
-  "Home & Lifestyle Services",
-  "Security & Safety",
-  "Professional & Consulting Services",
-  "Freelancers & Independent Professionals",
-  "Business Support & Marketing Services",
-  "Other Businesses & Emerging Industries"
+  "Home & Lifestyle",
+  "Fashion & Textile",
+  "Business Consultancy",
+  "Professional Services",
+  "Franchise & Business Opportunities",
+  "Import & Export",
+  "Freelancer",
+  "Other Business"
 ];
+
 
 function populateCategories() {
   const memberCategories = allMembers
@@ -1117,7 +1120,7 @@ loadMembers();
     <span>Feeds</span>
   </a>
 
-  <a href="bgc-event-planner.html" class="mobile-nav-item" aria-label="Events">
+<a href="bgc-event-providers.html"class="mobile-nav-item" aria-label="Events">
     <span class="mobile-nav-icon">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="5" width="18" height="16" rx="2"></rect>
