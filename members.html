@@ -80,8 +80,7 @@ h1{
   font-size:16px;
   line-height:1.7;
   max-width:650px;
-  margin:0 auto;
-  text-align:center;
+  margin:0;
 }
 main{
   max-width:1100px;
@@ -180,7 +179,7 @@ input:focus,select:focus{
     rgba(0,0,0,.02) 75%
   );
 }
-.front-content{
+  .front-content{
   position:relative;
   z-index:2;
   padding:22px;
@@ -249,7 +248,7 @@ input:focus,select:focus{
   padding:13px 1px;
 }
 .back-detail{
-    margin:0 0 12px;
+  margin:0 0 12px;
   color:#d0cfd3;
   font-size:12px;
   line-height:1.6;
@@ -263,8 +262,23 @@ input:focus,select:focus{
   text-transform:uppercase;
   margin-bottom:3px;
 }
-  .back-actions{display:flex;gap:8px;padding-top:12px;border-top:1px solid #ffffff20}
-.back-btn{width:100%;border:1px solid #a34b60;border-radius:10px;padding:12px 8px;background:#8d1831;color:#fff;font-size:12px;font-weight:800;cursor:pointer}
+.back-actions{
+  display:flex;
+  gap:8px;
+  padding-top:12px;
+  border-top:1px solid #ffffff20;
+}
+.back-btn{
+  width:100%;
+  border:1px solid #a34b60;
+  border-radius:10px;
+  padding:12px 8px;
+  background:#8d1831;
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
 .message{
   grid-column:1/-1;
   padding:28px 18px;
@@ -284,21 +298,115 @@ input:focus,select:focus{
   color:#fff;
   font-weight:700;
 }
-.profile-modal-overlay{display:none;position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.82);align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.profile-modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10001;
+  background:rgba(0,0,0,.82);
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  overflow-y:auto;
+}
 .profile-modal-overlay.show{display:flex}
-.profile-modal-box{position:relative;width:min(100%,520px);max-height:88vh;overflow:auto;background:radial-gradient(circle at top right,#54202f 0,transparent 42%),#222225;border:1px solid #55545a;border-radius:22px;padding:24px;text-align:left;box-shadow:0 25px 80px #0009}
-.profile-modal-x{position:absolute;right:14px;top:12px;width:36px;height:36px;border:1px solid #55545a;border-radius:50%;background:#ffffff10;color:#fff;font-size:24px;cursor:pointer}
-.profile-modal-heading{display:flex;align-items:center;gap:14px;padding:8px 34px 18px 0;border-bottom:1px solid #ffffff20}
-.profile-modal-heading img{width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid #b34a63}
-.profile-modal-heading h2{margin:5px 0;font-size:22px;overflow-wrap:anywhere}
-.profile-modal-heading p{margin:0;color:#c7c4ca;font-size:13px}
+.profile-modal-box{
+  position:relative;
+  width:min(100%,520px);
+  max-height:88vh;
+  overflow:auto;
+  background:radial-gradient(circle at top right,#54202f 0,transparent 42%),#222225;
+  border:1px solid #55545a;
+  border-radius:22px;
+  padding:24px;
+  text-align:left;
+  box-shadow:0 25px 80px #0009;
+}
+.profile-modal-x{
+  position:absolute;
+  right:14px;
+  top:12px;
+  width:36px;
+  height:36px;
+  border:1px solid #55545a;
+  border-radius:50%;
+  background:#ffffff10;
+  color:#fff;
+  font-size:24px;
+  cursor:pointer;
+}
+.profile-modal-heading{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:8px 34px 18px 0;
+  border-bottom:1px solid #ffffff20;
+}
+.profile-modal-heading img{
+  width:76px;
+  height:76px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid #b34a63;
+}
+.profile-modal-heading h2{
+  margin:5px 0;
+  font-size:22px;
+  overflow-wrap:anywhere;
+}
+.profile-modal-heading p{
+  margin:0;
+  color:#c7c4ca;
+  font-size:13px;
+}
 .profile-modal-details{padding:16px 0 4px}
-.profile-modal-details .back-detail{font-size:13px;margin-bottom:14px}
-.profile-link-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
-.profile-link{display:flex;align-items:center;justify-content:center;min-height:46px;padding:10px;border:1px solid #754052;border-radius:11px;background:#8d183122;color:#f0a7b7;text-decoration:none;font-size:12px;font-weight:800;text-align:center;overflow-wrap:anywhere}
-.profile-link:hover{background:#8d1831;color:#fff}
-.modal-close{width:100%;padding:13px;background:var(--burgundy);color:white;border:0;border-radius:10px;font-weight:700;margin-top:18px;cursor:pointer}
-@media(max-width:420px){.profile-modal-box{padding:19px;border-radius:18px}.profile-modal-heading img{width:62px;height:62px}.profile-modal-heading h2{font-size:19px}.profile-link-grid{grid-template-columns:1fr 1fr}}
+.profile-modal-details .back-detail{
+  font-size:13px;
+  margin-bottom:14px;
+}
+.profile-link-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+.profile-link{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:10px;
+  border:1px solid #754052;
+  border-radius:11px;
+  background:#8d183122;
+  color:#f0a7b7;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:800;
+  text-align:center;
+  overflow-wrap:anywhere;
+}
+.profile-link:hover{
+  background:#8d1831;
+  color:#fff;
+}
+.modal-close{
+  width:100%;
+  padding:13px;
+  background:var(--burgundy);
+  color:white;
+  border:0;
+  border-radius:10px;
+  font-weight:700;
+  margin-top:18px;
+  cursor:pointer;
+}
+@media(max-width:420px){
+  .profile-modal-box{padding:19px;border-radius:18px}
+  .profile-modal-heading img{width:62px;height:62px}
+  .profile-modal-heading h2{font-size:19px}
+  .profile-link-grid{grid-template-columns:1fr 1fr}
+}
 footer{
   text-align:center;
   color:#898990;
@@ -326,8 +434,7 @@ footer{
 @media(prefers-reduced-motion:reduce){
   .flip-inner{transition:none}
 }
-
-/* Existing BGC CLUB fixed bottom navigation */
+  /* Existing BGC CLUB fixed bottom navigation */
 .mobile-bottom-nav{
   position:fixed;
   left:50%;
@@ -400,41 +507,20 @@ footer{
   .mobile-nav-icon,.mobile-nav-icon svg{width:25px;height:25px}
 }
 
-  @media(max-width:560px){
-
-  .topbar{
-    padding:15px 20px;
-  }
-
-  .brand{
-    font-size:23px;
-  }
-
-  .hero{
-    padding:32px 20px 22px;
-  }
-
-  .hero p{
-    font-size:15px;
-  }
-
-  main{
-    padding:17px 12px 45px;
-  }
-
-  .toolbar{
-    grid-template-columns:1fr;
-  }
+@media(max-width:560px){
+  .topbar{padding:15px 20px}
+  .brand{font-size:23px}
+  .hero{padding:32px 20px 22px}
+  .hero p{font-size:15px}
+  main{padding:17px 12px 45px}
+  .toolbar{grid-template-columns:1fr}
 
   /* TWO PROFILES IN MOBILE */
-
   .member-list{
     display:grid;
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:12px;
   }
-
-  /* PROFILE CARD SIZE */
 
   .flip-card{
     height:300px;
@@ -446,23 +532,16 @@ footer{
     border-radius:16px;
   }
 
-  /* FRONT PROFILE */
-
-  .front-content{
-    padding:12px;
-  }
-
+  .front-content{padding:12px}
   .front-name{
     font-size:17px;
     line-height:1.2;
     margin-bottom:6px;
   }
-
   .front-category{
     font-size:10px;
     line-height:1.4;
   }
-
   .flip-hint{
     margin-top:10px;
     padding:6px 8px;
@@ -470,72 +549,105 @@ footer{
     letter-spacing:.3px;
   }
 
-  /* BACK PROFILE */
-
-  .flip-back{
-    padding:12px;
-  }
-
+  .flip-back{padding:12px}
   .back-top{
     gap:8px;
     padding-bottom:11px;
   }
-
   .back-avatar{
     width:38px;
     height:38px;
   }
-
   .back-name{
     font-size:13px;
     line-height:1.25;
   }
-
   .back-label{
     font-size:8px;
     letter-spacing:.6px;
   }
-
-  .back-details{
-    padding:10px 1px;
-  }
-
+  .back-details{padding:10px 1px}
   .back-detail{
     font-size:10px;
     line-height:1.45;
     margin-bottom:9px;
   }
-
-  .back-detail strong{
-    font-size:9px;
-  }
-
+  .back-detail strong{font-size:9px}
   .back-actions{
     gap:6px;
     padding-top:9px;
   }
-
   .back-btn{
     padding:9px 5px;
     font-size:9px;
     border-radius:8px;
   }
-
-  .member-count{
-    font-size:10px;
-  }
-
-  }
-
-  /* CENTER HERO HEADING */
-.hero .eyebrow {
-    text-align: center;
 }
 
-.hero h1 {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
+/* BGC MEMBERS PAGE - CENTERED HERO + HORIZONTAL CATEGORY FILTERS */
+.hero{
+  text-align:center;
+  padding:34px 20px 22px;
+}
+.hero .eyebrow{text-align:center}
+.hero h1{
+  margin:24px auto;
+  text-align:center;
+}
+.hero p{
+  max-width:650px;
+  margin:0 auto;
+  text-align:center;
+}
+.toolbar{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:12px;
+  margin-bottom:12px;
+}
+.category-scroll{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+  white-space:nowrap;
+  padding:3px 1px 14px;
+  margin-bottom:14px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+}
+  .category-scroll::-webkit-scrollbar{display:none}
+.category-chip{
+  flex:0 0 auto;
+  min-height:40px;
+  padding:10px 17px;
+  border:1px solid #414147;
+  border-radius:30px;
+  background:#242428;
+  color:#d5d5da;
+  font-size:13px;
+  font-weight:600;
+  line-height:1.2;
+  cursor:pointer;
+  transition:background .2s ease,border-color .2s ease,color .2s ease;
+}
+.category-chip.active{
+  background:var(--burgundy);
+  border-color:var(--burgundy2);
+  color:#fff;
+}
+.category-chip:focus-visible{
+  outline:2px solid #e49aab;
+  outline-offset:3px;
+}
+@media(max-width:560px){
+  .hero{padding:32px 20px 22px}
+  .hero h1{font-size:clamp(34px,8vw,42px)}
+  .hero p{font-size:15px}
+  .category-chip{padding:10px 15px;font-size:12px}
 }
 </style>
 </head>
@@ -544,22 +656,18 @@ footer{
 <section class="hero">
   <div class="eyebrow">BGC Members</div>
   <h1>Where Business<br>Minds Connect.</h1>
-  <p>Exchange Opportunities & Grow Together..</p>
+  <p>Exchange Opportunities &amp; Grow Together.</p>
 </section>
 
 <main>
-  <div class="directory-head">
-    <h2>Member Directory</h2>
-    <span class="member-count" id="memberCount">Loading...</span>
-  </div>
-
   <div class="toolbar">
     <input id="searchInput" type="search"
       placeholder="Search business, member or city..."
       aria-label="Search members">
-    <select id="categoryFilter" aria-label="Filter by business category">
-      <option value="">All Business Categories</option>
-    </select>
+  </div>
+
+  <div class="category-scroll" id="categoryScroll" aria-label="Business categories">
+    <button class="category-chip active" type="button" data-category="">All</button>
   </div>
 
   <section id="memberList" class="member-list">
@@ -574,7 +682,11 @@ footer{
     <button class="profile-modal-x" type="button" id="closeProfileModal" aria-label="Close">×</button>
     <div class="profile-modal-heading">
       <img id="profileModalPhoto" src="" alt="">
-      <div><div class="back-label">BGC CLUB BUSINESS MEMBER</div><h2 id="profileModalName">Member Name</h2><p id="profileModalCategory"></p></div>
+      <div>
+        <div class="back-label">BGC CLUB BUSINESS MEMBER</div>
+        <h2 id="profileModalName">Member Name</h2>
+        <p id="profileModalCategory"></p>
+      </div>
     </div>
     <div id="profileModalDetails" class="profile-modal-details"></div>
     <div id="profileModalLinks" class="profile-link-grid"></div>
@@ -582,19 +694,18 @@ footer{
   </div>
 </div>
 
-  <script>
+<script>
 const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
 const SUPABASE_KEY = "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const memberList = document.getElementById("memberList");
-const memberCount = document.getElementById("memberCount");
 const searchInput = document.getElementById("searchInput");
-const categoryFilter = document.getElementById("categoryFilter");
-const editNotice = document.getElementById("editNotice");
+const categoryScroll = document.getElementById("categoryScroll");
 
 let allMembers = [];
+let activeCategory = "";
 
 function escapeHTML(value) {
   return String(value ?? "").replace(/[&<>"']/g, char => ({
@@ -608,10 +719,8 @@ function escapeHTML(value) {
 
 function safeWebURL(value) {
   try {
-    const url = new URL(value);
-    if (url.protocol === "https:" || url.protocol === "http:") {
-      return url.href;
-    }
+    const url = new URL(String(value || "").trim());
+    if (url.protocol === "https:" || url.protocol === "http:") return url.href;
   } catch (error) {}
   return "";
 }
@@ -623,11 +732,11 @@ function parseMemberDetails(member) {
     .filter(Boolean);
 
   const result = {
-    city:"",
-    category:"",
-    subcategory:"",
-    experience:"",
-    services:[]
+    city: "",
+    category: "",
+    subcategory: "",
+    experience: "",
+    services: []
   };
 
   lines.forEach(line => {
@@ -640,44 +749,26 @@ function parseMemberDetails(member) {
     const key = match[1].trim().toLowerCase();
     const value = match[2].trim();
 
-    if (key === "city") {
-      result.city = value;
-    } else if (key === "business category") {
-      result.category = value;
-    } else if (key === "subcategory") {
-      result.subcategory = value;
-    } else if (key === "experience") {
-      result.experience = value;
-    } else {
-      result.services.push(line);
-    }
+    if (key === "city") result.city = value;
+    else if (key === "business category") result.category = value;
+    else if (key === "subcategory") result.subcategory = value;
+    else if (key === "experience") result.experience = value;
+    else result.services.push(line);
   });
 
-  if (!result.experience) {
-    result.experience = member.experience_level || "";
-  }
-
-  if (!result.city) {
-    result.city = member.city || "";
-  }
-
-  if (!result.category) {
-    result.category = member.business_category || member.department || "";
-  }
-
-  if (!result.subcategory) {
-    result.subcategory = member.business_subcategory || "";
-  }
+  if (!result.experience) result.experience = member.experience_level || "";
+  if (!result.city) result.city = member.city || "";
+  if (!result.category) result.category = member.business_category || member.department || "";
+  if (!result.subcategory) result.subcategory = member.business_subcategory || "";
 
   return result;
 }
-
-function makeInitials(name) {
+  function makeInitials(name) {
   return String(name || "Member")
     .trim()
     .split(/\s+/)
     .filter(Boolean)
-    .slice(0,2)
+    .slice(0, 2)
     .map(part => part[0])
     .join("")
     .toUpperCase();
@@ -691,32 +782,90 @@ function avatarPlaceholder(name) {
     '<text x="50" y="57" text-anchor="middle" font-size="30" ' +
     'font-family="Arial" fill="#ffffff">' + initials + '</text></svg>';
 
-  return "data:image/svg+xml;charset=UTF-8," +
-    encodeURIComponent(svg);
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
 }
 
 function getMemberPhoto(member) {
-  return safeWebURL(member.photo_url) ||
-    avatarPlaceholder(member.full_name);
+  return safeWebURL(member.photo_url) || avatarPlaceholder(member.full_name);
 }
+
+/* All 29 categories from Join Member page */
+const BUSINESS_CATEGORIES = [
+  "Construction & Real Estate",
+  "Electrical & Electronics",
+  "AC, HVAC & Refrigeration",
+  "Plumbing & Sanitary",
+  "Manufacturing & Industrial",
+  "Trading, Wholesale & Distribution",
+  "IT & Software Technology",
+  "Digital Marketing & Media",
+  "Graphic Design & Creative",
+  "Video, Photography & Production",
+  "Sales & Business Development",
+  "Finance, Accounts & Taxation",
+  "Legal & Compliance",
+  "HR & Recruitment",
+  "Education & Training",
+  "Food & Beverage",
+  "Automobile & Transportation",
+  "Logistics & Supply Chain",
+  "Event Management & Entertainment",
+  "Fashion, Clothing & Textile",
+  "Beauty, Wellness & Personal Care",
+  "Healthcare & Medical",
+  "Cleaning & Facility Management",
+  "Home & Lifestyle Services",
+  "Security & Safety",
+  "Professional & Consulting Services",
+  "Freelancers & Independent Professionals",
+  "Business Support & Marketing Services",
+  "Other Businesses & Emerging Industries"
+];
 
 function populateCategories() {
-  const categories = [...new Set(
-    allMembers
-      .map(member => parseMemberDetails(member).category)
-      .filter(Boolean)
-  )].sort((a,b) => a.localeCompare(b));
+  const memberCategories = allMembers
+    .map(member => parseMemberDetails(member).category.trim())
+    .filter(Boolean);
 
-  categoryFilter.innerHTML =
-    '<option value="">All Business Categories</option>';
+  const categories = [...new Set([
+    ...BUSINESS_CATEGORIES,
+    ...memberCategories
+  ])];
+
+  categoryScroll.innerHTML = "";
+
+  const allButton = document.createElement("button");
+  allButton.type = "button";
+  allButton.className = "category-chip active";
+  allButton.dataset.category = "";
+  allButton.textContent = "All";
+  categoryScroll.appendChild(allButton);
 
   categories.forEach(category => {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
-    categoryFilter.appendChild(option);
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "category-chip";
+    button.dataset.category = category;
+    button.textContent = category;
+    categoryScroll.appendChild(button);
   });
 }
+
+function setActiveCategory(category) {
+  activeCategory = category;
+
+  categoryScroll.querySelectorAll(".category-chip").forEach(button => {
+    button.classList.toggle("active", button.dataset.category === category);
+  });
+
+  renderMembers();
+}
+
+categoryScroll.addEventListener("click", event => {
+  const button = event.target.closest(".category-chip");
+  if (!button) return;
+  setActiveCategory(button.dataset.category || "");
+});
 
 function flipCard(card) {
   card.classList.toggle("flipped");
@@ -729,57 +878,70 @@ function flipCard(card) {
 }
 
 function getMemberLinks(member, details) {
-  const fields = details.linkFields || {};
   const candidates = [
-    ["Website", member.website_url || member.website || member.portfolio_url || fields.website],
-    ["Instagram", member.instagram_url || member.instagram || fields.instagram],
-    ["LinkedIn", member.linkedin_url || member.linkedin || fields.linkedin],
-    ["Play Store App", member.play_store_url || member.playstore_url || member.google_play_url || fields.playstore],
-    ["iOS App Store", member.app_store_url || member.ios_app_url || member.apple_app_store_url || fields.appstore]
+    ["Website", member.website_url || member.website || member.portfolio_url],
+    ["Instagram", member.instagram_url || member.instagram],
+    ["LinkedIn", member.linkedin_url || member.linkedin],
+    ["Play Store App", member.play_store_url || member.playstore_url || member.google_play_url],
+    ["iOS App Store", member.app_store_url || member.ios_app_url || member.apple_app_store_url]
   ];
-  return candidates.map(([label,value]) => ({label,url:safeWebURL(String(value || "").trim())})).filter(item => item.url);
+
+  return candidates.map(([label, value]) => ({
+    label,
+    url: safeWebURL(value)
+  })).filter(item => item.url);
 }
 
 function openMemberProfile(member) {
   const details = parseMemberDetails(member);
+
   document.getElementById("profileModalPhoto").src = getMemberPhoto(member);
   document.getElementById("profileModalName").textContent = member.full_name || "BGC Member";
   document.getElementById("profileModalCategory").textContent =
-    (details.category || "BGC CLUB Member") + (details.subcategory ? " · " + details.subcategory : "");
+    (details.category || "BGC CLUB Member") +
+    (details.subcategory ? " · " + details.subcategory : "");
+
   const rows = [
-    ["Business Location",details.city],
-    ["Business Experience",details.experience],
-    ["Products & Services",details.services.join(", ")]
+    ["Business Location", details.city],
+    ["Business Experience", details.experience],
+    ["Products & Services", details.services.join(", ")]
   ].filter(row => row[1]);
-  document.getElementById("profileModalDetails").innerHTML = rows.map(([label,value]) =>
+
+  document.getElementById("profileModalDetails").innerHTML = rows.map(([label, value]) =>
     `<div class="back-detail"><strong>${escapeHTML(label)}</strong>${escapeHTML(value)}</div>`
   ).join("");
-  const links = getMemberLinks(member,details);
 
-    document.getElementById("profileModalLinks").innerHTML = links.length
-    ? links.map(item => `<a class="profile-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(item.label)} ↗</a>`).join("")
+  const links = getMemberLinks(member, details);
+  document.getElementById("profileModalLinks").innerHTML = links.length
+    ? links.map(item =>
+        `<a class="profile-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(item.label)} ↗</a>`
+      ).join("")
     : '<div class="back-detail">இந்த member இன்னும் website / social / app links சேர்க்கவில்லை.</div>';
+
   document.getElementById("profileModal").classList.add("show");
   document.body.style.overflow = "hidden";
 }
+
 function closeMemberProfile() {
   document.getElementById("profileModal").classList.remove("show");
   document.body.style.overflow = "";
 }
-document.getElementById("closeProfileModal").addEventListener("click",closeMemberProfile);
-document.getElementById("closeProfileModalBottom").addEventListener("click",closeMemberProfile);
-document.getElementById("profileModal").addEventListener("click",event => {
-  if(event.target.id === "profileModal") closeMemberProfile();
-});
-document.addEventListener("keydown",event => { if(event.key === "Escape") closeMemberProfile(); });
 
-function renderMembers() {
+document.getElementById("closeProfileModal").addEventListener("click", closeMemberProfile);
+document.getElementById("closeProfileModalBottom").addEventListener("click", closeMemberProfile);
+
+document.getElementById("profileModal").addEventListener("click", event => {
+  if (event.target.id === "profileModal") closeMemberProfile();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeMemberProfile();
+});
+  function renderMembers() {
   const term = searchInput.value.trim().toLowerCase();
-  const selectedCategory = categoryFilter.value;
 
   const filtered = allMembers.filter(member => {
     const details = parseMemberDetails(member);
-
     const searchable = [
       member.full_name,
       details.city,
@@ -791,15 +953,14 @@ function renderMembers() {
       member.work_type
     ].join(" ").toLowerCase();
 
-    return searchable.includes(term) &&
-      (!selectedCategory || details.category === selectedCategory);
+    const matchesSearch = searchable.includes(term);
+    const matchesCategory = !activeCategory || details.category === activeCategory;
+    return matchesSearch && matchesCategory;
   });
-
-  memberCount.textContent = filtered.length + " approved member(s)";
 
   if (!filtered.length) {
     memberList.innerHTML =
-      '<div class="message">No matching business members found.<br>Try another search.</div>';
+      '<div class="message">No matching business members found.<br>Try another search or choose a different category.</div>';
     return;
   }
 
@@ -807,29 +968,25 @@ function renderMembers() {
     const details = parseMemberDetails(member);
     const photo = escapeHTML(getMemberPhoto(member));
     const portfolio = safeWebURL(member.portfolio_url);
-
     const category = details.category || "BGC CLUB Member";
     const subcategory = details.subcategory || "";
 
     const cityHTML = details.city
-      ? `<div class="back-detail"><strong>Business Location</strong>${escapeHTML(details.city)}</div>`
-      : "";
+      ? `<div class="back-detail"><strong>Business Location</strong>${escapeHTML(details.city)}</div>` : "";
 
     const subHTML = subcategory
-      ? `<div class="back-detail"><strong>Subcategory</strong>${escapeHTML(subcategory)}</div>`
-      : "";
+      ? `<div class="back-detail"><strong>Subcategory</strong>${escapeHTML(subcategory)}</div>` : "";
 
     const experienceHTML = details.experience
-      ? `<div class="back-detail"><strong>Business Experience</strong>${escapeHTML(details.experience)}</div>`
-      : "";
+      ? `<div class="back-detail"><strong>Business Experience</strong>${escapeHTML(details.experience)}</div>` : "";
 
     const servicesHTML = details.services.length
-      ? `<div class="back-detail"><strong>Products & Services</strong>${escapeHTML(details.services.join(", "))}</div>`
-      : "";
+      ? `<div class="back-detail"><strong>Products & Services</strong>${escapeHTML(details.services.join(", "))}</div>` : "";
 
     const portfolioHTML = portfolio
-      ? `<div class="back-detail"><strong>Website / Portfolio</strong><a href="${escapeHTML(portfolio)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color:#efa4b4;position:relative;z-index:10">Visit website ↗</a></div>`
-      : "";
+      ? `<div class="back-detail"><strong>Website / Portfolio</strong><a href="${escapeHTML(portfolio)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color:#efa4b4;position:relative;z-index:10">Visit website ↗</a></div>` : "";
+
+    const memberId = escapeHTML(member.id);
 
     return `
       <article class="flip-card"
@@ -838,9 +995,7 @@ function renderMembers() {
         aria-label="View ${escapeHTML(member.full_name)} business details"
         onclick="flipCard(this)"
         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard(this)}">
-
         <div class="flip-inner">
-
           <div class="flip-front">
             <img class="front-photo"
               src="${photo}"
@@ -848,64 +1003,50 @@ function renderMembers() {
               loading="lazy"
               onerror="this.onerror=null;this.src=avatarPlaceholder(this.alt)">
             <div class="front-shade"></div>
-
             <div class="front-content">
               <div class="front-name">${escapeHTML(member.full_name || "BGC Member")}</div>
               <div class="front-category">${escapeHTML(category)}${subcategory ? " · " + escapeHTML(subcategory) : ""}</div>
               <div class="flip-hint">↻ Tap to view business profile</div>
             </div>
           </div>
-
           <div class="flip-back">
             <div class="back-top">
-              <img class="back-avatar"
-                src="${photo}"
-                alt=""
-                loading="lazy">
+              <img class="back-avatar" src="${photo}" alt="" loading="lazy">
               <div>
                 <div class="back-name">${escapeHTML(member.full_name || "BGC Member")}</div>
                 <div class="back-label">BGC CLUB Business Member</div>
               </div>
             </div>
-
             <div class="back-details">
-              <div class="back-detail">
-                <strong>Main Business Category</strong>
-                ${escapeHTML(category)}
-              </div>
+              <div class="back-detail"><strong>Main Business Category</strong>${escapeHTML(category)}</div>
               ${subHTML}
               ${cityHTML}
               ${experienceHTML}
               ${servicesHTML}
               ${portfolioHTML}
             </div>
-                        <div class="back-actions">
+            <div class="back-actions">
               <button class="back-btn" type="button"
-                onclick="event.stopPropagation();openMemberProfile(allMembers.find(item => String(item.id) === String('${escapeHTML(member.id)}')) || {})">
+                onclick="event.stopPropagation();openMemberProfile(allMembers.find(item => String(item.id) === String('${memberId}')) || {})">
                 ↗ View Profile
               </button>
             </div>
           </div>
-
         </div>
       </article>
     `;
   }).join("");
 }
-</script>
 
-<script>
 async function loadMembers() {
-  memberList.innerHTML =
-    '<div class="message">Loading approved business members...</div>';
-  memberCount.textContent = "Loading members...";
+  memberList.innerHTML = '<div class="message">Loading approved members...</div>';
 
   try {
     const { data, error } = await db
       .from("bgc_team_members")
       .select("*")
       .eq("status", "approved")
-      .order("full_name", { ascending:true });
+      .order("full_name", { ascending: true });
 
     if (error) throw error;
 
@@ -915,25 +1056,15 @@ async function loadMembers() {
 
   } catch (error) {
     console.error("Could not load BGC CLUB members:", error);
-
-    memberCount.textContent = "Members could not be loaded.";
-
     memberList.innerHTML =
-      '<div class="message">' +
-      'Members list load ஆகவில்லை.<br>' +
+      '<div class="message">Members list load ஆகவில்லை.<br>' +
       'Supabase connection மற்றும் table permissions-ஐச் சரிபார்க்கவும்.' +
-      '<br><button class="retry" onclick="loadMembers()">Try Again</button>' +
-      '</div>';
+      '<br><button class="retry" onclick="loadMembers()">Try Again</button></div>';
   }
 }
 
 searchInput.addEventListener("input", renderMembers);
-categoryFilter.addEventListener("change", renderMembers);
-
-document.addEventListener("visibilitychange", () => {
-  if (!document.hidden) loadMembers();
-});
-
+populateCategories();
 loadMembers();
 </script>
 
@@ -1005,5 +1136,6 @@ loadMembers();
   </a>
 
 </nav>
+
 </body>
 </html>
