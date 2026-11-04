@@ -1058,9 +1058,13 @@ if (error) throw error;
     showStep(1);
 
     showMessage(
-      "✓ Your BGC CLUB Founder Profile has been submitted successfully! Your profile is pending admin approval.",
-      "success"
-    );
+  "✓ Submitted Successfully!",
+  "success"
+);
+
+setTimeout(() => {
+  window.location.href = "index.html";
+}, 2000);
 
     submitButton.textContent = "Submit Founder Profile →";
 
