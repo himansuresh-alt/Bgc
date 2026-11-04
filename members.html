@@ -179,7 +179,7 @@ input:focus,select:focus{
     rgba(0,0,0,.02) 75%
   );
 }
-  .front-content{
+.front-content{
   position:relative;
   z-index:2;
   padding:22px;
@@ -209,12 +209,39 @@ input:focus,select:focus{
 }
 .flip-back{
   transform:rotateY(180deg);
-  padding:22px;
+  padding:0;
   display:flex;
   flex-direction:column;
   background:
     radial-gradient(circle at top right,#54202f 0,transparent 45%),
     #222225;
+}
+.back-flip-zone{
+  flex:1 1 70%;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  padding:22px 22px 8px;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+.back-actions{
+  flex:0 0 30%;
+  min-height:82px;
+  display:flex;
+  align-items:flex-end;
+  gap:8px;
+  padding:12px 22px 22px;
+  border-top:1px solid #ffffff20;
+  position:relative;
+  z-index:5;
+  background:transparent;
+}
+.back-btn{
+  position:relative;
+  z-index:6;
+  touch-action:manipulation;
+  pointer-events:auto;
 }
 .back-top{
   display:flex;
@@ -284,9 +311,13 @@ input:focus,select:focus{
 .back-profile-link:hover{background:#8d1831;color:#fff}
 .back-actions{
   display:flex;
+  align-items:flex-end;
   gap:8px;
-  padding-top:12px;
+  padding:12px 22px 22px;
   border-top:1px solid #ffffff20;
+  position:relative;
+  z-index:5;
+  background:transparent;
 }
 .back-btn{
   width:100%;
@@ -302,7 +333,8 @@ input:focus,select:focus{
 .message{
   grid-column:1/-1;
   padding:28px 18px;
-  border:1px solid #39393e;  border-radius:15px;
+  border:1px solid #39393e;
+  border-radius:15px;
   text-align:center;
   color:#b9b8bf;
   line-height:1.7;
@@ -419,8 +451,7 @@ input:focus,select:focus{
   font-weight:700;
   margin-top:18px;
   cursor:pointer;
-}
-@media(max-width:420px){
+}@media(max-width:420px){
   .profile-modal-box{padding:19px;border-radius:18px}
   .profile-modal-heading img{width:62px;height:62px}
   .profile-modal-heading h2{font-size:19px}
@@ -445,7 +476,7 @@ footer{
   .member-list{grid-template-columns:1fr}
   .flip-card{height:490px}
   .front-name{font-size:27px}
-  .flip-back{padding:20px}
+  .flip-back{padding:0}
 }
 @media(min-width:561px) and (max-width:800px){
   .flip-card{height:390px}
@@ -453,7 +484,8 @@ footer{
 @media(prefers-reduced-motion:reduce){
   .flip-inner{transition:none}
 }
-  /* Existing BGC CLUB fixed bottom navigation */
+
+/* Existing BGC CLUB fixed bottom navigation */
 .mobile-bottom-nav{
   position:fixed;
   left:50%;
@@ -568,7 +600,12 @@ footer{
     letter-spacing:.3px;
   }
 
-  .flip-back{padding:12px}
+  .flip-back{padding:0}
+  .back-flip-zone{
+    padding:12px 12px 6px;
+    flex:1 1 70%;
+    min-height:0;
+  }
   .back-top{
     gap:8px;
     padding-bottom:11px;
@@ -593,8 +630,10 @@ footer{
   }
   .back-detail strong{font-size:9px}
   .back-actions{
+    flex:0 0 30%;
+    min-height:72px;
     gap:6px;
-    padding-top:9px;
+    padding:9px 12px 12px;
   }
   .back-btn{
     padding:9px 5px;
@@ -606,7 +645,8 @@ footer{
 /* BGC MEMBERS PAGE - CENTERED HERO + HORIZONTAL CATEGORY FILTERS */
 .hero{
   text-align:center;
-  padding:34px 20px 22px;}
+  padding:34px 20px 22px;
+}
 .hero .eyebrow{text-align:center}
 .hero h1{
   margin:24px auto;
@@ -637,7 +677,7 @@ footer{
   -webkit-overflow-scrolling:touch;
   overscroll-behavior-x:contain;
 }
-  .category-scroll::-webkit-scrollbar{display:none}
+.category-scroll::-webkit-scrollbar{display:none}
 .category-chip{
   flex:0 0 auto;
   min-height:40px;
@@ -668,10 +708,21 @@ footer{
   .category-chip{padding:10px 15px;font-size:12px}
 }
 
-  
+  .back-actions {
+  position: relative !important;
+  z-index: 20 !important;
+  pointer-events: auto !important;
+}
+
+.back-actions .back-btn {
+  position: relative !important;
+  z-index: 21 !important;
+  pointer-events: auto !important;
+  cursor: pointer;
+  touch-action: manipulation;
+}
 </style>
-</head>
-<body>
+</head><body>
 
 <section class="hero">
   <div class="eyebrow">BGC Members</div>
@@ -819,7 +870,8 @@ function parseMemberDetails(member) {
 
   return result;
 }
-  function makeInitials(name) {
+
+function makeInitials(name) {
   return String(name || "Member")
     .trim()
     .split(/\s+/)
@@ -844,7 +896,6 @@ function avatarPlaceholder(name) {
 function getMemberPhoto(member) {
   return safeWebURL(member.photo_url) || avatarPlaceholder(member.full_name);
 }
-
 
 /* BGC CLUB - BUSINESS CATEGORIES */
 const BUSINESS_CATEGORIES = [
@@ -880,7 +931,6 @@ const BUSINESS_CATEGORIES = [
   "Other Business"
 ];
 
-
 function populateCategories() {
   const memberCategories = allMembers
     .map(member => parseMemberDetails(member).category.trim())
@@ -911,7 +961,8 @@ function populateCategories() {
 }
 
 function setActiveCategory(category) {
-  activeCategory = category;  categoryScroll.querySelectorAll(".category-chip").forEach(button => {
+  activeCategory = category;
+  categoryScroll.querySelectorAll(".category-chip").forEach(button => {
     button.classList.toggle("active", button.dataset.category === category);
   });
 
@@ -924,29 +975,74 @@ categoryScroll.addEventListener("click", event => {
   setActiveCategory(button.dataset.category || "");
 });
 
-function flipCard(card, event) {
-  if (event && event.target.closest("a, button")) {
-    return;
-  }
+function flipCard(card) {
+  if (!card) return;
 
   card.classList.toggle("flipped");
 
   card.setAttribute(
     "aria-label",
     card.classList.contains("flipped")
-      ? "Business details. Tap to see photo"
-      : "Member photo. Tap to see business details"
+      ? "Business details. Tap the upper area to see photo"
+      : "Member photo. Tap anywhere on photo to see business details"
   );
 }
 
-function normalizeWebURL(value) {
+/* One delegated handler: links and profile button never trigger card flipping. */
+memberList.addEventListener("click", function(event) {
+  const profileButton = event.target.closest(".back-btn");
+
+  if (profileButton) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const card = profileButton.closest(".flip-card");
+    if (card) openMemberProfileById(card.dataset.memberId);
+
+    return;
+  }
+
+  const link = event.target.closest("a");
+  if (link) {
+    event.stopPropagation();
+    return;
+  }
+
+  const front = event.target.closest(".flip-front");
+  if (front) {
+    flipCard(front.closest(".flip-card"));
+    return;
+  }
+
+  const backZone = event.target.closest(".back-flip-zone");
+  if (backZone) {
+    flipCard(backZone.closest(".flip-card"));
+  }
+});
+
+memberList.addEventListener("keydown", function(event) {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  if (event.target.closest("a, button, input")) return;
+
+  const front = event.target.closest(".flip-front");
+  const backZone = event.target.closest(".back-flip-zone");
+
+  if (!front && !backZone) return;
+
+  event.preventDefault();
+  flipCard((front || backZone).closest(".flip-card"));
+});function normalizeWebURL(value) {
   const raw = cleanOptionalValue(value);
   if (!raw) return "";
-  return safeWebURL(/^https?:\/\//i.test(raw) ? raw : "https://" + raw);
+
+  return safeWebURL(
+    /^https?:\/\//i.test(raw) ? raw : "https://" + raw
+  );
 }
 
 function getMemberLinks(member, details) {
   const saved = (details && details.links) || {};
+
   const candidates = [
     ["Website", member.website_url || member.website || member.portfolio_url || saved.website],
     ["Instagram", member.instagram_url || member.instagram || saved.instagram],
@@ -964,35 +1060,20 @@ function getMemberLinks(member, details) {
 
 function openMemberProfileById(id) {
   const member = allMembers.find(item => String(item.id) === String(id));
-  if (member) openMemberProfile(member);
+
+  if (member) {
+    openMemberProfile(member);
+  }
 }
 
-/* FIX: VIEW PROFILE BUTTON CLICK */
-memberList.addEventListener("click", function(event) {
-
-  const profileButton = event.target.closest(".back-btn");
-
-  if (profileButton) {
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-
-    const card = profileButton.closest(".flip-card");
-    if (!card) return;
-
-    const memberId = card.dataset.memberId;
-    openMemberProfileById(memberId);
-
-    return;
-  }
-
-}, true);
-  
 function openMemberProfile(member) {
   const details = parseMemberDetails(member);
 
   document.getElementById("profileModalPhoto").src = getMemberPhoto(member);
-  document.getElementById("profileModalName").textContent = member.full_name || "BGC Member";
+
+  document.getElementById("profileModalName").textContent =
+    member.full_name || "BGC Member";
+
   document.getElementById("profileModalCategory").textContent =
     (details.category || "BGC CLUB Member") +
     (details.subcategory ? " · " + details.subcategory : "");
@@ -1006,14 +1087,25 @@ function openMemberProfile(member) {
     ["Mobile", cleanOptionalValue(member.mobile)]
   ].filter(row => cleanOptionalValue(row[1]));
 
-  document.getElementById("profileModalDetails").innerHTML = rows.map(([label, value]) =>
-    `<div class="back-detail"><strong>${escapeHTML(label)}</strong>${escapeHTML(value)}</div>`
-  ).join("");
+  document.getElementById("profileModalDetails").innerHTML =
+    rows.map(([label, value]) =>
+      `<div class="back-detail">
+        <strong>${escapeHTML(label)}</strong>
+        ${escapeHTML(value)}
+      </div>`
+    ).join("");
 
   const links = getMemberLinks(member, details);
+
   document.getElementById("profileModalLinks").innerHTML = links.length
     ? links.map(item =>
-        `<a class="profile-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHTML(item.label)} ↗</a>`
+        `<a class="profile-link"
+            href="${escapeHTML(item.url)}"
+            target="_blank"
+            rel="noopener noreferrer"
+            onclick="event.stopPropagation()">
+            ${escapeHTML(item.label)} ↗
+         </a>`
       ).join("")
     : '<div class="back-detail">இந்த member இன்னும் website / social / app links சேர்க்கவில்லை.</div>';
 
@@ -1026,21 +1118,30 @@ function closeMemberProfile() {
   document.body.style.overflow = "";
 }
 
-document.getElementById("closeProfileModal").addEventListener("click", closeMemberProfile);
-document.getElementById("closeProfileModalBottom").addEventListener("click", closeMemberProfile);
+document.getElementById("closeProfileModal")
+  .addEventListener("click", closeMemberProfile);
+
+document.getElementById("closeProfileModalBottom")
+  .addEventListener("click", closeMemberProfile);
 
 document.getElementById("profileModal").addEventListener("click", event => {
-  if (event.target.id === "profileModal") closeMemberProfile();
+  if (event.target.id === "profileModal") {
+    closeMemberProfile();
+  }
 });
 
 document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeMemberProfile();
+  if (event.key === "Escape") {
+    closeMemberProfile();
+  }
 });
-  function renderMembers() {
+
+function renderMembers() {
   const term = searchInput.value.trim().toLowerCase();
 
   const filtered = allMembers.filter(member => {
     const details = parseMemberDetails(member);
+
     const searchable = [
       member.full_name,
       details.city,
@@ -1053,7 +1154,9 @@ document.addEventListener("keydown", event => {
     ].join(" ").toLowerCase();
 
     const matchesSearch = searchable.includes(term);
-    const matchesCategory = !activeCategory || details.category === activeCategory;
+    const matchesCategory =
+      !activeCategory || details.category === activeCategory;
+
     return matchesSearch && matchesCategory;
   });
 
@@ -1067,71 +1170,138 @@ document.addEventListener("keydown", event => {
     const details = parseMemberDetails(member);
     const photo = escapeHTML(getMemberPhoto(member));
     const links = getMemberLinks(member, details);
+
     const category = details.category || "BGC CLUB Member";
     const subcategory = details.subcategory || "";
 
     const cityHTML = details.city
-      ? `<div class="back-detail"><strong>Business Location</strong>${escapeHTML(details.city)}</div>` : "";
+      ? `<div class="back-detail">
+           <strong>Business Location</strong>
+           ${escapeHTML(details.city)}
+         </div>`
+      : "";
 
     const subHTML = subcategory
-      ? `<div class="back-detail"><strong>Subcategory</strong>${escapeHTML(subcategory)}</div>` : "";
+      ? `<div class="back-detail">
+           <strong>Subcategory</strong>
+           ${escapeHTML(subcategory)}
+         </div>`
+      : "";
 
     const experienceHTML = details.experience
-      ? `<div class="back-detail"><strong>Business Experience</strong>${escapeHTML(details.experience)}</div>` : "";
+      ? `<div class="back-detail">
+           <strong>Business Experience</strong>
+           ${escapeHTML(details.experience)}
+         </div>`
+      : "";
 
     const servicesHTML = details.services.length
-      ? `<div class="back-detail"><strong>Products & Services</strong>${escapeHTML(details.services.join(", "))}</div>` : "";
+      ? `<div class="back-detail">
+           <strong>Products & Services</strong>
+           ${escapeHTML(details.services.join(", "))}
+         </div>`
+      : "";
 
     const linksHTML = links.length
-      ? `<div class="back-link-list">${links.map(item =>
-          `<a class="back-profile-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHTML(item.label)} ↗</a>`
-        ).join("")}</div>` : "";
+      ? `<div class="back-link-list">
+           ${links.map(item =>
+             `<a class="back-profile-link"
+                 href="${escapeHTML(item.url)}"
+                 target="_blank"
+                 rel="noopener noreferrer"
+                 onclick="event.stopPropagation()">
+                 ${escapeHTML(item.label)} ↗
+              </a>`
+           ).join("")}
+         </div>`
+      : "";
 
     const memberId = escapeHTML(member.id);
 
     return `
       <article class="flip-card"
         data-member-id="${memberId}"
-        tabindex="0"
-        role="button"
-        aria-label="View ${escapeHTML(member.full_name)} business details"
-        onclick="flipCard(this, event)"
-        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard(this)}">
+        aria-label="Member photo. Tap anywhere on photo to see business details">
+
         <div class="flip-inner">
-          <div class="flip-front">
+
+          <div class="flip-front"
+               role="button"
+               tabindex="0"
+               aria-label="Show business details for ${escapeHTML(member.full_name)}">
+
             <img class="front-photo"
               src="${photo}"
               alt="${escapeHTML(member.full_name || "Member")}"
               loading="lazy"
               onerror="this.onerror=null;this.src=avatarPlaceholder(this.alt)">
+
             <div class="front-shade"></div>
+
             <div class="front-content">
-              <div class="front-name">${escapeHTML(member.full_name || "BGC Member")}</div>
-              <div class="front-category">${escapeHTML(category)}${subcategory ? " · " + escapeHTML(subcategory) : ""}</div>
-              <div class="flip-hint">↻ Tap to view business profile</div>
-            </div>
-          </div>
-          <div class="flip-back">
-            <div class="back-top">
-              <img class="back-avatar" src="${photo}" alt="" loading="lazy">
-              <div>
-                <div class="back-name">${escapeHTML(member.full_name || "BGC Member")}</div>
-                <div class="back-label">BGC CLUB Business Member</div>
+              <div class="front-name">
+                ${escapeHTML(member.full_name || "BGC Member")}
+              </div>
+
+              <div class="front-category">
+                ${escapeHTML(category)}
+                ${subcategory ? " · " + escapeHTML(subcategory) : ""}
+              </div>
+
+              <div class="flip-hint">
+                ↻ Tap to view business profile
               </div>
             </div>
-            <div class="back-details">
-              <div class="back-detail"><strong>Main Business Category</strong>${escapeHTML(category)}</div>
-              ${subHTML}
-              ${cityHTML}
-              ${experienceHTML}
-              ${servicesHTML}
-              ${linksHTML}
+          </div>
+
+          <div class="flip-back">
+
+            <div class="back-flip-zone"
+                 role="button"
+                 tabindex="0"
+                 aria-label="Tap this upper area to return to member photo">
+
+              <div class="back-top">
+                <img class="back-avatar"
+                  src="${photo}"
+                  alt=""
+                  loading="lazy">
+
+                <div>
+                  <div class="back-name">
+                    ${escapeHTML(member.full_name || "BGC Member")}
+                  </div>
+
+                  <div class="back-label">
+                    BGC CLUB Business Member
+                  </div>
+                </div>
+              </div>
+
+              <div class="back-details">
+
+                <div class="back-detail">
+                  <strong>Main Business Category</strong>
+                  ${escapeHTML(category)}
+                </div>
+
+                ${subHTML}
+                ${cityHTML}
+                ${experienceHTML}
+                ${servicesHTML}
+                ${linksHTML}
+
+              </div>
             </div>
+
             <div class="back-actions">
-            <button class="back-btn" type="button">
+             <button class="back-btn"
+  type="button"
+  onclick="event.stopPropagation(); openMemberProfileById(this.closest('.flip-card').dataset.memberId)">
   ↗ View Profile
 </button>
             </div>
+
           </div>
         </div>
       </article>
@@ -1140,7 +1310,8 @@ document.addEventListener("keydown", event => {
 }
 
 async function loadMembers() {
-  memberList.innerHTML = '<div class="message">Loading approved members...</div>';
+  memberList.innerHTML =
+    '<div class="message">Loading approved members...</div>';
 
   try {
     const { data, error } = await db
@@ -1152,11 +1323,13 @@ async function loadMembers() {
     if (error) throw error;
 
     allMembers = data || [];
+
     populateCategories();
     renderMembers();
 
   } catch (error) {
     console.error("Could not load BGC CLUB members:", error);
+
     memberList.innerHTML =
       '<div class="message">Members list load ஆகவில்லை.<br>' +
       'Supabase connection மற்றும் table permissions-ஐச் சரிபார்க்கவும்.' +
@@ -1165,6 +1338,7 @@ async function loadMembers() {
 }
 
 searchInput.addEventListener("input", renderMembers);
+
 populateCategories();
 loadMembers();
 </script>
@@ -1218,7 +1392,7 @@ loadMembers();
     <span>Feeds</span>
   </a>
 
-<a href="bgc-event-providers.html"class="mobile-nav-item" aria-label="Events">
+  <a href="bgc-event-providers.html" class="mobile-nav-item" aria-label="Events">
     <span class="mobile-nav-icon">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="5" width="18" height="16" rx="2"></rect>
