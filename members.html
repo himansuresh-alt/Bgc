@@ -262,6 +262,26 @@ input:focus,select:focus{
   text-transform:uppercase;
   margin-bottom:3px;
 }
+.back-link-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:8px 0 12px;
+}
+.back-profile-link{
+  display:inline-flex;
+  align-items:center;
+  padding:7px 9px;
+  border:1px solid #754052;
+  border-radius:9px;
+  background:#8d183122;
+  color:#f0a7b7;
+  text-decoration:none;
+  font-size:10px;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+.back-profile-link:hover{background:#8d1831;color:#fff}
 .back-actions{
   display:flex;
   gap:8px;
@@ -282,8 +302,7 @@ input:focus,select:focus{
 .message{
   grid-column:1/-1;
   padding:28px 18px;
-  border:1px solid #39393e;
-  border-radius:15px;
+  border:1px solid #39393e;  border-radius:15px;
   text-align:center;
   color:#b9b8bf;
   line-height:1.7;
@@ -587,8 +606,7 @@ footer{
 /* BGC MEMBERS PAGE - CENTERED HERO + HORIZONTAL CATEGORY FILTERS */
 .hero{
   text-align:center;
-  padding:34px 20px 22px;
-}
+  padding:34px 20px 22px;}
 .hero .eyebrow{text-align:center}
 .hero h1{
   margin:24px auto;
@@ -649,6 +667,8 @@ footer{
   .hero p{font-size:15px}
   .category-chip{padding:10px 15px;font-size:12px}
 }
+
+  
 </style>
 </head>
 <body>
@@ -725,41 +745,77 @@ function safeWebURL(value) {
   return "";
 }
 
-function parseMemberDetails(member) {
-  const lines = String(member.skills || "")
-    .split(/\r?\n/)
-    .map(line => line.trim())
-    .filter(Boolean);
+function cleanOptionalValue(value) {
+  const text = String(value ?? "").trim();
+  if (!text || /^(not provided|none|null|n\/a|na|-)$/i.test(text)) return "";
+  return text;
+}
 
+function parseMemberDetails(member) {
   const result = {
-    city: "",
-    category: "",
-    subcategory: "",
-    experience: "",
-    services: []
+    city: cleanOptionalValue(member.city),
+    category: cleanOptionalValue(member.business_category || member.department),
+    subcategory: cleanOptionalValue(member.business_subcategory),
+    experience: cleanOptionalValue(member.experience_level),
+    company: cleanOptionalValue(member.company_name),
+    services: [],
+    links: {}
   };
 
-  lines.forEach(line => {
-    const match = line.match(/^([^:]+)\s*:\s*(.*)$/);
+  const keyMap = {
+    "city": "city",
+    "location": "city",
+    "business location": "city",
+    "business category": "category",
+    "main business category": "category",
+    "category": "category",
+    "subcategory": "subcategory",
+    "business subcategory": "subcategory",
+    "experience": "experience",
+    "business experience": "experience",
+    "company": "company",
+    "company name": "company",
+    "company / business": "company",
+    "products & services": "services",
+    "products and services": "services",
+    "services": "services",
+    "website": "website",
+    "website / portfolio": "website",
+    "instagram": "instagram",
+    "linkedin": "linkedin",
+    "facebook": "facebook",
+    "google play store": "playstore",
+    "play store": "playstore",
+    "apple app store": "appstore",
+    "app store": "appstore"
+  };
+
+  String(member.skills || "").split(/\r?\n/).forEach(line => {
+    const match = line.trim().match(/^([^:]+)\s*:\s*(.*)$/);
     if (!match) {
-      result.services.push(line);
+      const value = cleanOptionalValue(line);
+      if (value) result.services.push(value);
       return;
     }
 
     const key = match[1].trim().toLowerCase();
-    const value = match[2].trim();
+    const value = cleanOptionalValue(match[2]);
+    const target = keyMap[key];
+    if (!target || !value) return;
 
-    if (key === "city") result.city = value;
-    else if (key === "business category") result.category = value;
-    else if (key === "subcategory") result.subcategory = value;
-    else if (key === "experience") result.experience = value;
-    else result.services.push(line);
+    if (target === "services") result.services.push(value);
+    else if (["website", "instagram", "linkedin", "facebook", "playstore", "appstore"].includes(target)) {
+      result.links[target] = value;
+    } else {
+      result[target] = value;
+    }
   });
 
-  if (!result.experience) result.experience = member.experience_level || "";
-  if (!result.city) result.city = member.city || "";
-  if (!result.category) result.category = member.business_category || member.department || "";
-  if (!result.subcategory) result.subcategory = member.business_subcategory || "";
+  result.experience = cleanOptionalValue(result.experience);
+  result.city = cleanOptionalValue(result.city);
+  result.category = cleanOptionalValue(result.category) || "BGC CLUB Member";
+  result.subcategory = cleanOptionalValue(result.subcategory);
+  result.company = cleanOptionalValue(result.company);
 
   return result;
 }
@@ -855,9 +911,7 @@ function populateCategories() {
 }
 
 function setActiveCategory(category) {
-  activeCategory = category;
-
-  categoryScroll.querySelectorAll(".category-chip").forEach(button => {
+  activeCategory = category;  categoryScroll.querySelectorAll(".category-chip").forEach(button => {
     button.classList.toggle("active", button.dataset.category === category);
   });
 
@@ -870,8 +924,13 @@ categoryScroll.addEventListener("click", event => {
   setActiveCategory(button.dataset.category || "");
 });
 
-function flipCard(card) {
+function flipCard(card, event) {
+  if (event && event.target.closest("a, button")) {
+    return;
+  }
+
   card.classList.toggle("flipped");
+
   card.setAttribute(
     "aria-label",
     card.classList.contains("flipped")
@@ -880,21 +939,55 @@ function flipCard(card) {
   );
 }
 
+function normalizeWebURL(value) {
+  const raw = cleanOptionalValue(value);
+  if (!raw) return "";
+  return safeWebURL(/^https?:\/\//i.test(raw) ? raw : "https://" + raw);
+}
+
 function getMemberLinks(member, details) {
+  const saved = (details && details.links) || {};
   const candidates = [
-    ["Website", member.website_url || member.website || member.portfolio_url],
-    ["Instagram", member.instagram_url || member.instagram],
-    ["LinkedIn", member.linkedin_url || member.linkedin],
-    ["Play Store App", member.play_store_url || member.playstore_url || member.google_play_url],
-    ["iOS App Store", member.app_store_url || member.ios_app_url || member.apple_app_store_url]
+    ["Website", member.website_url || member.website || member.portfolio_url || saved.website],
+    ["Instagram", member.instagram_url || member.instagram || saved.instagram],
+    ["LinkedIn", member.linkedin_url || member.linkedin || saved.linkedin],
+    ["Facebook", member.facebook_url || member.facebook || saved.facebook],
+    ["Google Play Store", member.play_store_url || member.playstore_url || member.google_play_url || saved.playstore],
+    ["Apple App Store", member.app_store_url || member.ios_app_url || member.apple_app_store_url || saved.appstore]
   ];
 
   return candidates.map(([label, value]) => ({
     label,
-    url: safeWebURL(value)
+    url: normalizeWebURL(value)
   })).filter(item => item.url);
 }
 
+function openMemberProfileById(id) {
+  const member = allMembers.find(item => String(item.id) === String(id));
+  if (member) openMemberProfile(member);
+}
+
+/* FIX: VIEW PROFILE BUTTON CLICK */
+memberList.addEventListener("click", function(event) {
+
+  const profileButton = event.target.closest(".back-btn");
+
+  if (profileButton) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const card = profileButton.closest(".flip-card");
+    if (!card) return;
+
+    const memberId = card.dataset.memberId;
+    openMemberProfileById(memberId);
+
+    return;
+  }
+
+}, true);
+  
 function openMemberProfile(member) {
   const details = parseMemberDetails(member);
 
@@ -905,10 +998,13 @@ function openMemberProfile(member) {
     (details.subcategory ? " · " + details.subcategory : "");
 
   const rows = [
+    ["Company / Business", details.company],
     ["Business Location", details.city],
     ["Business Experience", details.experience],
-    ["Products & Services", details.services.join(", ")]
-  ].filter(row => row[1]);
+    ["Products & Services", details.services.join(", ")],
+    ["Email", cleanOptionalValue(member.email)],
+    ["Mobile", cleanOptionalValue(member.mobile)]
+  ].filter(row => cleanOptionalValue(row[1]));
 
   document.getElementById("profileModalDetails").innerHTML = rows.map(([label, value]) =>
     `<div class="back-detail"><strong>${escapeHTML(label)}</strong>${escapeHTML(value)}</div>`
@@ -970,7 +1066,7 @@ document.addEventListener("keydown", event => {
   memberList.innerHTML = filtered.map(member => {
     const details = parseMemberDetails(member);
     const photo = escapeHTML(getMemberPhoto(member));
-    const portfolio = safeWebURL(member.portfolio_url);
+    const links = getMemberLinks(member, details);
     const category = details.category || "BGC CLUB Member";
     const subcategory = details.subcategory || "";
 
@@ -986,17 +1082,20 @@ document.addEventListener("keydown", event => {
     const servicesHTML = details.services.length
       ? `<div class="back-detail"><strong>Products & Services</strong>${escapeHTML(details.services.join(", "))}</div>` : "";
 
-    const portfolioHTML = portfolio
-      ? `<div class="back-detail"><strong>Website / Portfolio</strong><a href="${escapeHTML(portfolio)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" style="color:#efa4b4;position:relative;z-index:10">Visit website ↗</a></div>` : "";
+    const linksHTML = links.length
+      ? `<div class="back-link-list">${links.map(item =>
+          `<a class="back-profile-link" href="${escapeHTML(item.url)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">${escapeHTML(item.label)} ↗</a>`
+        ).join("")}</div>` : "";
 
     const memberId = escapeHTML(member.id);
 
     return `
       <article class="flip-card"
+        data-member-id="${memberId}"
         tabindex="0"
         role="button"
         aria-label="View ${escapeHTML(member.full_name)} business details"
-        onclick="flipCard(this)"
+        onclick="flipCard(this, event)"
         onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard(this)}">
         <div class="flip-inner">
           <div class="flip-front">
@@ -1026,13 +1125,12 @@ document.addEventListener("keydown", event => {
               ${cityHTML}
               ${experienceHTML}
               ${servicesHTML}
-              ${portfolioHTML}
+              ${linksHTML}
             </div>
             <div class="back-actions">
-              <button class="back-btn" type="button"
-                onclick="event.stopPropagation();openMemberProfile(allMembers.find(item => String(item.id) === String('${memberId}')) || {})">
-                ↗ View Profile
-              </button>
+            <button class="back-btn" type="button">
+  ↗ View Profile
+</button>
             </div>
           </div>
         </div>
