@@ -350,13 +350,15 @@ select{color-scheme:dark}
             <div class="hint">Your contact number will be stored for member communication.</div>
           </div>
 
-          <div class="field full">
-            <label for="email">Email Address
-              <span class="optional">Optional</span>
-            </label>
-            <input id="email" type="email" maxlength="254"
-              autocomplete="email" placeholder="you@example.com">
-          </div>
+          < class="field full">
+           <label for="email">
+  Email Address <span class="required">*</span>
+</label>
+
+<input id="email" type="email" maxlength="254"
+  autocomplete="email"
+  required
+  placeholder="you@example.com">
 
         </div>
 
@@ -568,10 +570,11 @@ function showStep(step) {
 
 function validateRequiredProfile() {
   const requiredFields = [
-    "full_name",
-    "company",
-    "mobile"
-  ];
+  "full_name",
+  "company",
+  "mobile",
+  "email"
+];
 
   for (const id of requiredFields) {
     const field = $(id);
@@ -1004,15 +1007,16 @@ $("founderForm").addEventListener("submit", async event => {
 
     showMessage("Founder profile save ஆகிறது...", "info");
 
-  const { error } = await db
+ const { error } = await db
   .from("bgc_team_members")
   .insert([{
     full_name: fullName,
-    email: email || null,
+    email: email,
     mobile: mobile,
     department: category || "Business Founder",
     skills: profileDetails,
     experience_level: "BGC CLUB Founder",
+    work_type: "Business Owner",
     portfolio_url: website || null,
     photo_url: photoURL,
     status: "pending"
