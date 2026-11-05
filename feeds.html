@@ -496,12 +496,10 @@ main {
   }
 }
 
-/* =========================
-PART 1 END
-========================= */
 </style>
 </head>
-<!-- =========================
+
+  <!-- =========================
 PART 2 START
 MAIN PAGE CONTENT
 ========================= -->
@@ -510,9 +508,7 @@ MAIN PAGE CONTENT
 
 <main>
 
-  <!-- =====================
-       FEEDS PANEL
-  ====================== -->
+  <!-- FEEDS PANEL -->
 
   <section class="panel active" id="feedsPanel">
 
@@ -541,8 +537,6 @@ MAIN PAGE CONTENT
       </button>
     </div>
 
-    <!-- SEARCH -->
-
     <div class="search">
       <span class="search-icon">⌕</span>
 
@@ -554,8 +548,6 @@ MAIN PAGE CONTENT
         autocomplete="off"
       >
     </div>
-
-    <!-- CATEGORY FILTERS -->
 
     <div class="chips" id="feedChips">
 
@@ -589,8 +581,6 @@ MAIN PAGE CONTENT
 
     </div>
 
-    <!-- FEED CARDS ARE LOADED FROM SUPABASE -->
-
     <div id="feedList" class="feed-list">
 
       <div class="empty">
@@ -602,9 +592,7 @@ MAIN PAGE CONTENT
   </section>
 
 
-  <!-- =====================
-       MEMBERS PANEL
-  ====================== -->
+  <!-- MEMBERS PANEL -->
 
   <section class="panel" id="membersPanel">
 
@@ -658,10 +646,7 @@ MAIN PAGE CONTENT
   </section>
 
 
-  <!-- =====================
-       JOIN MEMBER PANEL
-       Existing functionality retained
-  ====================== -->
+  <!-- JOIN MEMBER PANEL -->
 
   <section class="panel" id="joinPanel">
 
@@ -712,10 +697,7 @@ MAIN PAGE CONTENT
   </section>
 
 
-  <!-- =====================
-       POST PANEL
-       Existing navigation retained
-  ====================== -->
+  <!-- POST PANEL -->
 
   <section class="panel" id="postPanel">
 
@@ -769,6 +751,7 @@ MAIN PAGE CONTENT
 <!-- =========================
 PART 2 END
 ========================= -->
+
   <!-- =========================
 PART 3 START
 BOTTOM NAVIGATION + MODAL
@@ -776,10 +759,7 @@ BOTTOM NAVIGATION + MODAL
 
 <style>
 
-/* =========================
-   BGC CLUB BOTTOM NAVIGATION
-   Original five SVG icons retained
-========================= */
+/* BGC CLUB BOTTOM NAVIGATION */
 
 .mobile-bottom-nav {
   position: fixed;
@@ -787,29 +767,22 @@ BOTTOM NAVIGATION + MODAL
   bottom: calc(10px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   z-index: 9999;
-
   width: min(94%, 560px);
   min-height: 82px;
-
   display: grid;
   grid-template-columns: repeat(5, minmax(0,1fr));
   align-items: center;
   gap: 4px;
-
   padding: 8px;
-
   border: 1px solid rgba(255,255,255,.9);
   border-radius: 25px;
-
   background: linear-gradient(
     145deg,
     rgba(255,255,255,.98),
     rgba(239,241,245,.95)
   );
-
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
-
   box-shadow:
     0 15px 35px rgba(0,0,0,.25),
     0 4px 9px rgba(0,0,0,.08),
@@ -821,37 +794,30 @@ BOTTOM NAVIGATION + MODAL
   position: relative;
   min-width: 0;
   height: 64px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 5px;
-
   border-radius: 18px;
-
   color: var(--nav-text);
   font-size: 11px;
   font-weight: 700;
   text-decoration: none;
-
   transition:
     transform .22s ease,
     color .22s ease,
     background .22s ease,
     box-shadow .22s ease;
-
   -webkit-tap-highlight-color: transparent;
 }
 
 .mobile-nav-icon {
   width: 29px;
   height: 29px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 0;
 }
 
@@ -859,7 +825,6 @@ BOTTOM NAVIGATION + MODAL
   width: 27px;
   height: 27px;
   display: block;
-
   fill: none;
   stroke: currentColor;
   stroke-width: 2.2;
@@ -869,18 +834,15 @@ BOTTOM NAVIGATION + MODAL
 
 .mobile-nav-item.active {
   color: #8d1831;
-
   background: linear-gradient(
     145deg,
     #ffffff,
     #f0e9ec
   );
-
   box-shadow:
     0 5px 10px rgba(0,0,0,.10),
     inset 0 1px 2px #ffffff,
     inset 0 -2px 3px rgba(141,24,49,.08);
-
   transform: translateY(-2px);
 }
 
@@ -896,7 +858,6 @@ BOTTOM NAVIGATION + MODAL
 }
 
 @media (max-width: 700px) {
-
   body {
     padding-bottom: 125px;
   }
@@ -904,15 +865,11 @@ BOTTOM NAVIGATION + MODAL
   .mobile-bottom-nav {
     left: 50%;
     right: auto;
-
     bottom: calc(10px + env(safe-area-inset-bottom));
-
     width: calc(100% - 24px);
     min-height: 78px;
     height: auto;
-
     grid-template-columns: repeat(5,minmax(0,1fr));
-
     padding: 7px 5px;
     border-radius: 23px;
   }
@@ -932,24 +889,18 @@ BOTTOM NAVIGATION + MODAL
     width: 25px;
     height: 25px;
   }
-
 }
 
-/* =========================
-   OPPORTUNITY DETAILS MODAL
-========================= */
+/* OPPORTUNITY DETAILS MODAL */
 
 .modal {
   position: fixed;
   inset: 0;
   z-index: 10000;
-
   background: rgba(0,0,0,.78);
-
   display: none;
   align-items: center;
   justify-content: center;
-
   padding: 15px;
 }
 
@@ -962,15 +913,11 @@ BOTTOM NAVIGATION + MODAL
   max-width: 500px;
   max-height: 85vh;
   overflow-y: auto;
-
   background: #222124;
   color: var(--text);
-
   border: 1px solid var(--border);
   border-radius: 22px;
-
   padding: 19px;
-
   box-shadow: 0 15px 45px rgba(0,0,0,.35);
 }
 
@@ -979,10 +926,8 @@ BOTTOM NAVIGATION + MODAL
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-
   margin-bottom: 17px;
   padding-bottom: 12px;
-
   border-bottom: 1px solid var(--border);
 }
 
@@ -995,13 +940,10 @@ BOTTOM NAVIGATION + MODAL
 
 .close-btn {
   flex-shrink: 0;
-
   border: 1px solid var(--border);
   border-radius: 11px;
-
   background: #343137;
   color: #f1d5df;
-
   font-size: 23px;
   width: 37px;
   height: 37px;
@@ -1026,35 +968,24 @@ BOTTOM NAVIGATION + MODAL
   margin-top: 8px;
 }
 
-/* =========================
-   TOAST MESSAGE
-========================= */
+/* TOAST MESSAGE */
 
 .toast {
   position: fixed;
   z-index: 11000;
-
   left: 50%;
   bottom: 115px;
-
   transform: translateX(-50%);
-
   display: none;
-
   max-width: 90%;
   width: max-content;
-
   padding: 12px 16px;
-
   border-radius: 12px;
-
   background: #922b49;
   color: #fff;
-
   font-size: 12px;
   line-height: 1.5;
   text-align: center;
-
   box-shadow: 0 8px 25px rgba(0,0,0,.3);
 }
 
@@ -1062,18 +993,13 @@ BOTTOM NAVIGATION + MODAL
   display: block;
 }
 
-/* DESKTOP CARD LAYOUT */
-
 @media (min-width: 700px) {
   .feed-list {
     grid-template-columns: repeat(2,minmax(0,1fr));
   }
 }
 
-/* SMALL MOBILE */
-
 @media (max-width: 380px) {
-
   .mobile-bottom-nav {
     width: calc(100% - 16px);
     padding: 6px 3px;
@@ -1091,20 +1017,15 @@ BOTTOM NAVIGATION + MODAL
   .card-actions .btn {
     padding: 10px 12px;
   }
-
 }
 
 </style>
 
 
-<!-- =========================
-   FIXED BOTTOM NAVIGATION
-========================= -->
+<!-- FIXED BOTTOM NAVIGATION -->
 
 <nav class="mobile-bottom-nav"
      aria-label="BGC CLUB main navigation">
-
-  <!-- HOME -->
 
   <a href="index.html"
      class="mobile-nav-item"
@@ -1119,11 +1040,7 @@ BOTTOM NAVIGATION + MODAL
     </span>
 
     <span>Home</span>
-
   </a>
-
-
-  <!-- MEMBERS -->
 
   <a href="members.html"
      class="mobile-nav-item"
@@ -1139,11 +1056,7 @@ BOTTOM NAVIGATION + MODAL
     </span>
 
     <span>Members</span>
-
   </a>
-
-
-  <!-- POST -->
 
   <a href="post.html"
      class="mobile-nav-item"
@@ -1158,11 +1071,7 @@ BOTTOM NAVIGATION + MODAL
     </span>
 
     <span>Post</span>
-
   </a>
-
-
-  <!-- FEEDS -->
 
   <a href="feeds.html"
      class="mobile-nav-item active"
@@ -1180,13 +1089,11 @@ BOTTOM NAVIGATION + MODAL
     </span>
 
     <span>Feeds</span>
-
   </a>
 
-
-  <!-- EVENTS -->
-
-  <a href="bgc-event-providers.html"class="mobile-nav-item" aria-label="Events">
+  <a href="bgc-event-providers.html"
+     class="mobile-nav-item"
+     aria-label="Events">
 
     <span class="mobile-nav-icon">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1204,15 +1111,10 @@ BOTTOM NAVIGATION + MODAL
     </span>
 
     <span>Events</span>
-
   </a>
 
 </nav>
 
-
-<!-- =========================
-   TOAST MESSAGE
-========================= -->
 
 <div id="toast"
      class="toast"
@@ -1220,10 +1122,6 @@ BOTTOM NAVIGATION + MODAL
      aria-live="polite">
 </div>
 
-
-<!-- =========================
-   OPPORTUNITY DETAILS MODAL
-========================= -->
 
 <div class="modal"
      id="detailModal"
@@ -1255,6 +1153,7 @@ BOTTOM NAVIGATION + MODAL
 <!-- =========================
 PART 3 END
 ========================= -->
+
   <!-- =========================
 PART 4 START
 SUPABASE + FEED FUNCTIONS
@@ -1263,9 +1162,7 @@ SUPABASE + FEED FUNCTIONS
 <script>
 "use strict";
 
-/* =====================================
-   EXISTING BGC CLUB SUPABASE CONNECTION
-===================================== */
+/* EXISTING BGC CLUB SUPABASE CONNECTION */
 
 const SUPABASE_URL =
   "https://acgbtsfuwybbtzakvmjf.supabase.co";
@@ -1279,27 +1176,16 @@ const bgcSupabase = window.supabase.createClient(
 );
 
 
-/* =====================================
-   GLOBAL VARIABLES
-===================================== */
+/* GLOBAL VARIABLES */
 
 let publishedPosts = [];
-
 let activeCategory = "All";
-
 let currentPost = null;
-
-
-/* =====================================
-   ELEMENT SELECTOR
-===================================== */
 
 const $ = id => document.getElementById(id);
 
 
-/* =====================================
-   SAFE HTML OUTPUT
-===================================== */
+/* SAFE HTML OUTPUT */
 
 function safe(value) {
 
@@ -1314,9 +1200,7 @@ function safe(value) {
 }
 
 
-/* =====================================
-   TOAST NOTIFICATION
-===================================== */
+/* TOAST NOTIFICATION */
 
 function toast(message) {
 
@@ -1328,23 +1212,18 @@ function toast(message) {
   }
 
   element.textContent = message;
-
   element.classList.add("show");
 
   clearTimeout(window.bgcToastTimer);
 
   window.bgcToastTimer = setTimeout(() => {
-
     element.classList.remove("show");
-
   }, 3000);
 
 }
 
 
-/* =====================================
-   PANEL NAVIGATION
-===================================== */
+/* PANEL NAVIGATION */
 
 function showPanel(panelId) {
 
@@ -1369,9 +1248,7 @@ function showPanel(panelId) {
 }
 
 
-/* =====================================
-   DATABASE CATEGORY GROUPING
-===================================== */
+/* DATABASE CATEGORY GROUPING */
 
 function getPostGroup(category) {
 
@@ -1394,9 +1271,18 @@ function getPostGroup(category) {
 }
 
 
-/* =====================================
-   LOAD PUBLISHED POSTS FROM SUPABASE
-===================================== */
+/* GET CATEGORY LABEL */
+
+function getCategoryLabel(category) {
+
+  return String(category || "")
+    .replace(/^(job|requirement|project)\s*-\s*/i, "")
+    .trim();
+
+}
+
+
+/* LOAD PUBLISHED POSTS FROM SUPABASE */
 
 async function loadPublishedPosts() {
 
@@ -1433,20 +1319,14 @@ async function loadPublishedPosts() {
       throw error;
     }
 
-
     publishedPosts = data || [];
 
-
     if ($("postCount")) {
-
       $("postCount").textContent =
         publishedPosts.length;
-
     }
 
-
     renderFeed();
-
 
   } catch (error) {
 
@@ -1454,7 +1334,6 @@ async function loadPublishedPosts() {
       "Feed loading error:",
       error
     );
-
 
     if (list) {
 
@@ -1468,11 +1347,8 @@ async function loadPublishedPosts() {
 
     }
 
-
     if ($("postCount")) {
-
       $("postCount").textContent = "—";
-
     }
 
   }
@@ -1480,9 +1356,7 @@ async function loadPublishedPosts() {
 }
 
 
-/* =====================================
-   CATEGORY FILTER
-===================================== */
+/* CATEGORY FILTER */
 
 function setCategory(category, button) {
 
@@ -1504,9 +1378,7 @@ function setCategory(category, button) {
 }
 
 
-/* =====================================
-   DATE FORMAT
-===================================== */
+/* DATE FORMAT */
 
 function formatDate(value) {
 
@@ -1529,9 +1401,7 @@ function formatDate(value) {
 }
 
 
-/* =====================================
-   RENDER FEED CARDS
-===================================== */
+/* RENDER FEED CARDS */
 
 function renderFeed() {
 
@@ -1540,7 +1410,6 @@ function renderFeed() {
   if (!list) {
     return;
   }
-
 
   const query = (
     $("feedSearch")?.value || ""
@@ -1554,15 +1423,10 @@ function renderFeed() {
     const searchable = [
 
       post.title,
-
       post.category,
-
       post.location,
-
       post.description,
-
       post.poster_name,
-
       post.budget
 
     ]
@@ -1573,14 +1437,11 @@ function renderFeed() {
     const matchesSearch =
       searchable.includes(query);
 
-
     const group = getPostGroup(post.category);
-
 
     const matchesCategory =
       activeCategory === "All" ||
       group === activeCategory;
-
 
     return matchesSearch && matchesCategory;
 
@@ -1620,11 +1481,28 @@ function renderFeed() {
 
     const group = getPostGroup(post.category);
 
+    const categoryLabel =
+      getCategoryLabel(post.category);
 
     const phone = String(
       post.whatsapp_number || ""
     ).replace(/\D/g, "");
 
+    const title = String(post.title || "").trim();
+
+    const description =
+      String(post.description || "").trim();
+
+    /*
+      DUPLICATE CONTENT PREVENTION
+
+      If title and description are the same,
+      description will not be displayed again.
+    */
+
+    const showDescription =
+      description &&
+      description.toLowerCase() !== title.toLowerCase();
 
     return `
 
@@ -1643,14 +1521,45 @@ function renderFeed() {
         </div>
 
 
+        ${
+          post.poster_name
+            ? `
+              <div class="meta"
+                   style="margin-top:13px;margin-bottom:2px">
+
+                <span>
+                  👤 ${safe(post.poster_name)}
+                </span>
+
+              </div>
+            `
+            : ""
+        }
+
+
         <h3>
-          ${safe(post.title)}
+          ${safe(title || "Opportunity")}
         </h3>
 
 
-        <p>
-          ${safe(post.description)}
-        </p>
+        ${
+          categoryLabel
+            ? `
+              <div style="margin:0 0 12px">
+                <span class="tag">
+                  ${safe(categoryLabel)}
+                </span>
+              </div>
+            `
+            : ""
+        }
+
+
+        ${
+          showDescription
+            ? `<p>${safe(description)}</p>`
+            : ""
+        }
 
 
         <div class="meta">
@@ -1682,17 +1591,6 @@ function renderFeed() {
               ? `
                 <span>
                   📅 Deadline: ${safe(post.deadline)}
-                </span>
-              `
-              : ""
-          }
-
-
-          ${
-            post.poster_name
-              ? `
-                <span>
-                  👤 ${safe(post.poster_name)}
                 </span>
               `
               : ""
@@ -1737,9 +1635,7 @@ function renderFeed() {
 }
 
 
-/* =====================================
-   OPPORTUNITY DETAIL POPUP
-===================================== */
+/* OPPORTUNITY DETAIL POPUP */
 
 function viewPost(id) {
 
@@ -1751,13 +1647,19 @@ function viewPost(id) {
     return;
   }
 
-
   currentPost = post;
-
 
   $("detailTitle").textContent =
     post.title || "Opportunity details";
 
+  const title = String(post.title || "").trim();
+
+  const description =
+    String(post.description || "").trim();
+
+  const showDescription =
+    description &&
+    description.toLowerCase() !== title.toLowerCase();
 
   $("detailBody").innerHTML = `
 
@@ -1766,9 +1668,39 @@ function viewPost(id) {
     </span>
 
 
-    <p style="white-space:pre-wrap;line-height:1.8">
-      ${safe(post.description)}
-    </p>
+    ${
+      getCategoryLabel(post.category)
+        ? `
+          <p>
+            <strong>Category:</strong>
+            ${safe(getCategoryLabel(post.category))}
+          </p>
+        `
+        : ""
+    }
+
+
+    ${
+      post.poster_name
+        ? `
+          <p>
+            👤 <strong>Posted by:</strong>
+            ${safe(post.poster_name)}
+          </p>
+        `
+        : ""
+    }
+
+
+    ${
+      showDescription
+        ? `
+          <p style="white-space:pre-wrap;line-height:1.8">
+            ${safe(description)}
+          </p>
+        `
+        : ""
+    }
 
 
     ${
@@ -1808,18 +1740,6 @@ function viewPost(id) {
 
 
     ${
-      post.poster_name
-        ? `
-          <p>
-            👤 <strong>Posted by:</strong>
-            ${safe(post.poster_name)}
-          </p>
-        `
-        : ""
-    }
-
-
-    ${
       post.whatsapp_number
         ? `
           <button
@@ -1835,15 +1755,12 @@ function viewPost(id) {
 
   `;
 
-
   $("detailModal").classList.add("open");
 
 }
 
 
-/* =====================================
-   CLOSE DETAIL MODAL
-===================================== */
+/* CLOSE DETAIL MODAL */
 
 function closeDetail() {
 
@@ -1854,15 +1771,12 @@ function closeDetail() {
 }
 
 
-/* =====================================
-   WHATSAPP CONTACT
-===================================== */
+/* WHATSAPP CONTACT */
 
 function whatsapp(number) {
 
   const clean = String(number || "")
     .replace(/\D/g, "");
-
 
   if (
     clean.length < 10 ||
@@ -1877,7 +1791,6 @@ function whatsapp(number) {
 
   }
 
-
   window.open(
     "https://wa.me/" + clean,
     "_blank",
@@ -1887,34 +1800,23 @@ function whatsapp(number) {
 }
 
 
-/* =====================================
-   CLOSE MODAL USING ESCAPE KEY
-===================================== */
+/* CLOSE MODAL USING ESCAPE KEY */
 
 document.addEventListener("keydown", event => {
 
   if (event.key === "Escape") {
-
     closeDetail();
-
   }
 
 });
 
 
-/* =====================================
-   INITIALIZE FEEDS
-===================================== */
+/* INITIALIZE FEEDS */
 
 loadPublishedPosts();
 
 
-/* =====================================
-   ADMIN 5-TAP ACCESS REMOVED
-
-   Admin page is separate.
-   No hidden logo tap access here.
-===================================== */
+/* ADMIN PAGE IS SEPARATE */
 
 </script>
 
