@@ -696,6 +696,52 @@ footer{color:#77727a}
 .join-free-btn:active {
     transform: scale(.96);
 }
+
+  /* BGC EVENTS FLOATING BUTTON */
+.bgc-events-float {
+    position: fixed;
+    right: 16px;
+    bottom: 112px;
+    z-index: 9998;
+
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 13px 18px;
+    border-radius: 50px;
+
+    background: linear-gradient(135deg, #a52645, #741329);
+    color: #fff;
+
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+
+    border: 1px solid rgba(255,255,255,.25);
+    box-shadow: 0 7px 20px rgba(0,0,0,.35);
+
+    transition: transform .2s ease;
+}
+
+.bgc-events-float:active {
+    transform: scale(.95);
+}
+
+.bgc-events-icon {
+    font-size: 18px;
+}
+
+.bgc-events-arrow {
+    font-size: 17px;
+}
+
+@media (min-width: 700px) {
+    .bgc-events-float {
+        right: 25px;
+        bottom: 120px;
+    }
+}
 </style>
 </head>
 
@@ -1298,6 +1344,12 @@ loadProviders();
   });
 })();
 </script>
+
+  <a href="bgc-event-planner.html" class="bgc-events-float">
+    <span class="bgc-events-icon">✦</span>
+    <span>BGC Events</span>
+    <span class="bgc-events-arrow"></span>
+  </a>
 
 </body>
 </html>
