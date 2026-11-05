@@ -84,6 +84,13 @@ button:disabled{opacity:.55;cursor:wait}
 .modal-head h2{font-size:18px;margin:0}
 .close{border:0;width:35px;height:35px;border-radius:10px;background:#edf3ed;color:var(--g);font-size:22px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.edit-form{display:grid;gap:4px}
+.edit-form .field{margin:8px 0}
+.edit-form .field textarea{min-height:76px}
+.photo-preview{width:104px;height:104px;border-radius:16px;object-fit:cover;background:#edf4ee;border:1px solid var(--line);display:block;margin:4px 0 10px}
+.photo-help{font-size:10px;color:var(--muted);line-height:1.6}
+.edit-section-title{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--g2);padding:10px 0 4px;border-bottom:1px solid var(--line);margin-top:8px}
+.danger-note{background:#fff0ef;color:#a12a2a;border-radius:10px;padding:10px;font-size:11px;line-height:1.6}
 .footer-note{text-align:center;color:var(--muted);font-size:10px;padding:18px 0}
 @media(max-width:650px){
  .wrap{width:calc(100% - 18px)}
@@ -232,6 +239,70 @@ button:disabled{opacity:.55;cursor:wait}
  </div>
 </div>
 
+<div class="modal" id="editMemberModal" role="dialog" aria-modal="true" onclick="if(event.target===this)closeEditMember()">
+ <div class="modal-card">
+  <div class="modal-head">
+   <h2 id="editMemberTitle">Edit member profile</h2>
+   <button class="close" type="button" onclick="closeEditMember()">×</button>
+  </div>
+  <div class="status" id="editMemberStatus"></div>
+  <form id="editMemberForm" class="edit-form">
+   <input type="hidden" id="editMemberId">
+
+       <div class="edit-section-title">FOUNDER & CONTACT DETAILS</div>
+   <div class="field"><label for="editFullName">Full Name *</label><input id="editFullName" required maxlength="160"></div>
+   <div class="grid2">
+    <div class="field"><label for="editEmail">Email Address</label><input id="editEmail" type="email" maxlength="254"></div>
+    <div class="field"><label for="editMobile">Mobile Number</label><input id="editMobile" maxlength="40"></div>
+   </div>
+   <div class="grid2">
+    <div class="field"><label for="editDepartment">Member Category / Department</label><input id="editDepartment" maxlength="160"></div>
+    <div class="field"><label for="editExperience">Membership Type / Experience</label><input id="editExperience" maxlength="160"></div>
+   </div>
+   <div class="field"><label for="editWorkType">Work Preference</label><input id="editWorkType" maxlength="160"></div>
+   <div class="edit-section-title">BUSINESS DETAILS</div>
+   <div class="field"><label for="editProfileType">Profile Type</label><input id="editProfileType" maxlength="200"></div>
+   <div class="field"><label for="editCompany">Company / Business Name</label><input id="editCompany" maxlength="200"></div>
+   <div class="grid2">
+    <div class="field"><label for="editBusinessCategory">Business Category</label><input id="editBusinessCategory" maxlength="200"></div>
+    <div class="field"><label for="editLocation">Location</label><input id="editLocation" maxlength="200"></div>
+   </div>
+   <div class="field"><label for="editCompanyLogo">Company Logo URL</label><input id="editCompanyLogo" type="url" maxlength="1000"></div>
+   <div class="field">
+    <label for="editPhotoFile">Founder Profile Photo</label>
+    <img id="editPhotoPreview" class="photo-preview hidden" alt="Founder photo preview">
+    <input id="editPhotoFile" type="file" accept="image/jpeg,image/png,image/webp">
+    <div class="photo-help">JPG, PNG or WebP. Original file up to 15 MB; automatically compressed to 1 MB or less before upload.</div>
+    <label for="editPhotoUrl">Or use an existing photo URL</label>
+    <input id="editPhotoUrl" type="url" maxlength="1000" placeholder="https://...">
+   </div>
+   <div class="edit-section-title">WEBSITE & SOCIAL LINKS</div>
+   <div class="field"><label for="editWebsite">Website</label><input id="editWebsite" type="url" maxlength="1000"></div>
+   <div class="grid2">
+    <div class="field"><label for="editInstagram">Instagram URL</label><input id="editInstagram" type="url" maxlength="1000"></div>
+    <div class="field"><label for="editLinkedIn">LinkedIn URL</label><input id="editLinkedIn" type="url" maxlength="1000"></div>
+   </div>
+   <div class="grid2">
+    <div class="field"><label for="editFacebook">Facebook URL</label><input id="editFacebook" type="url" maxlength="1000"></div>
+    <div class="field"><label for="editPortfolio">Portfolio URL</label><input id="editPortfolio" type="url" maxlength="1000"></div>
+   </div>
+   <div class="grid2">
+    <div class="field"><label for="editPlayStore">Google Play Store URL</label><input id="editPlayStore" type="url" maxlength="1000"></div>
+    <div class="field"><label for="editAppleStore">Apple App Store URL</label><input id="editAppleStore" type="url" maxlength="1000"></div>
+   </div>
+   <div class="edit-section-title">MEMBERSHIP MANAGEMENT</div>
+   <div class="field"><label for="editStatus">Member Status</label>
+    <select id="editStatus"><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select>
+   </div>
+   <div class="danger-note">Email changes here update the member profile record only. They do not change the member's Supabase Auth login email.</div>
+   <div class="actions">
+    <button class="btn btn-soft" type="button" onclick="closeEditMember()">Cancel</button>
+    <button class="btn btn-green" id="saveMemberBtn" type="submit">Save Changes</button>
+   </div>
+  </form>
+ </div>
+</div>
+
 <div class="status" id="toast" style="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:90;max-width:92%;box-shadow:0 4px 18px #0002"></div>
 
 <script>
@@ -243,10 +314,11 @@ const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 const $=id=>document.getElementById(id);
 
 let memberRows=[],postRows=[],refreshing=false,toastTimer=null;
+let selectedMemberPhoto=null,memberPhotoPreviewUrl=null;
 
 function esc(value){
  return String(value??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
  }[c]));
 }
 
@@ -365,6 +437,19 @@ function memberCard(m,compact=false){
   ?`<img src="${esc(m.photo_url)}" alt="">`
   :esc((m.full_name||"?").charAt(0).toUpperCase());
  const created=m.created_at?new Date(m.created_at).toLocaleString():"";
+ const business=parseFounderSkills(m.skills||"").result;
+ const businessRows=[
+  ["Company / Business",business["company / business"]],
+  ["Business Category",business["business category"]],
+  ["Location",business.location],
+  ["Company Logo URL",business["company logo url"]],
+  ["Website",business.website],
+  ["Instagram",business.instagram],
+  ["LinkedIn",business.linkedin],
+  ["Facebook",business.facebook],
+  ["Google Play Store",business["google play store"]],
+  ["Apple App Store",business["apple app store"]]
+ ].filter(item=>item[1]);
 
  return `<article class="card">
   <div class="member-row">
@@ -381,7 +466,9 @@ function memberCard(m,compact=false){
     </div>
    </div>
   </div>
-  <p><b>Skills:</b> ${esc(m.skills||"Not provided")}<br>
+  <p><b>Profile Type:</b> ${esc(business["profile type"]||"Not provided")}<br>
+  ${businessRows.map(item=>`<b>${esc(item[0])}:</b> ${esc(item[1])}<br>`).join("")}
+  <b>Skills / Other Details:</b> ${esc(parseFounderSkills(m.skills||"").extras.join("\\n")||"Not provided")}<br>
   <b>Work preference:</b> ${esc(m.work_type||"Not provided")}<br>
   <b>Portfolio:</b> ${m.portfolio_url
    ?`<a href="${esc(m.portfolio_url)}" target="_blank" rel="noopener">Open portfolio ↗</a>`
@@ -389,6 +476,8 @@ function memberCard(m,compact=false){
   <div class="meta">Applied: ${esc(created)}</div>
   <div class="actions">
    <button class="btn btn-soft" type="button" onclick="viewApplication('${esc(m.id)}')">View details</button>
+   <button class="btn btn-green" type="button" onclick="openEditMember('${esc(m.id)}')">✎ Edit</button>
+   <button class="btn btn-red" type="button" onclick="deleteMember('${esc(m.id)}')">🗑 Delete</button>
    ${m.status!=="approved"
     ?`<button class="btn btn-green" type="button" onclick="setMemberStatus('${esc(m.id)}','approved')">✓ Approve</button>`:""}
    ${m.status!=="rejected"
@@ -440,6 +529,8 @@ function viewApplication(id){
   ?`<img src="${esc(m.photo_url)}" alt="" style="width:82px;height:82px;border-radius:18px;object-fit:cover">`
   :`<div class="photo" style="width:82px;height:82px;font-size:26px">${esc((m.full_name||"?").charAt(0).toUpperCase())}</div>`;
 
+ const business=parseFounderSkills(m.skills||"").result;
+
  $("detailTitle").textContent="Member application";
  $("detailBody").innerHTML=`
   <div style="display:flex;align-items:center;gap:13px;margin-bottom:14px">
@@ -448,7 +539,7 @@ function viewApplication(id){
     <h3 style="margin:0 0 5px">${esc(m.full_name)}</h3>
     ${statusTag(m.status)}
     <div class="meta" style="margin-top:6px">${esc(m.created_at?new Date(m.created_at).toLocaleString():"")}</div>
-   </div>
+       </div>
   </div>
   <p>
    <b>Email:</b> ${esc(m.email)}<br>
@@ -456,7 +547,18 @@ function viewApplication(id){
    <b>Department:</b> ${esc(m.department)}<br>
    <b>Experience:</b> ${esc(m.experience_level)}<br>
    <b>Work preference:</b> ${esc(m.work_type)}<br>
-   <b>Skills:</b> ${esc(m.skills)}<br>
+   <b>Profile Type:</b> ${esc(business["profile type"]||"Not provided")}<br>
+   <b>Company / Business:</b> ${esc(business["company / business"]||"Not provided")}<br>
+   <b>Business Category:</b> ${esc(business["business category"]||"Not provided")}<br>
+   <b>Location:</b> ${esc(business.location||"Not provided")}<br>
+   <b>Company Logo URL:</b> ${esc(business["company logo url"]||"Not provided")}<br>
+   <b>Website:</b> ${esc(business.website||"Not provided")}<br>
+   <b>Instagram:</b> ${esc(business.instagram||"Not provided")}<br>
+   <b>LinkedIn:</b> ${esc(business.linkedin||"Not provided")}<br>
+   <b>Facebook:</b> ${esc(business.facebook||"Not provided")}<br>
+   <b>Google Play Store:</b> ${esc(business["google play store"]||"Not provided")}<br>
+   <b>Apple App Store:</b> ${esc(business["apple app store"]||"Not provided")}<br>
+   <b>Other Skills:</b> ${esc(parseFounderSkills(m.skills||"").extras.join("\\n")||"Not provided")}<br>
    <b>Portfolio:</b> ${m.portfolio_url
     ?`<a href="${esc(m.portfolio_url)}" target="_blank" rel="noopener">Open portfolio ↗</a>`
     :"Not provided"}
@@ -475,21 +577,284 @@ function closeDetail(){
  $("detailModal").classList.remove("open");
 }
 
+
+/* FOUNDER PROFILE FIELD MAPPING
+   Business details are stored in the existing skills text column.
+   This editor updates known labelled lines and preserves other text. */
+const founderSkillFields = {
+ "profile type":"editProfileType",
+ "company / business":"editCompany",
+ "business category":"editBusinessCategory",
+ "location":"editLocation",
+ "company logo url":"editCompanyLogo",
+ "website":"editWebsite",
+ "instagram":"editInstagram",
+ "linkedin":"editLinkedIn",
+ "facebook":"editFacebook",
+ "google play store":"editPlayStore",
+ "apple app store":"editAppleStore"
+};
+
+function parseFounderSkills(raw){
+ const result={};
+ const extras=[];
+ String(raw||"").split(/\r?\n/).forEach(line=>{
+  const colon=line.indexOf(":");
+  if(colon<0){if(line.trim())extras.push(line);return;}
+  const key=line.slice(0,colon).trim().toLowerCase();
+  const value=line.slice(colon+1).trim();
+  if(Object.prototype.hasOwnProperty.call(founderSkillFields,key)){
+   result[key]=value;
+  }else if(line.trim()){
+   extras.push(line);
+  }
+ });
+ return {result,extras};
+}
+
+function buildFounderSkills(original,formValues){
+ const parsed=parseFounderSkills(original);
+ const output=[];
+ const written=new Set();
+ String(original||"").split(/\r?\n/).forEach(line=>{
+  const colon=line.indexOf(":");
+  if(colon<0){if(line.trim())output.push(line);return;}
+  const key=line.slice(0,colon).trim().toLowerCase();
+  if(Object.prototype.hasOwnProperty.call(founderSkillFields,key)){
+   const value=formValues[key]||"";
+   if(value)output.push(line.slice(0,colon+1)+" "+value);
+   written.add(key);
+  }else if(line.trim()){
+   output.push(line);
+  }
+ });
+ Object.keys(founderSkillFields).forEach(key=>{
+  if(!written.has(key)&&formValues[key]) {
+   const label=key.split(" ").map((part,index)=>index===0?part.charAt(0).toUpperCase()+part.slice(1):part).join(" ");
+   output.push(label+": "+formValues[key]);
+  }
+ });
+ return output.join("\n").trim();
+}
+
+function setEditValue(id,value){
+ const el=$(id);
+ if(!el)return;
+
+ let v=value==null?"":String(value).trim();
+
+ if(["Not provided","N/A","null","undefined"].includes(v)){
+  v="";
+ }
+
+ el.value=v;
+}
+
+function showMemberPhotoPreview(url){
+ const img=$("editPhotoPreview");
+ if(url){img.src=url;img.classList.remove("hidden");}
+ else{img.removeAttribute("src");img.classList.add("hidden");}
+}
+
+function loadAdminImage(file){
+ return new Promise((resolve,reject)=>{
+  const url=URL.createObjectURL(file);
+  const img=new Image();
+  img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};
+  img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Could not open the selected image."));};
+  img.src=url;
+ });
+}
+
+async function compressAdminPhoto(file){
+ const allowed=["image/jpeg","image/png","image/webp"];
+ if(!allowed.includes(file.type))throw new Error("Choose a JPG, PNG or WebP image.");
+ if(file.size>15*1024*1024)throw new Error("Original image must be 15 MB or smaller.");
+ const img=await loadAdminImage(file);
+ let scale=Math.min(1,1400/Math.max(img.naturalWidth,img.naturalHeight));
+ const canvas=document.createElement("canvas");
+ let blob=null;
+ for(let attempt=0;attempt<8;attempt++){
+  canvas.width=Math.max(1,Math.round(img.naturalWidth*scale));
+  canvas.height=Math.max(1,Math.round(img.naturalHeight*scale));
+  const ctx=canvas.getContext("2d");
+  if(!ctx)throw new Error("Image compression is not supported in this browser.");
+  ctx.fillStyle="#ffffff";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.drawImage(img,0,0,canvas.width,canvas.height);
+  const quality=[0.88,0.82,0.76,0.70,0.64,0.58,0.52,0.46][attempt];
+  blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",quality));
+  if(blob&&blob.size<=1024*1024) return blob;
+  scale*=0.82;
+ }
+ throw new Error("Could not compress this image below 1 MB. Please choose another photo.");
+}
+
+$("editPhotoFile").addEventListener("change",async()=>{
+ const file=$("editPhotoFile").files[0];
+ if(!file)return;
+ try{
+  notify("Compressing profile photo…","ok","editMemberStatus");
+  selectedMemberPhoto=await compressAdminPhoto(file);
+  if(memberPhotoPreviewUrl)URL.revokeObjectURL(memberPhotoPreviewUrl);
+  memberPhotoPreviewUrl=URL.createObjectURL(selectedMemberPhoto);
+  showMemberPhotoPreview(memberPhotoPreviewUrl);
+  $("editMemberStatus").textContent="Photo ready. It will upload when you save changes.";
+  $("editMemberStatus").className="status show ok";
+ }catch(error){
+  selectedMemberPhoto=null;
+  $("editPhotoFile").value="";
+  $("editMemberStatus").textContent=error.message;
+  $("editMemberStatus").className="status show err";
+ }
+});
+
+function openEditMember(id){
+ const m=memberRows.find(row=>String(row.id)===String(id));
+ if(!m)return;
+ const parsed=parseFounderSkills(m.skills||"").result;
+ setEditValue("editMemberId",m.id);
+ setEditValue("editFullName",m.full_name);
+ setEditValue("editEmail",m.email);
+ setEditValue("editMobile",m.mobile);
+ setEditValue("editDepartment",m.department);
+ setEditValue("editExperience",m.experience_level);
+ setEditValue("editWorkType",m.work_type);
+ setEditValue("editProfileType",parsed["profile type"]);
+ setEditValue("editCompany",parsed["company / business"]);
+ setEditValue("editBusinessCategory",parsed["business category"]);
+ setEditValue("editLocation",parsed.location);
+ setEditValue("editCompanyLogo",parsed["company logo url"]);
+ setEditValue("editPhotoUrl",m.photo_url);
+ showMemberPhotoPreview(m.photo_url||"");
+ setEditValue("editWebsite",parsed.website);
+ setEditValue("editInstagram",parsed.instagram);
+ setEditValue("editLinkedIn",parsed.linkedin);
+ setEditValue("editFacebook",parsed.facebook);
+ setEditValue("editPortfolio",m.portfolio_url);
+ setEditValue("editPlayStore",parsed["google play store"]);
+ setEditValue("editAppleStore",parsed["apple app store"]);
+ setEditValue("editStatus",m.status||"pending");
+ $("editMemberStatus").className="status";
+ $("editMemberStatus").textContent="";
+ $("editMemberModal").classList.add("open");
+}
+
+function closeEditMember(){
+ $("editMemberModal").classList.remove("open");
+ selectedMemberPhoto=null;
+ if(memberPhotoPreviewUrl){URL.revokeObjectURL(memberPhotoPreviewUrl);memberPhotoPreviewUrl=null;}
+}
+
+function readEditSkillValues(){
+ return {
+  "profile type":$("editProfileType").value.trim(),
+  "company / business":$("editCompany").value.trim(),
+  "business category":$("editBusinessCategory").value.trim(),
+  "location":$("editLocation").value.trim(),
+  "company logo url":$("editCompanyLogo").value.trim(),
+  "website":$("editWebsite").value.trim(),
+  "instagram":$("editInstagram").value.trim(),
+  "linkedin":$("editLinkedIn").value.trim(),
+  "facebook":$("editFacebook").value.trim(),
+  "google play store":$("editPlayStore").value.trim(),
+  "apple app store":$("editAppleStore").value.trim()
+ };
+}
+
+$("editMemberForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ const id=$("editMemberId").value;
+ const member=memberRows.find(row=>String(row.id)===String(id));
+ if(!member)return;
+ const button=$("saveMemberBtn");
+ button.disabled=true;
+ button.textContent="Saving…";
+ $("editMemberStatus").className="status";
+ try{
+  let finalPhotoUrl=$("editPhotoUrl").value.trim()||null;
+  if(selectedMemberPhoto){
+   $("editMemberStatus").textContent="Uploading profile photo…";
+   $("editMemberStatus").className="status show ok";
+   const uniqueId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():Date.now()+"-"+Math.random().toString(36).slice(2);
+   const path="pending/admin-"+uniqueId+".jpg";
+   const {error:uploadError}=await db.storage.from("bgc-team-photos").upload(path,selectedMemberPhoto,{
+    contentType:"image/jpeg",cacheControl:"3600",upsert:false
+   });
+   if(uploadError)throw uploadError;
+   const {data:publicData}=db.storage.from("bgc-team-photos").getPublicUrl(path);
+   if(!publicData||!publicData.publicUrl)throw new Error("Photo uploaded, but its public URL could not be retrieved.");
+   finalPhotoUrl=publicData.publicUrl;
+  }
+
+  const update={
+   full_name:$("editFullName").value.trim(),
+   email:$("editEmail").value.trim(),
+   mobile:$("editMobile").value.trim(),
+   department:$("editDepartment").value.trim(),
+   experience_level:$("editExperience").value.trim(),
+   work_type:$("editWorkType").value.trim(),
+   skills:buildFounderSkills(member.skills||"",readEditSkillValues()),
+   photo_url:finalPhotoUrl,
+   portfolio_url:$("editPortfolio").value.trim()||null,
+   status:$("editStatus").value
+  };
+  if(!update.full_name)throw new Error("Full name is required.");
+  if(!["pending","approved","rejected"].includes(update.status))throw new Error("Select a valid member status.");
+  const {data,error}=await db.from("bgc_team_members")
+   .update(update).eq("id",id).select("*");
+  if(error)throw error;
+  if(!data||!data.length)throw new Error("No member updated. Check admin UPDATE permission / RLS policy.");
+  notify("Member profile updated successfully.");
+  selectedMemberPhoto=null;
+  if(memberPhotoPreviewUrl){URL.revokeObjectURL(memberPhotoPreviewUrl);memberPhotoPreviewUrl=null;}
+  closeEditMember();
+  await loadMembers();
+ }catch(error){
+  console.error(error);
+  $("editMemberStatus").textContent=error.message||"Could not update member.";
+  $("editMemberStatus").className="status show err";
+ }finally{
+  button.disabled=false;
+  button.textContent="Save Changes";
+ }
+});
+  async function deleteMember(id){
+ const member=memberRows.find(row=>String(row.id)===String(id));
+ if(!member)return;
+ const typed=prompt(
+  `Permanently delete ${member.full_name||"this member"}?\n\nThis removes the member profile row from bgc_team_members only. It does not delete the Supabase Auth account.\n\nType DELETE to confirm.`
+ );
+ if(typed!=="DELETE")return;
+ try{
+  const {data,error}=await db.from("bgc_team_members")
+   .delete().eq("id",id).select("id");
+  if(error)throw error;
+  if(!data||!data.length)throw new Error("No member deleted. Check admin DELETE permission / RLS policy.");
+  memberRows=memberRows.filter(row=>String(row.id)!==String(id));
+  notify("Member profile deleted.");
+  renderMembers();
+  renderAllMembers();
+  renderOverviewMembers();
+  $("statPendingMembers").textContent=memberRows.filter(m=>m.status==="pending").length;
+  $("statApprovedMembers").textContent=memberRows.filter(m=>m.status==="approved").length;
+  $("statRejectedMembers").textContent=memberRows.filter(m=>m.status==="rejected").length;
+ }catch(error){
+  console.error(error);
+  notify(error.message||"Could not delete member.","err");
+ }
+}
+
 async function setMemberStatus(id,status){
  if(!["approved","rejected"].includes(status))return;
-
  const applicant=memberRows.find(m=>String(m.id)===String(id));
  if(!applicant)return;
-
  if(!confirm(`${status==="approved"?"Approve":"Reject"} ${applicant.full_name||"this application"}?`))return;
-
  try{
   const {data,error}=await db.from("bgc_team_members")
    .update({status}).eq("id",id).select("id,status");
-
   if(error)throw error;
   if(!data||!data.length)throw new Error("No application updated. Check admin permissions.");
-
   notify(status==="approved"?"Application approved.":"Application rejected.");
   await loadMembers();
  }catch(error){
@@ -505,26 +870,20 @@ function postCard(p){
    <span class="tag">${esc(p.category)}</span>
    ${statusTag(p.status)}
   </div>
-
   <h2>${esc(p.title)}</h2>
   <p>${esc(p.description)}</p>
-
   <div class="meta">📍 ${esc(p.location||"Not specified")} · Budget: ${esc(p.budget||"Not specified")}</div>
   <div class="meta" style="margin-top:6px">By ${esc(p.poster_name||"Unknown")} · ${esc(p.whatsapp_number||"No contact")}</div>
   <div class="meta" style="margin-top:6px">Submitted: ${esc(p.created_at?new Date(p.created_at).toLocaleString():"")}</div>
-
   <div class="actions">
    <button class="btn btn-soft" type="button" onclick="viewPost('${esc(p.id)}')">View details</button>
-
    ${p.status==="pending"&&p.source_type==="public"
     ?`<button class="btn btn-green" type="button" onclick="setPostStatus('${esc(p.id)}','published')">✓ Approve & publish</button>
       <button class="btn btn-red" type="button" onclick="setPostStatus('${esc(p.id)}','rejected')">✕ Reject</button>`
     :""}
-
    ${p.status!=="published"&&p.source_type==="public"&&p.status!=="pending"
     ?`<button class="btn btn-green" type="button" onclick="setPostStatus('${esc(p.id)}','published')">Publish</button>`
     :""}
-
    <button class="btn btn-red" type="button" onclick="deletePost('${esc(p.id)}')">🗑 Delete post</button>
   </div>
  </article>`;
@@ -532,12 +891,10 @@ function postCard(p){
 
 function renderPosts(){
  const q=$("postSearch").value.trim().toLowerCase();
-
  const rows=postRows.filter(p=>
   [p.title,p.category,p.location,p.description,p.poster_name]
    .join(" ").toLowerCase().includes(q)
  );
-
  $("postsList").innerHTML=rows.length
   ?rows.map(postCard).join("")
   :'<div class="empty">No job posts found.</div>';
@@ -545,7 +902,6 @@ function renderPosts(){
  const pending=postRows.filter(p=>
   p.status==="pending"&&p.source_type==="public"
  );
-
  $("statPendingPosts").textContent=pending.length;
  $("overviewPosts").innerHTML=pending.slice(0,3).map(postCard).join("")
   ||'<div class="empty">No public posts waiting for review.</div>';
@@ -554,7 +910,6 @@ function renderPosts(){
 function viewPost(id){
  const p=postRows.find(x=>String(x.id)===String(id));
  if(!p)return;
-
  $("detailTitle").textContent="Job post details";
  $("detailBody").innerHTML=`
   <span class="tag">${esc(p.category)}</span>
@@ -574,30 +929,24 @@ function viewPost(id){
     ?`<button class="btn btn-soft" onclick="setPostStatus('${esc(p.id)}','rejected');closeDetail()">Reject</button>`:""}
    <button class="btn btn-red" onclick="closeDetail();deletePost('${esc(p.id)}')">🗑 Delete post</button>
   </div>`;
-
  $("detailModal").classList.add("open");
 }
-  async function setPostStatus(id,status){
- if(!["published","rejected"].includes(status))return;
 
+async function setPostStatus(id,status){
+ if(!["published","rejected"].includes(status))return;
  const post=postRows.find(p=>String(p.id)===String(id));
  if(!post)return;
-
  if(post.source_type!=="public"){
   notify("Only public submissions can be approved or rejected here.","err");
   return;
  }
-
  if(!confirm(`${status==="published"?"Approve and publish":"Reject"} "${post.title}"?`))return;
-
  try{
   const {data,error}=await db.from("bgc_job_posts")
    .update({status,updated_at:new Date().toISOString()})
    .eq("id",id).eq("source_type","public").select("id,status");
-
   if(error)throw error;
   if(!data||!data.length)throw new Error("No post updated. Check admin permissions and RLS policies.");
-
   notify(status==="published"?"Post approved and published.":"Public post rejected.");
   await loadPosts();
  }catch(error){
@@ -610,18 +959,14 @@ function viewPost(id){
 async function deletePost(id){
  const post=postRows.find(p=>String(p.id)===String(id));
  if(!post)return;
-
  if(!confirm(`Permanently delete "${post.title||"this post"}"? This cannot be undone.`))return;
-
  try{
   const {data,error}=await db.from("bgc_job_posts")
    .delete().eq("id",id).select("id");
-
   if(error)throw error;
   if(!data||!data.length){
    throw new Error("No post was deleted. Check the admin DELETE permission/RLS policy.");
   }
-
   postRows=postRows.filter(p=>String(p.id)!==String(id));
   notify("Job post deleted.");
   renderPosts();
@@ -633,20 +978,15 @@ async function deletePost(id){
 
 async function loadMembers(){
  $("membersList").innerHTML='<div class="empty">Loading member applications…</div>';
-
  try{
   const {data,error}=await db.from("bgc_team_members")
    .select("*").order("created_at",{ascending:false});
-
   if(error)throw error;
-
   memberRows=data||[];
-
   const pending=memberRows.filter(m=>m.status==="pending").length;
   $("statPendingMembers").textContent=pending;
   $("statApprovedMembers").textContent=memberRows.filter(m=>m.status==="approved").length;
   $("statRejectedMembers").textContent=memberRows.filter(m=>m.status==="rejected").length;
-
   renderMembers();
   renderAllMembers();
   renderOverviewMembers();
@@ -659,14 +999,11 @@ async function loadMembers(){
 
 async function loadPosts(){
  $("postsList").innerHTML='<div class="empty">Loading job posts…</div>';
-
  try{
   const {data,error}=await db.from("bgc_job_posts")
    .select("id,title,category,location,description,budget,deadline,poster_name,whatsapp_number,created_at,status,source_type")
    .order("created_at",{ascending:false});
-
   if(error)throw error;
-
   postRows=data||[];
   renderPosts();
  }catch(error){
@@ -679,15 +1016,12 @@ async function loadPosts(){
 
 async function refreshAll(){
  if(refreshing)return;
-
  refreshing=true;
  $("refreshMain").disabled=true;
  $("refreshBtn").disabled=true;
-
  try{
   const allowed=await verifyAdmin();
   if(!allowed)return;
-
   await Promise.all([loadMembers(),loadPosts()]);
   notify("Admin data refreshed.");
  }catch(error){
@@ -704,12 +1038,10 @@ async function refreshAll(){
  try{
   const {data:{session},error}=await db.auth.getSession();
   if(error)throw error;
-
   if(!session){
    showLogin();
    return;
   }
-
   const allowed=await verifyAdmin();
   if(allowed)await refreshAll();
  }catch(error){
@@ -720,7 +1052,7 @@ async function refreshAll(){
 })();
 
 document.addEventListener("keydown",event=>{
- if(event.key==="Escape")closeDetail();
+ if(event.key==="Escape"){closeDetail();closeEditMember();}
 });
 </script>
 </body>

@@ -350,17 +350,16 @@ select{color-scheme:dark}
             <div class="hint">Your contact number will be stored for member communication.</div>
           </div>
 
-          < class="field full">
-           <label for="email">
-  Email Address <span class="required">*</span>
-</label>
+                <div class="field full">
+            <label for="email">
+              Email Address <span class="required">*</span>
+            </label>
 
-<input id="email" type="email" maxlength="254"
-  autocomplete="email"
-  required
-  placeholder="you@example.com">
-
-        </div>
+            <input id="email" type="email" maxlength="254"
+              autocomplete="email"
+              required
+              placeholder="you@example.com">
+                </div>
 
         <div class="nav-buttons">
           <span></span>
@@ -996,7 +995,7 @@ $("founderForm").addEventListener("submit", async event => {
       "Company / Business: " + company,
       "Business Category: " + (category || "Not provided"),
       "Location: " + (location || "Not provided"),
-      "Company Logo URL: " + (logoURL || "Not provided"),
+      "Company Logo URL: " + (logoURL || ""),
       "Website: " + (website || "Not provided"),
       "Instagram: " + (instagram || "Not provided"),
       "LinkedIn: " + (linkedin || "Not provided"),
