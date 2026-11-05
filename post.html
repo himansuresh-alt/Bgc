@@ -8,24 +8,23 @@
 <title>Create a Post | BGC CLUB</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg:#ffffff;
-  --surface:#f6f7f8;
-  --ink:#17191d;
-  --muted:#686d75;
-  --line:#e4e6e9;
-  --accent:#8d1831;
-  --accent-light:#fff2f5;
-  --green:#087447;
-  --green-dark:#064b35;
-  --cream:#faf8f0;
-  --white:#ffffff;
+  --bg:#111113;
+  --surface:#222226;
+  --surface-soft:#29292e;
+  --ink:#f7f4f5;
+  --muted:#aaa6ad;
+  --line:#45434b;
+  --accent:#a51f40;
+  --accent-light:#3a1b25;
+  --pink:#ef9caf;
+  --cream:#111113;
+  --green:#8ce0ad;
 }
 
 * {
@@ -36,15 +35,20 @@
 
 html {
   scroll-behavior:smooth;
+  background:var(--bg);
 }
 
 body {
+  min-height:100vh;
+  overflow-x:hidden;
+  padding-bottom:125px;
   font-family:"DM Sans",Arial,sans-serif;
-  background:var(--cream);
   color:var(--ink);
   line-height:1.5;
-  padding-bottom:125px;
-  overflow-x:hidden;
+  background:
+    radial-gradient(ellipse at 90% 5%,rgba(125,24,51,.22),transparent 36%),
+    radial-gradient(ellipse at 0% 70%,rgba(90,30,48,.12),transparent 40%),
+    #111113;
 }
 
 button,input,select,textarea {
@@ -60,830 +64,17 @@ a {
   text-decoration:none;
 }
 
-/* =====================================
-   HEADER - SAME WORDMARK STYLE AS INDEX
-===================================== */
-
-.topbar {
-  position:relative;
-  z-index:10;
-  background:#ffffff;
-  border-bottom:1px solid var(--line);
-}
-
-.topbar-inner {
-  width:min(calc(100% - 40px),1240px);
-  min-height:76px;
-  margin:auto;
-  display:flex;
-  align-items:center;
-}
-
-.brand {
-  border:0;
-  background:none;
-  color:#111111;
-  font-family:"Space Grotesk",sans-serif;
-  font-size:22px;
-  font-weight:700;
-  letter-spacing:-1px;
-  line-height:1;
-}
-
-.brand span {
-  color:var(--accent);
-}
-
-/* =====================================
-   HERO
-===================================== */
-
-.hero {
-  position:relative;
-  background:linear-gradient(135deg,#073d2d,#08734f);
-  color:#fff;
-  padding:34px 18px 65px;
-  overflow:hidden;
-}
-
-.hero-inner {
-  max-width:850px;
-  margin:auto;
-}
-
-.eyebrow {
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:1.5px;
-  color:#f2dfae;
-  font-weight:800;
-}
-
-.eyebrow:before {
-  content:"";
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#f2dfae;
-}
-
-.hero h1 {
-  font-family:"Space Grotesk",sans-serif;
-  font-size:clamp(29px,5vw,43px);
-  line-height:1.12;
-  letter-spacing:-1.5px;
-  margin:13px 0 10px;
-  max-width:580px;
-}
-
-.hero p {
-  font-size:14px;
-  line-height:1.7;
-  color:#e0eee5;
-  max-width:480px;
-}
-
-/* =====================================
-   MAIN FORM CARD
-===================================== */
-
-main {
-  width:min(calc(100% - 24px),680px);
-  margin:-35px auto 0;
-  position:relative;
-  z-index:2;
-}
-
-.form-card {
-  background:#fff;
-  border:1px solid #e8e8e5;
-  border-radius:22px;
-  overflow:hidden;
-  box-shadow:0 15px 45px rgba(0,0,0,.08);
-}
-
-.card-body {
-  padding:23px 21px 25px;
-}
-
-.form-heading {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:20px;
-}
-
-.form-heading h2 {
-  font-size:19px;
-  font-weight:800;
-}
-
-.simple-pill {
-  background:var(--accent-light);
-  color:var(--accent);
-  padding:7px 11px;
-  border-radius:30px;
-  font-size:10px;
-  font-weight:800;
-  white-space:nowrap;
-}
-
-/* =====================================
-   POST TYPE OPTIONS
-===================================== */
-
-.post-types {
-  display:grid;
-  grid-template-columns:1.15fr 1fr 1fr;
-  gap:9px;
-  margin-bottom:22px;
-}
-
-.type-option {
-  position:relative;
-  min-width:0;
-  min-height:96px;
-  border:1px solid #e0e3e5;
-  border-radius:15px;
-  background:#fff;
-  color:var(--ink);
-  padding:12px 6px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  text-align:center;
-  transition:.2s ease;
-  -webkit-tap-highlight-color:transparent;
-}
-
-.type-option:hover {
-  border-color:#c8a0aa;
-}
-
-.type-icon {
-  width:34px;
-  height:34px;
-  display:grid;
-  place-items:center;
-  color:var(--accent);
-}
-
-.type-icon svg {
-  width:29px;
-  height:29px;
-  display:block;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:1.8;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.type-option strong {
-  font-size:12px;
-  line-height:1.25;
-}
-
-.type-option small {
-  font-size:10px;
-  color:var(--muted);
-}
-
-.type-option.active {
-  background:linear-gradient(145deg,#8d1831,#651126);
-  color:#fff;
-  border-color:var(--accent);
-  box-shadow:0 6px 15px rgba(141,24,49,.18);
-}
-
-.type-option.active .type-icon,
-.type-option.active small {
-  color:#fff;
-}
-
-.type-check {
-  display:none;
-  position:absolute;
-  right:8px;
-  top:8px;
-  width:21px;
-  height:21px;
-  border-radius:50%;
-  background:#fff;
-  color:var(--accent);
-  align-items:center;
-  justify-content:center;
-  font-size:12px;
-  font-weight:900;
-}
-
-.type-option.active .type-check {
-  display:flex;
-}
-
-/* =====================================
-   FORM FIELDS
-===================================== */
-
-.field {
-  margin:17px 0;
-}
-
-.field label {
-  display:block;
-  font-size:13px;
-  font-weight:800;
-  margin-bottom:8px;
-}
-
-.req {
-  color:#d34b35;
-}
-
-.input-wrap {
-  position:relative;
-}
-
-.input-icon {
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:17px;
-  color:var(--accent);
-  pointer-events:none;
-}
-
-input,select,textarea {
-  width:100%;
-  font-size:14px;
-  color:var(--ink);
-  background:#fff;
-  border:1px solid #dfe2e4;
-  border-radius:12px;
-  padding:13px 14px;
-  min-height:47px;
-  outline:none;
-  transition:border-color .2s,box-shadow .2s;
-}
-
-.input-wrap input,
-.input-wrap select {
-  padding-left:43px;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(141,24,49,.09);
-}
-
-textarea {
-  min-height:135px;
-  resize:vertical;
-  line-height:1.6;
-}
-
-input::placeholder,
-textarea::placeholder {
-  color:#9aa0a7;
-}
-
-.char-count {
-  font-size:10px;
-  color:var(--muted);
-  text-align:right;
-  margin-top:5px;
-}
-
-/* =====================================
-   CONTACT DETAILS
-===================================== */
-
-.contact-box {
-  background:#f7f8f6;
-  border:1px solid #e7e9e5;
-  border-radius:17px;
-  padding:15px 14px 5px;
-  margin-top:20px;
-}
-
-.contact-title {
-  font-size:14px;
-  font-weight:850;
-  margin-bottom:12px;
-}
-
-.contact-title span {
-  color:#69776d;
-  font-size:10px;
-  font-weight:600;
-}
-
-.contact-field {
-  margin:12px 0;
-}
-
-.contact-field label {
-  font-size:12px;
-  margin-bottom:6px;
-}
-
-.contact-field input {
-  min-height:43px;
-  padding:11px 12px;
-}
-
-/* =====================================
-   APPROVAL NOTE
-===================================== */
-
-.approval-note {
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  background:#f7f7f3;
-  border:1px solid #e9e9e1;
-  border-radius:12px;
-  padding:12px;
-  margin-top:17px;
-  color:#68736b;
-  font-size:11px;
-  line-height:1.6;
-}
-
-.info-icon {
-  flex:0 0 21px;
-  width:21px;
-  height:21px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:#e8e9e1;
-  color:#526254;
-  font-weight:900;
-}
-
-/* =====================================
-   SUBMIT BUTTON
-===================================== */
-
-.submit-btn {
-  width:100%;
-  border:0;
-  border-radius:13px;
-  padding:15px 18px;
-  background:linear-gradient(110deg,#8d1831,#651126);
-  color:#fff;
-  font-size:15px;
-  font-weight:850;
-  margin-top:17px;
-  min-height:53px;
-  box-shadow:0 6px 15px rgba(141,24,49,.17);
-  transition:.2s ease;
-}
-
-.submit-btn:hover {
-  transform:translateY(-1px);
-  box-shadow:0 9px 20px rgba(141,24,49,.22);
-}
-
-.submit-btn:disabled {
-  opacity:.6;
-  cursor:wait;
-}
-
-  /* =====================================
-   FORM MESSAGES
-===================================== */
-
-.message {
-  display:none;
-  margin-top:13px;
-  padding:12px;
-  border-radius:11px;
-  font-size:12px;
-  line-height:1.55;
-  overflow-wrap:anywhere;
-}
-
-.message.success,
-.message.error {
-  display:block;
-}
-
-.message.success {
-  background:#eaf6ec;
-  color:#205c37;
-  border:1px solid #c8e6ce;
-}
-
-.message.error {
-  background:#fff0ee;
-  color:#91392f;
-  border:1px solid #f1cfca;
-}
-
-/* =====================================
-   SUCCESS SCREEN
-===================================== */
-
-.success-card {
-  display:none;
-  text-align:center;
-  padding:35px 20px 30px;
-}
-
-.success-card.show {
-  display:block;
-}
-
-.form-content.hide {
-  display:none;
-}
-
-.success-icon {
-  width:78px;
-  height:78px;
-  border-radius:50%;
-  background:#e8f5e9;
-  color:#087747;
-  display:grid;
-  place-items:center;
-  font-size:43px;
-  font-weight:800;
-  margin:5px auto 18px;
-}
-
-.success-card h2 {
-  font-family:"Space Grotesk",sans-serif;
-  font-size:27px;
-  line-height:1.2;
-  margin-bottom:10px;
-}
-
-.success-card p {
-  font-size:13px;
-  color:var(--muted);
-  line-height:1.7;
-  max-width:420px;
-  margin:0 auto 21px;
-}
-
-.next-box {
-  text-align:left;
-  background:#f7f8f6;
-  border:1px solid #e4e8e0;
-  border-radius:16px;
-  overflow:hidden;
-  margin:0 auto 20px;
-  max-width:440px;
-}
-
-.next-title {
-  padding:13px 15px;
-  font-size:15px;
-  font-weight:850;
-  color:var(--green-dark);
-  border-bottom:1px solid #e4e8e0;
-}
-
-.next-line {
-  display:flex;
-  gap:12px;
-  padding:11px 15px;
-  font-size:12px;
-  line-height:1.5;
-}
-
-.next-line span:first-child {
-  font-size:19px;
-  color:var(--green);
-  width:25px;
-}
-
-.success-actions {
-  display:grid;
-  gap:10px;
-  max-width:440px;
-  margin:auto;
-}
-
-.view-btn,
-.again-btn {
-  display:block;
-  text-align:center;
-  padding:14px;
-  border-radius:12px;
-  font-weight:800;
-  font-size:13px;
-}
-
-.view-btn {
-  background:var(--accent);
-  color:white;
-}
-
-.again-btn {
-  border:1.5px solid var(--accent);
-  color:var(--accent);
-  background:white;
-}
-
-/* =====================================
-   FOOTER
-===================================== */
-
-.footer {
-  text-align:center;
-  padding:25px 12px 20px;
-  color:#858991;
-  font-size:10px;
-}
-
-/* =====================================
-   INDEX REFERENCE PREMIUM FIXED NAV
-===================================== */
-
-.mobile-bottom-nav {
-  position:fixed;
-  left:50%;
-  bottom:calc(12px + env(safe-area-inset-bottom));
-  transform:translateX(-50%);
-  z-index:9999;
-  width:min(94%,520px);
-  min-height:82px;
-  display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
-  align-items:center;
-  gap:4px;
-  padding:9px 8px;
-  border:1px solid rgba(255,255,255,.85);
-  border-radius:25px;
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.97),
-      rgba(239,242,247,.91)
-    );
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.13),
-    0 4px 9px rgba(0,0,0,.07),
-    inset 0 1px 1px rgba(255,255,255,.95),
-    inset 0 -2px 4px rgba(0,0,0,.045);
-}
-
-.mobile-nav-item {
-  position:relative;
-  min-width:0;
-  height:64px;
-  display:flex;
-  flex-direction:column;  align-items:center;
-  justify-content:center;
-  gap:5px;
-  border-radius:18px;
-  color:#656a73;
-  font-size:11px;
-  font-weight:700;
-  text-decoration:none;
-  transition:
-    transform .22s ease,
-    color .22s ease,
-    background .22s ease,
-    box-shadow .22s ease;
-  -webkit-tap-highlight-color:transparent;
-}
-
-.mobile-nav-icon {
-  width:29px;
-  height:29px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:0;
-}
-
-.mobile-nav-icon svg {
-  width:27px;
-  height:27px;
-  display:block;
-  fill:none;
-  stroke:currentColor;
-  stroke-width:2.2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-
-.mobile-nav-item.active {
-  color:#8d1831;
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff,
-      #f0e9ec
-    );
-  box-shadow:
-    0 5px 10px rgba(0,0,0,.10),
-    inset 0 1px 2px #ffffff,
-    inset 0 -2px 3px rgba(141,24,49,.08);
-  transform:translateY(-2px);
-}
-
-.mobile-nav-item:active {
-  transform:scale(.94);
-}
-
-/* =====================================
-   RESPONSIVE
-===================================== */
-
-@media(min-width:701px) {
-
-  .mobile-bottom-nav {
-    left:50%;
-    bottom:22px;
-    width:min(560px,80%);
-  }
-
-}
-
-@media(max-width:700px) {
-
-  body {
-    padding-bottom:120px;
-  }
-
-  .mobile-bottom-nav {
-    left:50%;
-    right:auto;
-    bottom:calc(10px + env(safe-area-inset-bottom));
-    width:calc(100% - 24px);
-    min-height:78px;
-    height:auto;
-    grid-template-columns:repeat(5,minmax(0,1fr));
-    padding:7px 5px;
-    border-radius:23px;
-  }
-
-  .mobile-nav-item {
-    height:62px;
-    font-size:10px;
-    gap:4px;
-  }
-
-  .mobile-nav-icon {
-    width:27px;
-    height:27px;
-  }
-
-  .mobile-nav-icon svg {
-    width:25px;
-    height:25px;
-  }
-
-}
-
-@media(max-width:480px) {
-
-  .topbar-inner {
-    min-height:65px;
-  }
-
-  .brand {
-    font-size:20px;
-  }
-
-  .hero {
-    padding:27px 16px 57px;
-  }
-
-  .hero h1 {
-    font-size:30px;
-  }
-
-  .card-body {
-    padding:17px 13px 20px;
-  }
-
-  .form-heading h2 {
-    font-size:17px;
-  }
-
-  .simple-pill {
-    font-size:9px;
-    padding:6px 8px;
-  }
-
-  .post-types {
-    gap:6px;
-  }
-
-  .type-option {
-    min-height:91px;
-    padding:9px 4px;
-  }
-
-  .type-option strong {
-    font-size:11px;
-  }
-
-  .type-option small {
-    font-size:9px;
-  }
-
-}
-
-  /* =====================================
-   BGC CLUB PREMIUM HEADER
-   DESIGN OVERRIDE
-===================================== */
-
-.topbar {
-  position:relative;
-  z-index:100;
-  width:100%;
-  background:#ffffff;
-  border-bottom:1px solid #ececef;
-}
-
-.topbar-inner {
-  width:min(calc(100% - 40px),1240px);
-  min-height:76px;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
-.topbar .brand {
-  display:inline-flex;
-  align-items:center;
-  font-family:"Space Grotesk",sans-serif;
-  font-size:25px;
-  font-weight:700;
-  letter-spacing:-1.3px;
-  line-height:1;
-  color:#111111;
-  text-decoration:none;
-}
-
-.topbar .brand span {
-  color:#8d1831;
-}
-
-.header-label {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:#73777e;
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:1.5px;
-}
-
-.header-status-dot {
-  width:7px;
-  height:7px;
-  flex:0 0 7px;
-  background:#16834b;
-  border-radius:50%;
-  box-shadow:0 0 0 4px rgba(22,131,75,.09);
-}
-
-
-/* =====================================
-   BGC CLUB PREMIUM HERO
-===================================== */
+/* HERO */
 
 .hero {
   position:relative;
   isolation:isolate;
   overflow:hidden;
+  padding:38px 20px 78px;
+  color:#fff;
   background:
-    radial-gradient(
-      ellipse at 85% 15%,
-      rgba(39,142,101,.38),
-      transparent 42%
-    ),
-    linear-gradient(
-      125deg,
-      #062e25 0%,
-      #07513b 48%,
-      #087653 100%
-    );
-  color:#ffffff;
-  padding:48px 20px 108px;
-  text-align:left;
+    radial-gradient(ellipse at 88% 10%,rgba(145,31,62,.34),transparent 43%),
+    linear-gradient(125deg,#111114 0%,#1b1116 54%,#35121f 100%);
 }
 
 .hero::before {
@@ -891,24 +82,11 @@ textarea::placeholder {
   position:absolute;
   inset:0;
   z-index:-1;
-  opacity:.18;
+  opacity:.12;
   background-image:
-    linear-gradient(
-      rgba(255,255,255,.055) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.055) 1px,
-      transparent 1px
-    );
+    linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);
   background-size:42px 42px;
-  mask-image:linear-gradient(
-    90deg,
-    transparent,
-    black 35%,
-    black
-  );
 }
 
 .hero::after {
@@ -919,18 +97,11 @@ textarea::placeholder {
   right:-230px;
   bottom:-350px;
   border-radius:50%;
-  border:1px solid rgba(255,255,255,.09);
+  border:1px solid rgba(231,137,158,.15);
   box-shadow:
-    0 0 0 35px rgba(255,255,255,.025),
-    0 0 0 75px rgba(255,255,255,.02);
+    0 0 0 35px rgba(231,137,158,.035),
+    0 0 0 75px rgba(231,137,158,.025);
   pointer-events:none;
-}
-
-.hero-inner {
-  position:relative;
-  z-index:2;
-  width:min(100%,850px);
-  margin:0 auto;
 }
 
 .hero-decoration {
@@ -969,7 +140,7 @@ textarea::placeholder {
   height:auto;
   top:0;
   right:-4%;
-  opacity:.9;
+  opacity:.5;
 }
 
 .hero-watermark {
@@ -982,13 +153,15 @@ textarea::placeholder {
   line-height:1;
   font-weight:700;
   letter-spacing:-15px;
-  color:rgba(255,255,255,.035);
+  color:rgba(239,151,173,.045);
 }
 
-
-/* =====================================
-   HERO TOPLINE
-===================================== */
+.hero-inner {
+  position:relative;
+  z-index:2;
+  width:min(100%,850px);
+  margin:0 auto;
+}
 
 .hero-topline {
   display:flex;
@@ -996,7 +169,7 @@ textarea::placeholder {
   flex-wrap:wrap;
   gap:9px;
   margin-bottom:27px;
-  color:#d9e8d9;
+  color:#e8a1b1;
   font-size:10px;
   font-weight:800;
   letter-spacing:1.8px;
@@ -1006,194 +179,671 @@ textarea::placeholder {
   width:8px;
   height:8px;
   border-radius:50%;
-  background:#e7c98a;
-  box-shadow:0 0 0 5px rgba(231,201,138,.10);
+  background:#e98fa5;
+  box-shadow:0 0 0 5px rgba(233,143,165,.12);
 }
 
 .hero-separator {
-  color:rgba(255,255,255,.35);
+  color:#87505e;
 }
 
-
-/* =====================================
-   HERO CONTENT
-===================================== */
-
 .hero-content {
-  max-width:680px;
+  max-width:760px;
+  display:grid;
+  grid-template-columns:76px minmax(0,1fr);
+  column-gap:18px;
+  align-items:center;
 }
 
 .hero-icon {
-  width:49px;
-  height:49px;
+  grid-column:1;
+  grid-row:1 / span 3;
+  width:66px;
+  height:66px;
   display:grid;
   place-items:center;
-  margin-bottom:17px;
-  border:1px solid rgba(255,255,255,.20);
-  border-radius:15px;
-  background:rgba(255,255,255,.09);
-  color:#f0dca9;
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.10);
+  margin:0;
+  border:1px solid rgba(225,112,139,.42);
+  border-radius:19px;
+  background:linear-gradient(145deg,rgba(165,31,64,.45),rgba(76,23,39,.65));
+  color:#f1a2b4;
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.10),0 10px 25px rgba(0,0,0,.2);
 }
 
 .hero-icon svg {
-  width:27px;
-  height:27px;
-  display:block;
+  width:34px;
+  height:34px;
 }
 
 .hero-content h1 {
-  max-width:650px;
-  margin:0;
-  color:#ffffff;
+  grid-column:2;
+  max-width:660px;
+  color:#fff;
   font-family:"Space Grotesk",sans-serif;
-  font-size:clamp(35px,6vw,61px);
+  font-size:clamp(34px,6vw,57px);
+  letter-spacing:-2px;
   line-height:1.08;
-  letter-spacing:-2.8px;
   font-weight:700;
 }
 
 .hero-content h1 span {
-  color:#e6c98c;
+  color:#e995a9;
 }
 
 .hero-content p {
+  grid-column:2;
   max-width:560px;
-  margin:18px 0 0;
-  color:rgba(255,255,255,.78);
-  font-size:15px;
-  line-height:1.85;
-  font-weight:400;
+  margin-top:12px;
+  color:#c9c0c5;
+  font-size:14px;
+  line-height:1.75;
 }
 
-
-/* =====================================
-   HERO BOTTOM BRAND LINE
-===================================== */
-
 .hero-bottom-line {
+  grid-column:2;
   display:flex;
   align-items:center;
   flex-wrap:wrap;
   gap:9px;
-  margin-top:25px;
-  color:rgba(255,255,255,.80);
+  margin-top:20px;
+  color:#d8c3ca;
   font-size:9px;
   font-weight:800;
   letter-spacing:1.5px;
 }
 
-.hero-mini-icon {
-  color:#e6c98c;
-  font-size:15px;
-}
-
+.hero-mini-icon,
 .hero-dot {
-  color:#e6c98c;
-  font-size:15px;
+  color:#ed9aaf;
 }
 
-  /* =====================================
-   FINAL RESPONSIVE DESIGN
-===================================== */
+/* MAIN FORM */
 
-/* TABLET */
+main {
+  position:relative;
+  z-index:2;
+  width:min(calc(100% - 24px),760px);
+  margin:-42px auto 0;
+}
 
-@media (max-width:900px) {
+.form-card {
+  overflow:hidden;
+  border:1px solid #45434b;
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(34,34,39,.98),rgba(24,24,28,.98));
+  box-shadow:0 20px 55px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+.card-body {
+  padding:25px 24px 28px;
+}
+
+.form-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.form-heading h2 {
+  color:#f7f4f5;
+  font-size:21px;
+  font-weight:800;
+}
+
+.simple-pill {
+  padding:7px 11px;
+  border:1px solid rgba(221,103,132,.34);
+  border-radius:30px;
+  background:rgba(165,31,64,.18);
+  color:#efa2b3;
+  font-size:10px;
+  font-weight:800;
+  white-space:nowrap;
+}
+
+/* POST TYPE */
+
+.post-types {
+  display:grid;
+  grid-template-columns:1.15fr 1fr 1fr;
+  gap:9px;
+  margin-bottom:22px;
+}
+
+.type-option {
+  position:relative;
+  display:flex;
+  min-width:0;
+  min-height:115px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:12px 6px;
+  border:1px solid #4a4850;
+  border-radius:19px;
+  background:#1c1c20;
+  color:#f5f1f3;
+  text-align:center;
+  transition:.2s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.type-option:hover {
+  border-color:#c35c78;
+}
+
+.type-icon {
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  color:#ee91a8;
+}
+
+.type-icon svg {
+  width:29px;
+  height:29px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.type-option strong {
+  font-size:12px;
+  line-height:1.25;
+}
+
+.type-option small {
+  color:#aaa5ad;
+  font-size:10px;
+}
+
+.type-option.active {
+  border-color:#c24c6b;
+  background:linear-gradient(145deg,#a51f40,#68152d);
+  box-shadow:0 10px 25px rgba(126,19,47,.28);
+}
+
+.type-option.active .type-icon,
+.type-option.active small {
+  color:#fff;
+}
+
+.type-check {
+  position:absolute;
+  top:8px;
+  right:8px;
+  display:none;
+  width:21px;
+  height:21px;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#fff;
+  color:#8d1831;
+  font-size:12px;
+  font-weight:900;
+}
+
+.type-option.active .type-check {
+  display:flex;
+}
+
+/* FIELDS */
+
+.field {
+  margin:17px 0;
+}
+
+.field label {
+  display:block;
+  margin-bottom:8px;
+  color:#f1edf0;
+  font-size:13px;
+  font-weight:800;
+}
+
+.req {
+  color:#f08ca3;
+}
+
+.input-wrap {
+  position:relative;
+}
+
+.input-icon {
+  position:absolute;
+  top:50%;
+  left:14px;
+  transform:translateY(-50%);
+  color:#e98ba2;
+  font-size:17px;
+  pointer-events:none;
+}
+
+input,
+select,
+textarea {
+  width:100%;
+  min-height:55px;
+  padding:13px 14px;
+  border:1px solid #55535c;
+  border-radius:15px;
+  outline:none;
+  background:linear-gradient(145deg,#29292e,#222226);
+  color:#f5f1f3;
+  font-size:14px;
+  transition:border-color .2s,box-shadow .2s;
+}
+
+.input-wrap input,
+.input-wrap select {
+  padding-left:43px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color:#d36b86;
+  box-shadow:0 0 0 3px rgba(211,107,134,.13);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color:#aaa6af;
+}
+
+select option {
+  background:#242429;
+  color:#fff;
+}
+
+textarea {
+  min-height:145px;
+  resize:vertical;
+  line-height:1.6;
+}
+
+.char-count {
+  margin-top:5px;
+  color:#aaa5ad;
+  font-size:10px;
+  text-align:right;
+}
+
+/* CONTACT */
+
+.contact-box {
+  margin-top:20px;
+  padding:15px 14px 5px;
+  border:1px solid #45434b;
+  border-radius:17px;
+  background:rgba(255,255,255,.035);
+}
+
+.contact-title {
+  margin-bottom:12px;
+  color:#f5f1f3;
+  font-size:14px;
+  font-weight:850;
+}
+
+.contact-title span {
+  color:#b8aab0;
+  font-size:10px;
+  font-weight:600;
+}
+
+.contact-field {
+  margin:12px 0;
+}
+
+.contact-field label {
+  margin-bottom:6px;
+  font-size:12px;
+}
+
+.contact-field input {
+  min-height:47px;
+  padding:11px 12px;
+}
+
+/* APPROVAL NOTE */
+
+.approval-note {
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-top:17px;
+  padding:12px;
+  border:1px solid rgba(205,94,121,.25);
+  border-radius:12px;
+  background:rgba(165,31,64,.10);
+  color:#c7b9bf;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.info-icon {
+  display:grid;
+  flex:0 0 21px;
+  width:21px;
+  height:21px;
+  place-items:center;
+  border-radius:50%;
+  background:#492330;
+  color:#f0a1b3;
+  font-weight:900;
+}
+
+/* SUBMIT */
+
+.submit-btn {
+  width:100%;
+  min-height:53px;
+  margin-top:17px;
+  padding:15px 18px;
+  border:1px solid #d15b78;
+  border-radius:15px;
+  background:linear-gradient(105deg,#b52b4e,#75162f);
+  color:#fff;
+  font-size:15px;
+  font-weight:850;
+  box-shadow:0 9px 24px rgba(130,20,48,.25),inset 0 1px 0 rgba(255,255,255,.12);
+  transition:.2s ease;
+}
+
+.submit-btn:hover {
+  box-shadow:0 12px 28px rgba(130,20,48,.34);
+  transform:translateY(-1px);
+}
+
+.submit-btn:disabled {
+  opacity:.6;
+  cursor:wait;
+  transform:none;
+}
+
+/* MESSAGES */
+
+.message {
+  display:none;
+  margin-top:13px;
+  padding:12px;
+  border:1px solid transparent;
+  border-radius:11px;
+  font-size:12px;
+  line-height:1.55;
+  overflow-wrap:anywhere;
+}
+
+.message.success,
+.message.error {
+  display:block;
+}
+
+.message.success {
+  border-color:#315d45;
+  background:#172a22;
+  color:#b8e8ca;
+}
+
+.message.error {
+  border-color:#70404a;
+  background:#321d21;
+  color:#ffc2c2;
+}
+
+/* SUCCESS SCREEN */
+
+.success-card {
+  display:none;
+  padding:35px 20px 30px;
+  color:#f7f4f5;
+  text-align:center;
+}
+
+.success-card.show {
+  display:block;
+}
+
+.form-content.hide {
+  display:none;
+}
+
+.success-icon {
+  display:grid;
+  width:78px;
+  height:78px;
+  place-items:center;
+  margin:5px auto 18px;
+  border-radius:50%;
+  background:#193a2a;
+  color:#8ce0ad;
+  font-size:43px;
+  font-weight:800;
+}
+
+.success-card h2 {
+  margin-bottom:10px;
+  font-family:"Space Grotesk",sans-serif;
+  font-size:27px;
+  line-height:1.2;
+}
+
+.success-card p {
+  max-width:420px;
+  margin:0 auto 21px;
+  color:#c0b9bf;
+  font-size:13px;
+  line-height:1.7;
+}
+
+.next-box {
+  max-width:440px;
+  overflow:hidden;
+  margin:0 auto 20px;
+  border:1px solid #48464e;
+  border-radius:16px;
+  background:#242429;
+  text-align:left;
+}
+
+.next-title {
+  padding:13px 15px;
+  border-bottom:1px solid #48464e;
+  color:#f1a4b5;
+  font-size:15px;
+  font-weight:850;
+}
+
+.next-line {
+  display:flex;
+  gap:12px;
+  padding:11px 15px;
+  color:#e2dce0;
+  font-size:12px;
+  line-height:1.5;
+}
+
+.next-line span:first-child {
+  width:25px;
+  color:#e99aae;
+  font-size:19px;
+}
+
+.success-actions {
+  display:grid;
+  max-width:440px;
+  gap:10px;
+  margin:auto;
+}
+
+.view-btn,
+.again-btn {
+  display:block;
+  padding:14px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:800;
+  text-align:center;
+}
+
+.view-btn {
+  background:linear-gradient(105deg,#b52b4e,#75162f);
+  color:#fff;
+}
+
+.again-btn {
+  border:1.5px solid #c65a76;
+  background:#242429;
+  color:#f0a0b2;
+}
+
+/* FOOTER */
+
+.footer {
+  padding:25px 12px 20px;
+  color:#88838b;
+  font-size:10px;
+  text-align:center;
+}
+
+/* BOTTOM NAV */
+
+.mobile-bottom-nav {
+  position:fixed;
+  z-index:9999;
+  bottom:calc(12px + env(safe-area-inset-bottom));
+  left:50%;
+  display:grid;
+  width:min(94%,520px);
+  min-height:82px;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  align-items:center;
+  gap:4px;
+  padding:9px 8px;
+  transform:translateX(-50%);
+  border:1px solid rgba(255,255,255,.85);
+  border-radius:25px;
+  background:linear-gradient(145deg,rgba(255,255,255,.97),rgba(239,242,247,.91));
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-shadow:0 15px 35px rgba(0,0,0,.13),0 4px 9px rgba(0,0,0,.07),inset 0 1px 1px rgba(255,255,255,.95),inset 0 -2px 4px rgba(0,0,0,.045);
+}
+
+.mobile-nav-item {
+  position:relative;
+  display:flex;
+  min-width:0;
+  height:64px;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  border-radius:18px;
+  color:#656a73;
+  font-size:11px;
+  font-weight:700;
+  transition:.22s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.mobile-nav-icon {
+  display:flex;
+  width:29px;
+  height:29px;
+  align-items:center;
+  justify-content:center;
+}
+
+.mobile-nav-icon svg {
+  display:block;
+  width:27px;
+  height:27px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.mobile-nav-item.active {
+  transform:translateY(-2px);
+  background:linear-gradient(145deg,#fff,#f0e9ec);
+  color:#8d1831;
+  box-shadow:0 5px 10px rgba(0,0,0,.10),inset 0 1px 2px #fff,inset 0 -2px 3px rgba(141,24,49,.08);
+}
+
+.mobile-nav-item:active {
+  transform:scale(.94);
+}
+
+/* RESPONSIVE */
+
+@media(min-width:701px) {
+  .mobile-bottom-nav {
+    bottom:22px;
+    width:min(560px,80%);
+  }
+}
+
+@media(max-width:700px) {
+  body {
+    padding-bottom:120px;
+  }
 
   .hero {
-    padding:42px 22px 100px;
+    padding:34px 20px 84px;
   }
 
   .hero-content {
-    max-width:620px;
-  }
-
-  .hero-content h1 {
-    font-size:clamp(37px,6vw,53px);
-  }
-
-  .hero-pattern {
-    right:-15%;
-    opacity:.65;
-  }
-
-}
-
-
-/* MOBILE */
-
-@media (max-width:700px) {
-
-  .topbar-inner {
-    min-height:70px;
-    width:calc(100% - 32px);
-  }
-
-  .topbar .brand {
-    font-size:23px;
-  }
-
-  .header-label {
-    font-size:8px;
-    letter-spacing:1px;
-    gap:6px;
-  }
-
-  .hero {
-    padding:34px 20px 91px;
-  }
-
-  .hero-topline {
-    font-size:9px;
-    letter-spacing:1.3px;
-    gap:7px;
-    margin-bottom:23px;
+    grid-template-columns:58px minmax(0,1fr);
+    column-gap:13px;
   }
 
   .hero-icon {
-    width:44px;
-    height:44px;
-    border-radius:13px;
-    margin-bottom:15px;
+    width:54px;
+    height:54px;
+    border-radius:16px;
   }
 
   .hero-icon svg {
-    width:24px;
-    height:24px;
+    width:29px;
+    height:29px;
   }
 
   .hero-content h1 {
-    font-size:clamp(34px,8vw,43px);
-    line-height:1.12;
-    letter-spacing:-1.8px;
+    font-size:clamp(30px,7.5vw,42px);
+    letter-spacing:-1.5px;
   }
 
   .hero-content p {
-    font-size:13px;
-    line-height:1.8;
-    margin-top:14px;
-    max-width:440px;
+    margin-top:10px;
+    font-size:12px;
+    line-height:1.7;
   }
 
   .hero-bottom-line {
-    margin-top:20px;
-    gap:7px;
+    gap:6px;
+    margin-top:16px;
     font-size:8px;
-    letter-spacing:1.1px;
+    letter-spacing:1px;
   }
 
   .hero-pattern {
-    width:100%;
     right:-36%;
-    top:0;
-    opacity:.55;
+    width:100%;
   }
 
   .hero-watermark {
-    right:-7%;
     top:32%;
+    right:-7%;
     font-size:155px;
     letter-spacing:-10px;
   }
@@ -1206,378 +856,154 @@ textarea::placeholder {
     left:-90px;
   }
 
-  /* KEEP FORM CARD OVERLAPPING HERO */
-
   main {
-    margin:-43px auto 0;
     width:calc(100% - 24px);
+    margin:-38px auto 0;
   }
 
+  .card-body {
+    padding:20px 15px 22px;
+  }
+
+  .type-option {
+    min-height:105px;
+    border-radius:15px;
+  }
+
+  .form-heading h2 {
+    font-size:18px;
+  }
+
+  .simple-pill {
+    font-size:9px;
+  }
+
+  .field {
+    margin:16px 0;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size:13px;
+  }
+
+  .mobile-bottom-nav {
+    bottom:calc(10px + env(safe-area-inset-bottom));
+    width:calc(100% - 24px);
+    min-height:78px;
+    padding:7px 5px;
+    border-radius:23px;
+  }
+
+  .mobile-nav-item {
+    height:62px;
+    gap:4px;
+    font-size:10px;
+  }
+
+  .mobile-nav-icon {
+    width:27px;
+    height:27px;
+  }
+
+  .mobile-nav-icon svg {
+    width:25px;
+    height:25px;
+  }
 }
 
-
-/* SMALL MOBILE */
-
-@media (max-width:380px) {
-
-  .topbar-inner {
-    min-height:65px;
+@media(max-width:380px) {
+  .hero-content {
+    grid-template-columns:48px minmax(0,1fr);
+    column-gap:10px;
   }
 
-  .topbar .brand {
-    font-size:21px;
-  }
-
-  .header-label {
-    font-size:7px;
-    letter-spacing:.7px;
-  }
-
-  .hero {
-    padding:29px 17px 83px;
+  .hero-icon {
+    width:46px;
+    height:46px;
   }
 
   .hero-content h1 {
-    font-size:33px;
-    letter-spacing:-1.5px;
+    font-size:29px;
   }
 
-  .hero-content p {
-    font-size:12px;
+  .type-option strong {
+    font-size:10px;
   }
 
-  .hero-bottom-line {
-    font-size:7px;
+  .type-option small {
+    font-size:8px;
+  }
+
+  .post-types {
     gap:6px;
   }
 
+  .form-heading {
+    align-items:flex-start;
+    flex-direction:column;
+  }
 }
 
-
-/* LARGE DESKTOP */
-
-@media (min-width:1100px) {
-
-  .hero {
-    padding-top:65px;
-    padding-bottom:125px;
-  }
-
-  .hero-content h1 {
-    font-size:64px;
-  }
-
-  main {
-    margin-top:-55px;
-  }
-
-}
-
-
-/* ACCESSIBILITY */
-
-@media (prefers-reduced-motion:reduce) {
-
-  .hero *,
-  .topbar * {
+@media(prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior:auto !important;
     transition:none !important;
     animation:none !important;
   }
-
 }
-
-/* =====================================
-   BGC CLUB PREMIUM DARK POST DESIGN
-   Header removed - existing form logic preserved
-===================================== */
-:root{
-  --bg:#111113;
-  --surface:#1b1b1f;
-  --ink:#f7f4f5;
-  --muted:#aaa6ad;
-  --line:#414047;
-  --accent:#a51f40;  --accent-light:#3a1b25;
-  --green:#d98b9e;
-  --green-dark:#f0b3c0;
-  --cream:#111113;
-  --white:#ffffff;
-}
-html,body{background:#111113;color:#f7f4f5}
-body{
-  background:
-    radial-gradient(ellipse at 90% 5%,rgba(125,24,51,.22),transparent 36%),
-    radial-gradient(ellipse at 0% 70%,rgba(90,30,48,.12),transparent 40%),
-    #111113;
-}
-.hero{
-  background:
-    radial-gradient(ellipse at 88% 10%,rgba(145,31,62,.34),transparent 43%),
-    linear-gradient(125deg,#111114 0%,#1b1116 54%,#35121f 100%);
-  padding:38px 20px 78px;
-}
-.hero::before{opacity:.12}
-.hero::after{
-  border-color:rgba(231,137,158,.15);
-  box-shadow:0 0 0 35px rgba(231,137,158,.035),0 0 0 75px rgba(231,137,158,.025);
-}
-.hero-topline{color:#e8a1b1}
-.hero-live-dot{background:#e98fa5;box-shadow:0 0 0 5px rgba(233,143,165,.12)}
-.hero-separator{color:#87505e}
-.hero-content{
-  max-width:760px;
-  display:grid;
-  grid-template-columns:76px minmax(0,1fr);
-  column-gap:18px;
-  align-items:center;
-}
-.hero-icon{
-  grid-column:1;
-  grid-row:1 / span 3;
-  width:66px;height:66px;
-  margin:0;
-  border:1px solid rgba(225,112,139,.42);
-  border-radius:19px;
-  background:linear-gradient(145deg,rgba(165,31,64,.45),rgba(76,23,39,.65));
-  color:#f1a2b4;
-  box-shadow:inset 0 1px 1px rgba(255,255,255,.10),0 10px 25px rgba(0,0,0,.2);
-}
-.hero-icon svg{width:34px;height:34px}
-.hero-content h1{
-  grid-column:2;
-  max-width:660px;
-  font-size:clamp(34px,6vw,57px);
-  letter-spacing:-2px;
-  line-height:1.08;
-}
-.hero-content h1 span{color:#e995a9}
-.hero-content p{
-  grid-column:2;
-  margin-top:12px;
-  color:#c9c0c5;
-  font-size:14px;
-  line-height:1.75;
-}
-.hero-bottom-line{
-  grid-column:2;
-  margin-top:20px;
-  color:#d8c3ca;
-}
-.hero-mini-icon,.hero-dot{color:#ed9aaf}
-.hero-watermark{color:rgba(239,151,173,.045)}
-.hero-pattern circle,.hero-pattern path{stroke:#e99aaf}
-.hero-pattern{opacity:.5}
-main{
-  width:min(calc(100% - 24px),760px);
-  margin:-42px auto 0;
-}
-.form-card{
-  background:linear-gradient(145deg,rgba(34,34,39,.98),rgba(24,24,28,.98));
-  border:1px solid #45434b;
-  border-radius:25px;
-  box-shadow:0 20px 55px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.07);
-}
-.card-body{padding:25px 24px 28px}
-.form-heading h2{color:#f7f4f5;font-size:21px}
-.simple-pill{
-  background:rgba(165,31,64,.18);
-  border:1px solid rgba(221,103,132,.34);
-  color:#efa2b3;
-}
-.type-option{
-  background:#1c1c20;
-  border-color:#4a4850;
-  color:#f5f1f3;
-  min-height:115px;
-  border-radius:19px;
-}
-.type-option:hover{border-color:#c35c78}
-.type-icon{color:#ee91a8}
-.type-option small{color:#aaa5ad}
-.type-option.active{
-  background:linear-gradient(145deg,#a51f40,#68152d);
-  border-color:#c24c6b;
-  box-shadow:0 10px 25px rgba(126,19,47,.28);
-}
-.type-option.active .type-icon,.type-option.active small{color:#fff}
-.type-check{color:#8d1831}
-.field label{color:#f1edf0}
-.req{color:#f08ca3}
-input,select,textarea{
-  color:#f5f1f3;
-  background:linear-gradient(145deg,#29292e,#222226);
-  border:1px solid #55535c;
-  border-radius:15px;
-  min-height:55px;
-}
-input:focus,select:focus,textarea:focus{
-  border-color:#d36b86;
-  box-shadow:0 0 0 3px rgba(211,107,134,.13);
-}
-input::placeholder,textarea::placeholder{color:#aaa6af}
-select option{background:#242429;color:#fff}
-.input-icon{color:#e98ba2}
-textarea{min-height:145px}
-.char-count{color:#aaa5ad}
-.contact-box{
-  background:rgba(255,255,255,.035);
-  border-color:#45434b;
-  border-radius:17px;
-}
-.contact-title{color:#f5f1f3}
-.contact-title span{color:#b8aab0}
-.approval-note{
-  background:rgba(165,31,64,.10);
-  border-color:rgba(205,94,121,.25);
-  color:#c7b9bf;
-}
-.info-icon{background:#492330;color:#f0a1b3}
-.submit-btn{
-  background:linear-gradient(105deg,#b52b4e,#75162f);
-  border:1px solid #d15b78;
-  box-shadow:0 9px 24px rgba(130,20,48,.25),inset 0 1px 0 rgba(255,255,255,.12);
-  border-radius:15px;
-}
-.submit-btn:hover{box-shadow:0 12px 28px rgba(130,20,48,.34)}
-.message.success{background:#172a22;color:#b8e8ca;border-color:#315d45}
-.message.error{background:#321d21;color:#ffc2c2;border-color:#70404a}
-.success-card{color:#f7f4f5}
-.success-card p{color:#c0b9bf}
-.success-icon{background:#193a2a;color:#8ce0ad}
-.next-box{background:#242429;border-color:#48464e}
-.next-title{color:#f1a4b5;border-color:#48464e}
-.next-line{color:#e2dce0}
-.next-line span:first-child{color:#e99aae}
-.view-btn{background:linear-gradient(105deg,#b52b4e,#75162f)}
-.again-btn{background:#242429;border-color:#c65a76;color:#f0a0b2}
-.footer{color:#88838b}
-@media(max-width:700px){
-  .hero{padding:34px 20px 84px}
-  .hero-content{
-    grid-template-columns:58px minmax(0,1fr);
-    column-gap:13px;
-  }
-  .hero-icon{
-    width:54px;height:54px;border-radius:16px;
-    grid-row:1 / span 3;
-  }
-  .hero-icon svg{width:29px;height:29px}
-  .hero-content h1{
-    font-size:clamp(30px,7.5vw,42px);
-    letter-spacing:-1.5px;
-  }
-  .hero-content p{font-size:12px;line-height:1.7;margin-top:10px}
-  .hero-bottom-line{font-size:8px;letter-spacing:1px;gap:6px;margin-top:16px}
-  main{margin:-38px auto 0;width:calc(100% - 24px)}
-  .card-body{padding:20px 15px 22px}
-  .type-option{min-height:105px;border-radius:15px}
-  .form-heading h2{font-size:18px}
-  .simple-pill{font-size:9px}
-  .field{margin:16px 0}
-  input,select,textarea{font-size:13px}
-}
-@media(max-width:380px){
-  .hero-content{grid-template-columns:48px minmax(0,1fr);column-gap:10px}
-  .hero-icon{width:46px;height:46px}
-  .hero-content h1{font-size:29px}
-  .type-option strong{font-size:10px}
-  .type-option small{font-size:8px}
-}
-
 </style>
 </head>
 
   <body>
 
-<!-- Header intentionally removed for focused post experience -->
-
-
-<!-- PREMIUM BGC CLUB HERO -->
-
+<!-- HERO SECTION -->
 <section class="hero">
 
-  <!-- DECORATIVE BACKGROUND -->
-
   <div class="hero-decoration" aria-hidden="true">
-
     <div class="hero-orb hero-orb-one"></div>
     <div class="hero-orb hero-orb-two"></div>
 
-    <svg class="hero-pattern"
-         viewBox="0 0 600 400"
-         fill="none">
-
-      <circle cx="470" cy="90" r="145"
-              stroke="white" stroke-opacity=".09"/>
-
-      <circle cx="470" cy="90" r="105"
-              stroke="white" stroke-opacity=".08"/>
-
-      <circle cx="470" cy="90" r="65"
-              stroke="white" stroke-opacity=".07"/>
-
-      <path d="M300 300L430 170L550 290"
-            stroke="white" stroke-opacity=".08"
-            stroke-width="1.5"/>
-
-      <path d="M340 340L470 210L590 330"
-            stroke="white" stroke-opacity=".06"
-            stroke-width="1.5"/>
-
+    <svg class="hero-pattern" viewBox="0 0 600 400" fill="none">
+      <circle cx="470" cy="90" r="145" stroke="white" stroke-opacity=".09"/>
+      <circle cx="470" cy="90" r="105" stroke="white" stroke-opacity=".08"/>
+      <circle cx="470" cy="90" r="65" stroke="white" stroke-opacity=".07"/>
+      <path d="M300 300L430 170L550 290" stroke="white" stroke-opacity=".08" stroke-width="1.5"/>
+      <path d="M340 340L470 210L590 330" stroke="white" stroke-opacity=".06" stroke-width="1.5"/>
     </svg>
 
     <div class="hero-watermark">BGC</div>
-
   </div>
-
-
-  <!-- HERO CONTENT -->
 
   <div class="hero-inner">
 
     <div class="hero-topline">
-
       <span class="hero-live-dot"></span>
-
       <span>BGC CLUB</span>
-
       <span class="hero-separator">/</span>
-
       <span>MEMBER NETWORK</span>
-
     </div>
-
 
     <div class="hero-content">
 
       <div class="hero-icon">
-
-        <svg viewBox="0 0 24 24"
-             fill="none"
-             stroke="currentColor"
-             stroke-width="1.7"
-             stroke-linecap="round"
-             stroke-linejoin="round">
-
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
           <path d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3"/>
-
           <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-
           <path d="M2 20v-1a6 6 0 0 1 12 0v1"/>
-
           <path d="M16 14a5 5 0 0 1 6 5v1h-5"/>
-
           <path d="m9 15 2 2 4-4"/>
-
         </svg>
-
       </div>
-
 
       <h1>
         Share a Business
         <span>Reference.</span>
       </h1>
-
 
       <p>
         Have a customer requirement? Connect with the right
@@ -1585,508 +1011,384 @@ textarea{min-height:145px}
         and turn opportunities into growth.
       </p>
 
-
       <div class="hero-bottom-line">
-
         <span class="hero-mini-icon">✦</span>
-
         <span>CONNECT</span>
-
         <span class="hero-dot">·</span>
-
         <span>COLLABORATE</span>
-
         <span class="hero-dot">·</span>
-
         <span>GROW</span>
-
       </div>
 
     </div>
-
   </div>
-
 </section>
 
 
-<!-- =====================================
-     MAIN FORM
-===================================== -->
-
+<!-- MAIN FORM -->
 <main>
 
-<section class="form-card">
+  <section class="form-card">
 
-<div class="card-body">
+    <div class="card-body">
 
-<div class="form-content" id="formContent">
+      <!-- FORM CONTENT -->
+      <div class="form-content" id="formContent">
 
-  <div class="form-heading">
+        <div class="form-heading">
+          <h2>📣 Post a Reference</h2>
+          <span class="simple-pill">Simple · Quick · Effective</span>
+        </div>
 
-    <h2>📣 Post a Reference</h2>
+        <form id="postForm" novalidate>
 
-    <span class="simple-pill">
-      Simple · Quick · Effective
-    </span>
+          <!-- POST TYPE -->
+          <div class="post-types" role="group" aria-label="Post type">
 
-  </div>
+            <button
+              type="button"
+              class="type-option active"
+              data-type="Reference"
+              aria-pressed="true">
 
+              <span class="type-check">✓</span>
 
-  <form id="postForm">
+              <span class="type-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3"/>
+                  <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                  <path d="M2 20v-1a6 6 0 0 1 12 0v1"/>
+                  <path d="M16 14a5 5 0 0 1 6 5v1h-5"/>
+                  <path d="m9 15 2 2 4-4"/>
+                </svg>
+              </span>
 
-    <!-- =====================================
-         POST TYPE
-    ===================================== -->
-
-    <div class="post-types" role="group" aria-label="Post type">
-
-
-      <!-- REFERENCE -->
-
-      <button
-        type="button"
-        class="type-option active"
-        data-type="Reference"
-        aria-pressed="true"
-      >
-
-        <span class="type-check">✓</span>
-
-        <span class="type-icon">
-
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3"/>
-            <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-            <path d="M2 20v-1a6 6 0 0 1 12 0v1"/>
-            <path d="M16 14a5 5 0 0 1 6 5v1h-5"/>
-            <path d="m9 15 2 2 4-4"/>
-          </svg>
-
-        </span>
-
-        <strong>Reference</strong>
-
-        <small>Customer Need</small>
-
-      </button>
+              <strong>Reference</strong>
+              <small>Customer Need</small>
+            </button>
 
 
-      <!-- JOB VACANCY -->
+            <button
+              type="button"
+              class="type-option"
+              data-type="Job"
+              aria-pressed="false">
 
-      <button
-        type="button"
-        class="type-option"
-        data-type="Job"
-        aria-pressed="false"
-      >
+              <span class="type-check">✓</span>
 
-        <span class="type-check">✓</span>
+              <span class="type-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="7" width="18" height="14" rx="2"/>
+                  <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  <path d="M3 12h18"/>
+                  <path d="M10 12v2h4v-2"/>
+                </svg>
+              </span>
 
-        <span class="type-icon">
-
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <rect x="3" y="7" width="18" height="14" rx="2"/>
-            <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-            <path d="M3 12h18"/>
-            <path d="M10 12v2h4v-2"/>
-          </svg>
-
-        </span>
-
-        <strong>Job Vacancy</strong>
-
-        <small>Career Opportunity</small>
-
-      </button>
+              <strong>Job Vacancy</strong>
+              <small>Career Opportunity</small>
+            </button>
 
 
-      <!-- SERVICE / OPPORTUNITY -->
+            <button
+              type="button"
+              class="type-option"
+              data-type="Opportunity"
+              aria-pressed="false">
 
-      <button
-        type="button"
-        class="type-option"
-        data-type="Opportunity"
-        aria-pressed="false"
-      >
+              <span class="type-check">✓</span>
 
-        <span class="type-check">✓</span>
+              <span class="type-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2v4"/>
+                  <path d="M12 18v4"/>
+                  <path d="m4.93 4.93 2.83 2.83"/>
+                  <path d="m16.24 16.24 2.83 2.83"/>
+                  <path d="M2 12h4"/>
+                  <path d="M18 12h4"/>
+                  <path d="m4.93 19.07 2.83-2.83"/>
+                  <path d="m16.24 7.76 2.83-2.83"/>
+                  <circle cx="12" cy="12" r="4"/>
+                </svg>
+              </span>
 
-        <span class="type-icon">
+              <strong>Service /<br>Opportunity</strong>
+              <small>Grow Together</small>
+            </button>
 
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 2v4"/>
-            <path d="M12 18v4"/>
-            <path d="m4.93 4.93 2.83 2.83"/>
-            <path d="m16.24 16.24 2.83 2.83"/>
-            <path d="M2 12h4"/>
-            <path d="M18 12h4"/>
-            <path d="m4.93 19.07 2.83-2.83"/>
-            <path d="m16.24 7.76 2.83-2.83"/>
-            <circle cx="12" cy="12" r="4"/>
-          </svg>
-
-        </span>
-
-        <strong>Service /<br>Opportunity</strong>
-
-        <small>Grow Together</small>
-
-      </button>
-
-    </div>
+          </div>
 
 
-    <!-- =====================================
-         CATEGORY
-    ===================================== -->
+          <!-- CATEGORY -->
+          <div class="field">
 
-    <div class="field">
+            <label for="category">
+              Category <span class="req">*</span>
+            </label>
 
-      <label for="category">
-        Category <span class="req">*</span>
-      </label>
+            <div class="input-wrap">
+              <span class="input-icon">▦</span>
 
-      <div class="input-wrap">
+              <select id="category" required>
+                <option value="">Select a category</option>
+                <option>AC & Electrical Services</option>
+                <option>Interior & Civil Works</option>
+                <option>Furniture & Fixtures</option>
+                <option>Website & Technology</option>
+                <option>Marketing & Branding</option>
+                <option>Packaging & Labels</option>
+                <option>Machinery & Equipment</option>
+                <option>Finance & Accounts</option>
+                <option>Security & CCTV Services</option>
+                <option>Cleaning & Facility Services</option>
+                <option>Sales & Business Development</option>
+                <option>Graphic Design & Creative</option>
+                <option>Video & Content Creation</option>
+                <option>Operations & Project Management</option>
+                <option>Customer Support & Quality</option>
+                <option>Other Services</option>
+              </select>
+            </div>
+          </div>
 
-        <span class="input-icon">▦</span>
 
-        <select id="category" required>
+          <!-- LOCATION -->
+          <div class="field">
 
-          <option value="">Select a category</option>
+            <label for="location">
+              City / Location <span class="req">*</span>
+            </label>
 
-          <option>AC & Electrical Services</option>
-          <option>Interior & Civil Works</option>
-          <option>Furniture & Fixtures</option>
-          <option>Website & Technology</option>
-          <option>Marketing & Branding</option>
-          <option>Packaging & Labels</option>
-          <option>Machinery & Equipment</option>
-          <option>Finance & Accounts</option>
-          <option>Security & CCTV Services</option>
-          <option>Cleaning & Facility Services</option>
-          <option>Sales & Business Development</option>
-          <option>Graphic Design & Creative</option>
-          <option>Video & Content Creation</option>
-          <option>Operations & Project Management</option>
-          <option>Customer Support & Quality</option>
-          <option>Other Services</option>
+            <div class="input-wrap">
+              <span class="input-icon">⌖</span>
 
-        </select>
+              <input
+                id="location"
+                type="text"
+                maxlength="120"
+                autocomplete="address-level2"
+                required
+                placeholder="Enter city / location (e.g. Chennai)">
+            </div>
+          </div>
+
+
+          <!-- DESCRIPTION -->
+          <div class="field">
+
+            <label for="description">
+              Requirement Details <span class="req">*</span>
+            </label>
+
+            <textarea
+              id="description"
+              maxlength="5000"
+              required
+              placeholder="Example: A customer needs AC installation service for a clothing store (approx. 2 AC units). Looking for a reliable and affordable service provider."></textarea>
+
+            <div class="char-count">
+              <span id="charCount">0</span> / 5000
+            </div>
+          </div>
+
+
+          <!-- CONTACT DETAILS -->
+          <div class="contact-box">
+
+            <div class="contact-title">
+              Your Contact Details
+              <span>(for coordination)</span>
+            </div>
+
+            <div class="field contact-field">
+              <label for="posterName">
+                Your Name <span class="req">*</span>
+              </label>
+
+              <input
+                id="posterName"
+                type="text"
+                maxlength="120"
+                autocomplete="name"
+                required
+                placeholder="Enter your name">
+            </div>
+
+
+            <div class="field contact-field">
+              <label for="businessName">
+                Business / Company Name (optional)
+              </label>
+
+              <input
+                id="businessName"
+                type="text"
+                maxlength="150"
+                autocomplete="organization"
+                placeholder="Enter business name">
+            </div>
+
+
+            <div class="field contact-field">
+              <label for="whatsapp">
+                Your Mobile / WhatsApp Number
+                <span class="req">*</span>
+              </label>
+
+              <input
+                id="whatsapp"
+                type="tel"
+                maxlength="20"
+                inputmode="tel"
+                autocomplete="tel"
+                pattern="[0-9+() -]{8,20}"
+                required
+                placeholder="Enter your contact number">
+            </div>
+
+          </div>
+
+
+          <!-- ADMIN APPROVAL -->
+          <div class="approval-note">
+            <span class="info-icon">i</span>
+
+            <span>
+              Your post will be reviewed by the BGC CLUB admin team.
+              Once approved, it will be visible in the Reference Feed.
+              Share customer personal contact details only with their permission.
+            </span>
+          </div>
+
+
+          <!-- SUBMIT -->
+          <button
+            type="submit"
+            id="submitButton"
+            class="submit-btn">
+            ➤ &nbsp; Post Reference
+          </button>
+
+
+          <!-- MESSAGE -->
+          <div
+            id="formMessage"
+            class="message"
+            role="status"
+            aria-live="polite"></div>
+
+        </form>
+      </div>
+
+            <!-- SUCCESS SCREEN -->
+      <div class="success-card" id="successCard">
+
+        <div class="success-icon">✓</div>
+
+        <h2>Your Reference<br>Has Been Posted!</h2>
+
+        <p>
+          Thank you for sharing. Your post is under review
+          and will be visible to BGC members soon.
+        </p>
+
+        <div class="next-box">
+
+          <div class="next-title">
+            What's Next?
+          </div>
+
+          <div class="next-line">
+            <span>✓</span>
+            <span>Our team will review your post.</span>
+          </div>
+
+          <div class="next-line">
+            <span>♙</span>
+            <span>Once approved, it will be visible in the Reference Feed.</span>
+          </div>
+
+          <div class="next-line">
+            <span>↗</span>
+            <span>Interested members can contact you directly.</span>
+          </div>
+
+        </div>
+
+        <div class="success-actions">
+
+          <a class="view-btn" href="feeds.html">
+            View Feeds
+          </a>
+
+          <button
+            type="button"
+            class="again-btn"
+            id="postAnother">
+            + &nbsp; Post Another Reference
+          </button>
+
+        </div>
 
       </div>
 
     </div>
-
-
-    <!-- =====================================
-         CITY / LOCATION
-    ===================================== -->
-
-    <div class="field">
-
-      <label for="location">
-        City / Location <span class="req">*</span>
-      </label>
-
-      <div class="input-wrap">
-
-        <span class="input-icon">⌖</span>
-
-        <input
-          id="location"
-          type="text"
-          maxlength="120"
-          autocomplete="address-level2"
-          required
-          placeholder="Enter city / location (e.g. Chennai)"
-        >
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================
-         DESCRIPTION
-    ===================================== -->
-
-    <div class="field">
-
-      <label for="description">
-        Requirement Details <span class="req">*</span>
-      </label>
-
-      <textarea
-        id="description"
-        maxlength="5000"
-        required
-        placeholder="Example: A customer needs AC installation service for a clothing store (approx. 2 AC units). Looking for a reliable and affordable service provider."
-      ></textarea>
-
-      <div class="char-count">
-
-        <span id="charCount">0</span> / 5000
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================
-         CONTACT DETAILS
-    ===================================== -->
-
-    <div class="contact-box">
-
-      <div class="contact-title">
-
-        Your Contact Details
-
-        <span>(for coordination)</span>
-
-      </div>
-
-
-      <div class="field contact-field">
-
-        <label for="posterName">
-          Your Name <span class="req">*</span>
-        </label>
-
-        <input
-          id="posterName"
-          type="text"
-          maxlength="120"
-          autocomplete="name"
-          required
-          placeholder="Enter your name"
-        >
-
-      </div>
-
-
-      <div class="field contact-field">
-
-        <label for="businessName">
-          Business / Company Name (optional)
-        </label>
-
-        <input
-          id="businessName"
-          type="text"
-          maxlength="150"
-          autocomplete="organization"
-          placeholder="Enter business name"
-        >
-
-      </div>
-
-
-      <div class="field contact-field">
-
-        <label for="whatsapp">
-          Your Mobile / WhatsApp Number
-          <span class="req">*</span>
-        </label>
-
-        <input
-          id="whatsapp"
-          type="tel"
-          maxlength="20"
-          inputmode="tel"
-          autocomplete="tel"
-          pattern="[0-9+() -]{8,20}"
-          required
-          placeholder="Enter your contact number"
-        >
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================
-         ADMIN APPROVAL
-    ===================================== -->
-
-    <div class="approval-note">
-
-      <span class="info-icon">i</span>
-
-      <span>
-        Your post will be reviewed by the BGC CLUB admin team.
-        Once approved, it will be visible in the Reference Feed.
-        Share customer personal contact details only with their permission.
-      </span>
-
-    </div>
-
-
-    <!-- SUBMIT BUTTON -->
-
-    <button
-      type="submit"
-      id="submitButton"
-      class="submit-btn"
-    >
-      ➤ &nbsp; Post Reference
-    </button>
-
-
-    <div
-      id="formMessage"
-      class="message"
-      role="status"
-      aria-live="polite"
-    ></div>
-
-  </form>
-
-</div>
-
-
-<!-- =====================================     SUCCESS SCREEN
-===================================== -->
-
-<div class="success-card" id="successCard">
-
-  <div class="success-icon">✓</div>
-
-  <h2>Your Reference<br>Has Been Posted!</h2>
-
-  <p>
-    Thank you for sharing. Your post is under review
-    and will be visible to BGC members soon.
-  </p>
-
-
-  <div class="next-box">
-
-    <div class="next-title">
-      What's Next?
-    </div>
-
-    <div class="next-line">
-      <span>✓</span>
-      <span>Our team will review your post.</span>
-    </div>
-
-    <div class="next-line">
-      <span>♙</span>
-      <span>Once approved, it will be visible in the Reference Feed.</span>
-    </div>
-
-    <div class="next-line">
-      <span>↗</span>
-      <span>Interested members can contact you directly.</span>
-    </div>
-
-  </div>
-
-
-  <div class="success-actions">
-
-    <a class="view-btn" href="feeds.html">
-      View Feeds
-    </a>
-
-    <button
-      type="button"
-      class="again-btn"
-      id="postAnother"
-    >
-      + &nbsp; Post Another Reference
-    </button>
-
-  </div>
-
-</div>
-
-</div>
-</section>
+  </section>
 </main>
 
 
-<!-- =====================================
-     FOOTER
-===================================== -->
-
+<!-- FOOTER -->
 <footer class="footer">
   BGC CLUB · CONNECT · COLLABORATE · GROW
 </footer>
 
 
-<!-- =====================================
-     FIXED NAVIGATION - INDEX REFERENCE
-===================================== -->
-
+<!-- FIXED BOTTOM NAVIGATION -->
 <nav class="mobile-bottom-nav" aria-label="BGC CLUB main navigation">
 
-
   <!-- HOME -->
-
   <a href="index.html" class="mobile-nav-item" aria-label="Home">
-
     <span class="mobile-nav-icon">
-
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="m3 10 9-7 9 7"></path>
         <path d="M5 9v12h14V9"></path>
         <path d="M9 21v-7h6v7"></path>
       </svg>
-
     </span>
-
     <span>Home</span>
-
   </a>
 
 
   <!-- MEMBERS -->
-
   <a href="members.html" class="mobile-nav-item" aria-label="Members">
-
     <span class="mobile-nav-icon">
-
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
         <circle cx="9" cy="7" r="4"></circle>
         <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
         <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
       </svg>
-
     </span>
-
     <span>Members</span>
-
   </a>
 
 
   <!-- POST ACTIVE -->
-
-  <a href="post.html" class="mobile-nav-item active" aria-label="Post">
-
+  <a href="post.html" class="mobile-nav-item active" aria-label="Post" aria-current="page">
     <span class="mobile-nav-icon">
-
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="3" width="18" height="18" rx="4"></rect>
         <path d="M12 8v8"></path>
         <path d="M8 12h8"></path>
       </svg>
-
     </span>
-
     <span>Post</span>
-
   </a>
 
 
   <!-- FEEDS -->
-
   <a href="feeds.html" class="mobile-nav-item" aria-label="Feeds">
-
     <span class="mobile-nav-icon">
-
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="5" y="3" width="16" height="18" rx="2"></rect>
         <path d="M3 7v13a2 2 0 0 0 2 2h12"></path>
@@ -2094,20 +1396,14 @@ textarea{min-height:145px}
         <path d="M9 12h8"></path>
         <path d="M9 16h5"></path>
       </svg>
-
     </span>
-
     <span>Feeds</span>
-
   </a>
 
 
   <!-- EVENTS -->
-
-  <a href="bgc-event-providers.html"class="mobile-nav-item" aria-label="Events">
-
+  <a href="bgc-event-providers.html" class="mobile-nav-item" aria-label="Events">
     <span class="mobile-nav-icon">
-
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="5" width="18" height="16" rx="2"></rect>
         <path d="M16 3v4"></path>
@@ -2120,12 +1416,9 @@ textarea{min-height:145px}
         <path d="M12 17h.01"></path>
         <path d="M16 17h.01"></path>
       </svg>
-
     </span>
-
     <span>Events</span>
-
-  </>
+  </a>
 
 </nav>
 
@@ -2134,6 +1427,7 @@ textarea{min-height:145px}
 
 /* =====================================
    EXISTING BGC CLUB SUPABASE
+   Existing URL and key preserved
 ===================================== */
 
 const SUPABASE_URL =
@@ -2154,23 +1448,14 @@ const db = window.supabase
    ELEMENT REFERENCES
 ===================================== */
 
-const postForm =
-  document.getElementById("postForm");
-
-const submitButton =
-  document.getElementById("submitButton");
-
-const formMessage =
-  document.getElementById("formMessage");
-
-const formContent =
-  document.getElementById("formContent");
-
-const successCard =
-  document.getElementById("successCard");
-
-const descriptionInput =
-  document.getElementById("description");
+const postForm = document.getElementById("postForm");
+const submitButton = document.getElementById("submitButton");
+const formMessage = document.getElementById("formMessage");
+const formContent = document.getElementById("formContent");
+const successCard = document.getElementById("successCard");
+const descriptionInput = document.getElementById("description");
+const charCount = document.getElementById("charCount");
+const postAnotherButton = document.getElementById("postAnother");
 
 let selectedPostType = "Reference";
 let isSubmitting = false;
@@ -2180,28 +1465,32 @@ let isSubmitting = false;
    POST TYPE SELECTION
 ===================================== */
 
-document.querySelectorAll(".type-option").forEach(button => {
+const typeButtons = document.querySelectorAll(".type-option");
+
+typeButtons.forEach(button => {
 
   button.addEventListener("click", () => {
 
+    if (isSubmitting) return;
+
     selectedPostType = button.dataset.type;
 
-    document.querySelectorAll(".type-option").forEach(option => {
+    typeButtons.forEach(option => {
 
-      const active = option === button;
+      const isActive = option === button;
 
-      option.classList.toggle("active", active);
+      option.classList.toggle("active", isActive);
 
       option.setAttribute(
         "aria-pressed",
-        String(active)
+        String(isActive)
       );
 
     });
 
     updateFormLabels();
-
     updateSubmitButton();
+    clearMessage();
 
   });
 
@@ -2218,32 +1507,33 @@ function updateFormLabels() {
     'label[for="description"]'
   );
 
-  const placeholder = selectedPostType === "Job"
-
-    ? "Example: A company in Chennai is hiring a Sales Executive. Candidates with 1–2 years of experience can contact us."
-
-    : selectedPostType === "Opportunity"
-
-      ? "Example: We provide AC installation and maintenance services for commercial shops in Chennai. Looking to connect with customers and business partners."
-
-      : "Example: A customer needs AC installation service for a clothing store (approx. 2 AC units). Looking for a reliable and affordable service provider.";
-
-  label.innerHTML =
-    "Requirement Details <span class=\"req\">*</span>";
+  if (!label) return;
 
   if (selectedPostType === "Job") {
 
     label.innerHTML =
-      "Job Details <span class=\"req\">*</span>";
+      'Job Details <span class="req">*</span>';
+
+    descriptionInput.placeholder =
+      "Example: A company in Chennai is hiring a Sales Executive. Candidates with 1–2 years of experience can contact us.";
 
   } else if (selectedPostType === "Opportunity") {
 
     label.innerHTML =
-      "Service / Opportunity Details <span class=\"req\">*</span>";
+      'Service / Opportunity Details <span class="req">*</span>';
+
+    descriptionInput.placeholder =
+      "Example: We provide AC installation and maintenance services for commercial shops in Chennai. Looking to connect with customers and business partners.";
+
+  } else {
+
+    label.innerHTML =
+      'Requirement Details <span class="req">*</span>';
+
+    descriptionInput.placeholder =
+      "Example: A customer needs AC installation service for a clothing store (approx. 2 AC units). Looking for a reliable and affordable service provider.";
 
   }
-
-  descriptionInput.placeholder = placeholder;
 
 }
 
@@ -2254,17 +1544,22 @@ function updateFormLabels() {
 
 function updateSubmitButton() {
 
-  const buttonText = selectedPostType === "Job"
+  if (selectedPostType === "Job") {
 
-    ? "➤  Post Job Vacancy"
+    submitButton.textContent =
+      "➤  Post Job Vacancy";
 
-    : selectedPostType === "Opportunity"
+  } else if (selectedPostType === "Opportunity") {
 
-      ? "➤  Post Opportunity"
+    submitButton.textContent =
+      "➤  Post Opportunity";
 
-      : "➤  Post Reference";
+  } else {
 
-  submitButton.textContent = buttonText;
+    submitButton.textContent =
+      "➤  Post Reference";
+
+  }
 
 }
 
@@ -2275,7 +1570,7 @@ function updateSubmitButton() {
 
 descriptionInput.addEventListener("input", () => {
 
-  document.getElementById("charCount").textContent =
+  charCount.textContent =
     descriptionInput.value.length;
 
 });
@@ -2289,7 +1584,16 @@ function showMessage(message, type) {
 
   formMessage.textContent = message;
 
-  formMessage.className = "message " + type;
+  formMessage.className =
+    "message " + type;
+
+}
+
+function clearMessage() {
+
+  formMessage.textContent = "";
+
+  formMessage.className = "message";
 
 }
 
@@ -2319,9 +1623,7 @@ function createPostTitle(description, category, type) {
   }
 
   return firstLine.length > 110
-
     ? firstLine.slice(0, 107).trimEnd() + "..."
-
     : (firstLine || category + " Required");
 
 }
@@ -2337,7 +1639,11 @@ postForm.addEventListener("submit", async event => {
 
   if (isSubmitting) return;
 
-  if (!postForm.reportValidity()) return;
+  /* BROWSER VALIDATION */
+
+  if (!postForm.reportValidity()) {
+    return;
+  }
 
 
   /* GET FORM VALUES */
@@ -2361,7 +1667,7 @@ postForm.addEventListener("submit", async event => {
     document.getElementById("whatsapp").value.trim();
 
 
-  /* VALIDATION */
+  /* REQUIRED FIELD VALIDATION */
 
   if (
     !category ||
@@ -2381,19 +1687,26 @@ postForm.addEventListener("submit", async event => {
   }
 
 
-  if (!document.getElementById("whatsapp").checkValidity()) {
+  /* MOBILE NUMBER VALIDATION */
+
+  const mobileInput =
+    document.getElementById("whatsapp");
+
+  if (!mobileInput.checkValidity()) {
 
     showMessage(
       "Please enter a valid mobile / WhatsApp number.",
       "error"
     );
 
+    mobileInput.focus();
+
     return;
 
   }
 
 
-  /* SUPABASE CHECK */
+  /* SUPABASE CONNECTION CHECK */
 
   if (!db) {
 
@@ -2415,11 +1728,11 @@ postForm.addEventListener("submit", async event => {
 
   submitButton.textContent = "Submitting...";
 
-  formMessage.className = "message";
+  clearMessage();
 
 
   /*
-    EXISTING DATABASE MAPPING
+    EXISTING CATEGORY MAPPING PRESERVED
 
     Job:
     Job - Category
@@ -2429,18 +1742,32 @@ postForm.addEventListener("submit", async event => {
 
     Opportunity:
     Requirement - Category
-
-    Existing table and columns retained.
   */
 
-  const savedCategory = selectedPostType === "Job"
+  const savedCategory =
+    selectedPostType === "Job"
+      ? "Job - " + category
+      : "Requirement - " + category;
 
-    ? "Job - " + category
 
-    : "Requirement - " + category;
+  /*
+    EXISTING DATABASE FIELDS PRESERVED
 
+    Table: bgc_job_posts
 
-  /* EXISTING DATABASE COLUMNS */
+    Existing columns:
+    title
+    category
+    location
+    description
+    budget
+    deadline
+    poster_name
+    whatsapp_number
+    source_type
+    status
+    author_user_id
+  */
 
   const postData = {
 
@@ -2475,7 +1802,7 @@ postForm.addEventListener("submit", async event => {
   };
 
 
-  /* INSERT INTO EXISTING TABLE */
+  /* SAVE TO EXISTING SUPABASE TABLE */
 
   try {
 
@@ -2483,18 +1810,20 @@ postForm.addEventListener("submit", async event => {
       .from("bgc_job_posts")
       .insert([postData]);
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
 
 
-    /* SUCCESS SCREEN */
+    /* SHOW SUCCESS SCREEN */
 
     formContent.classList.add("hide");
 
     successCard.classList.add("show");
 
     window.scrollTo({
-      top:0,
-      behavior:"smooth"
+      top: 0,
+      behavior: "smooth"
     });
 
 
@@ -2532,65 +1861,80 @@ postForm.addEventListener("submit", async event => {
    POST ANOTHER REFERENCE
 ===================================== */
 
-document.getElementById("postAnother")
-  .addEventListener("click", () => {
+postAnotherButton.addEventListener("click", () => {
 
-    postForm.reset();
+  if (isSubmitting) return;
 
-    selectedPostType = "Reference";
+  /* RESET FORM */
 
+  postForm.reset();
 
-    /* RESET POST TYPE */
+  /* RESET POST TYPE */
 
-    document.querySelectorAll(".type-option").forEach(option => {
+  selectedPostType = "Reference";
 
-      const active = option.dataset.type === "Reference";
+  typeButtons.forEach(option => {
 
-      option.classList.toggle("active", active);
+    const isActive =
+      option.dataset.type === "Reference";
 
-      option.setAttribute(
-        "aria-pressed",
-        String(active)
-      );
+    option.classList.toggle("active", isActive);
 
-    });
+    option.setAttribute(
+      "aria-pressed",
+      String(isActive)
+    );
 
-
-    /* RESET CHARACTER COUNT */
-
-    document.getElementById("charCount").textContent = "0";
+  });
 
 
-    /* RESET MESSAGE */
+  /* RESET CHARACTER COUNT */
 
-    formMessage.className = "message";
-
-    formMessage.textContent = "";
+  charCount.textContent = "0";
 
 
-    /* RESET BUTTON */
+  /* RESET MESSAGE */
 
-    updateSubmitButton();
-
-
-    /* SHOW FORM */
-
-    successCard.classList.remove("show");
-
-    formContent.classList.remove("hide");
+  clearMessage();
 
 
-    /* RESET LABELS */
+  /* RESET BUTTON */
 
-    updateFormLabels();
+  updateSubmitButton();
 
 
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
+  /* RESET LABEL AND PLACEHOLDER */
+
+  updateFormLabels();
+
+
+  /* SHOW FORM AGAIN */
+
+  successCard.classList.remove("show");
+
+  formContent.classList.remove("hide");
+
+
+  /* SCROLL TO TOP */
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 
 });
+
+
+/* =====================================
+   INITIAL PAGE SETUP
+===================================== */
+
+updateFormLabels();
+
+updateSubmitButton();
+
+charCount.textContent =
+  descriptionInput.value.length;
 
 </script>
 
