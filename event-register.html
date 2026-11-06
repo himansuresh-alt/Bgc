@@ -247,50 +247,34 @@ let compressedImageBlob = null;
 
 /* COMMON SERVICE CATEGORIES */
 const BGC_EVENT_CATEGORIES = [
- "Event Hall / Venue",
- "Catering",
- "Decoration",
- "Photography",
- "Videography",
- "Makeup",
- "Mehendi",
- "Dress",
- "Jewellery",
- "Invitation Printing",
- "DJ / Music",
- "Light & Sound",
- "Flower Decoration",
- "Wedding Car",
- "Return Gifts",
- "Cake",
- "Choreography",
- "Traditional Services",
- "Traditional Function Services",
- "Stage Setup",
- "Balloon Decoration",
- "Entertainment",
- "Magic Show",
- "Mascot Characters",
- "Kids Entertainment",
- "Giants Toys",
- "Combo Pack",
- "Gift Delivery",
- "Room Decoration",
- "Restaurant / Private Dining",
- "Event Planner",
- "Proposal Setup",
- "Candle Light Setup",
- "Custom Gifts",
- "Surprise Performers"
+    "Event Planner & Management",
+    "Event Hall & Venue",
+    "Catering",
+    "Photography",
+    "Videography",
+    "Decoration",
+    "Stage & Backdrop Setup",
+    "DJ & Music",
+    "Audio & Lighting",
+    "Choreography",
+    "Makeup & Hairstyling",
+    "Mehendi",
+    "Wedding Wear & Jewellery",
+    "Entertainment & Performers",
+    "Kids Entertainment & Toys",
+    "Cake & Desserts",
+    "Invitation & Printing",
+    "Gifts & Return Gifts",
+    "Wedding Transport",
+    "Event Rentals & Equipment"
 ];
 
 /* LOAD SERVICE CATEGORIES */
 BGC_EVENT_CATEGORIES.forEach(function(category) {
- const option = document.createElement("option");
- option.value = category;
- option.textContent = category;
- if (category === "Combo Pack") option.className = "combo-option";
- categorySelect.appendChild(option);
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    categorySelect.appendChild(option);
 });
 
 /* IMAGE SELECT */

@@ -795,61 +795,29 @@ const eventName = params.get("event") || "Marriage";
 const rawCategory = (params.get("category") || "").trim();
 const rawLabel = (params.get("label") || "").trim();
 
-/* EXISTING CATEGORY MAP */
-const categoryMap = {
- "Marriage Hall / Venue":"marriage-hall",
- "Catering":"catering",
- "Decoration":"event-decoration",
- "Photography":"event-photography",
- "Videography":"videography",
- "Bridal Makeup":"bridal-makeup",
- "Mehendi":"mehendi-artist",
- "Wedding Dress":"bridal-wear",
- "Jewellery":"wedding-jewellery",
- "Invitation Printing":"invitation-printing",
- "DJ / Music":"dj-sound",
- "Light & Sound":"stage-sound-equipment",
- "Flower Decoration":"flower-decoration",
- "Wedding Car":"luxury-car-rental",
- "Return Gifts":"return-gifts",
- "Cake / Sweets":"bakery-cakes",
- "Choreography":"wedding-choreography",
- "Traditional Services":"traditional-services",
-
- "Birthday Hall / Venue":"event-hall",
- "Birthday Decoration":"event-decoration",
- "Balloon Decoration":"balloon-decoration",
- "Birthday Cake":"bakery-cakes",
- "Entertainment":"entertainment",
- "Magic Show":"magic-show",
- "Mascot Characters":"mascot-clown",
- "Invitation":"invitation-printing",
- "Makeup":"makeup-artist",
- "Kids Entertainment":"kids-entertainment",
- "Giants Toys":"giants-toys",
-
- "Engagement Venue":"event-hall",
- "Stage Setup":"stage-decoration",
- "Dress":"bridal-wear",
-
- "Function Hall / Venue":"event-hall",
- "Saree / Dress":"bridal-wear",
- "Traditional Function Services":"traditional-services",
-
- "Surprise Decoration":"event-decoration",
- "Cake":"bakery-cakes",
- "Flowers / Bouquet":"flower-decoration",
- "Gift Delivery":"gift-delivery",
- "Music / DJ":"dj-sound",
- "Room Decoration":"room-decoration",
- "Restaurant / Private Dining":"private-dining",
- "Event Planner":"event-management",
- "Proposal Setup":"proposal-setup",
- "Candle Light Setup":"candle-light-setup",
- "Custom Gifts":"custom-gifts",
- "Surprise Performers":"surprise-performers",
- "Combo Pack":"combo-pack"
-};function normalize(value) {
+  const categoryMap = {
+    "Event Planner & Management": "event-planner-management",
+    "Event Hall & Venue": "event-hall-venue",
+    "Catering": "catering",
+    "Photography": "photography",
+    "Videography": "videography",
+    "Decoration": "decoration",
+    "Stage & Backdrop Setup": "stage-backdrop-setup",
+    "DJ & Music": "dj-music",
+    "Audio & Lighting": "audio-lighting",
+    "Choreography": "choreography",
+    "Makeup & Hairstyling": "makeup-hairstyling",
+    "Mehendi": "mehendi",
+    "Wedding Wear & Jewellery": "wedding-wear-jewellery",
+    "Entertainment & Performers": "entertainment-performers",
+    "Kids Entertainment & Toys": "kids-entertainment-toys",
+    "Cake & Desserts": "cake-desserts",
+    "Invitation & Printing": "invitation-printing",
+    "Gifts & Return Gifts": "gifts-return-gifts",
+    "Wedding Transport": "wedding-transport",
+    "Event Rentals & Equipment": "event-rentals-equipment"
+};
+  function normalize(value) {
  return String(value || "").trim().toLowerCase();
 }
 
@@ -916,37 +884,106 @@ function whatsappNumber(value) {
  return number;
 }
 
-/* MATCH SERVICE CATEGORY (EVENT-INDEPENDENT) */
 function canonicalServiceCategory(value) {
- const key = normalize(value)
-  .replace(/&/g, "and")
-  .replace(/\s+/g, " ")
-  .trim();
+    const key = normalize(value)
+        .replace(/&/g, "and")
+        .replace(/\s+/g, " ")
+        .trim();
 
- const aliases = {
-  "marriage hall / venue": "event hall / venue",
-  "birthday hall / venue": "event hall / venue",
-  "engagement venue": "event hall / venue",
-  "function hall / venue": "event hall / venue",
-  "event hall": "event hall / venue",
-  "venue": "event hall / venue",
-  "bridal makeup": "makeup",
-  "makeup artist": "makeup",
-  "wedding dress": "dress",
-  "saree / dress": "dress",
-  "birthday cake": "cake",
-  "cake / sweets": "cake",
-  "flowers / bouquet": "flower decoration",
-  "birthday decoration": "decoration",
-  "surprise decoration": "decoration",
-  "invitation": "invitation printing",
-  "music / dj": "dj / music",
-  "stage decoration": "stage setup"
- };
+    const aliases = {
+        // New category slugs
+        "event-planner-management": "event planner and management",
+        "event-hall-venue": "event hall and venue",
+        "stage-backdrop-setup": "stage and backdrop setup",
+        "dj-music": "dj and music",
+        "audio-lighting": "audio and lighting",
+        "makeup-hairstyling": "makeup and hairstyling",
+        "wedding-wear-jewellery": "wedding wear and jewellery",
+        "entertainment-performers": "entertainment and performers",
+        "kids-entertainment-toys": "kids entertainment and toys",
+        "cake-desserts": "cake and desserts",
+        "invitation-printing": "invitation and printing",
+        "gifts-return-gifts": "gifts and return gifts",
+        "wedding-transport": "wedding transport",
+        "event-rentals-equipment": "event rentals and equipment",
 
- return aliases[key] || key;
+        // Old Event Planner categories
+        "event planner": "event planner and management",
+        "traditional services": "event planner and management",
+        "traditional function services": "event planner and management",
+        "combo pack": "event planner and management",
+
+        // Old Event Hall categories
+        "event hall / venue": "event hall and venue",
+        "event hall": "event hall and venue",
+        "venue": "event hall and venue",
+        "marriage hall / venue": "event hall and venue",
+        "birthday hall / venue": "event hall and venue",
+        "engagement venue": "event hall and venue",
+        "function hall / venue": "event hall and venue",
+        "restaurant / private dining": "event hall and venue",
+
+        // Decoration
+        "flower decoration": "decoration",
+        "flowers / bouquet": "decoration",
+        "balloon decoration": "decoration",
+        "birthday decoration": "decoration",
+        "surprise decoration": "decoration",
+        "room decoration": "decoration",
+        "proposal setup": "decoration",
+        "candle light setup": "decoration",
+
+        // Stage
+        "stage setup": "stage and backdrop setup",
+        "stage decoration": "stage and backdrop setup",
+
+        // DJ
+        "dj / music": "dj and music",
+        "music / dj": "dj and music",
+
+        // Audio
+        "light and sound": "audio and lighting",
+
+        // Makeup
+        "makeup": "makeup and hairstyling",
+        "bridal makeup": "makeup and hairstyling",
+        "makeup artist": "makeup and hairstyling",
+
+        // Wedding wear
+        "dress": "wedding wear and jewellery",
+        "wedding dress": "wedding wear and jewellery",
+        "saree / dress": "wedding wear and jewellery",
+        "jewellery": "wedding wear and jewellery",
+
+        // Entertainment
+        "entertainment": "entertainment and performers",
+        "magic show": "entertainment and performers",
+        "mascot characters": "entertainment and performers",
+        "surprise performers": "entertainment and performers",
+
+        // Kids
+        "kids entertainment": "kids entertainment and toys",
+        "giants toys": "kids entertainment and toys",
+
+        // Cake
+        "cake": "cake and desserts",
+        "birthday cake": "cake and desserts",
+        "cake / sweets": "cake and desserts",
+
+        // Invitation
+        "invitation printing": "invitation and printing",
+
+        // Gifts
+        "return gifts": "gifts and return gifts",
+        "gift delivery": "gifts and return gifts",
+        "custom gifts": "gifts and return gifts",
+
+        // Transport
+        "wedding car": "wedding transport"
+    };
+
+    return aliases[key] || key;
 }
-
 function providerMatchesSelectedCategory(provider) {
  const stored = String(provider.event_category || "").trim();
 
