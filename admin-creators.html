@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111113">
+<title>BGC Creators — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+ --bg:#111113;
+ --panel:#1b191c;
+ --panel2:#242126;
+ --ink:#f7f1eb;
+ --muted:#b8adb1;
+ --line:#59434b;
+ --gold:#d8bd8f;
+ --maroon:#8d1831;
+ --red:#c74350;
+ --green:#55b88a;
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:var(--bg);
+ color:var(--ink);
+ font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button,a{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.hidden{display:none!important}
+.topbar{
+ position:sticky;
+ top:0;
+ z-index:20;
+ background:#171619;
+ border-bottom:1px solid var(--line);
+}
+.topinner{
+ width:min(1180px,calc(100% - 28px));
+ margin:auto;
+ display:flex;
+ align-items:center;
+ gap:12px;
+ padding:12px 0;
+}
+.logo{
+ width:42px;height:42px;
+ border-radius:13px;
+ background:var(--maroon);
+ border:1px solid var(--gold);
+ display:grid;
+ place-items:center;
+ font-weight:1000;
+ color:#fff;
+}
+.brand{
+ font-family:Georgia,serif;
+ font-weight:800;
+ font-size:17px;
+}
+.brand small{
+ display:block;
+ color:var(--gold);
+ font:800 9px Inter,sans-serif;
+ letter-spacing:2px;
+ margin-top:3px;
+}
+.topactions{
+ margin-left:auto;
+ display:flex;
+ gap:8px;
+}
+.btn{
+ border:1px solid var(--line);
+ border-radius:11px;
+ padding:10px 13px;
+ font-size:11px;
+ font-weight:850;
+ background:var(--panel2);
+ color:var(--ink);
+}
+.btn.primary{
+ background:var(--maroon);
+ border-color:var(--gold);
+ color:white;
+}
+.btn.danger{
+ background:#401b23;
+ border-color:#8d3441;
+ color:#ffdadd;
+}
+.btn:disabled{
+ opacity:.55;
+ cursor:wait;
+}
+.wrap{
+ width:min(1180px,calc(100% - 28px));
+ margin:auto;
+}
+.loginwrap{
+ min-height:calc(100vh - 68px);
+ display:grid;
+ place-items:center;
+ padding:25px 0;
+}
+.login{
+ width:min(100%,430px);
+ padding:25px;
+ background:var(--panel);
+ border:1px solid var(--line);
+ border-radius:22px;
+}
+.kicker{
+ color:var(--gold);
+ font-size:10px;
+ font-weight:900;
+ letter-spacing:2px;
+}
+h1{
+ font:700 30px/1.12 Georgia,serif;
+ margin:10px 0;
+}
+.muted{
+ color:var(--muted);
+ font-size:12px;
+ line-height:1.7;
+}
+.field{
+ display:grid;
+ gap:6px;
+ margin:12px 0;
+}
+.field label{
+ font-size:11px;
+ font-weight:850;
+ color:#e7d9d0;
+}
+.field input,.field textarea,.field select,
+.toolbar input,.toolbar select{
+ width:100%;
+ padding:12px;
+ border:1px solid var(--line);
+ border-radius:11px;
+ background:#121114;
+ color:var(--ink);
+ outline:none;
+}
+.field textarea{
+ min-height:88px;
+ resize:vertical;
+}
+.field input:focus,.field textarea:focus{
+ border-color:var(--gold);
+}
+.full{width:100%}
+.status{
+ display:none;
+ padding:11px 13px;
+ border-radius:10px;
+ margin:12px 0;
+ font-size:12px;
+ overflow-wrap:anywhere;
+}
+.status.show{display:block}
+.status.err{background:#3b1c22;color:#ffdadd}
+.status.ok{background:#183729;color:#c8ffe0}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+ <div class="topinner">
+  <div class="logo">BGC</div>
+  <div class="brand">
+   BGC CLUB
+   <small>CREATOR ADMINISTRATION</small>
+  </div>
+  <div class="topactions">
+   <a class="btn" href="creators.html">← Creators page</a>
+   <button class="btn hidden" id="logoutBtn" type="button">
+    Sign out
+   </button>
+  </div>
+ </div>
+</header>
+
+<div class="wrap">
+
+<section class="loginwrap" id="loginScreen">
+ <div class="login">
+  <div class="kicker">PRIVATE ADMIN ACCESS</div>
+  <h1>Creator Management</h1>
+  <p class="muted">
+   Sign in using the configured BGC CLUB administrator
+   account to manage registered creator profiles.
+  </p>
+  <div class="status" id="loginStatus"></div>
+
+  <form id="loginForm">
+   <div class="field">
+    <label for="email">Admin email</label>
+    <input
+     id="email"
+     type="email"
+     value="bgclubusiness@gmail.com"
+     autocomplete="username"
+     required>
+   </div>
+
+   <div class="field">
+    <label for="password">Password</label>
+    <input
+     id="password"
+     type="password"
+     autocomplete="current-password"
+     placeholder="Admin password"
+     required>
+   </div>
+
+   <button class="btn primary full" id="loginBtn" type="submit">
+    Sign in securely
+   </button>
+  </form>
+
+  <p class="muted">
+   Supabase RLS policies must also allow the admin
+   to read, update and delete creator records.
+  </p>
+ </div>
+</section>
+
+<main id="adminApp" class="hidden">
+
+ <div class="head">
+  <div>
+   <div class="kicker">BGC CREATOR NETWORK</div>
+   <h1>Registered Creators</h1>
+   <p class="muted">
+    Manage creator profiles registered on the BGC platform.
+   </p>
+  </div>
+  <button class="btn primary" id="refreshBtn" type="button">
+   ↻ Refresh
+  </button>
+ </div>
+
+ <div id="globalStatus" class="status"></div>
+
+ <div class="stats">
+  <div class="stat">
+   <strong id="totalCount">—</strong>
+   <span>Total creators</span>
+  </div>
+  <div class="stat">
+   <strong id="categoryCount">—</strong>
+   <span>Categories</span>
+  </div>
+  <div class="stat">
+   <strong id="recentCount">—</strong>
+   <span>Registered this month</span>
+  </div>
+ </div>
+
+ <div class="toolbar">
+  <input id="search" type="search"
+   placeholder="Search creator, Instagram, category...">
+  <select id="categoryFilter">
+   <option value="">All categories</option>
+  </select>
+ </div>
+
+ <section class="list" id="creatorList">
+  <div class="empty">Loading creator profiles…</div>
+ </section>
+
+ <div class="footer">
+  BGC CLUB · Creator Admin · Existing Supabase project
+ </div>
+</main>
+</div>
+
+<!-- EDIT CREATOR MODAL -->
+<div class="modal hidden" id="editModal"
+ role="dialog" aria-modal="true" aria-labelledby="editTitle">
+ <div class="panel">
+  <div class="panelhead">
+   <div class="kicker">CREATOR PROFILE EDITOR</div>
+   <button class="btn" id="closeModal" type="button">
+    ✕ Close
+   </button>
+  </div>
+
+  <h2 id="editTitle">Edit creator profile</h2>
+  <p class="muted">
+   Update the registered creator details.
+   Separate multiple values with commas.
+  </p>
+
+  <div class="status" id="editStatus"></div>
+
+  <form id="editForm">
+   <div class="photo-editor">
+    <div class="photo-preview" id="photoPreview">👤</div>
+    <div class="photo-controls">
+     <label for="photoFile">Change creator photo</label>
+     <input id="photoFile" type="file"
+      accept="image/jpeg,image/png,image/webp">
+     <div class="photo-hint">
+      JPG, PNG or WEBP · Maximum 1 MB.
+      Select a photo, then click Save changes.
+     </div>
+    </div>
+   </div>
+
+   <div class="formgrid" id="editFields"></div>
+
+   <div class="modalactions">
+    <button class="btn" type="button" id="cancelEdit">
+     Cancel
+    </button>
+    <button class="btn primary" type="submit" id="saveBtn">
+
+           Save changes
+    </button>
+   </div>
+  </form>
+ </div>
+</div>
+
+<style>
+main{padding:25px 0 60px}
+.head{
+ display:flex;
+ justify-content:space-between;
+ align-items:flex-start;
+ gap:14px;
+}
+.head h1{margin:6px 0}
+.stats{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:10px;
+ margin:18px 0;
+}
+.stat{
+ padding:14px;
+ border:1px solid var(--line);
+ border-radius:15px;
+ background:var(--panel);
+}
+.stat strong{
+ display:block;
+ color:var(--gold);
+ font-size:24px;
+}
+.stat span{
+ font-size:10px;
+ color:var(--muted);
+}
+.toolbar{
+ display:flex;
+ gap:9px;
+ margin:16px 0;
+}
+.toolbar input{flex:1;min-width:0}
+.toolbar select{width:190px}
+.list{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:12px;
+}
+.card{
+ background:var(--panel);
+ border:1px solid var(--line);
+ border-radius:17px;
+ padding:14px;
+ min-width:0;
+}
+.cardtop{
+ display:flex;
+ gap:12px;
+ align-items:center;
+}
+.photo{
+ width:68px;
+ height:68px;
+ flex:0 0 68px;
+ border-radius:14px;
+ overflow:hidden;
+ background:#30272d;
+ display:grid;
+ place-items:center;
+ color:var(--gold);
+ font-size:24px;
+}
+.photo img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+.info{min-width:0;flex:1}
+.info h2{
+ font-size:16px;
+ margin:0 0 4px;
+ overflow-wrap:anywhere;
+}
+.meta{
+ font-size:11px;
+ color:var(--muted);
+ overflow-wrap:anywhere;
+}
+.tag{
+ display:inline-block;
+ background:#351d27;
+ border:1px solid #704050;
+ color:#f0d9dc;
+ padding:4px 8px;
+ border-radius:30px;
+ font-size:9px;
+ font-weight:800;
+ margin:5px 4px 0 0;
+}
+.details{
+ border-top:1px solid #393037;
+ margin-top:12px;
+ padding-top:10px;
+ display:grid;
+ gap:5px;
+}
+.detail{
+ font-size:11px;
+ color:#ddd2d0;
+ overflow-wrap:anywhere;
+}
+.detail b{color:var(--gold)}
+.actions{
+ display:flex;
+ gap:7px;
+ margin-top:12px;
+}
+.actions .btn{flex:1}
+.empty{
+ grid-column:1/-1;
+ padding:32px;
+ text-align:center;
+ color:var(--muted);
+ border:1px dashed var(--line);
+ border-radius:16px;
+}
+.modal{
+ position:fixed;
+ inset:0;
+ z-index:50;
+ background:#000b;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:14px;
+}
+.panel{
+ width:min(100%,680px);
+ max-height:92vh;
+ overflow:auto;
+ background:#1b191c;
+ border:1px solid var(--gold);
+ border-radius:20px;
+ padding:19px;
+}
+.panelhead{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:12px;
+}
+.panel h2{
+ font:700 23px Georgia,serif;
+ margin:6px 0 12px;
+}
+.formgrid{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:0 12px;
+}
+.photo-editor{
+ display:flex;
+ align-items:center;
+ gap:14px;
+ padding:12px;
+ margin:10px 0 14px;
+ border:1px solid var(--line);
+ border-radius:14px;
+ background:#141216;
+}
+.photo-preview{
+ width:76px;
+ height:76px;
+ flex:0 0 76px;
+ border-radius:14px;
+ overflow:hidden;
+ display:grid;
+ place-items:center;
+ background:#30272d;
+ color:var(--gold);
+ font-size:25px;
+}
+.photo-preview img{
+ width:100%;
+ height:100%;
+ object-fit:cover;
+}
+.photo-controls{flex:1;min-width:0}
+.photo-controls label{
+ display:block;
+ margin-bottom:7px;
+ color:#e7d9d0;
+ font-size:11px;
+ font-weight:850;
+}
+.photo-controls input{
+ width:100%;
+ color:var(--muted);
+ font-size:11px;
+}
+.photo-hint{
+ margin-top:6px;
+ color:var(--muted);
+ font-size:10px;
+ line-height:1.5;
+}
+.span2{grid-column:1/-1}
+.modalactions{
+ display:flex;
+ gap:8px;
+ margin-top:15px;
+}
+.modalactions .btn{flex:1}
+.footer{
+ text-align:center;
+ color:#82767b;
+ font-size:10px;
+ padding:25px;
+}
+@media(max-width:650px){
+ .list{grid-template-columns:1fr}
+ .head{display:block}
+ .head .btn{margin-top:10px}
+ .toolbar{flex-direction:column}
+ .toolbar select{width:100%}
+ .formgrid{grid-template-columns:1fr}
+ .span2{grid-column:auto}
+ .stats{gap:7px}
+ .stat{padding:10px}
+ .stat strong{font-size:21px}
+ .topinner{width:calc(100% - 22px)}
+ .wrap{width:calc(100% - 22px)}
+ .topactions .btn{padding:9px 10px;font-size:10px}
+}
+</style>
+
+<script>
+"use strict";
+
+const SUPABASE_URL =
+ "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+const SUPABASE_KEY =
+ "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+const ADMIN_EMAIL = "bgclubusiness@gmail.com";
+const TABLE = "bgc_creators";
+const PHOTO_BUCKET = "bgc-creator-photos";
+
+const db = window.supabase.createClient(
+ SUPABASE_URL,
+ SUPABASE_KEY
+);
+
+const $ = id => document.getElementById(id);
+
+let creators = [];
+let editingCreator = null;
+
+// CREATOR EDIT FIELDS
+
+const EDIT_FIELDS = [
+ {key:"name",label:"Creator name",type:"text",required:true},
+ {key:"instagram_url",label:"Instagram URL",type:"url"},
+ {key:"instagram_followers",label:"Instagram followers",type:"text"},
+ {key:"youtube_url",label:"YouTube URL",type:"url"},
+ {key:"youtube_subscribers",label:"YouTube subscribers",type:"text"},
+ {key:"niches",label:"Categories / niches",type:"array",wide:true},
+ {key:"content_types",label:"Content types",type:"array"},
+ {key:"languages",label:"Languages",type:"array"},
+ {key:"collaboration_types",label:"Collaboration types",type:"array"},
+ {key:"bio",label:"Bio",type:"textarea",wide:true},
+ {key:"portfolio_url",label:"Portfolio URL",type:"url",wide:true}
+];
+
+// HTML ESCAPE
+
+function esc(value){
+ return String(value ?? "").replace(/[&<>"']/g,c=>({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+ }[c]));
+}
+
+// STATUS MESSAGE
+
+function status(message,type="ok",target="globalStatus"){
+ const el=$(target);
+ el.textContent=message;
+ el.className="status show "+(
+  type==="err" ? "err" : "ok"
+ );
+}
+
+function hideStatus(target){
+ $(target).className="status";
+ $(target).textContent="";
+}
+
+// SHOW / HIDE ADMIN
+
+function showApp(){
+ $("loginScreen").classList.add("hidden");
+ $("adminApp").classList.remove("hidden");
+ $("logoutBtn").classList.remove("hidden");
+}
+
+function showLogin(){
+ $("loginScreen").classList.remove("hidden");
+ $("adminApp").classList.add("hidden");
+ $("logoutBtn").classList.add("hidden");
+}
+
+// VERIFY ADMIN SESSION
+
+async function checkAdmin(){
+ const {
+  data:{session},
+  error
+ }=await db.auth.getSession();
+
+ if(error) throw error;
+
+ if(!session){
+  showLogin();
+  return false;
+ }
+
+ if(
+  (session.user.email||"").toLowerCase()
+  !== ADMIN_EMAIL.toLowerCase()
+ ){
+  await db.auth.signOut();
+  showLogin();
+  throw new Error(
+   "This account is not the configured BGC CLUB admin account."
+  );
+ }
+
+ showApp();
+ return true;
+}
+
+  // LOGIN
+
+$("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ hideStatus("loginStatus");
+
+ const btn=$("loginBtn");
+ btn.disabled=true;
+ btn.textContent="Signing in…";
+
+ try{
+  const {error}=await db.auth.signInWithPassword({
+   email:$("email").value.trim(),
+   password:$("password").value
+  });
+
+  if(error) throw error;
+
+  if(await checkAdmin()){
+   await loadCreators();
+  }
+
+ }catch(err){
+  console.error(err);
+  status(
+   err.message||"Login failed.",
+   "err",
+   "loginStatus"
+  );
+ }finally{
+  btn.disabled=false;
+  btn.textContent="Sign in securely";
+ }
+});
+
+// LOGOUT
+
+$("logoutBtn").addEventListener("click",async()=>{
+ await db.auth.signOut();
+ creators=[];
+ showLogin();
+});
+
+// BUTTON EVENTS
+
+$("refreshBtn").addEventListener("click",loadCreators);
+$("search").addEventListener("input",renderCreators);
+$("categoryFilter").addEventListener("change",renderCreators);
+
+// DATE FORMAT
+
+function dateLabel(v){
+ if(!v) return "Not available";
+ const d=new Date(v);
+ return Number.isNaN(d.getTime())
+  ? "Not available"
+  : d.toLocaleDateString("en-IN");
+}
+
+// CATEGORY FILTER
+
+function populateCategoryFilter(){
+ const current=$("categoryFilter").value;
+
+ const cats=[
+  ...new Set(
+   creators.flatMap(c=>
+    Array.isArray(c.niches)?c.niches:[]
+   ).filter(Boolean)
+  )
+ ].sort((a,b)=>a.localeCompare(b));
+
+ $("categoryFilter").innerHTML=
+  '<option value="">All categories</option>'+
+  cats.map(c=>
+   `<option value="${esc(c)}">${esc(c)}</option>`
+  ).join("");
+
+ if(cats.includes(current)){
+  $("categoryFilter").value=current;
+ }
+}
+
+// DASHBOARD COUNTS
+
+function updateStats(){
+ const cats=new Set(
+  creators.flatMap(c=>
+   Array.isArray(c.niches)?c.niches:[]
+  )
+ );
+
+ const now=new Date();
+
+ const recent=creators.filter(c=>{
+  if(!c.created_at) return false;
+  const d=new Date(c.created_at);
+  return (
+   d.getMonth()===now.getMonth() &&
+   d.getFullYear()===now.getFullYear()
+  );
+ }).length;
+
+ $("totalCount").textContent=creators.length;
+ $("categoryCount").textContent=cats.size;
+ $("recentCount").textContent=recent;
+}
+
+// LOAD CREATORS FROM SUPABASE
+
+async function loadCreators(){
+ $("creatorList").innerHTML=
+  '<div class="empty">Loading creator profiles…</div>';
+
+ hideStatus("globalStatus");
+
+ try{
+  const {data,error}=await db
+   .from(TABLE)
+   .select(
+    "id,name,avatar_url,instagram_url,instagram_followers,youtube_url,youtube_subscribers,niches,content_types,languages,collaboration_types,bio,portfolio_url,created_at"
+   )
+   .order("created_at",{ascending:false});
+
+  if(error) throw error;
+
+  creators=data||[];
+
+  populateCategoryFilter();
+  updateStats();
+  renderCreators();
+
+  if(!creators.length){
+   status(
+    "No creator profiles returned. Check table data and SELECT permission.",
+    "err"
+   );
+  }
+
+ }catch(err){
+  console.error(err);
+
+  $("creatorList").innerHTML=
+   '<div class="empty"><b>Unable to load creators.</b><br>'+
+   esc(err.message||"Unknown error")+
+   '<br><br>Check bgc_creators and Supabase SELECT/RLS permissions.</div>';
+
+  $("totalCount").textContent="—";
+  $("categoryCount").textContent="—";
+  $("recentCount").textContent="—";
+ }
+}
+
+// SEARCH + CATEGORY FILTER
+
+function renderCreators(){
+ const q=$("search").value.trim().toLowerCase();
+ const cat=$("categoryFilter").value;
+
+ const filtered=creators.filter(c=>{
+  const hay=[
+   c.name,
+   c.instagram_url,
+   c.instagram_followers,
+   c.youtube_url,
+   c.youtube_subscribers,
+   c.bio,
+   ...(c.niches||[])
+  ].join(" ").toLowerCase();
+
+  return (
+   (!q||hay.includes(q)) &&
+   (!cat||(c.niches||[]).includes(cat))
+  );
+ });
+
+ if(!filtered.length){
+  $("creatorList").innerHTML=
+   '<div class="empty">No matching creator profiles.</div>';
+  return;
+ }
+
+ $("creatorList").innerHTML=filtered.map(c=>{
+  const photo=c.avatar_url
+   ? `<div class="photo">
+       <img
+        src="${esc(freshPhotoURL(c.avatar_url))}"
+        alt=""
+        loading="lazy"
+        onerror="this.parentElement.textContent='👤'">
+      </div>`
+   : '<div class="photo">👤</div>';
+
+  const tags=(c.niches||[]).map(x=>
+   `<span class="tag">${esc(x)}</span>`
+  ).join("");
+
+  return `
+   <article class="card">
+    <div class="cardtop">
+     ${photo}
+     <div class="info">
+      <h2>${esc(c.name||"Unnamed creator")}</h2>
+      <div class="meta">
+       ${esc(c.instagram_followers||"—")}
+       Instagram followers ·
+       ${esc(c.youtube_subscribers||"—")}
+       YouTube subscribers
+      </div>
+      <div>${tags}</div>
+     </div>
+    </div>
+
+    <div class="details">
+     <div class="detail">
+      <b>Instagram:</b>
+      ${esc(c.instagram_url||"Not provided")}
+     </div>
+     <div class="detail">
+      <b>YouTube:</b>
+      ${esc(c.youtube_url||"Not provided")}
+     </div>
+     <div class="detail">
+      <b>Content:</b>
+      ${esc((c.content_types||[]).join(", ")||"Not specified")}
+     </div>
+     <div class="detail">
+      <b>Languages:</b>
+      ${esc((c.languages||[]).join(", ")||"Not specified")}
+     </div>
+     <div class="detail">
+      <b>Collaboration:</b>
+      ${esc((c.collaboration_types||[]).join(", ")||"Not specified")}
+     </div>
+     <div class="detail">
+      <b>Registered:</b>
+      ${esc(dateLabel(c.created_at))}
+     </div>
+    </div>
+
+    <div class="actions">
+     <button
+      class="btn primary"
+      type="button"
+      data-edit="${esc(c.id)}">
+      ✎ Edit profile
+     </button>
+
+     <button
+      class="btn danger"
+      type="button"
+      data-delete="${esc(c.id)}">
+      Delete
+     </button>
+    </div>
+   </article>
+  `;
+ }).join("");
+
+ // EDIT BUTTON
+
+ $("creatorList")
+  .querySelectorAll("[data-edit]")
+  .forEach(b=>{
+   b.addEventListener("click",()=>{
+    const c=creators.find(
+     x=>String(x.id)===b.dataset.edit
+    );
+    if(c) openEdit(c);
+   });
+  });
+
+ // DELETE BUTTON
+
+ $("creatorList")
+  .querySelectorAll("[data-delete]")
+  .forEach(b=>{
+   b.addEventListener("click",()=>{
+    deleteCreator(b.dataset.delete);
+   });
+  });
+}
+
+  // PHOTO URL REFRESH
+// Prevent browser from showing an old cached creator photo.
+
+function freshPhotoURL(url){
+ if(!url) return "";
+
+ const separator=url.includes("?")?"&":"?";
+
+ return url+
+  separator+
+  "photo_refresh="+Date.now();
+}
+
+// OPEN EDIT MODAL
+
+function openEdit(record){
+ editingCreator=record;
+ hideStatus("editStatus");
+
+ $("photoFile").value="";
+
+ const preview=$("photoPreview");
+
+ preview.innerHTML=record.avatar_url
+  ? `<img src="${esc(freshPhotoURL(record.avatar_url))}" alt="Current creator photo">`
+  : "👤";
+
+ // PHOTO PREVIEW + 1 MB VALIDATION
+
+ $("photoFile").onchange=()=>{
+  const file=$("photoFile").files[0];
+
+  if(!file){
+   preview.innerHTML=record.avatar_url
+    ? `<img src="${esc(freshPhotoURL(record.avatar_url))}" alt="Current creator photo">`
+    : "👤";
+   return;
+  }
+
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+   $("photoFile").value="";
+   status(
+    "Please choose a JPG, PNG or WEBP image.",
+    "err",
+    "editStatus"
+   );
+   return;
+  }
+
+  if(file.size>1024*1024){
+   $("photoFile").value="";
+   status(
+    "Photo maximum size is 1 MB only.",
+    "err",
+    "editStatus"
+   );
+   return;
+  }
+
+  const localPreview=URL.createObjectURL(file);
+
+  preview.innerHTML=
+   `<img src="${localPreview}" alt="New creator photo preview">`;
+ };
+
+ // LOAD EDITABLE FIELDS
+
+ $("editFields").innerHTML=EDIT_FIELDS.map(f=>{
+  const value=record[f.key];
+
+  const shown=f.type==="array"
+   ? (Array.isArray(value)?value.join(", "):"")
+   : (value??"");
+
+  const cls=f.wide?"field span2":"field";
+  const required=f.required?"required":"";
+
+  if(f.type==="textarea"){
+   return `
+    <div class="${cls}">
+     <label for="f_${f.key}">${f.label}</label>
+     <textarea
+      id="f_${f.key}"
+      data-key="${f.key}"
+      ${required}>${esc(shown)}</textarea>
+    </div>
+   `;
+  }
+
+  return `
+   <div class="${cls}">
+    <label for="f_${f.key}">${f.label}</label>
+    <input
+     id="f_${f.key}"
+     data-key="${f.key}"
+     type="${f.type==="array"?"text":f.type}"
+     value="${esc(shown)}"
+     ${required}
+     ${f.type==="url"?'placeholder="https://"':""}>
+   </div>
+  `;
+ }).join("");
+
+ $("editModal").classList.remove("hidden");
+}
+
+// CLOSE EDIT MODAL
+
+function closeEdit(){
+ $("editModal").classList.add("hidden");
+ editingCreator=null;
+ $("photoFile").value="";
+}
+
+// SAVE CREATOR PROFILE
+
+async function saveEdit(e){
+ e.preventDefault();
+
+ if(!editingCreator) return;
+
+ const btn=$("saveBtn");
+ let stage="Preparing update";
+
+ const withTimeout=(promise,ms,label)=>Promise.race([
+  promise,
+  new Promise((_,reject)=>
+   setTimeout(
+    ()=>reject(new Error(
+     label+" timed out. Check network and Supabase."
+    )),
+    ms
+   )
+  )
+ ]);
+
+ const changes={};
+
+ $("editFields").querySelectorAll("[data-key]").forEach(input=>{
+  const key=input.dataset.key;
+  const field=EDIT_FIELDS.find(f=>f.key===key);
+
+  changes[key]=field.type==="array"
+   ? input.value.split(",").map(x=>x.trim()).filter(Boolean)
+   : (input.value.trim()||null);
+ });
+
+ btn.disabled=true;
+ btn.textContent="Saving…";
+
+ try{
+  hideStatus("editStatus");
+
+  const photoFile=$("photoFile").files[0];
+
+  // UPLOAD NEW PHOTO
+
+  if(photoFile){
+   if(!["image/jpeg","image/png","image/webp"].includes(photoFile.type)){
+    throw new Error("Choose JPG, PNG or WEBP image.");
+   }
+
+   if(photoFile.size>1024*1024){
+    throw new Error("Photo maximum size is 1 MB.");
+   }
+
+   stage="Uploading photo";
+
+   status(
+    "Step 1/2: Uploading photo…",
+    "ok",
+    "editStatus"
+   );
+
+   const extension=
+    photoFile.type==="image/png"?"png":
+    photoFile.type==="image/webp"?"webp":"jpg";
+
+   const filePath=
+    `creator-photos/admin-${editingCreator.id}-${Date.now()}.${extension}`;
+
+   const uploadResult=await withTimeout(
+    db.storage.from(PHOTO_BUCKET).upload(
+     filePath,
+     photoFile,
+     {
+      upsert:false,
+      cacheControl:"0",
+      contentType:photoFile.type
+     }
+    ),
+    20000,
+    "Photo upload"
+   );
+
+   if(uploadResult.error) throw uploadResult.error;
+
+   const {data:publicData}=db.storage
+    .from(PHOTO_BUCKET)
+    .getPublicUrl(filePath);
+
+   if(!publicData?.publicUrl){
+    throw new Error("Could not generate public photo URL.");
+   }
+
+   changes.avatar_url=publicData.publicUrl;
+  }
+
+  // UPDATE DATABASE
+
+  stage="Updating database";
+
+  status(
+   "Step 2/2: Updating creator database…",
+   "ok",
+   "editStatus"
+  );
+
+  const savedId=editingCreator.id;
+
+  const updateResult=await withTimeout(
+   db.from(TABLE)
+    .update(changes)
+    .eq("id",savedId)
+    .select("id,avatar_url"),
+   20000,
+   "Database update"
+  );
+
+  if(updateResult.error) throw updateResult.error;
+
+  if(!updateResult.data || !updateResult.data.length){
+   throw new Error(
+    "Database updated 0 rows. Check UPDATE RLS policy."
+   );
+  }
+
+  // RE-FETCH SAVED CREATOR RECORD
+
+  stage="Verifying saved profile";
+
+  const verifyResult=await withTimeout(
+   db.from(TABLE)
+    .select(
+     "id,name,avatar_url,instagram_url,instagram_followers,youtube_url,youtube_subscribers,niches,content_types,languages,collaboration_types,bio,portfolio_url,created_at"
+    )
+    .eq("id",savedId)
+    .single(),
+   20000,
+   "Verify saved creator"
+  );
+
+  if(verifyResult.error) throw verifyResult.error;
+
+  if(!verifyResult.data){
+   throw new Error("Saved creator could not be reloaded.");
+  }
+
+  const idx=creators.findIndex(
+   c=>String(c.id)===String(savedId)
+  );
+
+  if(idx>=0){
+   creators[idx]=verifyResult.data;
+  }else{
+   creators.unshift(verifyResult.data);
+  }
+
+  populateCategoryFilter();
+  updateStats();
+  renderCreators();
+
+  closeEdit();
+
+  status(
+   "Creator profile and photo updated successfully."
+  );
+
+ }catch(err){
+  console.error(
+   "BGC creator save error:",
+   stage,
+   err
+  );
+
+  status(
+   stage+" failed: "+(err.message||"Unknown error"),
+   "err",
+   "editStatus"
+  );
+
+ }finally{
+  btn.disabled=false;
+  btn.textContent="Save changes";
+ }
+}
+
+// EDIT MODAL EVENTS
+
+$("closeModal").addEventListener("click",closeEdit);
+$("cancelEdit").addEventListener("click",closeEdit);
+
+$("editModal").addEventListener("click",e=>{
+ if(e.target===$("editModal")){
+  closeEdit();
+ }
+});
+
+$("editForm").addEventListener("submit",saveEdit);
+
+// DELETE CREATOR PROFILE
+
+async function deleteCreator(id){
+ const record=creators.find(
+  c=>String(c.id)===String(id)
+ );
+
+ if(!record) return;
+
+ const confirmed=confirm(
+  `Do you want to permanently delete "${record.name||"this creator"}" profile? This cannot be undone.`
+ );
+
+ if(!confirmed) return;
+
+ try{
+  const {data,error}=await db
+   .from(TABLE)
+   .delete()
+   .eq("id",id)
+   .select("id");
+
+  if(error) throw error;
+
+  if(!data||!data.length){
+   throw new Error(
+    "No row deleted. Check Supabase RLS/DELETE permission."
+   );
+  }
+
+  creators=creators.filter(
+   c=>String(c.id)!==String(id)
+  );
+
+  populateCategoryFilter();
+  updateStats();
+  renderCreators();
+
+  status("Creator profile deleted successfully.");
+
+ }catch(err){
+  console.error(err);
+
+  status(
+   "Delete failed: "+(
+    err.message||"Check Supabase DELETE permission."
+   ),
+   "err"
+  );
+ }
+}
+
+// AUTH STATE CHANGE
+
+db.auth.onAuthStateChange(event=>{
+ if(event==="SIGNED_OUT"){
+  showLogin();
+ }
+});
+
+// INITIAL SESSION CHECK
+
+(async()=>{
+ try{
+  if(await checkAdmin()){
+   await loadCreators();
+  }
+ }catch(err){
+  console.error(err);
+
+  status(
+   err.message||"Unable to verify admin session.",
+   "err",
+   "loginStatus"
+  );
+ }
+})();
+
+</script>
+
+</body>
+</html>
