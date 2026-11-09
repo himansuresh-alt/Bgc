@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171719">
+<title>BGC Creator Network</title>
+
+<style>
+:root {
+  --ink:#20372c;
+  --muted:#718078;
+  --line:#dce6dc;
+  --pink:#df5794;
+  --sage:#edf3ed;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:#f5f7f2;
+  color:var(--ink);
+  font-family:Inter,system-ui,Arial,sans-serif;
+}
+
+button,input,textarea { font:inherit; }
+
+.bgc-wrap {
+  max-width:1100px;
+  margin:auto;
+  padding:20px 16px 55px;
+}
+
+.bgc-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.bgc-eyebrow {
+  font-size:10px;
+  letter-spacing:2px;
+  font-weight:850;
+  color:#718578;
+}
+
+.bgc-brand {
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:-.8px;
+}
+
+.bgc-btn {
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:11px 16px;
+  background:white;
+  color:var(--ink);
+  font-size:12px;
+  font-weight:850;
+  cursor:pointer;
+  text-decoration:none;
+}
+
+.bgc-btn-dark {
+  background:var(--ink);
+  color:white;
+  border-color:var(--ink);
+}
+
+.bgc-hero {
+  margin-top:20px;
+  padding:18px 12px;
+  border:1px solid var(--line);
+  border-radius:24px;
+  background:linear-gradient(145deg,#fbfcf9,#eaf1e9);
+  overflow:hidden;
+}
+
+.bgc-intro { text-align:center; }
+
+.bgc-intro h1 {
+  font-size:clamp(23px,4vw,34px);
+  margin:5px 0;
+  letter-spacing:-1px;
+}
+
+.bgc-intro p {
+  font-size:13px;
+  color:var(--muted);
+  margin:0;
+}
+
+.bgc-stage {
+  height:460px;
+  max-width:720px;
+  margin:10px auto 0;
+  position:relative;
+  overflow:hidden;
+  touch-action:pan-y;
+}
+
+.bgc-orbit {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:min(72vw,390px);
+  height:min(72vw,390px);
+  transform:translate(-50%,-50%);
+  border:1px solid #bdcdbf;
+  border-radius:50%;
+  box-shadow:
+    0 0 0 24px #ffffff55,
+    0 0 0 25px #cbd9cc80;
+}
+
+.bgc-orbit:before {
+  content:"";
+  position:absolute;
+  inset:34px;
+  border:1px dashed #cbd8cc;
+  border-radius:50%;
+}
+
+.bgc-sun {
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(
+    circle at 35% 25%,
+    #fff1f7,
+    #ed83b2 45%,
+    #9849b3
+  );
+  box-shadow:
+    0 0 28px #e45b9666,
+    0 0 70px #e45b9633;
+  border:5px solid white;
+  z-index:5;
+}
+
+.bgc-sun svg { width:47px; }
+
+.bgc-sunlabel {
+  position:absolute;
+  top:calc(50% + 60px);
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1.5px;
+  color:#96617d;
+  white-space:nowrap;
+  z-index:6;
+}
+
+.bgc-orbit-card {
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:82px;
+  height:110px;
+  margin:-55px 0 0 -41px;
+  border:1px solid white;
+  border-radius:15px;
+  background:#ffffffed;
+  box-shadow:0 8px 22px #314c3b20;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:7px 4px;
+  cursor:pointer;
+  will-change:transform;
+}
+
+.bgc-orbit-card:focus-visible {
+  outline:2px solid #557b60;
+  outline-offset:3px;
+}
+
+.bgc-avatar {
+  width:51px;
+  height:51px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  border:3px solid white;
+  box-shadow:0 2px 9px #243c3020;
+  margin-bottom:5px;
+  overflow:hidden;
+  background:#e5eee5;
+  flex-shrink:0;
+}
+
+.bgc-avatar img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.bgc-cname {
+  font-size:10px;
+  font-weight:900;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.bgc-niche {
+  font-size:8px;
+  color:var(--muted);
+  margin-top:3px;
+  white-space:nowrap;
+}
+
+.bgc-followers {
+  font-size:8px;
+  color:#bb5785;
+  font-weight:900;
+  margin-top:5px;
+}
+
+.bgc-empty-orbit {
+  position:absolute;
+  top:calc(50% + 95px);
+  left:50%;
+  transform:translateX(-50%);
+  text-align:center;
+  width:90%;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.bgc-below {
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.bgc-section { margin-top:30px; }
+
+.bgc-section h2 {
+  font-size:21px;
+  margin:0;
+}
+
+.bgc-section p {
+  font-size:12px;
+  color:var(--muted);
+  margin:4px 0 13px;
+}
+
+.bgc-filters {
+  display:flex;
+  gap:7px;
+  overflow-x:auto;
+  padding:2px 0 13px;
+  scrollbar-width:none;
+}
+
+.bgc-filters::-webkit-scrollbar { display:none; }
+
+.bgc-chip {
+  white-space:nowrap;
+  border:1px solid var(--line);
+  background:white;
+  border-radius:30px;
+  padding:8px 13px;
+  font-size:11px;
+  font-weight:800;
+  color:#617267;
+  cursor:pointer;
+}
+
+.bgc-chip.active {
+  background:var(--ink);
+  color:white;
+  border-color:var(--ink);
+}
+
+.bgc-grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+
+.bgc-person {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:13px;
+  min-width:0;
+  cursor:pointer;
+}
+
+.bgc-person .bgc-avatar {
+  width:62px;
+  height:62px;
+  font-size:28px;
+}
+
+.bgc-person h3 {
+  font-size:14px;
+  margin:5px 0;
+}
+
+.bgc-person p {
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.5;
+  margin:0;
+}
+
+.bgc-person a {
+  display:inline-block;
+  margin-top:9px;
+  color:#a84479;
+  font-size:11px;
+  font-weight:900;
+  text-decoration:none;
+}
+
+.bgc-empty {
+  padding:25px;
+  text-align:center;
+  color:var(--muted);
+  background:white;
+  border:1px dashed var(--line);
+  border-radius:15px;
+  grid-column:1/-1;
+  font-size:13px;
+}
+  .bgc-modal {
+  position:fixed;
+  inset:0;
+  background:#14251edb;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  z-index:9999;
+}
+
+.bgc-modal.show { display:flex; }
+
+.bgc-profile-box,
+.bgc-form-box {
+  background:white;
+  border-radius:21px;
+  padding:22px;
+  width:100%;
+  max-width:540px;
+  max-height:92vh;
+  overflow:auto;
+}
+
+.bgc-profile-box {
+  max-width:360px;
+  text-align:center;
+}
+
+.bgc-profile-box .bgc-avatar {
+  width:82px;
+  height:82px;
+  font-size:35px;
+  margin:0 auto 10px;
+}
+
+.bgc-profile-box h2 {
+  margin:5px 0;
+  font-size:21px;
+}
+
+.bgc-profile-box p {
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.bgc-tag {
+  display:inline-block;
+  background:#edf3ed;
+  border-radius:30px;
+  padding:6px 9px;
+  font-size:10px;
+  font-weight:800;
+  margin:3px;
+}
+
+.bgc-profile-link {
+  display:inline-block;
+  margin-top:12px;
+  background:var(--ink);
+  color:white;
+  padding:11px 17px;
+  border-radius:30px;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:850;
+}
+
+.bgc-form-box h2 {
+  margin:0 0 5px;
+  font-size:22px;
+}
+
+.bgc-form-sub {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
+  margin:0 0 18px;
+}
+
+.bgc-form-group { margin-bottom:14px; }
+
+.bgc-form-group label,
+.bgc-form-label {
+  display:block;
+  font-size:12px;
+  font-weight:850;
+  margin-bottom:7px;
+}
+
+.bgc-field {
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px;
+  font-size:13px;
+  background:#fcfdfb;
+  color:var(--ink);
+}
+
+.bgc-field:focus {
+  outline:2px solid #dceadd;
+  border-color:#8ca990;
+}
+
+.bgc-checks {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.bgc-check {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:8px 10px;
+  font-size:11px;
+  font-weight:700;
+}
+
+.bgc-check input { accent-color:#315b40; }
+
+.bgc-hint {
+  font-size:10px;
+  color:var(--muted);
+  line-height:1.5;
+  margin-top:5px;
+}
+
+.bgc-submit {
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:14px;
+  background:var(--ink);
+  color:white;
+  font-size:14px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.bgc-submit:disabled {
+  opacity:.6;
+  cursor:wait;
+}
+
+.bgc-close {
+  border:1px solid var(--line);
+  background:white;
+  border-radius:30px;
+  padding:10px 14px;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.bgc-status {
+  font-size:12px;
+  line-height:1.5;
+  margin-top:10px;
+  color:#52745a;
+  overflow-wrap:anywhere;
+}
+
+@media(max-width:700px) {
+  .bgc-wrap { padding:14px 12px 40px; }
+  .bgc-stage { height:410px; }
+  .bgc-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .bgc-orbit {
+    width:min(77vw,340px);
+    height:min(77vw,340px);
+  }
+  .bgc-orbit-card {
+    width:74px;
+    height:102px;
+    margin:-51px 0 0 -37px;
+  }
+  .bgc-orbit-card .bgc-avatar {
+    width:46px;
+    height:46px;
+  }
+  .bgc-sun { width:88px;height:88px; }
+  .bgc-top { align-items:flex-start; }
+  .bgc-brand { font-size:19px; }
+  .bgc-top .bgc-btn {
+    padding:10px 11px;
+    font-size:10px;
+  }
+}
+
+@media(max-width:390px) {
+  .bgc-stage { height:385px; }
+}
+
+  /* CREATOR FULL PHOTO FLIP CARD - BGC THEME */
+
+.bgc-hero {
+  background:
+    radial-gradient(900px 520px at 85% -6%,#3d1522 0,transparent 62%),
+    #141416;
+  border-color:#34343a;
+}
+
+.bgc-intro h1 { color:#fff; }
+.bgc-intro p { color:#aaa7ae; }
+.bgc-eyebrow { color:#d8bd8f; }
+
+.bgc-orbit {
+  border-color:#76504a;
+  box-shadow:0 0 0 24px #d8bd8f0a,0 0 0 25px #d8bd8f20;
+}
+
+.bgc-orbit-card {
+  width:104px;
+  height:140px;
+  margin:-70px 0 0 -52px;
+  padding:0;
+  border-radius:14px;
+  border:1px solid #d8bd8f80;
+  background:#202024;
+  perspective:1000px;
+  overflow:visible;
+  box-shadow:0 18px 35px #0009;
+}
+
+.bgc-orbit-card .creator-flip-inner {
+  position:relative;
+  width:100%;
+  height:100%;
+  transform-style:preserve-3d;
+  transition:transform .7s cubic-bezier(.2,.75,.25,1);
+}
+
+.bgc-orbit-card.flipped .creator-flip-inner {
+  transform:rotateY(180deg);
+}
+
+.creator-face {
+  position:absolute;
+  inset:0;
+  border-radius:13px;
+  overflow:hidden;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+}
+
+.creator-front img {
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.creator-front:after {
+  content:"";
+  position:absolute;
+  inset:55% 0 0;
+  background:linear-gradient(transparent,#000d);
+}
+
+.creator-front-info {
+  position:absolute;
+  bottom:9px;
+  left:7px;
+  right:7px;
+  z-index:2;
+  text-align:left;
+  color:white;
+}
+
+.creator-front-info strong {
+  display:block;
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.creator-front-info span {
+  display:block;
+  color:#e2c18d;
+  font-size:9px;
+  margin-top:3px;
+}
+
+.creator-back {
+  transform:rotateY(180deg);
+  padding:10px 8px;
+  background:
+    radial-gradient(circle at top right,#54202f 0,transparent 55%),
+    #202024;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  text-align:left;
+}
+
+.creator-back strong {
+  font-family:Georgia,serif;
+  font-size:13px;
+  line-height:1.2;
+  overflow-wrap:anywhere;
+}
+
+.creator-back p {
+  font-size:9px;
+  line-height:1.5;
+  color:#d4d0d3;
+  margin:6px 0;
+}
+
+.creator-back .creator-ig {
+  display:block;
+  text-align:center;
+  background:#8d1831;
+  color:#fff;
+  border:1px solid #d8bd8f;
+  border-radius:7px;
+  padding:7px 3px;
+  text-decoration:none;
+  font-size:9px;
+  font-weight:900;
+  margin-top:5px;
+}
+
+.bgc-sunlabel { color:#d8bd8f; }
+
+@media(max-width:700px) {
+  .bgc-orbit-card {
+    width:88px;
+    height:118px;
+    margin:-59px 0 0 -44px;
+  }
+}
+
+/* ===== BGC CREATOR UNIVERSE PREMIUM CINEMATIC THEME ===== */
+:root{--ink:#f7f1eb;--muted:#b8adb1;--line:#59434b;--pink:#d8bd8f;--sage:#211e22}
+html{scroll-behavior:smooth}
+body{background:#111113;color:#f7f1eb;font-family:Inter,system-ui,Arial,sans-serif}
+.bgc-wrap{max-width:1180px;padding:18px 16px 60px}
+.bgc-top{padding:4px 2px 14px}
+.bgc-eyebrow{color:#d8bd8f;letter-spacing:2.5px}
+.bgc-brand{color:#fff;font-family:Georgia,serif;letter-spacing:-.7px}
+.bgc-btn{background:#211e22;color:#f7f1eb;border-color:#76505a}
+.bgc-btn-dark{background:#8d1831;border-color:#d8bd8f;color:#fff}
+.bgc-hero{margin-top:0;position:relative;isolation:isolate;overflow:hidden;margin-top:12px;padding:0 12px 18px;border:1px solid #76505a;border-radius:30px;min-height:790px;background:#171719;box-shadow:0 24px 80px #0009}
+.ugc-montage{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#171719}.ugc-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;opacity:0;transition:opacity .5s}.ugc-video.is-playing{opacity:1}.ugc-video.is-playing + .ugc-montage{opacity:0;transition:opacity .6s}
+.ugc-shot{position:absolute;inset:-3%;background-size:cover;background-position:center;opacity:0;transform:scale(1.08);animation:ugcFade 30s infinite}
+.shot-one{background-image:url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1800&q=85');animation-delay:0s}
+.shot-two{background-image:url('https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1800&q=85');animation-delay:6s}
+.shot-three{background-image:url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1800&q=85');animation-delay:12s}
+.shot-four{background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff4?auto=format&fit=crop&w=1800&q=85');animation-delay:18s}
+.shot-five{background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85');animation-delay:24s}
+@keyframes ugcFade{0%,3%{opacity:0;transform:scale(1.08)}8%,20%{opacity:.48;transform:scale(1)}25%,100%{opacity:0;transform:scale(1.04)}}
+.ugc-shade{position:absolute;inset:0;background:linear-gradient(180deg,#100d0ee8 0%,#1c1018a8 38%,#111113f2 73%,#111113 100%),linear-gradient(90deg,#111113aa,transparent 65%)}
+.hero-content{position:relative;z-index:2;text-align:center;padding:48px 10px 0;max-width:850px;margin:auto}
+.hero-kicker{font-size:10px;font-weight:950;letter-spacing:3px;color:#d8bd8f}
+.hero-kicker span{padding:0 7px;color:#fff}
+.hero-live{display:inline-flex;align-items:center;gap:8px;margin-top:20px;padding:7px 12px;border:1px solid #d8bd8f66;border-radius:30px;background:#17171988;color:#f0d8b1;font-size:9px;letter-spacing:1.8px;font-weight:900}
+.hero-live i{width:6px;height:6px;border-radius:50%;background:#d8bd8f;box-shadow:0 0 12px #d8bd8f;animation:livePulse 1.5s infinite}
+@keyframes livePulse{50%{opacity:.3;transform:scale(.7)}}
+.hero-content h1{font-family:Georgia,serif;font-size:clamp(42px,7vw,78px);line-height:.98;letter-spacing:-3px;margin:20px 0 12px;color:#fff;text-shadow:0 8px 35px #000}
+.hero-content h1 em{font-style:normal;color:#d8bd8f}
+.hero-content p{font-size:14px;color:#eee2e5;margin:0}
+.hero-cta{display:inline-flex;align-items:center;gap:20px;margin-top:22px;padding:13px 20px;border-radius:40px;background:#8d1831;border:1px solid #d8bd8f;color:white;text-decoration:none;font-size:11px;font-weight:950;letter-spacing:1px;box-shadow:0 10px 35px #0008}
+.hero-cta span{font-size:17px;color:#f0d8b1}
+.hero-footnote{margin-top:19px;color:#d8bd8f;font-size:8px;font-weight:900;letter-spacing:2px}
+.bgc-stage{height:405px;max-width:760px;margin:0 auto;position:relative;overflow:hidden;touch-action:pan-y}
+.bgc-orbit{width:min(64vw,360px);height:min(64vw,360px);border-color:#d8bd8f99;box-shadow:0 0 0 20px #d8bd8f0c,0 0 0 21px #d8bd8f28,0 65px 70px #0008}
+.bgc-orbit:before{border-color:#d8bd8f88}
+.bgc-sun{width:94px;height:94px;background:radial-gradient(circle at 35% 25%,#fff,#d77ba9 45%,#8d1831);border:5px solid white;box-shadow:0 0 35px #e45b9666,0 0 70px #e45b9644;z-index:5}
+.bgc-sunlabel{color:#d8bd8f}
+.bgc-empty-orbit{color:#d9c8c9;top:calc(50% + 110px)}
+.bgc-below{color:#d8bd8f;font-size:9px;font-weight:900;letter-spacing:1.5px}
+.bgc-section{margin-top:38px}
+.bgc-section h2{font-family:Georgia,serif;color:#fff;font-size:27px}
+.bgc-section p{color:#b8adb1}
+.bgc-chip{background:#211e22;border-color:#59434b;color:#d6c9ca}
+.bgc-chip.active{background:#8d1831;border-color:#d8bd8f;color:#fff}
+.bgc-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.bgc-person.creator-grid-card{position:relative;padding:0;border:1px solid #d8bd8f66;border-radius:17px;overflow:hidden;aspect-ratio:3/4;background:#211e22;perspective:1100px;cursor:pointer;box-shadow:0 14px 35px #0007}
+.grid-flip-inner{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .75s cubic-bezier(.2,.75,.25,1)}
+.creator-grid-card.is-flipped .grid-flip-inner{transform:rotateY(180deg)}
+.grid-face{position:absolute;inset:0;overflow:hidden;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.grid-front img{width:100%;height:100%;display:block;object-fit:cover}
+.grid-front-overlay{position:absolute;inset:45% 0 0;padding:15px 12px 12px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(transparent,#080608ed);color:white}
+.grid-front-overlay strong{font-family:Georgia,serif;font-size:19px;line-height:1.1}
+.grid-front-overlay span{font-size:10px;color:#e7c99d;margin-top:5px}
+.grid-front-overlay small{font-size:8px;letter-spacing:1.4px;color:#fff9;margin-top:10px;font-weight:900}
+.grid-back{transform:rotateY(180deg);padding:18px 14px;background:radial-gradient(circle at 100% 0,#562132 0,transparent 48%),#211e22;color:#fff;display:flex;flex-direction:column;justify-content:center;text-align:left}
+.back-topline{font-size:8px;letter-spacing:1.6px;color:#d8bd8f;font-weight:950;margin-bottom:13px}
+.grid-back h3{font-family:Georgia,serif;font-size:clamp(16px,2vw,22px);margin:0;overflow-wrap:anywhere}
+.back-niche{font-size:10px;color:#e2bd91;margin-top:7px;line-height:1.5}
+.grid-back p{white-space:pre-line;font-size:10px;line-height:1.65;color:#d7cdd0;margin:13px 0}
+.creator-grid-ig{display:block;text-align:center;padding:11px 8px;background:#8d1831;border:1px solid #d8bd8f;border-radius:9px;color:white;text-decoration:none;font-size:9px;font-weight:950;letter-spacing:.8px;margin-top:5px}
+.flip-back-hint{margin-top:12px;text-align:center;color:#bca8a9;font-size:8px;letter-spacing:1px}
+.bgc-empty{background:#211e22;border-color:#59434b;color:#d8bd8f}
+.bgc-modal{background:#080608e8;backdrop-filter:blur(10px)}
+.bgc-profile-box,.bgc-form-box{background:#211e22;color:#fff;border:1px solid #76505a}
+.bgc-profile-box p,.bgc-form-sub,.bgc-hint{color:#c3b8bc}
+.bgc-tag{background:#3b202a;color:#e7c99d}
+.bgc-profile-link,.bgc-submit{background:#8d1831;border:1px solid #d8bd8f;color:#fff}
+.bgc-field{background:#171719;border-color:#59434b;color:#fff}
+.bgc-check{border-color:#59434b;color:#eee}
+.bgc-close{background:#30272c;color:#fff;border-color:#76505a}
+@media(max-width:700px){
+ .bgc-wrap{padding:13px 12px 42px}.bgc-top{align-items:center}.bgc-brand{font-size:20px}.bgc-top .bgc-btn{font-size:10px;padding:10px 12px}
+ .bgc-hero{min-height:710px;border-radius:23px;padding-left:8px;padding-right:8px}.hero-content{padding-top:38px}.hero-content h1{font-size:clamp(39px,11vw,58px);letter-spacing:-2px}.hero-content p{font-size:12px}.hero-footnote{font-size:7px;letter-spacing:1.3px}
+ .bgc-stage{height:365px}.bgc-orbit{width:min(76vw,320px);height:min(76vw,320px)}.bgc-orbit-card{width:88px;height:118px;margin:-59px 0 0 -44px}.bgc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.grid-back{padding:12px 10px}.grid-back h3{font-size:16px}.grid-back p{font-size:9px;line-height:1.5;margin:9px 0}.creator-grid-ig{font-size:8px;padding:9px 5px}.grid-front-overlay strong{font-size:17px}
+}
+@media(max-width:390px){.bgc-hero{min-height:680px}.bgc-stage{height:345px}.hero-content h1{font-size:39px}.grid-back{padding:10px 8px}.grid-back p{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.ugc-shot,.hero-live i{animation:none}.grid-flip-inner,.creator-flip-inner{transition:none}}
+
+/* HERO LAYER FIX: video / montage / shade / content */
+.bgc-hero{isolation:isolate}
+.ugc-video{z-index:0;pointer-events:none}
+.ugc-montage{z-index:1;transition:opacity .6s ease}
+.ugc-montage .ugc-shot{z-index:0}
+.ugc-shade{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,#100d0ee8 0%,#1c1018a8 38%,#111113f2 73%,#111113 100%),linear-gradient(90deg,#111113aa,transparent 65%)}
+.hero-content{z-index:3}
+.ugc-video.is-playing + .ugc-montage{opacity:0;pointer-events:none}
+
+  
+/* ===== BGC CLUB FIXED BOTTOM NAVIGATION ===== */
+
+.bgc-bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 99999;
+
+  width: calc(100% - 24px);
+  max-width: 520px;
+  min-height: 78px;
+
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 4px;
+
+  padding: 7px 5px;
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 23px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,.97),
+    rgba(239,242,247,.92)
+  );
+
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.18),
+    0 4px 9px rgba(0,0,0,.08);
+}
+
+.bgc-bottom-nav a {
+  min-width: 0;
+  height: 62px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  border-radius: 17px;
+  color: #656a73;
+
+  font-size: 10px;
+  font-weight: 800;
+  text-decoration: none;
+
+  -webkit-tap-highlight-color: transparent;
+  transition: .2s ease;
+}
+
+.bgc-bottom-nav svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.bgc-bottom-nav a.active {
+  color: #8d1831;
+  background: linear-gradient(145deg,#fff,#f0e9ec);
+  box-shadow:
+    0 5px 10px rgba(0,0,0,.10),
+    inset 0 1px 2px #fff;
+}
+
+.bgc-bottom-nav a:active {
+  transform: scale(.94);
+}
+
+body {
+  padding-bottom: 110px;
+}
+
+@media(min-width:701px) {
+  .bgc-bottom-nav {
+    bottom: 22px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<main class="bgc-wrap">
+
+<section class="bgc-hero">
+  <video class="ugc-video" autoplay muted loop playsinline preload="metadata" poster="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1800&q=85" aria-hidden="true">
+    <source src="assets/creator-hero/ugc-montage.mp4" type="video/mp4">
+  </video>
+  <div class="ugc-montage" aria-hidden="true">
+    <div class="ugc-shot shot-one"></div>
+    <div class="ugc-shot shot-two"></div>
+    <div class="ugc-shot shot-three"></div>
+    <div class="ugc-shot shot-four"></div>
+    <div class="ugc-shot shot-five"></div>
+  </div>
+  <div class="ugc-shade" aria-hidden="true"></div>
+  <div class="hero-content">
+    <div class="hero-kicker">BGC ORIGINALS <span>✦</span> CREATOR NETWORK</div>
+    <div class="hero-live"><i></i> A UNIVERSE OF CREATIVITY</div>
+    <h1>CREATE YOUR<br><em>OWN UNIVERSE.</em></h1>
+    <p>Discover creators. Build connections. Make things happen.</p>
+    <button class="hero-cta" type="button" id="bgcHeroJoin">JOIN FREE <span>↗</span></button>
+    <div class="hero-footnote">FASHION · FOOD · BEAUTY · TRAVEL · LIFESTYLE</div>
+  </div>
+  <div class="bgc-stage" id="bgcStage">
+    <div class="bgc-orbit"></div>
+    <div class="bgc-sun">
+      <svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="12" stroke="white" stroke-width="3.5"/><circle cx="24" cy="24" r="9" stroke="white" stroke-width="3.5"/><circle cx="35" cy="13" r="2.5" fill="white"/></svg>
+    </div>
+    <div class="bgc-sunlabel">INSTAGRAM · CREATOR SUN</div>
+    <div class="bgc-empty-orbit" id="bgcOrbitMessage">Loading creators...</div>
+  </div>
+  <div class="bgc-below">TAP A CREATOR CARD TO REVEAL THEIR PROFILE</div>
+</section>
+
+<section class="bgc-section" id="exploreCreators">
+
+  <h2>
+    Explore Creators
+    <span id="bgcTotal"
+      style="font-size:10px;color:#718078"></span>
+  </h2>
+
+  <p>Browse profiles by content category</p>
+
+  <div class="bgc-filters" id="bgcFilters"></div>
+
+  <div class="bgc-grid" id="bgcGrid"></div>
+
+</section>
+
+</main>
+
+<!-- CREATOR REGISTRATION -->
+
+<div class="bgc-modal" id="bgcRegisterModal">
+
+  <form class="bgc-form-box" id="bgcCreatorForm">
+
+    <h2>Add Creator Account</h2>
+
+    <p class="bgc-form-sub">
+      Join BGC Creator Network and connect with businesses.
+    </p>
+
+    <div class="bgc-form-group">
+      <label>Creator Name *</label>
+      <input class="bgc-field"
+        name="name"
+        required
+        minlength="2"
+        maxlength="60"
+        placeholder="Your name">
+    </div>
+
+    <div class="bgc-form-group">
+      <label>Profile Photo</label>
+
+      <input class="bgc-field"
+        type="file"
+        id="bgcPhoto"
+        accept="image/jpeg,image/png,image/webp">
+
+      <div class="bgc-hint">
+        JPG, PNG or WEBP. Maximum 1.5 MB.
+      </div>
+
+      <img id="bgcPhotoPreview"
+        alt="Photo preview"
+        style="display:none;width:75px;height:75px;border-radius:50%;object-fit:cover;margin-top:10px">
+    </div>
+
+    <div class="bgc-form-group">
+      <label>Instagram Profile URL *</label>
+      <input class="bgc-field"
+        name="instagram"
+        type="url"
+        required
+        placeholder="https://www.instagram.com/username">
+    </div>
+
+    <div class="bgc-form-group">
+      <label>Instagram Followers *</label>
+      <input class="bgc-field"
+        name="followers"
+        required
+        maxlength="30"
+        placeholder="Example: 18.5K">
+    </div>
+
+    <div class="bgc-form-group">
+      <label>YouTube Channel URL</label>
+      <input class="bgc-field"
+        name="youtube"
+        type="url"
+        placeholder="Optional">
+    </div>
+
+    <div class="bgc-form-group">
+      <label>YouTube Subscribers</label>
+      <input class="bgc-field"
+        name="youtubeSubs"
+        maxlength="30"
+        placeholder="Example: 5K">
+    </div>
+
+    <div class="bgc-form-group">
+      <span class="bgc-form-label">Content Categories *</span>
+      <div class="bgc-checks" id="bgcNiches"></div>
+      <div class="bgc-hint">
+        Select one or more categories.
+      </div>
+    </div>
+
+    <div class="bgc-form-group">
+      <span class="bgc-form-label">Content Type</span>
+      <div class="bgc-checks" id="bgcContentTypes"></div>
+    </div>
+
+    <div class="bgc-form-group">
+      <span class="bgc-form-label">Languages</span>
+      <div class="bgc-checks" id="bgcLanguages"></div>
+    </div>
+
+    <div class="bgc-form-group">
+      <span class="bgc-form-label">Collaboration Type</span>
+      <div class="bgc-checks" id="bgcCollabs"></div>
+    </div>
+
+    <div class="bgc-form-group">
+      <label>Short Bio</label>
+      <textarea class="bgc-field"
+        name="bio"
+        rows="3"
+        maxlength="300"
+        placeholder="Tell businesses about your content..."></textarea>
+    </div>
+
+    <div class="bgc-form-group">
+      <label>Portfolio / Media Kit URL</label>
+      <input class="bgc-field"
+        name="portfolio"
+        type="url"
+        placeholder="Optional">
+    </div>
+
+    <button class="bgc-submit"
+      type="submit"
+      id="bgcSubmit">
+      Submit Creator Profile →
+    </button>
+
+    <div class="bgc-status" id="bgcFormStatus"
+      role="status" aria-live="polite"></div>
+
+    <p class="bgc-hint">
+      Your creator name, photo, categories and submitted statistics
+      may appear publicly. Follower counts are self-reported.
+      Mobile number and WhatsApp are not collected.
+    </p>
+
+    <button type="button"
+      class="bgc-close"
+      id="bgcCloseRegister"
+      style="margin-top:12px;width:100%">
+      Cancel
+    </button>
+
+  </form>
+
+</div>
+  
+<!-- BGC CLUB FIXED NAVIGATION -->
+
+<nav class="bgc-bottom-nav" aria-label="BGC CLUB navigation">
+
+  <a href="index.html">
+    <svg viewBox="0 0 24 24">
+      <path d="m3 10 9-7 9 7"></path>
+      <path d="M5 9v12h14V9"></path>
+      <path d="M9 21v-7h6v7"></path>
+    </svg>
+    <span>Home</span>
+  </a>
+
+  <a href="members.html">
+    <svg viewBox="0 0 24 24">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+      <circle cx="9" cy="7" r="4"></circle>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+    </svg>
+    <span>Members</span>
+  </a>
+
+  <a href="creators.html" class="active" aria-current="page">
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+      <circle cx="12" cy="12" r="4"></circle>
+      <circle cx="18" cy="6" r="1"></circle>
+    </svg>
+    <span>Creators</span>
+  </a>
+
+  <a href="bgc-event-providers.html">
+    <svg viewBox="0 0 24 24">
+      <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+      <path d="M16 3v4"></path>
+      <path d="M8 3v4"></path>
+      <path d="M3 10h18"></path>
+      <path d="M8 14h.01"></path>
+      <path d="M12 14h.01"></path>
+      <path d="M16 14h.01"></path>
+    </svg>
+    <span>Events</span>
+  </a>
+
+</nav>
+
+
+<!-- CREATOR PROFILE VIEW -->
+
+<div class="bgc-modal" id="bgcProfileModal">
+  <div class="bgc-profile-box" id="bgcProfileContent"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+/* =========================================
+   BGC CREATOR NETWORK
+   SEPARATE SUPABASE MODULE
+========================================= */
+
+(() => {
+"use strict";
+
+/* SUPABASE CONNECTION */
+
+const SUPABASE_URL =
+  "https://acgbtsfuwybbtzakvmjf.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+
+const TABLE = "bgc_creators";
+const BUCKET = "bgc-creator-photos";
+
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+/* CATEGORY LIST */
+
+const categories = [
+  "Fashion",
+  "Lifestyle",
+  "Beauty",
+  "Food",
+  "Travel",
+  "Technology",
+  "Business",
+  "Education",
+  "Fitness",
+  "Parenting",
+  "Entertainment",
+  "Comedy",
+  "Automobile",
+  "Finance",
+  "Photography",
+  "Gaming",
+  "Home & Decor",
+  "Motivation",
+  "Art & Craft",
+  "Events"
+];
+
+const contentTypes = [
+  "Reels",
+  "Posts",
+  "Stories",
+  "Videos",
+  "YouTube Shorts",
+  "Live"
+];
+
+const languages = [
+  "Tamil",
+  "English",
+  "Hindi",
+  "Malayalam",
+  "Telugu",
+  "Kannada",
+  "Other"
+];
+
+const collaborationTypes = [
+  "Paid",
+  "Barter",
+  "Paid / Barter"
+];
+
+/* STATE */
+
+let creators = [];
+let activeCategory = "All";
+
+let orbitCards = [];
+let totalRotation = 0;
+let angle = 0;
+let lastFrame = 0;
+
+let dragging = false;
+let lastX = 0;
+
+let realtimeChannel = null;
+let photoFile = null;
+let photoPreviewURL = null;
+
+const stage = document.getElementById("bgcStage");
+const grid = document.getElementById("bgcGrid");
+const filters = document.getElementById("bgcFilters");
+
+/* CHECKBOX GENERATOR */
+
+function createChecks(id, values, name) {
+  const container = document.getElementById(id);
+
+  container.innerHTML = "";
+
+  values.forEach(value => {
+    const label = document.createElement("label");
+    label.className = "bgc-check";
+
+    const input = document.createElement("input");
+
+    input.type = "checkbox";
+    input.name = name;
+    input.value = value;
+
+    label.append(
+      input,
+      document.createTextNode(" " + value)
+    );
+
+    container.appendChild(label);
+  });
+}
+
+createChecks("bgcNiches", categories, "niches");
+
+createChecks(
+  "bgcContentTypes",
+  contentTypes,
+  "content"
+);
+
+createChecks(
+  "bgcLanguages",
+  languages,
+  "languages"
+);
+
+createChecks(
+  "bgcCollabs",
+  collaborationTypes,
+  "collab"
+);
+
+/* SELECTED CHECKBOX VALUES */
+
+function selectedValues(name) {
+  return [
+    ...document.querySelectorAll(
+      `#bgcCreatorForm input[name="${name}"]:checked`
+    )
+  ].map(input => input.value);
+}
+
+/* SAFE URL VALIDATION */
+
+function safeExternalURL(value) {
+  try {
+    const url = new URL(value);
+
+    if (
+      url.protocol !== "https:" &&
+      url.protocol !== "http:"
+    ) {
+      return "#";
+    }
+
+    return url.href;
+
+  } catch {
+    return "#";
+  }
+}
+
+function validInstagramURL(value) {
+  try {
+    const url = new URL(value);
+
+    return (
+      url.protocol === "https:" &&
+      (
+        url.hostname === "instagram.com" ||
+        url.hostname.endsWith(".instagram.com")
+      )
+    );
+
+  } catch {
+    return false;
+  }
+}
+
+function validOptionalURL(value) {
+  if (!value) return true;
+
+  try {
+    const url = new URL(value);
+
+    return (
+      url.protocol === "https:" ||
+      url.protocol === "http:"
+    );
+
+  } catch {
+    return false;
+  }
+}
+
+/* SAFE TEXT */
+
+function makeAvatar(person) {
+  const box = document.createElement("div");
+  box.className = "bgc-avatar";
+
+  if (person.avatar_url) {
+    const image = document.createElement("img");
+
+    image.src = person.avatar_url;
+    image.alt = person.name || "Creator";
+    image.loading = "lazy";
+
+    box.appendChild(image);
+
+  } else {
+    box.textContent = "✨";
+  }
+
+  return box;
+}
+
+/* FETCH CREATOR RECORDS */
+
+async function fetchCreators() {
+
+  const { data, error } = await db
+    .from(TABLE)
+    .select(`
+      id,
+      name,
+      avatar_url,
+      instagram_url,
+      instagram_followers,
+      youtube_url,
+      youtube_subscribers,
+      niches,
+      content_types,
+      languages,
+      collaboration_types,
+      bio,
+      portfolio_url,
+      created_at
+    `)
+    .order("created_at", {
+      ascending: false
+    });
+
+  if (error) {
+    console.error("BGC Creator fetch error:", error);
+
+    document.getElementById("bgcTotal").textContent =
+      " • Unable to load creators";
+
+    document.getElementById("bgcOrbitMessage").textContent =
+      "Unable to load creator profiles. Please refresh.";
+
+    return;
+  }
+
+  creators = data || [];
+
+  renderFilters();
+  renderGrid();
+  makeOrbit();
+}
+
+/* CATEGORY FILTERS */
+
+function renderFilters() {
+
+  filters.innerHTML = "";
+
+  const allCategories = ["All", ...categories];
+
+  allCategories.forEach(category => {
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+
+    button.className =
+      "bgc-chip" +
+      (activeCategory === category ? " active" : "");
+
+    button.textContent = category;
+
+    button.addEventListener("click", () => {
+
+      activeCategory = category;
+
+      renderFilters();
+      renderGrid();
+
+    });
+
+    filters.appendChild(button);
+
+  });
+
+}
+
+/* CATEGORY LISTING */
+
+function renderGrid() {
+  const list = activeCategory === "All"
+    ? creators
+    : creators.filter(person => (person.niches || []).includes(activeCategory));
+
+  document.getElementById("bgcTotal").textContent = " • " + creators.length + " creators";
+  grid.innerHTML = "";
+
+  if (!list.length) {
+    const empty = document.createElement("div");
+    empty.className = "bgc-empty";
+    empty.textContent = "No creators in this category yet.";
+    grid.appendChild(empty);
+    return;
+  }
+
+  list.forEach(person => {
+    const card = document.createElement("article");
+    card.className = "bgc-person creator-grid-card";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", "Flip " + (person.name || "creator") + " profile card");
+
+    const inner = document.createElement("div");
+    inner.className = "grid-flip-inner";
+    const front = document.createElement("div");
+    front.className = "grid-face grid-front";
+    const back = document.createElement("div");
+    back.className = "grid-face grid-back";
+
+    const photo = document.createElement("img");
+    photo.src = person.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85";
+    photo.alt = person.name || "Creator";
+    photo.loading = "lazy";
+    photo.onerror = () => { photo.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=900&q=85"; };
+
+    const frontOverlay = document.createElement("div");
+    frontOverlay.className = "grid-front-overlay";
+    const name = document.createElement("strong");
+    name.textContent = person.name || "Creator";
+    const niche = document.createElement("span");
+    niche.textContent = (person.niches || ["Creator"])[0];
+    const flipHint = document.createElement("small");
+    flipHint.textContent = "TAP TO DISCOVER ↗";
+    frontOverlay.append(name, niche, flipHint);
+    front.append(photo, frontOverlay);
+
+    const backTop = document.createElement("div");
+    backTop.className = "back-topline";
+    backTop.textContent = "BGC CREATOR PROFILE";
+    const backName = document.createElement("h3");
+    backName.textContent = person.name || "Creator";
+    const backNiche = document.createElement("div");
+    backNiche.className = "back-niche";
+    backNiche.textContent = (person.niches || []).join(" · ") || "Creator";
+    const details = document.createElement("p");
+    details.textContent = (person.instagram_followers || "—") + " followers\nContent: " + (person.content_types || []).join(", ") + "\nLanguages: " + (person.languages || []).join(", ") + "\nCollab: " + (person.collaboration_types || []).join(", ");
+    const instagram = document.createElement("a");
+    instagram.className = "creator-grid-ig";
+    instagram.href = safeExternalURL(person.instagram_url);
+    instagram.target = "_blank";
+    instagram.rel = "noopener noreferrer";
+    instagram.textContent = "VIEW INSTAGRAM ↗";
+    instagram.addEventListener("click", event => event.stopPropagation());
+    const flipBack = document.createElement("small");
+    flipBack.className = "flip-back-hint";
+    flipBack.textContent = "TAP CARD TO FLIP BACK";
+    back.append(backTop, backName, backNiche, details, instagram, flipBack);
+    inner.append(front, back);
+    card.appendChild(inner);
+
+    const flip = () => card.classList.toggle("is-flipped");
+    card.addEventListener("click", event => { if (!event.target.closest("a")) flip(); });
+    card.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); flip(); } });
+    grid.appendChild(card);
+  });
+}
+
+/* PROFILE DETAILS */
+
+function showProfile(person) {
+
+  const box =
+    document.getElementById("bgcProfileContent");
+
+  box.innerHTML = "";
+
+  const avatar = makeAvatar(person);
+
+  avatar.style.width = "82px";
+  avatar.style.height = "82px";
+  avatar.style.fontSize = "35px";
+  avatar.style.margin = "0 auto 10px";
+
+  const title = document.createElement("h2");
+  title.textContent = person.name;
+
+  const bio = document.createElement("p");
+  bio.textContent =
+    person.bio || "BGC Creator Network member";
+
+  const tags = document.createElement("div");
+
+  (person.niches || []).forEach(niche => {
+
+    const tag = document.createElement("span");
+
+    tag.className = "bgc-tag";
+    tag.textContent = niche;
+
+    tags.appendChild(tag);
+
+  });
+
+  const stats = document.createElement("p");
+
+  stats.textContent =
+    (person.instagram_followers || "—") +
+    " Instagram followers";
+
+  const details = document.createElement("p");
+
+  details.textContent =
+    "Content: " +
+    (person.content_types || []).join(", ") +
+    " | Languages: " +
+    (person.languages || []).join(", ") +
+    " | Collaboration: " +
+    (person.collaboration_types || []).join(", ");
+
+  const link = document.createElement("a");
+
+  link.className = "bgc-profile-link";
+  link.href = safeExternalURL(person.instagram_url);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "Open Instagram ↗";
+
+  const close = document.createElement("button");
+
+  close.type = "button";
+  close.className = "bgc-close";
+  close.textContent = "Close";
+  close.style.marginLeft = "8px";
+
+  close.addEventListener("click", () => {
+    document
+      .getElementById("bgcProfileModal")
+      .classList.remove("show");
+  });
+
+  box.append(
+    avatar,
+    title,
+    bio,
+    tags,
+    stats,
+    details,
+    link,
+    close
+  );
+
+  document
+    .getElementById("bgcProfileModal")
+    .classList.add("show");
+
+}
+
+  /* =========================================
+   INFINITE CREATOR UNIVERSE
+========================================= */
+
+function makeOrbit() {
+  stage.querySelectorAll(".bgc-orbit-card").forEach(card => card.remove());
+  orbitCards = [];
+  const message = document.getElementById("bgcOrbitMessage");
+  if (!creators.length) {
+    message.style.display = "block";
+    message.textContent = "Be the first creator to join BGC Universe ✦";
+    return;
+  }
+  message.style.display = "none";
+  const visibleCount = Math.min(window.innerWidth < 700 ? 5 : 8, creators.length);
+  for (let i = 0; i < visibleCount; i++) {
+    const card = document.createElement("div");
+    card.className = "bgc-orbit-card";
+    card.tabIndex = 0;
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-label", "Flip creator profile");
+    const inner = document.createElement("div");
+    inner.className = "creator-flip-inner";
+    const front = document.createElement("div");
+    front.className = "creator-face creator-front";
+    const back = document.createElement("div");
+    back.className = "creator-face creator-back";
+    inner.append(front, back);
+    card.appendChild(inner);
+    const flip = () => card.classList.toggle("flipped");
+    card.addEventListener("click", event => { if (!event.target.closest("a")) flip(); });
+    card.addEventListener("keydown", event => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); flip(); } });
+    orbitCards.push(card);
+    stage.appendChild(card);
+  }
+  layoutOrbit();
+}
+
+function layoutOrbit() {
+  if (!creators.length || !orbitCards.length) return;
+  const width = stage.clientWidth;
+  const height = stage.clientHeight;
+  const radiusX = Math.min(width * .39, 170);
+  const radiusY = Math.min(height * .34, 140);
+  const queueShift = Math.floor(totalRotation / 360) % creators.length;
+
+  orbitCards.forEach((card, i) => {
+    const creatorIndex = (i + queueShift) % creators.length;
+    const person = creators[creatorIndex];
+    card.dataset.creatorIndex = creatorIndex;
+    const front = card.querySelector(".creator-front");
+    const back = card.querySelector(".creator-back");
+    front.replaceChildren();
+    back.replaceChildren();
+
+    const photo = document.createElement("img");
+    photo.src = person.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80";
+    photo.alt = person.name || "Creator";
+    photo.loading = "lazy";
+    const frontInfo = document.createElement("div");
+    frontInfo.className = "creator-front-info";
+    const name = document.createElement("strong");
+    name.textContent = person.name || "Creator";
+    const niche = document.createElement("span");
+    niche.textContent = (person.niches || ["Creator"])[0];
+    frontInfo.append(name, niche);
+    front.append(photo, frontInfo);
+
+    const backName = document.createElement("strong");
+    backName.textContent = person.name || "Creator";
+    const details = document.createElement("p");
+    details.textContent = (person.instagram_followers || "—") + " followers\n" + "Content: " + (person.content_types || []).join(", ") + "\nLanguages: " + (person.languages || []).join(", ") + "\nCollab: " + (person.collaboration_types || []).join(", ");
+    const instagram = document.createElement("a");
+    instagram.className = "creator-ig";
+    instagram.href = safeExternalURL(person.instagram_url);
+    instagram.target = "_blank";
+    instagram.rel = "noopener noreferrer";
+    instagram.textContent = "INSTAGRAM ↗";
+    instagram.addEventListener("click", event => event.stopPropagation());
+    back.append(backName, details, instagram);
+
+    const radians = (angle + i * 360 / orbitCards.length) * Math.PI / 180;
+    const x = Math.sin(radians) * radiusX;
+    const y = Math.cos(radians) * radiusY;
+    const depth = (Math.cos(radians) + 1) / 2;
+    const scale = .78 + depth * .22;
+    card.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`;
+    card.style.zIndex = String(2 + Math.round(depth * 5));
+  });
+}
+
+/* UGC VIDEO: use the video when the local MP4 is present; otherwise CSS montage remains visible. */
+const ugcVideo = document.querySelector(".ugc-video");
+if (ugcVideo) {
+  ugcVideo.addEventListener("playing", () => ugcVideo.classList.add("is-playing"));
+  ugcVideo.addEventListener("error", () => ugcVideo.classList.remove("is-playing"));
+  const playUGC = ugcVideo.play();
+  if (playUGC && typeof playUGC.catch === "function") playUGC.catch(() => {});
+}
+
+/* CONTINUOUS ROTATION */
+
+function animateOrbit(time) {
+
+  if (!document.hidden && lastFrame) {
+
+    const delta = Math.min(40, time - lastFrame);
+
+    // Constant automatic rotation.
+    totalRotation += 13 * delta / 1000;
+
+    angle = ((totalRotation % 360) + 360) % 360;
+
+    layoutOrbit();
+
+  }
+
+  lastFrame = time;
+
+  requestAnimationFrame(animateOrbit);
+
+}
+
+requestAnimationFrame(animateOrbit);
+
+/* DRAG AND SWIPE */
+
+stage.addEventListener("pointerdown", event => {
+
+  if (event.target.closest(".bgc-orbit-card")) return;
+
+  dragging = true;
+  lastX = event.clientX;
+
+  stage.setPointerCapture(event.pointerId);
+
+});
+
+stage.addEventListener("pointermove", event => {
+
+  if (!dragging) return;
+
+  const difference = event.clientX - lastX;
+
+  lastX = event.clientX;
+
+  totalRotation += difference * 0.5;
+
+  angle = ((totalRotation % 360) + 360) % 360;
+
+  layoutOrbit();
+
+});
+
+stage.addEventListener("pointerup", () => {
+  dragging = false;
+});
+
+stage.addEventListener("pointercancel", () => {
+  dragging = false;
+});
+
+window.addEventListener("resize", layoutOrbit);
+
+/* =========================================
+   REGISTRATION MODAL
+========================================= */
+
+const registerModal =
+  document.getElementById("bgcRegisterModal");
+
+const heroJoinButton = document.getElementById("bgcHeroJoin");
+if (heroJoinButton) {
+  heroJoinButton.addEventListener("click", () => {
+    registerModal.classList.add("show");
+  });
+}
+
+document
+  .getElementById("bgcCloseRegister")
+  .addEventListener("click", () => {
+    registerModal.classList.remove("show");
+  });
+
+/* =========================================
+   PROFILE PHOTO PREVIEW
+========================================= */
+
+const photoInput =
+  document.getElementById("bgcPhoto");
+
+const photoPreview =
+  document.getElementById("bgcPhotoPreview");
+
+photoInput.addEventListener("change", event => {
+
+  const file = event.target.files[0];
+
+  photoFile = null;
+
+  if (photoPreviewURL) {
+    URL.revokeObjectURL(photoPreviewURL);
+    photoPreviewURL = null;
+  }
+
+  photoPreview.style.display = "none";
+
+  if (!file) return;
+
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/webp"
+  ];
+
+  if (!allowedTypes.includes(file.type)) {
+
+    alert("Choose JPG, PNG or WEBP image.");
+
+    photoInput.value = "";
+
+    return;
+  }
+
+  if (file.size > 1572864) {
+
+    alert("Photo must be below 1.5 MB.");
+
+    photoInput.value = "";
+
+    return;
+  }
+
+  photoFile = file;
+
+  photoPreviewURL = URL.createObjectURL(file);
+
+  photoPreview.src = photoPreviewURL;
+
+  photoPreview.style.display = "block";
+
+});
+
+/* =========================================
+   CREATOR REGISTRATION
+========================================= */
+
+const creatorForm =
+  document.getElementById("bgcCreatorForm");
+
+creatorForm.addEventListener("submit", async event => {
+
+  event.preventDefault();
+
+  const data = new FormData(creatorForm);
+
+  const status =
+    document.getElementById("bgcFormStatus");
+
+  const submitButton =
+    document.getElementById("bgcSubmit");
+
+  const niches = selectedValues("niches");
+
+  if (!niches.length) {
+
+    alert("Select at least one content category.");
+
+    return;
+  }
+
+  const name = String(data.get("name") || "").trim();
+
+  const instagram =
+    String(data.get("instagram") || "").trim();
+
+  const youtube =
+    String(data.get("youtube") || "").trim();
+
+  const portfolio =
+    String(data.get("portfolio") || "").trim();
+
+  if (name.length < 2 || name.length > 60) {
+
+    alert("Enter a creator name between 2 and 60 characters.");
+
+    return;
+  }
+
+  if (!validInstagramURL(instagram)) {
+
+    alert("Enter a valid HTTPS Instagram profile URL.");
+
+    return;
+  }
+
+  if (
+    !validOptionalURL(youtube) ||
+    !validOptionalURL(portfolio)
+  ) {
+
+    alert("Please check the YouTube or portfolio URL.");
+
+    return;
+  }
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting...";
+
+  status.textContent =
+    "Uploading details to BGC Creator Network...";
+
+  try {
+
+    let avatarUrl = null;
+
+    /* UPLOAD PHOTO */
+
+    if (photoFile) {
+
+      const extension =
+        photoFile.type === "image/png" ? "png" :
+        photoFile.type === "image/webp" ? "webp" : "jpg";
+
+      const uniqueName =
+        crypto.randomUUID() + "." + extension;
+
+      const filePath =
+        "creator-photos/" + uniqueName;
+
+      const { error: uploadError } =
+        await db.storage
+          .from(BUCKET)
+          .upload(filePath, photoFile, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: photoFile.type
+          });
+
+      if (uploadError) throw uploadError;
+
+      const { data: publicData } =
+        db.storage
+          .from(BUCKET)
+          .getPublicUrl(filePath);
+
+      avatarUrl = publicData.publicUrl;
+
+    }
+
+    /* PREPARE DATABASE RECORD */
+
+    const creatorData = {
+
+      name: name,
+
+      avatar_url: avatarUrl,
+
+      instagram_url: instagram,
+
+      instagram_followers:
+        String(data.get("followers") || "").trim(),
+
+      youtube_url: youtube || null,
+
+      youtube_subscribers:
+        String(data.get("youtubeSubs") || "").trim() || null,
+
+      niches: niches,
+
+      content_types:
+        selectedValues("content"),
+
+      languages:
+        selectedValues("languages"),
+
+      collaboration_types:
+        selectedValues("collab"),
+
+      bio:
+        String(data.get("bio") || "").trim() || null,
+
+      portfolio_url: portfolio || null
+
+    };
+
+    /* SAVE TO SUPABASE */
+
+    const { data: savedCreator, error: insertError } =
+      await db
+        .from(TABLE)
+        .insert(creatorData)
+        .select()
+        .single();
+
+    if (insertError) throw insertError;
+
+    status.textContent =
+      "Success! Your profile is now published.";
+
+    // Refresh profiles immediately.
+
+    await fetchCreators();
+
+    creatorForm.reset();
+
+    photoFile = null;
+
+    if (photoPreviewURL) {
+      URL.revokeObjectURL(photoPreviewURL);
+      photoPreviewURL = null;
+    }
+
+    photoPreview.removeAttribute("src");
+    photoPreview.style.display = "none";
+
+    // Show success before closing the form.
+
+    setTimeout(() => {
+
+      registerModal.classList.remove("show");
+
+      status.textContent = "";
+
+      submitButton.disabled = false;
+
+      submitButton.textContent =
+        "Submit Creator Profile →";
+
+    }, 1200);
+
+  } catch (error) {
+
+    console.error("BGC Creator registration error:", error);
+
+    status.textContent =
+      "Unable to submit: " + (error.message || "Please try again.");
+
+    submitButton.disabled = false;
+
+    submitButton.textContent =
+      "Try Again →";
+
+  }
+
+});
+
+/* =========================================
+   REALTIME SUPABASE UPDATES
+========================================= */
+
+realtimeChannel = db
+  .channel("bgc-creator-network-live")
+
+  .on(
+    "postgres_changes",
+    {
+      event: "*",
+      schema: "public",
+      table: TABLE
+    },
+    () => {
+      fetchCreators();
+    }
+  )
+
+  .subscribe(status => {
+
+    console.log("BGC Creator realtime:", status);
+
+  });
+
+/* =========================================
+   INITIAL LOAD
+========================================= */
+
+fetchCreators();
+
+})();
+</script>
+
+</body>
+</html>
