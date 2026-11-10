@@ -548,9 +548,7 @@ button,input,textarea { font:inherit; }
 
 .bgc-intro h1 { color:#fff; }
 .bgc-intro p { color:#aaa7ae; }
-.bgc-eyebrow { color:#d8bd8f; }
-
-.bgc-orbit {
+.bgc-eyebrow { color:#d8bd8f; }.bgc-orbit {
   border-color:#76504a;
   box-shadow:0 0 0 24px #d8bd8f0a,0 0 0 25px #d8bd8f20;
 }
@@ -690,15 +688,6 @@ body{background:#111113;color:#f7f1eb;font-family:Inter,system-ui,Arial,sans-ser
 .bgc-btn{background:#211e22;color:#f7f1eb;border-color:#76505a}
 .bgc-btn-dark{background:#8d1831;border-color:#d8bd8f;color:#fff}
 .bgc-hero{margin-top:0;position:relative;isolation:isolate;overflow:hidden;margin-top:12px;padding:0 12px 18px;border:1px solid #76505a;border-radius:30px;min-height:790px;background:#171719;box-shadow:0 24px 80px #0009}
-.ugc-montage{position:absolute;inset:0;z-index:-2;overflow:hidden;background:#171719}.ugc-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-3;opacity:0;transition:opacity .5s}.ugc-video.is-playing{opacity:1}.ugc-video.is-playing + .ugc-montage{opacity:0;transition:opacity .6s}
-.ugc-shot{position:absolute;inset:-3%;background-size:cover;background-position:center;opacity:0;transform:scale(1.08);animation:ugcFade 30s infinite}
-.shot-one{background-image:url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1800&q=85');animation-delay:0s}
-.shot-two{background-image:url('https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1800&q=85');animation-delay:6s}
-.shot-three{background-image:url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1800&q=85');animation-delay:12s}
-.shot-four{background-image:url('https://images.unsplash.com/photo-1492684223066-81342ee5ff4?auto=format&fit=crop&w=1800&q=85');animation-delay:18s}
-.shot-five{background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1800&q=85');animation-delay:24s}
-@keyframes ugcFade{0%,3%{opacity:0;transform:scale(1.08)}8%,20%{opacity:.48;transform:scale(1)}25%,100%{opacity:0;transform:scale(1.04)}}
-.ugc-shade{position:absolute;inset:0;background:linear-gradient(180deg,#100d0ee8 0%,#1c1018a8 38%,#111113f2 73%,#111113 100%),linear-gradient(90deg,#111113aa,transparent 65%)}
 .hero-content{position:relative;z-index:2;text-align:center;padding:48px 10px 0;max-width:850px;margin:auto}
 .hero-kicker{font-size:10px;font-weight:950;letter-spacing:3px;color:#d8bd8f}
 .hero-kicker span{padding:0 7px;color:#fff}
@@ -755,18 +744,12 @@ body{background:#111113;color:#f7f1eb;font-family:Inter,system-ui,Arial,sans-ser
  .bgc-stage{height:365px}.bgc-orbit{width:min(76vw,320px);height:min(76vw,320px)}.bgc-orbit-card{width:88px;height:118px;margin:-59px 0 0 -44px}.bgc-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.grid-back{padding:12px 10px}.grid-back h3{font-size:16px}.grid-back p{font-size:9px;line-height:1.5;margin:9px 0}.creator-grid-ig{font-size:8px;padding:9px 5px}.grid-front-overlay strong{font-size:17px}
 }
 @media(max-width:390px){.bgc-hero{min-height:680px}.bgc-stage{height:345px}.hero-content h1{font-size:39px}.grid-back{padding:10px 8px}.grid-back p{font-size:8px}}
-@media(prefers-reduced-motion:reduce){.ugc-shot,.hero-live i{animation:none}.grid-flip-inner,.creator-flip-inner{transition:none}}
+@media(prefers-reduced-motion:reduce){.hero-live i{animation:none}.grid-flip-inner,.creator-flip-inner{transition:none}}
 
-/* HERO LAYER FIX: video / montage / shade / content */
 .bgc-hero{isolation:isolate}
-.ugc-video{z-index:0;pointer-events:none}
-.ugc-montage{z-index:1;transition:opacity .6s ease}
-.ugc-montage .ugc-shot{z-index:0}
-.ugc-shade{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,#100d0ee8 0%,#1c1018a8 38%,#111113f2 73%,#111113 100%),linear-gradient(90deg,#111113aa,transparent 65%)}
 .hero-content{z-index:3}
-.ugc-video.is-playing + .ugc-montage{opacity:0;pointer-events:none}
 
-  /* BGC CLUB — SHARED FIXED BOTTOM NAVIGATION */
+/* BGC CLUB — SHARED FIXED BOTTOM NAVIGATION */
 
 .bgc-bottom-nav {
   position: fixed;
@@ -854,6 +837,155 @@ body {
   }
 }
 
+
+
+/* =====================================================
+   BGC CREATOR UNIVERSE — HEADER REWORK ONLY
+   No background photos / no video / no hero headline.
+===================================================== */
+.bgc-hero{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-height:0;
+  height:clamp(650px, min(82vh, 790px), 790px);
+  margin:12px 0 0;
+  padding:28px 14px 22px;
+  overflow:hidden;
+  border:1px solid rgba(216,189,143,.58);
+  border-radius:30px;
+  background:
+    radial-gradient(ellipse at 50% 52%, rgba(115,36,75,.22) 0%, transparent 48%),
+    radial-gradient(ellipse at 50% 0%, rgba(80,40,87,.28) 0%, transparent 55%),
+    linear-gradient(155deg,#17131d 0%,#100e14 58%,#171117 100%);
+  box-shadow:0 24px 80px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.07);
+}
+.bgc-hero:before,
+.bgc-hero:after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  border-radius:50%;
+  z-index:-1;
+}
+.bgc-hero:before{
+  width:460px;height:460px;left:50%;top:47%;
+  transform:translate(-50%,-50%);
+  border:1px solid rgba(216,189,143,.09);
+  box-shadow:0 0 0 28px rgba(216,189,143,.025),0 0 0 72px rgba(216,189,143,.018);
+}
+.bgc-hero:after{
+  width:8px;height:8px;left:15%;top:32%;
+  background:#e7c99d;box-shadow:0 0 18px 5px rgba(216,189,143,.45),
+  250px 110px 0 -2px rgba(231,201,157,.8),
+  580px 20px 0 -3px rgba(231,201,157,.7),
+  430px 340px 0 -2px rgba(231,201,157,.65),
+  -30px 390px 0 -3px rgba(231,201,157,.65);
+}
+.bgc-universe-glow{display:none}
+.hero-content{
+  position:relative;z-index:4;flex:0 0 auto;
+  width:100%;max-width:850px;margin:0 auto;
+  padding:12px 10px 0;text-align:center;
+}
+.hero-kicker{
+  color:#e4c99d;font-size:10px;font-weight:950;
+  letter-spacing:3px;line-height:1.5;
+}
+.hero-kicker span{padding:0 8px;color:#fff4e8}
+.hero-cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:18px;
+  margin-top:23px;padding:14px 25px;min-width:166px;min-height:49px;
+  border:1px solid #e0c28e;border-radius:40px;
+  background:linear-gradient(135deg,#a51e48,#77152f);
+  color:#fff;text-decoration:none;font-size:11px;font-weight:950;
+  letter-spacing:1.2px;box-shadow:0 10px 32px rgba(0,0,0,.38),0 0 24px rgba(164,30,72,.2);
+  cursor:pointer;
+}
+.hero-cta span{font-size:17px;color:#f3d9ae}
+.hero-footnote{
+  margin-top:17px;color:#d8bd8f;font-size:8px;
+  font-weight:900;letter-spacing:2px;line-height:1.7;
+}
+.bgc-stage{
+  position:relative;z-index:2;flex:1 1 auto;
+  width:100%;max-width:760px;min-height:390px;height:auto;
+  margin:5px auto 0;overflow:hidden;touch-action:pan-y;
+}
+.bgc-orbit{
+  position:absolute;left:50%;top:50%;
+  width:min(66vw,390px);height:min(66vw,390px);
+  transform:translate(-50%,-50%);border:1px solid rgba(216,189,143,.62);
+  border-radius:50%;
+  box-shadow:0 0 0 17px rgba(216,189,143,.035),
+    0 0 0 18px rgba(216,189,143,.16),
+    0 0 55px rgba(166,74,112,.10);
+}
+.bgc-orbit:before{
+  content:"";position:absolute;inset:27px;
+  border:1px dashed rgba(216,189,143,.34);border-radius:50%;
+}
+.bgc-orbit:after{
+  content:"";position:absolute;inset:57px;
+  border:1px solid rgba(216,189,143,.13);border-radius:50%;
+}
+.bgc-sun{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:104px;height:104px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 23%,#fff 0%,#f4a5ca 32%,#c24e87 62%,#791b51 100%);
+  border:5px solid rgba(255,255,255,.96);
+  box-shadow:0 0 0 9px rgba(220,119,172,.10),0 0 35px rgba(229,91,150,.52),0 0 85px rgba(229,91,150,.24);
+  z-index:6;
+}
+.bgc-sun svg{width:49px;height:49px}
+.bgc-sunlabel{
+  position:absolute;left:50%;top:calc(50% + 69px);transform:translateX(-50%);
+  z-index:7;color:#e2c393;font-size:8px;font-weight:950;
+  letter-spacing:1.6px;white-space:nowrap;text-shadow:0 2px 12px #000;
+}
+.bgc-orbit-card{
+  width:104px;height:140px;margin:-70px 0 0 -52px;
+  border:1px solid rgba(229,199,153,.78);border-radius:15px;
+  background:#211b25;box-shadow:0 15px 36px rgba(0,0,0,.52);
+  perspective:1000px;overflow:visible;padding:0;
+}
+.bgc-orbit-card .creator-flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.75,.25,1)}
+.bgc-orbit-card.flipped .creator-flip-inner{transform:rotateY(180deg)}
+.creator-face{position:absolute;inset:0;overflow:hidden;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.creator-front img{width:100%;height:100%;display:block;object-fit:cover}
+.creator-front:after{content:"";position:absolute;inset:52% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.88))}
+.creator-front-info{position:absolute;left:8px;right:7px;bottom:9px;z-index:2;color:white;text-align:left}
+.creator-front-info strong{display:block;font-size:11px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.creator-front-info span{display:block;margin-top:3px;color:#e5c99e;font-size:9px}
+.creator-back{transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;padding:10px 8px;background:radial-gradient(circle at 100% 0,#562132 0,transparent 55%),#211b25;color:#fff;text-align:left}
+.creator-back strong{font-family:Georgia,serif;font-size:13px;line-height:1.2;overflow-wrap:anywhere}
+.creator-back p{margin:7px 0;color:#ddd2d6;font-size:9px;line-height:1.5;white-space:pre-line}
+.creator-back .creator-ig{display:block;margin-top:5px;padding:7px 3px;border:1px solid #d8bd8f;border-radius:7px;background:#8d1831;color:#fff;text-align:center;text-decoration:none;font-size:9px;font-weight:900}
+.bgc-empty-orbit{top:calc(50% + 112px);color:#ddcbd1;font-size:11px}
+.bgc-below{position:relative;z-index:3;flex:0 0 auto;margin-top:0;padding:4px 0 2px;color:#d8bd8f;font-size:8px;font-weight:950;letter-spacing:1.7px}
+@media(max-width:700px){
+  .bgc-hero{height:clamp(610px,78vh,720px);min-height:610px;padding:23px 9px 18px;border-radius:24px}
+  .hero-content{padding-top:8px}
+  .hero-kicker{font-size:9px;letter-spacing:2.2px}
+  .hero-cta{margin-top:19px;min-height:46px;padding:12px 23px}
+  .hero-footnote{margin-top:15px;font-size:7px;letter-spacing:1.25px}
+  .bgc-stage{min-height:350px;margin-top:3px}
+  .bgc-orbit{width:min(76vw,330px);height:min(76vw,330px)}
+  .bgc-orbit-card{width:88px;height:118px;margin:-59px 0 0 -44px}
+  .bgc-sun{width:91px;height:91px}
+  .bgc-sun svg{width:43px;height:43px}
+  .bgc-sunlabel{top:calc(50% + 61px);font-size:7px;letter-spacing:1.25px}
+  .bgc-below{font-size:7px;letter-spacing:1.2px}
+}
+@media(max-width:390px){
+  .bgc-hero{height:610px;min-height:610px}
+  .bgc-stage{min-height:330px}
+  .bgc-orbit-card{width:82px;height:112px;margin:-56px 0 0 -41px}
+}
+@media(prefers-reduced-motion:reduce){.creator-flip-inner{transition:none}}
+
 </style>
 </head>
 
@@ -861,32 +993,26 @@ body {
 
 <main class="bgc-wrap">
 
-<section class="bgc-hero">
-  <video class="ugc-video" autoplay muted loop playsinline preload="metadata" poster="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1800&q=85" aria-hidden="true">
-    <source src="assets/creator-hero/ugc-montage.mp4" type="video/mp4">
-  </video>
-  <div class="ugc-montage" aria-hidden="true">
-    <div class="ugc-shot shot-one"></div>
-    <div class="ugc-shot shot-two"></div>
-    <div class="ugc-shot shot-three"></div>
-    <div class="ugc-shot shot-four"></div>
-    <div class="ugc-shot shot-five"></div>
-  </div>
-  <div class="ugc-shade" aria-hidden="true"></div>
+<section class="bgc-hero" aria-label="BGC Creator Universe">
+  <div class="bgc-universe-glow" aria-hidden="true"></div>
   <div class="hero-content">
     <div class="hero-kicker">BGC ORIGINALS <span>✦</span> CREATOR NETWORK</div>
-    <button class="hero-cta" type="button" id="bgcHeroJoin">JOIN FREE </></button>
+    <button class="hero-cta" type="button" id="bgcHeroJoin">JOIN FREE <span aria-hidden="true">↗</span></button>
     <div class="hero-footnote">FASHION · FOOD · BEAUTY · TRAVEL · LIFESTYLE</div>
   </div>
-  <div class="bgc-stage" id="bgcStage">
-    <div class="bgc-orbit"></div>
-    <div class="bgc-sun">
-      <svg viewBox="0 0 48 48" fill="none"><rect x="5" y="5" width="38" height="38" rx="12" stroke="white" stroke-width="3.5"/><circle cx="24" cy="24" r="9" stroke="white" stroke-width="3.5"/><circle cx="35" cy="13" r="2.5" fill="white"/></svg>
+  <div class="bgc-stage" id="bgcStage" aria-label="Rotating creator profiles">
+    <div class="bgc-orbit bgc-orbit-outer" aria-hidden="true"></div>
+    <div class="bgc-sun" aria-label="Instagram creator universe">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <rect x="5" y="5" width="38" height="38" rx="12" stroke="white" stroke-width="3.5"/>
+        <circle cx="24" cy="24" r="9" stroke="white" stroke-width="3.5"/>
+        <circle cx="35" cy="13" r="2.5" fill="white"/>
+      </svg>
     </div>
-    <div class="bgc-sunlabel">INSTAGRAM · CREATOR SUN</div>
+    <div class="bgc-sunlabel">INSTAGRAM · CREATOR UNIVERSE</div>
     <div class="bgc-empty-orbit" id="bgcOrbitMessage">Loading creators...</div>
   </div>
-  <div class="bgc-below">TAP A CREATOR CARD TO REVEAL THEIR PROFILE</div>
+  <div class="bgc-below">TAP A CREATOR CARD TO EXPLORE</div>
 </section>
 
 <section class="bgc-section" id="exploreCreators">
@@ -947,7 +1073,7 @@ body {
     </div>
 
     <div class="bgc-form-group">
-      <label>Instagram Profile URL *</label>
+      <label>Instagram Profile URL*</label>
       <input class="bgc-field"
         name="instagram"
         type="url"
@@ -971,8 +1097,7 @@ body {
         type="url"
         placeholder="Optional">
     </div>
-
-    <div class="bgc-form-group">
+        <div class="bgc-form-group">
       <label>YouTube Subscribers</label>
       <input class="bgc-field"
         name="youtubeSubs"
@@ -1045,7 +1170,7 @@ body {
   </form>
 
 </div>
-  
+
 <!-- BGC CLUB FIXED NAVIGATION -->
 
 <nav class="bgc-bottom-nav" aria-label="BGC CLUB navigation">
@@ -1102,7 +1227,7 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
+<script>
 /* =========================================
    BGC CREATOR NETWORK
    SEPARATE SUPABASE MODULE
@@ -1521,9 +1646,7 @@ function showProfile(person) {
     tag.className = "bgc-tag";
     tag.textContent = niche;
 
-    tags.appendChild(tag);
-
-  });
+    tags.appendChild(tag);  });
 
   const stats = document.createElement("p");
 
@@ -1619,64 +1742,76 @@ function makeOrbit() {
 
 function layoutOrbit() {
   if (!creators.length || !orbitCards.length) return;
+
   const width = stage.clientWidth;
   const height = stage.clientHeight;
-  const radiusX = Math.min(width * .39, 170);
-  const radiusY = Math.min(height * .34, 140);
-  const queueShift = Math.floor(totalRotation / 360) % creators.length;
+  const radiusX = Math.min(width * .33, 150);
+  const radiusY = Math.min(height * .29, 112);
+  const queueShift = ((Math.floor(totalRotation / 360) % creators.length) + creators.length) % creators.length;
 
   orbitCards.forEach((card, i) => {
     const creatorIndex = (i + queueShift) % creators.length;
     const person = creators[creatorIndex];
-    card.dataset.creatorIndex = creatorIndex;
-    const front = card.querySelector(".creator-front");
-    const back = card.querySelector(".creator-back");
-    front.replaceChildren();
-    back.replaceChildren();
+    const creatorKey = String(person.id ?? creatorIndex);
 
-    const photo = document.createElement("img");
-    photo.src = person.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80";
-    photo.alt = person.name || "Creator";
-    photo.loading = "lazy";
-    const frontInfo = document.createElement("div");
-    frontInfo.className = "creator-front-info";
-    const name = document.createElement("strong");
-    name.textContent = person.name || "Creator";
-    const niche = document.createElement("span");
-    niche.textContent = (person.niches || ["Creator"])[0];
-    frontInfo.append(name, niche);
-    front.append(photo, frontInfo);
+    // Build the front/back only when this orbit slot receives a new creator.
+    // Rebuilding these nodes on every animation frame breaks taps and flip links.
+    if (card.dataset.creatorKey !== creatorKey) {
+      card.dataset.creatorKey = creatorKey;
+      card.dataset.creatorIndex = String(creatorIndex);
 
-    const backName = document.createElement("strong");
-    backName.textContent = person.name || "Creator";
-    const details = document.createElement("p");
-    details.textContent = (person.instagram_followers || "—") + " followers\n" + "Content: " + (person.content_types || []).join(", ") + "\nLanguages: " + (person.languages || []).join(", ") + "\nCollab: " + (person.collaboration_types || []).join(", ");
-    const instagram = document.createElement("a");
-    instagram.className = "creator-ig";
-    instagram.href = safeExternalURL(person.instagram_url);
-    instagram.target = "_blank";
-    instagram.rel = "noopener noreferrer";
-    instagram.textContent = "INSTAGRAM ↗";
-    instagram.addEventListener("click", event => event.stopPropagation());
-    back.append(backName, details, instagram);
+      const front = card.querySelector('.creator-front');
+      const back = card.querySelector('.creator-back');
+      front.replaceChildren();
+      back.replaceChildren();
+
+      const photo = document.createElement('img');
+      photo.src = person.avatar_url || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80';
+      photo.alt = person.name || 'Creator';
+      photo.loading = 'lazy';
+      photo.onerror = () => {
+        photo.onerror = null;
+        photo.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80';
+      };
+
+      const frontInfo = document.createElement('div');
+      frontInfo.className = 'creator-front-info';
+      const name = document.createElement('strong');
+      name.textContent = person.name || 'Creator';
+      const niche = document.createElement('span');
+      niche.textContent = (person.niches || ['Creator'])[0];
+      frontInfo.append(name, niche);
+      front.append(photo, frontInfo);
+
+      const backName = document.createElement('strong');
+      backName.textContent = person.name || 'Creator';
+      const details = document.createElement('p');
+      details.textContent = (person.instagram_followers || '—') + ' followers\n' +
+        'Content: ' + (person.content_types || []).join(', ') + '\n' +
+        'Languages: ' + (person.languages || []).join(', ') + '\n' +
+        'Collab: ' + (person.collaboration_types || []).join(', ');
+      const instagram = document.createElement('a');
+      instagram.className = 'creator-ig';
+      instagram.href = safeExternalURL(person.instagram_url);
+      instagram.target = '_blank';
+      instagram.rel = 'noopener noreferrer';
+      instagram.textContent = 'INSTAGRAM ↗';
+      instagram.addEventListener('click', event => event.stopPropagation());
+      back.append(backName, details, instagram);
+
+      // A profile change resets a previously flipped card to its photo side.
+      card.classList.remove('flipped');
+    }
 
     const radians = (angle + i * 360 / orbitCards.length) * Math.PI / 180;
     const x = Math.sin(radians) * radiusX;
     const y = Math.cos(radians) * radiusY;
     const depth = (Math.cos(radians) + 1) / 2;
-    const scale = .78 + depth * .22;
+    const scale = .80 + depth * .20;
+
     card.style.transform = `translate3d(${x}px,${y}px,0) scale(${scale})`;
     card.style.zIndex = String(2 + Math.round(depth * 5));
   });
-}
-
-/* UGC VIDEO: use the video when the local MP4 is present; otherwise CSS montage remains visible. */
-const ugcVideo = document.querySelector(".ugc-video");
-if (ugcVideo) {
-  ugcVideo.addEventListener("playing", () => ugcVideo.classList.add("is-playing"));
-  ugcVideo.addEventListener("error", () => ugcVideo.classList.remove("is-playing"));
-  const playUGC = ugcVideo.play();
-  if (playUGC && typeof playUGC.catch === "function") playUGC.catch(() => {});
 }
 
 /* CONTINUOUS ROTATION */
