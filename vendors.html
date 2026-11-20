@@ -2114,6 +2114,38 @@ ${escapeHTML(v.email)}
 
 </div>
 
+${v.address?`
+
+<div class="detail-item">
+
+<div class="detail-label">
+Company Address
+</div>
+
+<div class="detail-value">
+${escapeHTML(v.address)}
+</div>
+
+</div>
+
+`: ""}
+
+${v.pincode?`
+
+<div class="detail-item">
+
+<div class="detail-label">
+PIN Code
+</div>
+
+<div class="detail-value">
+${escapeHTML(v.pincode)}
+</div>
+
+</div>
+
+`: ""}
+
 `:""}
 
 ${v.products_services?`
