@@ -124,19 +124,19 @@ color:var(--muted);
 /* SEARCH */
 
 .search-section{
-padding:30px 0 20px;
+ padding:16px 0 12px;
 }
 
 .search-box{
-display:flex;
-align-items:center;
-gap:12px;
-height:66px;
-padding:0 20px;
-border:1px solid var(--line);
-border-radius:22px;
-box-shadow:0 5px 25px rgba(0,0,0,.025);
-background:#fff;
+ display:flex;
+ align-items:center;
+ gap:10px;
+ height:52px;
+ padding:0 16px;
+ border:1px solid var(--line);
+ border-radius:16px;
+ box-shadow:0 5px 25px rgba(0,0,0,.025);
+ background:#fff;
 }
 
 .search-icon{
@@ -193,7 +193,7 @@ display:flex;
 align-items:center;
 justify-content:space-between;
 gap:15px;
-margin:35px 0 20px;
+margin:18px 0 16px;
 }
 
 .listing-header h2{
@@ -262,12 +262,12 @@ font-size:23px;
 }
 
 .search-section{
-padding-top:22px;
+ padding-top:12px;
 }
 
 .search-box{
-height:60px;
-border-radius:18px;
+ height:48px;
+ border-radius:15px;
 }
 
 .category-btn{
@@ -275,7 +275,7 @@ padding:12px 18px;
 }
 
 .listing-header{
-margin-top:27px;
+margin-top:14px;
 }
 
 .listing-header h2{
@@ -1269,28 +1269,6 @@ id="categoryFilters"
 
 <section>
 
-<div class="listing-header">
-
-<div>
-
-<h2 id="listingTitle">All Businesses</h2>
-
-<p id="resultCount">Loading businesses...</p>
-
-</div>
-
-<select
-id="sortSelect"
-class="sort-select"
->
-  <option value="newest">Recently Added</option>
-
-<option value="az">A - Z</option>
-
-</select>
-
-</div>
-
 <div
 class="vendor-grid"
 id="vendorGrid"
@@ -1329,12 +1307,6 @@ document.getElementById("searchInput");
 
 const categoryFilters=
 document.getElementById("categoryFilters");
-
-const listingTitle=
-document.getElementById("listingTitle");
-
-const resultCount=
-document.getElementById("resultCount");
 
 const sortSelect=
 document.getElementById("sortSelect");
@@ -1587,13 +1559,6 @@ renderVendors();
 
 });
 
-/* SORT */
-
-sortSelect.addEventListener("change",function(){
-
-renderVendors();
-
-});
 
 /* VENDOR MAPPING */
 
@@ -1872,34 +1837,12 @@ vendorMatchesSearch(vendor)
 
 );
 
-/* SORT */
-
-if(sortSelect.value==="az"){
+/* SORT - RECENTLY ADDED DEFAULT */
 
 list.sort((a,b)=>
-(a.business_name||"").localeCompare(
-b.business_name||""
-)
+ new Date(b.created_at||0)-
+ new Date(a.created_at||0)
 );
-
-}else{
-
-list.sort((a,b)=>
-new Date(b.created_at||0)-
-new Date(a.created_at||0)
-);
-
-}
-
-/* TITLE */
-
-listingTitle.textContent=getCategoryTitle();
-
-resultCount.textContent=
-list.length+
-(list.length===1
-?" business found"
-:" businesses found");
 
 /* EMPTY */
 
