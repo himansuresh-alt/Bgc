@@ -287,7 +287,7 @@ font-size:23px;
     .vendor-grid{
         grid-template-columns:repeat(2,minmax(0,1fr));
         gap:10px;
-    }
+
 
 }
 
@@ -939,31 +939,9 @@ Find the right<br>
 <span>business partner.</span>
 </h1>
 
-<p>
-Discover manufacturers, suppliers, service providers and business professionals through the BGC Business Network.
-</p>
   <a href="vendor-register.html" class="join-network-btn">
     + Join Business Network
   </a>
-
-<div class="stats">
-
-<div class="stat">
-<strong id="businessCount">0</strong>
-<span>Businesses</span>
-</div>
-
-<div class="stat">
-<strong id="categoryCount">15</strong>
-<span>Categories</span>
-</div>
-
-<div class="stat">
-<strong>Direct</strong>
-<span>Connect</span>
-</div>
-
-</div>
 
 </section>
 
@@ -1135,8 +1113,12 @@ return;
 
 categories=data||[];
 
-document.getElementById("categoryCount")
-.textContent=categories.length;
+const categoryCountElement =
+document.getElementById("categoryCount");
+
+if(categoryCountElement){
+  categoryCountElement.textContent=categories.length;
+}
 
 renderCategoryFilters();
 
@@ -1289,7 +1271,9 @@ return;
 
 vendors=data||[];
 
-businessCount.textContent=vendors.length;
+  if(businessCount){
+  businessCount.textContent=vendors.length;
+  }
 
 }
 
