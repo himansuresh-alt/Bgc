@@ -742,6 +742,29 @@ footer{color:#77727a}
         bottom: 120px;
     }
 }
+
+  .mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-decoration: none;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  flex: 1;
+  min-width: 0;
+}
+
+.mobile-nav-item svg {
+  width: 24px;
+  height: 24px;
+}
+
+.mobile-nav-item.active {
+  color: #8d1831;
+}
 </style>
 </head>
 
@@ -1310,15 +1333,25 @@ loadProviders();
     <span>Members</span>
   </a>
 
- <a href="creators.html" class="mobile-nav-item" aria-label="Creators">
-  <span class="mobile-nav-icon">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="3" y="3" width="18" height="18" rx="5"></rect>
-      <circle cx="12" cy="12" r="4"></circle>
-      <circle cx="18" cy="6" r="1"></circle>
-    </svg>
-  </span>
-  <span>Creators</span>
+ <a href="vendors.html" class="mobile-nav-item" aria-label="Vendors">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+    <path d="M7 7h10"></path>
+    <path d="M7 12h10"></path>
+    <path d="M7 17h10"></path>
+  </svg>
+
+  <span>Vendors</span>
  </a>
 
 <a href="bgc-event-providers.html"

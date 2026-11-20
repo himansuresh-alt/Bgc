@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>List Your Business | BGC CLUB</title>
+
+<meta name="theme-color" content="#8d1831">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+--bg:#ffffff;
+--surface:#f6f7f8;
+--black:#111111;
+--muted:#686d75;
+--line:#e4e6e9;
+--accent:#8d1831;
+--accent-light:#fff2f5;
+--success:#16834b;
+--danger:#b42318;
+}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:"DM Sans",Arial,sans-serif;
+background:#fff;
+color:var(--black);
+line-height:1.5;
+}
+
+input,textarea,select,button{
+font:inherit;
+}
+
+button{
+cursor:pointer;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.container{
+width:min(calc(100% - 30px),850px);
+margin:auto;
+}
+
+/* HEADER */
+
+.header{
+position:sticky;
+top:0;
+z-index:20;
+background:rgba(255,255,255,.95);
+backdrop-filter:blur(15px);
+border-bottom:1px solid var(--line);
+}
+
+.nav{
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+}
+
+.brand{
+font-family:"Space Grotesk",sans-serif;
+font-size:23px;
+font-weight:700;
+letter-spacing:-1px;
+}
+
+.brand span{
+color:var(--accent);
+}
+
+.back{
+padding:10px 15px;
+border:1px solid var(--line);
+border-radius:12px;
+font-size:12px;
+font-weight:700;
+color:#555;
+}
+
+/* HERO */
+
+.hero{
+padding:38px 0 25px;
+text-align:center;
+}
+
+.eyebrow{
+display:inline-flex;
+align-items:center;
+gap:8px;
+font-size:11px;
+font-weight:800;
+letter-spacing:1.2px;
+color:var(--accent);
+text-transform:uppercase;
+}
+
+.eyebrow:before{
+content:"";
+width:7px;
+height:7px;
+border-radius:50%;
+background:var(--accent);
+}
+
+.hero h1{
+font-family:"Space Grotesk",sans-serif;
+font-size:clamp(34px,7vw,55px);
+line-height:1.05;
+letter-spacing:-2.5px;
+margin:14px 0;
+}
+
+.hero h1 span{
+color:var(--accent);
+}
+
+.hero p{
+font-size:14px;
+color:var(--muted);
+max-width:550px;
+margin:auto;
+}
+
+/* FORM CARD */
+
+.card{
+border:1px solid var(--line);
+border-radius:23px;
+background:white;
+box-shadow:0 8px 30px rgba(0,0,0,.035);
+overflow:hidden;
+margin:15px 0 35px;
+}
+
+.card-head{
+padding:22px 24px;
+border-bottom:1px solid var(--line);
+background:linear-gradient(180deg,#fff,#fbfbfc);
+}
+
+.card-head h2{
+font-family:"Space Grotesk",sans-serif;
+font-size:21px;
+letter-spacing:-.5px;
+}
+
+.card-head p{
+font-size:12px;
+color:var(--muted);
+margin-top:4px;
+}
+
+.form{
+padding:23px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.field{
+min-width:0;
+}
+
+.field.full{
+grid-column:1/-1;
+}
+
+label{
+display:block;
+font-size:12px;
+font-weight:700;
+color:#333;
+margin-bottom:7px;
+}
+
+.required{
+color:var(--accent);
+}
+
+input,
+textarea,
+select{
+width:100%;
+border:1px solid #dfe2e6;
+background:white;
+border-radius:12px;
+padding:13px 14px;
+font-size:14px;
+outline:none;
+transition:.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+border-color:var(--accent);
+box-shadow:0 0 0 3px rgba(141,24,49,.08);
+}
+
+textarea{
+min-height:90px;
+resize:vertical;
+}
+
+.hint{
+font-size:11px;
+color:#858a91;
+margin-top:5px;
+}
+
+.divider{
+height:1px;
+background:var(--line);
+margin:22px 0;
+}
+
+.section-title{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:16px;
+}
+  .section-title .num{
+width:30px;
+height:30px;
+display:grid;
+place-items:center;
+background:var(--accent-light);
+color:var(--accent);
+border-radius:10px;
+font-weight:800;
+font-size:12px;
+}
+
+.section-title h3{
+font-family:"Space Grotesk",sans-serif;
+font-size:16px;
+}
+
+.section-title small{
+display:block;
+font-size:11px;
+font-weight:400;
+color:var(--muted);
+}
+
+/* PROFILE PHOTO */
+
+.photo-upload{
+border:1px dashed #d5d8dd;
+border-radius:16px;
+padding:18px;
+background:#fafafa;
+}
+
+.photo-row{
+display:flex;
+align-items:center;
+gap:16px;
+flex-wrap:wrap;
+}
+
+.photo-preview{
+width:100px;
+height:100px;
+border-radius:18px;
+background:#f0f1f3;
+border:1px solid #e1e3e6;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+color:#888;
+font-size:28px;
+flex-shrink:0;
+}
+
+.photo-preview img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.photo-controls{
+flex:1;
+min-width:180px;
+}
+
+.file-input{
+display:none;
+}
+
+.upload-btn{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+padding:11px 14px;
+border:1px solid var(--line);
+border-radius:11px;
+background:white;
+font-size:12px;
+font-weight:700;
+cursor:pointer;
+}
+
+.remove-photo{
+display:none;
+margin-top:8px;
+border:0;
+background:none;
+color:var(--danger);
+font-size:12px;
+font-weight:700;
+}
+
+/* CATEGORY */
+
+.category-box{
+border:1px solid var(--line);
+border-radius:14px;
+padding:13px;
+background:#fafafa;
+}
+
+.subcats{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-top:12px;
+}
+
+.chip{
+border:1px solid #dedfe3;
+background:white;
+color:#5f646c;
+padding:8px 11px;
+border-radius:999px;
+font-size:11px;
+font-weight:700;
+cursor:pointer;
+user-select:none;
+}
+
+.chip.selected{
+border-color:var(--accent);
+background:var(--accent-light);
+color:var(--accent);
+}
+
+.chip input{
+display:none;
+}
+
+/* OPTIONS */
+
+.options{
+display:flex;
+flex-wrap:wrap;
+gap:9px;
+}
+
+.option{
+display:flex;
+align-items:center;
+gap:7px;
+border:1px solid var(--line);
+border-radius:10px;
+padding:9px 12px;
+font-size:12px;
+font-weight:600;
+background:#fff;
+}
+
+.option input{
+width:16px;
+height:16px;
+padding:0;
+accent-color:var(--accent);
+}
+
+/* SUBMIT */
+
+.actions{
+margin-top:23px;
+}
+
+.btn{
+width:100%;
+border:0;
+border-radius:13px;
+min-height:52px;
+padding:14px;
+font-size:13px;
+font-weight:800;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+transition:.2s;
+}
+
+.btn.primary{
+background:var(--accent);
+color:white;
+}
+
+.btn.primary:hover{
+background:#721329;
+}
+
+.btn:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
+.status{
+display:none;
+padding:14px;
+border-radius:12px;
+font-size:13px;
+margin-top:15px;
+overflow-wrap:anywhere;
+}
+
+.status.error{
+display:block;
+background:#fff1f0;
+color:#9b2018;
+border:1px solid #f4d0cc;
+}
+
+.status.success{
+display:block;
+background:#ecfbf4;
+color:#176a47;
+border:1px solid #bcebd3;
+}
+
+.footer{
+text-align:center;
+padding:25px 0 35px;
+color:#858a91;
+font-size:11px;
+}
+
+.footer strong{
+color:#333;
+}
+
+@media(max-width:768px){
+
+.container{
+width:calc(100% - 22px);
+}
+
+.nav{
+height:62px;
+}
+
+.brand{
+font-size:21px;
+}
+
+.back{
+font-size:11px;
+padding:9px 11px;
+}
+  .hero{
+padding:30px 0 20px;
+}
+
+.hero h1{
+letter-spacing:-2px;
+}
+
+.hero p{
+font-size:13px;
+}
+
+.card{
+border-radius:19px;
+}
+
+.card-head{
+padding:19px;
+}
+
+.form{
+padding:18px;
+}
+
+.grid{
+grid-template-columns:1fr;
+gap:13px;
+}
+
+.field.full{
+grid-column:auto;
+}
+
+}
+
+.register-back-wrapper{
+position:fixed;
+bottom:20px;
+left:0;
+right:0;
+display:flex;
+justify-content:center;
+padding:0 20px;
+z-index:999;
+}
+
+.register-back-3d{
+width:100%;
+max-width:360px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+padding:16px;
+background:#ffffff;
+color:#8d1831;
+border:1px solid #ead3da;
+border-radius:16px;
+text-decoration:none;
+font-weight:700;
+box-shadow:
+0 5px 0 #d9b5bf,
+0 8px 20px rgba(141,24,49,.15);
+}
+
+.register-back-3d:active{
+transform:translateY(4px);
+box-shadow:
+0 1px 0 #d9b5bf,
+0 3px 8px rgba(141,24,49,.1);
+}
+
+/* CONTENT SPACE FOR FOOTER */
+
+body{
+padding-bottom:100px;
+}
+
+/* RECENT WORK PORTFOLIO */
+
+.portfolio-upload{
+border:1px dashed #d5d8dd;
+border-radius:16px;
+padding:16px;
+background:#fafafa;
+}
+
+.portfolio-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:10px;
+}
+
+.portfolio-count{
+font-size:11px;
+font-weight:800;
+color:var(--accent);
+background:var(--accent-light);
+padding:6px 10px;
+border-radius:999px;
+}
+
+.portfolio-grid{
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:9px;
+margin-top:12px;
+}
+
+.portfolio-item{
+position:relative;
+aspect-ratio:1/1;
+border-radius:12px;
+overflow:hidden;
+background:#eee;
+border:1px solid #ddd;
+}
+
+.portfolio-item img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.portfolio-loading{
+width:100%;
+height:100%;
+min-height:100px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+color:#777;
+background:#f3f3f3;
+}
+
+.portfolio-remove{
+position:absolute;
+top:5px;
+right:5px;
+width:27px;
+height:27px;
+border:0;
+border-radius:50%;
+background:rgba(20,20,20,.78);
+color:white;
+font-weight:900;
+display:grid;
+place-items:center;
+}
+
+.portfolio-empty{
+font-size:12px;
+color:#777;
+text-align:center;
+padding:12px 4px;
+}
+
+.portfolio-add{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:7px;
+padding:11px 14px;
+border:1px solid var(--line);
+border-radius:11px;
+background:white;
+font-size:12px;
+font-weight:700;
+cursor:pointer;
+}
+
+/* Android-friendly real file-picker overlay */
+
+.portfolio-picker{
+position:relative;
+display:inline-block;
+}
+
+.portfolio-picker input[type="file"]{
+position:absolute !important;
+inset:0 !important;
+width:100% !important;
+height:100% !important;
+display:block !important;
+opacity:0.01 !important;
+margin:0 !important;
+padding:0 !important;
+border:0 !important;
+z-index:5 !important;
+cursor:pointer !important;
+}
+
+.portfolio-note{
+font-size:11px;
+color:#777;
+margin-top:8px;
+}
+
+@media(max-width:768px){
+
+.portfolio-grid{
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:7px;
+}
+
+.portfolio-upload{
+padding:13px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<main class="container">
+
+<section class="hero">
+
+<div class="eyebrow">
+BGC BUSINESS NETWORK
+</div>
+
+<h1>
+List your business<br>
+<span>for free.</span>
+</h1>
+
+<p>
+Add your business details and connect directly with customers, suppliers and business partners.
+</p>
+
+</section>
+
+<section class="card">
+
+<div class="card-head">
+
+<h2>Business Registration</h2>
+
+<p>
+Register your business and get listed immediately.
+</p>
+
+</div>
+
+<form class="form" id="vendorForm">
+
+<!-- SECTION 1 -->
+
+<div class="section-title">
+
+<span class="num">01</span>
+
+<div>
+<h3>Business Details</h3>
+<small>Basic information about your business</small>
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="field full">
+
+<label>Business Profile Photo / Logo</label>
+
+<div class="photo-upload">
+
+<div class="photo-row">
+
+<div class="photo-preview" id="photoPreview">
+📷
+</div>
+
+<div class="photo-controls">
+
+<label class="upload-btn" for="logoFile">
+📸 Choose Photo
+</label>
+
+<input
+type="file"
+id="logoFile"
+class="file-input"
+accept="image/*"
+>
+
+<button
+type="button"
+id="removePhoto"
+class="remove-photo"
+>
+Remove Photo
+</button>
+
+<div class="hint">
+JPG, PNG or WebP · Auto-compressed to under 1 MB
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<div class="grid">
+
+<div class="field">
+
+<label>
+Business Name <span class="required">*</span>
+</label>
+
+<input
+name="business_name"
+required
+maxlength="150"
+placeholder="Enter business name"
+>
+
+</div>
+
+<div class="field">
+
+<label>Business Type</label>
+
+<select name="business_type">
+
+<option value="">Select business type</option>
+<option>Manufacturer</option>
+<option>Wholesaler</option>
+<option>Distributor</option>
+<option>Retailer</option>
+<option>Service Provider</option>
+<option>Consultant</option>
+<option>Contractor</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="field full">
+
+<label>
+Business Description <span class="required">*</span>
+</label>
+
+<textarea
+name="description"
+required
+maxlength="1000"
+placeholder="Briefly describe your business..."
+></textarea>
+
+</div>
+
+<div class="field">
+
+<label>Years in Business</label>
+
+<input
+name="years_in_business"
+type="number"
+min="0"
+max="100"
+placeholder="Example: 5"
+>
+
+</div>
+
+<div class="field">
+
+<label>Minimum Order</label>
+
+<input
+name="minimum_order"
+maxlength="100"
+placeholder="Example: ₹5,000"
+>
+
+</div>
+
+<div class="field full">
+
+<label>Products / Services</label>
+
+<textarea
+name="products_services"
+maxlength="1000"
+placeholder="Products or services you offer..."
+></textarea>
+
+</div>
+
+<div class="field full">
+
+<label>
+Recent Work / Project Photos
+<span style="color:#777;font-weight:500">(Optional)</span>
+</label>
+
+<div class="portfolio-upload">
+
+<div class="portfolio-head">
+
+<strong style="font-size:13px">
+Show your recent work
+</strong>
+
+<span class="portfolio-count" id="portfolioCount">
+0 / 5
+</span>
+
+</div>
+
+<div class="portfolio-picker">
+
+<button
+type="button"
+class="portfolio-add"
+>
+＋ Add project photos
+</button>
+
+<input
+type="file"
+id="portfolioFiles"
+accept="image/*"
+multiple
+>
+
+</div>
+
+<div class="portfolio-grid" id="portfolioPreview"></div>
+
+<div class="portfolio-note">
+Up to 5 photos · Any selected image is automatically resized and compressed to under 1 MB before upload. Photos appear on the back of your business card.
+</div>
+
+</div>
+
+</div>
+
+<div class="field full">
+
+<label>
+Business Category <span class="required">*</span>
+</label>
+
+<div class="category-box">
+
+<select id="categorySelect" required>
+
+<option value="">Select category</option>
+
+</select>
+
+<div class="hint">
+Choose a category and select one or more subcategories.
+</div>
+
+<div id="subcats" class="subcats"></div>
+
+<div id="selectedSummary" class="hint"></div>
+
+</div>
+
+</div>
+
+<div class="field full">
+
+<label>Business Availability</label>
+
+<div class="options">
+
+<label class="option">
+<input type="checkbox" name="wholesale_available">
+Wholesale
+</label>
+
+<label class="option">
+<input type="checkbox" name="retail_available">
+Retail
+</label>
+
+<label class="option">
+<input type="checkbox" name="delivery_available">
+Delivery
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 2 -->
+
+<div class="section-title">
+
+<span class="num">02</span>
+
+<div>
+<h3>Contact Details</h3>
+<small>Customers can contact you directly</small>
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="field">
+
+<label>
+Owner / Contact Person <span class="required">*</span>
+</label>
+
+<input
+name="owner_name"
+required
+maxlength="150"
+placeholder="Your name"
+>
+
+</div>
+
+<div class="field">
+
+<label>
+Phone Number <span class="required">*</span>
+</label>
+
+<input
+name="phone"
+required
+type="tel"
+maxlength="20"
+placeholder="Mobile number"
+>
+
+</div>
+
+<div class="field">
+
+<label>WhatsApp Number</label>
+
+<input
+name="whatsapp"
+type="tel"
+maxlength="20"
+placeholder="WhatsApp number"
+>
+
+</div>
+
+<div class="field">
+
+<label>Business Email</label>
+
+<input
+name="email"
+type="email"
+maxlength="150"
+placeholder="Email address"
+>
+
+</div>
+
+<div class="field">
+
+<label>Website</label>
+
+<input
+name="website"
+type="url"
+maxlength="250"
+placeholder="https://yourwebsite.com"
+>
+
+</div>
+
+<div class="field">
+
+<label>Instagram</label>
+
+<input
+name="instagram"
+maxlength="250"
+placeholder="Instagram URL"
+>
+
+</div>
+
+<div class="field">
+
+<label>Facebook</label>
+
+<input
+name="facebook"
+maxlength="250"
+placeholder="Facebook page URL"
+>
+
+</div>
+
+</div>
+
+<div class="divider"></div>
+
+<label class="option">
+
+<input
+id="agree"
+type="checkbox"
+required
+>
+
+I confirm my business details are correct.
+
+</label>
+
+<div class="actions">
+
+<button
+class="btn primary"
+type="submit"
+id="submitBtn"
+>
+Register Business →
+</button>
+
+</div>
+
+<div id="formStatus" class="status"></div>
+
+</form>
+
+</section>
+
+</main>
+
+<footer class="footer">
+
+<strong>BGC CLUB</strong>
+· Business Network
+
+<div class="register-back-wrapper">
+
+<a href="vendors.html" class="register-back-3d">
+
+<span class="back-icon">←</span>
+
+<span>Back to Business Network</span>
+
+</a>
+
+</div>
+
+</footer>
+
+<script>
+  const SUPABASE_URL = "https://acgbtsfuwybbtzakvmjf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const form = document.getElementById("vendorForm");
+const categorySelect = document.getElementById("categorySelect");
+const subcatsEl = document.getElementById("subcats");
+const selectedSummary = document.getElementById("selectedSummary");
+const logoFile = document.getElementById("logoFile");
+const photoPreview = document.getElementById("photoPreview");
+const removePhoto = document.getElementById("removePhoto");
+const portfolioFiles = document.getElementById("portfolioFiles");
+const portfolioPreview = document.getElementById("portfolioPreview");
+const portfolioCount = document.getElementById("portfolioCount");
+const submitBtn = document.getElementById("submitBtn");
+const formStatus = document.getElementById("formStatus");
+
+let selectedSubcategories = new Map();
+let selectedPortfolioFiles = [];
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[char]));
+}
+
+function showStatus(message, type) {
+  formStatus.textContent = message;
+  formStatus.className = "status " + type;
+  formStatus.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+function resetPhotoPreview() {
+  photoPreview.innerHTML = "📷";
+  removePhoto.style.display = "none";
+}
+
+function previewFile(file, target, fallbackText) {
+  if (!file || !file.type || !file.type.startsWith("image/")) {
+    target.textContent = fallbackText || "Preview unavailable";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = event => {
+    if (!event.target || !event.target.result) {
+      target.textContent = fallbackText || "Preview unavailable";
+      return;
+    }
+
+    const img = document.createElement("img");
+    img.src = event.target.result;
+    img.alt = "Selected image preview";
+    img.style.width = "100%";
+    img.style.height = "100%";
+    img.style.objectFit = "cover";
+    img.style.display = "block";
+
+    target.innerHTML = "";
+    target.appendChild(img);
+  };
+
+  reader.onerror = () => {
+    target.textContent = fallbackText || "Preview unavailable";
+  };
+
+  reader.readAsDataURL(file);
+}
+
+logoFile.addEventListener("change", function() {
+  const file = this.files && this.files[0];
+
+  if (!file) {
+    resetPhotoPreview();
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select an image file.");
+    this.value = "";
+    resetPhotoPreview();
+    return;
+  }
+
+  previewFile(file, photoPreview, "📷");
+  removePhoto.style.display = "block";
+});
+
+removePhoto.addEventListener("click", function() {
+  logoFile.value = "";
+  resetPhotoPreview();
+});
+
+// Convert selected image to WebP and keep it under 1 MB where possible.
+async function compressImage(file) {
+  const maxBytes = 1024 * 1024;
+  const maxSide = 1600;
+
+  const image = await new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      const img = new Image();
+
+      img.onload = () => resolve(img);
+
+      img.onerror = () => reject(
+        new Error("Could not read image. Please select another photo.")
+      );
+
+      img.src = e.target.result;
+    };
+
+    reader.onerror = () => reject(
+      new Error("Could not read image file.")
+    );
+
+    reader.readAsDataURL(file);
+  });
+
+  let w = image.naturalWidth || image.width;
+  let h = image.naturalHeight || image.height;
+
+  const scale = Math.min(1, maxSide / Math.max(w, h));
+
+  w = Math.round(w * scale);
+  h = Math.round(h * scale);
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+
+  let blob = null;
+
+  for (let attempt = 0; attempt < 8; attempt++) {
+    canvas.width = w;
+    canvas.height = h;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.drawImage(image, 0, 0, w, h);
+
+    for (let quality = 0.88; quality >= 0.4; quality -= 0.1) {
+      blob = await new Promise(resolve =>
+        canvas.toBlob(resolve, "image/webp", quality)
+      );
+
+      if (blob && blob.size <= maxBytes) break;
+    }
+
+    if (blob && blob.size <= maxBytes) break;
+
+    w = Math.round(w * 0.8);
+    h = Math.round(h * 0.8);
+  }
+
+  if (!blob) {
+    throw new Error("Image compression failed. Please select another photo.");
+  }
+
+  if (blob.size > maxBytes) {
+    throw new Error(
+      "Photo could not be compressed below 1 MB. Please choose a smaller image."
+    );
+  }
+
+  const safeName = (file.name || "image").replace(/\.[^.]+$/, "") + ".webp";
+
+  return new File([blob], safeName, {
+    type:"image/webp",
+    lastModified:Date.now()
+  });
+}
+
+// RECENT WORK PHOTOS
+
+portfolioFiles.addEventListener("change", function() {
+
+  const incoming = Array.from(portfolioFiles.files || []);
+
+  // Clear after capturing so same photo can be selected again.
+  portfolioFiles.value = "";
+
+  for (const file of incoming) {
+
+    const looksLikeImage =
+      (file.type && file.type.startsWith("image/")) ||
+      /\.(jpg|jpeg|png|gif|webp|bmp|heic|heif|avif)$/i.test(file.name || "");
+
+    if (!looksLikeImage) {
+      alert((file.name || "Selected file") + " is not an image.");
+      continue;
+    }
+
+    if (selectedPortfolioFiles.length >= 5) {
+      alert("Maximum 5 recent work photos allowed.");
+      break;
+    }
+
+    selectedPortfolioFiles.push(file);
+  }
+
+  renderPortfolioPreview();
+});
+
+function renderPortfolioPreview() {
+
+  portfolioPreview.innerHTML = "";
+
+  portfolioCount.textContent =
+    selectedPortfolioFiles.length + " / 5";
+
+  if (!selectedPortfolioFiles.length) {
+
+    portfolioPreview.innerHTML =
+      '<div class="portfolio-empty" style="grid-column:1/-1">No project photos selected yet.</div>';
+
+    return;
+  }
+
+  selectedPortfolioFiles.forEach((file, index) => {
+
+    const item = document.createElement("div");
+    item.className = "portfolio-item";
+
+    const imageBox = document.createElement("div");
+
+    imageBox.style.width = "100%";
+    imageBox.style.height = "100%";
+    imageBox.className = "portfolio-loading";
+    imageBox.textContent = "Loading...";
+
+    item.appendChild(imageBox);
+
+    previewFile(file, imageBox, "Preview unavailable");
+
+    const removeBtn = document.createElement("button");
+
+    removeBtn.className = "portfolio-remove";
+    removeBtn.type = "button";
+    removeBtn.setAttribute("aria-label", "Remove photo");
+    removeBtn.textContent = "×";
+
+    removeBtn.addEventListener("click", () => {
+      selectedPortfolioFiles.splice(index, 1);
+      renderPortfolioPreview();
+    });
+
+    item.appendChild(removeBtn);
+    portfolioPreview.appendChild(item);
+
+  });
+
+}
+
+renderPortfolioPreview();
+  async function uploadImageToStorage(file, path) {
+
+  const compressedFile = await compressImage(file);
+
+  const {error} = await sb.storage.from("vendor-logos").upload(path, compressedFile, {
+    contentType:"image/webp",
+    cacheControl:"3600",
+    upsert:false
+  });
+
+  if (error) throw error;
+
+  const {data} = sb.storage.from("vendor-logos").getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+async function uploadBusinessLogo(file) {
+
+  if (!file) return null;
+
+  const path =
+    Date.now() + "-" +
+    Math.random().toString(36).slice(2,10) +
+    ".webp";
+
+  return uploadImageToStorage(file, path);
+}
+
+async function uploadPortfolioPhoto(file, vendorId, index) {
+
+  const path =
+    `portfolio/${vendorId}/${Date.now()}-${index}-${Math.random().toString(36).slice(2,8)}.webp`;
+
+  return uploadImageToStorage(file, path);
+}
+
+async function loadCategories() {
+
+  const {data, error} = await sb.from("franchise_categories")
+    .select("id,name")
+    .eq("is_active", true)
+    .order("sort_order");
+
+  if (error) {
+    console.error(error);
+    categorySelect.innerHTML =
+      '<option value="">Categories unavailable</option>';
+    return;
+  }
+
+  categorySelect.innerHTML =
+    '<option value="">Select category</option>' +
+    (data || []).map(category =>
+      `<option value="${esc(category.id)}">${esc(category.name)}</option>`
+    ).join("");
+}
+
+async function loadSubcategories(categoryId) {
+
+  subcatsEl.innerHTML = "";
+  selectedSubcategories.clear();
+  updateSummary();
+
+  if (!categoryId) return;
+
+  const {data, error} = await sb.from("franchise_subcategories")
+    .select("id,name,category_id")
+    .eq("category_id", categoryId)
+    .eq("is_active", true)
+    .order("sort_order");
+
+  if (error) {
+    console.error(error);
+    subcatsEl.textContent = "Unable to load subcategories.";
+    return;
+  }
+
+  if (!data || !data.length) {
+    subcatsEl.innerHTML =
+      '<div class="hint">No subcategories available.</div>';
+    return;
+  }
+
+  data.forEach(sub => {
+
+    const chip = document.createElement("label");
+    chip.className = "chip";
+
+    chip.innerHTML =
+      `<input type="checkbox" value="${esc(sub.id)}"> ${esc(sub.name)}`;
+
+    const checkbox = chip.querySelector("input");
+
+    checkbox.addEventListener("change", function() {
+
+      if (this.checked) {
+        selectedSubcategories.set(sub.id, sub);
+      } else {
+        selectedSubcategories.delete(sub.id);
+      }
+
+      chip.classList.toggle("selected", this.checked);
+
+      updateSummary();
+
+    });
+
+    subcatsEl.appendChild(chip);
+
+  });
+
+}
+
+categorySelect.addEventListener("change", function() {
+  loadSubcategories(this.value);
+});
+
+function updateSummary() {
+
+  selectedSummary.textContent =
+    selectedSubcategories.size
+      ? selectedSubcategories.size + " subcategory(s) selected"
+      : "";
+
+}
+
+loadCategories();
+
+form.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  formStatus.className = "status";
+  formStatus.textContent = "";
+
+  if (!selectedSubcategories.size) {
+    showStatus("Please select at least one subcategory.", "error");
+    return;
+  }
+
+  const formData = new FormData(form);
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Registering Business...";
+
+  let vendorCreated = false;
+
+  try {
+
+    let logoUrl = null;
+
+    const selectedLogo = logoFile.files && logoFile.files[0];
+
+    if (selectedLogo) {
+      showStatus("Compressing and uploading business photo...", "success");
+      logoUrl = await uploadBusinessLogo(selectedLogo);
+    }
+
+    const vendor = {
+
+      user_id:null,
+
+      business_name:formData.get("business_name").trim(),
+
+      owner_name:formData.get("owner_name").trim(),
+
+      business_type:formData.get("business_type") || null,
+
+      description:formData.get("description").trim(),
+
+      phone:formData.get("phone").trim(),
+
+      whatsapp:formData.get("whatsapp").trim() || null,
+
+      email:formData.get("email").trim() || null,
+
+      website:formData.get("website").trim() || null,
+
+      instagram:formData.get("instagram").trim() || null,
+
+      facebook:formData.get("facebook").trim() || null,
+
+      products_services:formData.get("products_services").trim() || null,
+
+      years_in_business:
+        formData.get("years_in_business")
+          ? Number(formData.get("years_in_business"))
+          : null,
+
+      minimum_order:formData.get("minimum_order").trim() || null,
+
+      wholesale_available:
+        form.querySelector('[name="wholesale_available"]').checked,
+
+      retail_available:
+        form.querySelector('[name="retail_available"]').checked,
+
+      delivery_available:
+        form.querySelector('[name="delivery_available"]').checked,
+
+      logo_url:logoUrl,
+
+      cover_image_url:null,
+
+      status:"approved",
+
+      is_verified:false
+
+    };
+
+    showStatus("Saving business details...", "success");
+
+    const {data:vendorData, error:vendorError} =
+      await sb.from("franchise_vendors")
+        .insert(vendor)
+        .select("id")
+        .single();
+
+    if (vendorError) throw vendorError;
+
+    vendorCreated = true;
+
+    const mappings =
+      [...selectedSubcategories.values()].map(sub => ({
+        vendor_id:vendorData.id,
+        category_id:sub.category_id,
+        subcategory_id:sub.id
+      }));
+
+    const {error:mappingError} =
+      await sb.from("franchise_vendor_categories").insert(mappings);
+
+    if (mappingError) throw mappingError;
+
+    let portfolioWarning = "";
+
+    if (selectedPortfolioFiles.length) {
+
+      showStatus(
+        `Compressing and uploading recent work photos (${selectedPortfolioFiles.length})...`,
+        "success"
+      );
+
+      const mediaRows = [];
+
+      for (let i = 0; i < selectedPortfolioFiles.length; i++) {
+
+        const url = await uploadPortfolioPhoto(
+          selectedPortfolioFiles[i],
+          vendorData.id,
+          i
+        );
+
+        mediaRows.push({
+          vendor_id:vendorData.id,
+          media_url:url,
+          media_type:"image",
+          title:"Recent Work",
+          sort_order:i
+        });
+
+      }
+
+      const {error:mediaError} =
+        await sb.from("franchise_vendor_media").insert(mediaRows);
+
+      if (mediaError) {
+        console.error(mediaError);
+        portfolioWarning =
+          " Business listed, but recent work photos could not be saved.";
+      }
+
+    }
+
+    showStatus(
+      "🎉 Business registered successfully! Your listing is live." +
+      portfolioWarning,
+      "success"
+    );
+
+    submitBtn.textContent = "Registered Successfully ✓";
+
+    form.reset();
+
+    selectedSubcategories.clear();
+
+    subcatsEl.innerHTML = "";
+
+    selectedSummary.textContent = "";
+
+    resetPhotoPreview();
+
+    selectedPortfolioFiles = [];
+
+    renderPortfolioPreview();
+
+    categorySelect.selectedIndex = 0;
+
+    setTimeout(() => {
+      window.location.href = "vendors.html";
+    }, 1800);
+
+  } catch (error) {
+
+    console.error("Registration error:", error);
+
+    const prefix = vendorCreated
+      ? "Your business may already be saved. Please do not submit again. Error: "
+      : "Registration failed. ";
+
+    showStatus(
+      prefix + (error.message || "Please try again."),
+      "error"
+    );
+
+    submitBtn.disabled = false;
+
+    submitBtn.textContent = "Register Business →";
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
