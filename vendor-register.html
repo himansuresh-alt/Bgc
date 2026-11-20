@@ -1105,6 +1105,37 @@ placeholder="Facebook page URL"
 
 </div>
 
+<div class="field full">
+
+<label>Company Address <span class="required">*</span></label>
+
+<textarea
+name="address"
+required
+maxlength="500"
+placeholder="Door / Street, Area, City, State"
+></textarea>
+
+</div>
+
+<div class="field">
+
+<label>PIN Code <span class="required">*</span></label>
+
+<input
+name="pincode"
+required
+inputmode="numeric"
+type="text"
+maxlength="6"
+pattern="[0-9]{6}"
+placeholder="6-digit PIN code"
+>
+
+<div class="hint">Enter a valid 6-digit Indian PIN code.</div>
+
+</div>
+
 </div>
 
 <div class="divider"></div>
@@ -1513,7 +1544,15 @@ async function loadSubcategories(categoryId) {
     checkbox.addEventListener("change", function() {
 
       if (this.checked) {
+
+        if (selectedSubcategories.size >= 2) {
+          this.checked = false;
+          alert("Maximum 2 subcategories only. You cannot select more than 2.");
+          return;
+        }
+
         selectedSubcategories.set(sub.id, sub);
+
       } else {
         selectedSubcategories.delete(sub.id);
       }
@@ -1557,6 +1596,11 @@ form.addEventListener("submit", async function(event) {
     return;
   }
 
+  if (selectedSubcategories.size > 2) {
+    showStatus("Maximum 2 subcategories are allowed.", "error");
+    return;
+  }
+
   const formData = new FormData(form);
 
   submitBtn.disabled = true;
@@ -1588,6 +1632,10 @@ form.addEventListener("submit", async function(event) {
       description:formData.get("description").trim(),
 
       phone:formData.get("phone").trim(),
+
+      address:formData.get("address").trim(),
+
+      pincode:formData.get("pincode").trim(),
 
       whatsapp:formData.get("whatsapp").trim() || null,
 
