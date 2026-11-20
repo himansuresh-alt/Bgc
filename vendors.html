@@ -331,6 +331,9 @@ color:#111;
 margin-top:4px;
 }
 
+.front-label{font-size:8px;margin-bottom:4px;}
+.front-category-label{font-size:8px;margin-top:9px;}
+
 .vendor-description{
 font-size:10px;
 line-height:1.4;
@@ -364,6 +367,8 @@ font-size:10px;
 border-radius:10px;
 }
 
+.contact-btn svg{width:15px;height:15px;flex-basis:15px;}
+
 }
 
 </style>
@@ -380,8 +385,7 @@ width:100%;
 perspective:1200px;
 cursor:pointer;
 }
-
-.flip-inner{
+  .flip-inner{
 position:relative;
 width:100%;
 transform-style:preserve-3d;
@@ -495,6 +499,34 @@ align-items:center;
 
 .front-content{
 padding:52px 24px 23px;
+text-align:left;
+}
+
+.front-label{
+font-size:9px;
+font-weight:800;
+letter-spacing:1px;
+text-transform:uppercase;
+color:#8d1831;
+margin-bottom:5px;
+}
+
+.vendor-owner{
+font-family:"Space Grotesk",sans-serif;
+font-size:18px;
+font-weight:700;
+line-height:1.25;
+color:#171717;
+overflow-wrap:anywhere;
+}
+
+.front-category-label{
+font-size:9px;
+font-weight:800;
+letter-spacing:.7px;
+text-transform:uppercase;
+color:#8a8a8a;
+margin-top:12px;
 }
 
 .vendor-name{
@@ -646,7 +678,7 @@ padding:6px 8px;
 font-size:9px;
 font-weight:700;
 }
-  
+
 .back-footer{
 margin-top:auto;
 padding-top:20px;
@@ -674,6 +706,22 @@ font-size:12px;
 font-weight:800;
 text-decoration:none;
 border:none;
+}
+
+.contact-btn svg{
+width:18px;
+height:18px;
+flex:0 0 18px;
+fill:none;
+stroke:currentColor;
+stroke-width:2;
+stroke-linecap:round;
+stroke-linejoin:round;
+}
+
+.whatsapp-btn svg{
+width:19px;
+height:19px;
 }
 
 .call-btn{
@@ -708,22 +756,97 @@ margin-left:6px;
 vertical-align:middle;
 }
 
-
 /* RECENT WORK AUTO SLIDER */
+
 .project-slider{
-  position:relative;width:100%;overflow:hidden;border-radius:15px;
-  background:#f1f1f1;aspect-ratio:16/9;margin-top:14px;
+position:relative;
+width:100%;
+overflow:hidden;
+border-radius:15px;
+background:#f1f1f1;
+aspect-ratio:16/9;
+margin-top:14px;
 }
-.project-slider-track{display:flex;width:100%;height:100%;transition:transform .5s ease;}
-.project-slide{min-width:100%;width:100%;height:100%;flex-shrink:0;}
-.project-slide img{width:100%;height:100%;object-fit:cover;display:block;}
-.project-slider-dots{position:absolute;bottom:9px;left:0;right:0;display:flex;justify-content:center;gap:6px;}
-.project-slider-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.58);border:0;padding:0;}
-.project-slider-dot.active{width:18px;border-radius:9px;background:#fff;}
-.project-slider-arrow{position:absolute;top:50%;transform:translateY(-50%);width:31px;height:31px;border-radius:50%;background:rgba(0,0,0,.42);color:white;border:0;font-size:18px;display:flex;align-items:center;justify-content:center;z-index:2;}
-.project-slider-prev{left:8px}.project-slider-next{right:8px}
-.project-slider.single .project-slider-dots,.project-slider.single .project-slider-arrow{display:none;}
-.project-slider img{pointer-events:none;}
+
+.project-slider-track{
+display:flex;
+width:100%;
+height:100%;
+transition:transform .5s ease;
+}
+
+.project-slide{
+min-width:100%;
+width:100%;
+height:100%;
+flex-shrink:0;
+}
+
+.project-slide img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.project-slider-dots{
+position:absolute;
+bottom:9px;
+left:0;
+right:0;
+display:flex;
+justify-content:center;
+gap:6px;
+}
+
+.project-slider-dot{
+width:7px;
+height:7px;
+border-radius:50%;
+background:rgba(255,255,255,.58);
+border:0;
+padding:0;
+}
+
+.project-slider-dot.active{
+width:18px;
+border-radius:9px;
+background:#fff;
+}
+
+.project-slider-arrow{
+position:absolute;
+top:50%;
+transform:translateY(-50%);
+width:31px;
+height:31px;
+border-radius:50%;
+background:rgba(0,0,0,.42);
+color:white;
+border:0;
+font-size:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:2;
+}
+
+.project-slider-prev{
+left:8px;
+}
+
+.project-slider-next{
+right:8px;
+}
+
+.project-slider.single .project-slider-dots,
+.project-slider.single .project-slider-arrow{
+display:none;
+}
+
+.project-slider img{
+pointer-events:none;
+}
 
 /* EMPTY */
 
@@ -761,246 +884,176 @@ color:#888;
 font-size:13px;
 }
   .join-network-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:8px;
-
-    margin-top:22px;
-
-    padding:15px 28px;
-
-    background:#8d1831;
-    color:#ffffff;
-
-    border:none;
-    border-radius:14px;
-
-    text-decoration:none;
-
-    font-family:"DM Sans",sans-serif;
-    font-size:14px;
-    font-weight:700;
-
-    transition:.2s;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+margin-top:22px;
+padding:15px 28px;
+background:#8d1831;
+color:#ffffff;
+border:none;
+border-radius:14px;
+text-decoration:none;
+font-family:"DM Sans",sans-serif;
+font-size:14px;
+font-weight:700;
+transition:.2s;
 }
 
 .join-network-btn:hover{
-    background:#741329;
-    transform:translateY(-2px);
+background:#741329;
+transform:translateY(-2px);
 }
 
 .join-network-btn:active{
-    transform:scale(.98);
+transform:scale(.98);
 }
 
-  /* PREMIUM FIXED NAVIGATION */
+/* PREMIUM FIXED NAVIGATION */
 
-.mobile-bottom-nav {
-
-  position:fixed;
-  z-index:9999;
-
-  bottom:calc(12px + env(safe-area-inset-bottom));
-
-  left:50%;
-
-  display:grid;
-
-  width:min(94%,520px);
-  min-height:82px;
-
-  grid-template-columns:repeat(4,minmax(0,1fr));
-
-  align-items:center;
-  gap:4px;
-
-  padding:9px 8px;
-
-  transform:translateX(-50%);
-
-  border:1px solid rgba(255,255,255,.85);
-  border-radius:25px;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,.97),
-      rgba(239,242,247,.91)
-    );
-
-  backdrop-filter:blur(24px) saturate(180%);
-  -webkit-backdrop-filter:blur(24px) saturate(180%);
-
-  box-shadow:
-    0 15px 35px rgba(0,0,0,.13),
-    0 4px 9px rgba(0,0,0,.07),
-    inset 0 1px 1px rgba(255,255,255,.95),
-    inset 0 -2px 4px rgba(0,0,0,.045);
-
+.mobile-bottom-nav{
+position:fixed;
+z-index:9999;
+bottom:calc(12px + env(safe-area-inset-bottom));
+left:50%;
+display:grid;
+width:min(94%,520px);
+min-height:82px;
+grid-template-columns:repeat(4,minmax(0,1fr));
+align-items:center;
+gap:4px;
+padding:9px 8px;
+transform:translateX(-50%);
+border:1px solid rgba(255,255,255,.85);
+border-radius:25px;
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.97),
+rgba(239,242,247,.91)
+);
+backdrop-filter:blur(24px) saturate(180%);
+-webkit-backdrop-filter:blur(24px) saturate(180%);
+box-shadow:
+0 15px 35px rgba(0,0,0,.13),
+0 4px 9px rgba(0,0,0,.07),
+inset 0 1px 1px rgba(255,255,255,.95),
+inset 0 -2px 4px rgba(0,0,0,.045);
 }
 
-.mobile-nav-item {
-
-  position:relative;
-
-  min-width:0;
-  height:64px;
-
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-
-  gap:5px;
-
-  border-radius:18px;
-
-  color:#656a73;
-
-  font-size:11px;
-  font-weight:700;
-
-  text-decoration:none;
-
-  transition:
-    transform .22s ease,
-    color .22s ease,
-    background .22s ease,
-    box-shadow .22s ease;
-
-  -webkit-tap-highlight-color:transparent;
-
+.mobile-nav-item{
+position:relative;
+min-width:0;
+height:64px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:5px;
+border-radius:18px;
+color:#656a73;
+font-size:11px;
+font-weight:700;
+text-decoration:none;
+transition:
+transform .22s ease,
+color .22s ease,
+background .22s ease,
+box-shadow .22s ease;
+-webkit-tap-highlight-color:transparent;
 }
 
-.mobile-nav-icon {
-
-  width:29px;
-  height:29px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:0;
-
+.mobile-nav-icon{
+width:29px;
+height:29px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:0;
 }
 
-.mobile-nav-icon svg {
-
-  width:27px;
-  height:27px;
-
-  display:block;
-
-  fill:none;
-  stroke:currentColor;
-
-  stroke-width:2.2;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-
+.mobile-nav-icon svg{
+width:27px;
+height:27px;
+display:block;
+fill:none;
+stroke:currentColor;
+stroke-width:2.2;
+stroke-linecap:round;
+stroke-linejoin:round;
 }
 
-.mobile-nav-item.active {
-
-  color:#8d1831;
-
-  background:
-    linear-gradient(
-      145deg,
-      #ffffff,
-      #f0e9ec
-    );
-
-  box-shadow:
-    0 5px 10px rgba(0,0,0,.10),
-    inset 0 1px 2px #ffffff,
-    inset 0 -2px 3px rgba(141,24,49,.08);
-
-  transform:translateY(-2px);
-
+.mobile-nav-item.active{
+color:#8d1831;
+background:
+linear-gradient(
+145deg,
+#ffffff,
+#f0e9ec
+);
+box-shadow:
+0 5px 10px rgba(0,0,0,.10),
+inset 0 1px 2px #ffffff,
+inset 0 -2px 3px rgba(141,24,49,.08);
+transform:translateY(-2px);
 }
 
-.mobile-nav-item:active {
-
-  transform:scale(.94);
-
+.mobile-nav-item:active{
+transform:scale(.94);
 }
-
 
 /* DESKTOP */
 
 @media(min-width:701px){
 
-  .mobile-bottom-nav{
-
-    left:50%;
-    bottom:22px;
-
-    width:min(560px,80%);
-
-  }
-
+.mobile-bottom-nav{
+left:50%;
+bottom:22px;
+width:min(560px,80%);
 }
 
+}
 
 /* MOBILE */
 
 @media(max-width:700px){
 
-  body{
+body{
+padding-bottom:120px;
+}
 
-    padding-bottom:120px;
+.mobile-bottom-nav{
+left:50%;
+right:auto;
+bottom:calc(10px + env(safe-area-inset-bottom));
+width:calc(100% - 24px);
+min-height:78px;
+height:auto;
+grid-template-columns:repeat(4,minmax(0,1fr));
+padding:7px 5px;
+border-radius:23px;
+}
 
-  }
+.mobile-nav-item{
+height:62px;
+font-size:10px;
+gap:4px;
+}
 
-  .mobile-bottom-nav{
+.mobile-nav-icon{
+width:27px;
+height:27px;
+}
 
-    left:50%;
-    right:auto;
-
-    bottom:calc(10px + env(safe-area-inset-bottom));
-
-    width:calc(100% - 24px);
-
-    min-height:78px;
-    height:auto;
-
-    grid-template-columns:repeat(4,minmax(0,1fr));
-
-    padding:7px 5px;
-
-    border-radius:23px;
-
-  }
-
-  .mobile-nav-item{
-
-    height:62px;
-
-    font-size:10px;
-    gap:4px;
-
-  }
-
-  .mobile-nav-icon{
-
-    width:27px;
-    height:27px;
-
-  }
-
-  .mobile-nav-icon svg{
-
-    width:25px;
-    height:25px;
-
-  }
+.mobile-nav-icon svg{
+width:25px;
+height:25px;
+}
 
 }
 
-  @media(max-width:700px){
+@media(max-width:700px){
 
 .back-content{
 padding:12px;
@@ -1053,7 +1106,7 @@ font-size:9px;
 }
 
 }
-    
+
 </style>
 
 </head>
@@ -1075,9 +1128,9 @@ Find the right<br>
 <span>business partner.</span>
 </h1>
 
-  <a href="vendor-register.html" class="join-network-btn">
-    + Join Business Network
-  </a>
+<a href="vendor-register.html" class="join-network-btn">
++ Join Business Network
+</a>
 
 </section>
 
@@ -1120,8 +1173,7 @@ id="categoryFilters"
 id="sortSelect"
 class="sort-select"
 >
-
-<option value="newest">Recently Added</option>
+  <option value="newest">Recently Added</option>
 
 <option value="az">A - Z</option>
 
@@ -1143,6 +1195,7 @@ Loading businesses...
 </section>
 
 </main>
+
 <script>
 
 const SUPABASE_URL =
@@ -1155,7 +1208,6 @@ const sb=supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
-
 
 /* ELEMENTS */
 
@@ -1180,23 +1232,17 @@ document.getElementById("sortSelect");
 const businessCount=
 document.getElementById("businessCount");
 
-
 /* DATA */
 
 let categories=[];
-
 let subcategoriesData=[];
-
 let vendors=[];
-
 let vendorMappings=[];
 let vendorMedia=[];
 let sliderIntervals=[];
 
 let activeCategory="all";
-
 let searchTerm="";
-
 
 /* ESCAPE */
 
@@ -1214,7 +1260,6 @@ return String(value??"").replace(/[&<>"']/g,char=>({
 
 }
 
-
 /* PHONE */
 
 function phoneNumber(value){
@@ -1224,27 +1269,19 @@ return String(value||"")
 
 }
 
-
 /* CATEGORY LOAD */
 
 async function loadCategories(){
 
 const {data,error}=await sb
-
 .from("franchise_categories")
-
 .select("*")
-
 .eq("is_active",true)
-
 .order("sort_order");
 
 if(error){
-
 console.error("Category error:",error);
-
 return;
-
 }
 
 categories=data||[];
@@ -1253,13 +1290,12 @@ const categoryCountElement =
 document.getElementById("categoryCount");
 
 if(categoryCountElement){
-  categoryCountElement.textContent=categories.length;
+categoryCountElement.textContent=categories.length;
 }
 
 renderCategoryFilters();
 
 }
-
 
 /* FILTER BUTTONS */
 
@@ -1293,7 +1329,6 @@ ${escapeHTML(category.name)}
 
 categoryFilters.innerHTML=html;
 
-
 /* BUTTON EVENTS */
 
 categoryFilters
@@ -1314,42 +1349,31 @@ renderVendors();
 
 }
 
-
 /* LOAD SUBCATEGORIES */
 
 async function loadSubcategories(){
 
 const {data,error}=await sb
-
 .from("franchise_subcategories")
-
 .select("*")
-
 .eq("is_active",true)
-
 .order("sort_order");
 
 if(error){
-
 console.error("Subcategory error:",error);
-
 return;
-
 }
 
 subcategoriesData=data||[];
 
 }
 
-
 /* LOAD VENDOR MAPPINGS */
 
 async function loadMappings(){
 
 const {data,error}=await sb
-
 .from("franchise_vendor_categories")
-
 .select("*");
 
 if(error){
@@ -1359,26 +1383,20 @@ console.error("Mapping error:",error);
 vendorMappings=[];
 
 return;
-
 }
 
 vendorMappings=data||[];
 
 }
 
-
 /* LOAD VENDORS */
 
 async function loadVendors(){
 
 const {data,error}=await sb
-
 .from("franchise_vendors")
-
 .select("*")
-
 .eq("status","approved")
-
 .order("created_at",{
 ascending:false
 });
@@ -1402,42 +1420,50 @@ vendorGrid.innerHTML=`
 `;
 
 return;
-
 }
 
 vendors=data||[];
 
-  if(businessCount){
-  businessCount.textContent=vendors.length;
-  }
-
+if(businessCount){
+businessCount.textContent=vendors.length;
 }
 
+}
 
 /* LOAD RECENT WORK MEDIA */
+
 async function loadVendorMedia(){
-  const ids=vendors.map(v=>v.id).filter(Boolean);
-  vendorMedia=[];
-  if(!ids.length) return;
-  const {data,error}=await sb
-    .from("franchise_vendor_media")
-    .select("vendor_id,media_url,media_type,sort_order,title")
-    .in("vendor_id",ids)
-    .eq("media_type","image")
-    .order("sort_order",{ascending:true});
-  if(error){
-    console.warn("Recent work media could not load:",error);
-    return;
-  }
-  vendorMedia=data||[];
-}
-function getVendorPhotos(vendorId){
-  return vendorMedia
-    .filter(item=>item.vendor_id===vendorId && item.media_url)
-    .sort((a,b)=>(a.sort_order||0)-(b.sort_order||0))
-    .map(item=>item.media_url);
+
+const ids=vendors.map(v=>v.id).filter(Boolean);
+
+vendorMedia=[];
+
+if(!ids.length) return;
+
+const {data,error}=await sb
+.from("franchise_vendor_media")
+.select("vendor_id,media_url,media_type,sort_order,title")
+.in("vendor_id",ids)
+.eq("media_type","image")
+.order("sort_order",{ascending:true});
+
+if(error){
+console.warn("Recent work media could not load:",error);
+return;
 }
 
+vendorMedia=data||[];
+
+}
+
+function getVendorPhotos(vendorId){
+
+return vendorMedia
+.filter(item=>item.vendor_id===vendorId && item.media_url)
+.sort((a,b)=>(a.sort_order||0)-(b.sort_order||0))
+.map(item=>item.media_url);
+
+}
 
 /* SEARCH */
 
@@ -1451,7 +1477,6 @@ renderVendors();
 
 });
 
-
 /* SORT */
 
 sortSelect.addEventListener("change",function(){
@@ -1459,7 +1484,6 @@ sortSelect.addEventListener("change",function(){
 renderVendors();
 
 });
-
 
 /* VENDOR MAPPING */
 
@@ -1470,7 +1494,6 @@ mapping.vendor_id===vendorId
 );
 
 }
-
 
 /* GET CATEGORY NAMES */
 
@@ -1506,15 +1529,11 @@ return [...new Set(names)];
 
 }
 
-
 /* CATEGORY MATCH */
-
-function vendorMatchesCategory(vendor,categoryId){
+  function vendorMatchesCategory(vendor,categoryId){
 
 if(categoryId==="all"){
-
 return true;
-
 }
 
 return getVendorMappings(vendor.id)
@@ -1524,15 +1543,12 @@ mapping.category_id===categoryId
 
 }
 
-
 /* SEARCH MATCH */
 
 function vendorMatchesSearch(vendor){
 
 if(!searchTerm){
-
 return true;
-
 }
 
 const categoryNames=
@@ -1542,19 +1558,12 @@ getVendorCategoryNames(vendor.id)
 const searchContent=[
 
 vendor.business_name,
-
 vendor.owner_name,
-
 vendor.business_type,
-
 vendor.description,
-
 vendor.products_services,
-
 vendor.phone,
-
 vendor.whatsapp,
-
 categoryNames
 
 ].join(" ").toLowerCase();
@@ -1563,15 +1572,12 @@ return searchContent.includes(searchTerm);
 
 }
 
-
 /* CATEGORY TITLE */
 
 function getCategoryTitle(){
 
 if(activeCategory==="all"){
-
 return "All Businesses";
-
 }
 
 const category=categories.find(
@@ -1583,65 +1589,163 @@ return category?.name||"Businesses";
 }
 
 </script>
+
 <script>
 
 /* RECENT WORK SLIDER HTML */
+
 function recentWorkSliderHTML(photos,vendorId){
-  if(!photos || !photos.length) return "";
-  const safePhotos=photos.map(url=>escapeHTML(url));
-  const slides=safePhotos.map((url,i)=>`
-    <div class="project-slide">
-      <img src="${url}" alt="Recent work photo ${i+1}" loading="lazy">
-    </div>
-  `).join("");
-  const dots=safePhotos.map((_,i)=>`
-    <button type="button" class="project-slider-dot ${i===0?"active":""}" aria-label="Show photo ${i+1}" data-slide="${i}"></button>
-  `).join("");
-  return `
-    <div class="project-slider ${photos.length===1?"single":""}" data-vendor-slider="${escapeHTML(vendorId)}" onclick="event.stopPropagation()">
-      <div class="project-slider-track">${slides}</div>
-      ${photos.length>1?`
-        <button type="button" class="project-slider-arrow project-slider-prev" aria-label="Previous photo">‹</button>
-        <button type="button" class="project-slider-arrow project-slider-next" aria-label="Next photo">›</button>
-        <div class="project-slider-dots">${dots}</div>
-      `:""}
-    </div>
-  `;
+
+if(!photos || !photos.length) return "";
+
+const safePhotos=photos.map(url=>escapeHTML(url));
+
+const slides=safePhotos.map((url,i)=>`
+
+<div class="project-slide">
+
+<img
+src="${url}"
+alt="Recent work photo ${i+1}"
+loading="lazy"
+>
+
+</div>
+
+`).join("");
+
+const dots=safePhotos.map((_,i)=>`
+
+<button
+type="button"
+class="project-slider-dot ${i===0?"active":""}"
+aria-label="Show photo ${i+1}"
+data-slide="${i}"
+></button>
+
+`).join("");
+
+return `
+
+<div
+class="project-slider ${photos.length===1?"single":""}"
+data-vendor-slider="${escapeHTML(vendorId)}"
+onclick="event.stopPropagation()"
+>
+
+<div class="project-slider-track">
+${slides}
+</div>
+
+${photos.length>1?`
+
+<button
+type="button"
+class="project-slider-arrow project-slider-prev"
+aria-label="Previous photo"
+>‹</button>
+
+<button
+type="button"
+class="project-slider-arrow project-slider-next"
+aria-label="Next photo"
+>›</button>
+
+<div class="project-slider-dots">
+${dots}
+</div>
+
+`:""}
+
+</div>
+
+`;
+
 }
 
 /* INITIALIZE RECENT WORK SLIDERS */
+
 function initRecentWorkSliders(){
-  sliderIntervals.forEach(timer=>clearInterval(timer));
-  sliderIntervals=[];
-  document.querySelectorAll(".project-slider").forEach(slider=>{
-    const track=slider.querySelector(".project-slider-track");
-    const slides=slider.querySelectorAll(".project-slide");
-    const dots=slider.querySelectorAll(".project-slider-dot");
-    if(!track || slides.length<2) return;
-    let index=0;
-    const goTo=(next)=>{
-      index=(next+slides.length)%slides.length;
-      track.style.transform=`translateX(-${index*100}%)`;
-      dots.forEach((dot,i)=>dot.classList.toggle("active",i===index));
-    };
-    slider.querySelector(".project-slider-prev")?.addEventListener("click",e=>{
-      e.stopPropagation();goTo(index-1);
-    });
-    slider.querySelector(".project-slider-next")?.addEventListener("click",e=>{
-      e.stopPropagation();goTo(index+1);
-    });
-    dots.forEach((dot,i)=>dot.addEventListener("click",e=>{
-      e.stopPropagation();goTo(i);
-    }));
-    let startX=0;
-    slider.addEventListener("touchstart",e=>{startX=e.touches[0].clientX;},{passive:true});
-    slider.addEventListener("touchend",e=>{
-      const delta=e.changedTouches[0].clientX-startX;
-      if(Math.abs(delta)>40) goTo(index+(delta<0?1:-1));
-    },{passive:true});
-    const timer=setInterval(()=>goTo(index+1),3000);
-    sliderIntervals.push(timer);
-  });
+
+sliderIntervals.forEach(timer=>clearInterval(timer));
+
+sliderIntervals=[];
+
+document.querySelectorAll(".project-slider").forEach(slider=>{
+
+const track=slider.querySelector(".project-slider-track");
+
+const slides=slider.querySelectorAll(".project-slide");
+
+const dots=slider.querySelectorAll(".project-slider-dot");
+
+if(!track || slides.length<2) return;
+
+let index=0;
+
+const goTo=(next)=>{
+
+index=(next+slides.length)%slides.length;
+
+track.style.transform=
+`translateX(-${index*100}%)`;
+
+dots.forEach((dot,i)=>
+dot.classList.toggle("active",i===index)
+);
+
+};
+
+slider.querySelector(".project-slider-prev")?.addEventListener("click",e=>{
+
+e.stopPropagation();
+
+goTo(index-1);
+
+});
+
+slider.querySelector(".project-slider-next")?.addEventListener("click",e=>{
+
+e.stopPropagation();
+
+goTo(index+1);
+
+});
+
+dots.forEach((dot,i)=>dot.addEventListener("click",e=>{
+
+e.stopPropagation();
+
+goTo(i);
+
+}));
+
+let startX=0;
+
+slider.addEventListener("touchstart",e=>{
+
+startX=e.touches[0].clientX;
+
+},{passive:true});
+
+slider.addEventListener("touchend",e=>{
+
+const delta=e.changedTouches[0].clientX-startX;
+
+if(Math.abs(delta)>40){
+
+goTo(index+(delta<0?1:-1));
+
+}
+
+},{passive:true});
+
+const timer=setInterval(()=>goTo(index+1),3000);
+
+sliderIntervals.push(timer);
+
+});
+
 }
 
 /* RENDER VENDOR CARDS */
@@ -1657,7 +1761,6 @@ vendorMatchesCategory(vendor,activeCategory)
 vendorMatchesSearch(vendor)
 
 );
-
 
 /* SORT */
 
@@ -1678,7 +1781,6 @@ new Date(a.created_at||0)
 
 }
 
-
 /* TITLE */
 
 listingTitle.textContent=getCategoryTitle();
@@ -1688,7 +1790,6 @@ list.length+
 (list.length===1
 ?" business found"
 :" businesses found");
-
 
 /* EMPTY */
 
@@ -1712,7 +1813,6 @@ return;
 
 }
 
-
 /* CARDS */
 
 vendorGrid.innerHTML=list.map(v=>{
@@ -1726,16 +1826,17 @@ const phone=phoneNumber(v.phone);
 let whatsapp=phoneNumber(v.whatsapp||v.phone);
 
 if(whatsapp.length===10){
-
 whatsapp="91"+whatsapp;
-
 }
 
 const logo=v.logo_url;
 
 const cover=v.cover_image_url;
+
 const recentPhotos=getVendorPhotos(v.id);
-const recentWorkHTML=recentWorkSliderHTML(recentPhotos,v.id);
+
+const recentWorkHTML=
+recentWorkSliderHTML(recentPhotos,v.id);
 
 const initial=escapeHTML(
 (v.business_name||"B").charAt(0).toUpperCase()
@@ -1756,7 +1857,6 @@ onerror="this.style.display='none';this.parentElement.innerHTML='${initial}'"
 
 :initial;
 
-
 const coverHTML=cover
 
 ?`
@@ -1771,10 +1871,8 @@ loading="lazy"
 
 :"";
 
-
 const description=
 v.description||"No business description available.";
-
 
 const categoryHTML=tags.slice(0,4).map(tag=>`
 
@@ -1784,7 +1882,6 @@ ${escapeHTML(tag)}
 
 `).join("");
 
-
 const backCategoryHTML=tags.map(tag=>`
 
 <span class="back-category">
@@ -1792,7 +1889,6 @@ ${escapeHTML(tag)}
 </span>
 
 `).join("");
-
 
 const verifiedHTML=v.is_verified
 
@@ -1806,30 +1902,21 @@ const verifiedHTML=v.is_verified
 
 :"";
 
-
 const callLink=phone
-
 ?"tel:"+phone
-
 :"#";
-
 
 const whatsappLink=whatsapp
-
 ?"https://wa.me/"+whatsapp
-
 :"#";
-
 
 const callDisabled=phone
 ?""
 :"disabled";
 
-
 const whatsappDisabled=whatsapp
 ?""
 :"disabled";
-
 
 return `
 
@@ -1841,7 +1928,6 @@ onclick="flipVendorCard(this)"
 >
 
 <div class="flip-inner">
-
 
 <!-- FRONT -->
 
@@ -1860,20 +1946,23 @@ ${logoHTML}
 </div>
 
 <div class="flip-hint">
-
 ↻ Tap to flip
-
 </div>
 
 </div>
-
 
 <div class="front-content">
 
+<div class="front-label">
+Contact Person
+</div>
+
 <div class="vendor-owner">
+${escapeHTML(v.owner_name||"Contact person not listed")}
+</div>
 
-${escapeHTML(v.owner_name||"Business owner")}
-
+<div class="front-category-label">
+Category
 </div>
 
 <div class="vendor-tags">
@@ -1886,7 +1975,6 @@ ${categoryHTML}
 
 </div>
 
-
 <!-- BACK -->
 
 <div class="card-face card-back">
@@ -1894,11 +1982,8 @@ ${categoryHTML}
 <div class="back-content">
 
 <div class="back-top">
-
 <div class="back-title">
-
-${escapeHTML(v.business_name)}
-
+${escapeHTML(v.business_name||"Business details")}
 </div>
 
 <button
@@ -1906,23 +1991,18 @@ type="button"
 class="back-flip"
 onclick="event.stopPropagation();flipVendorCard(this.closest('.flip-container'))"
 >
-
 ↻ Front
-
 </button>
 
 </div>
 
 <div class="back-description">
-
 ${escapeHTML(description)}
-
 </div>
 
 ${recentWorkHTML}
 
 <div class="back-details">
-
 
 ${v.owner_name?`
 
@@ -1940,7 +2020,6 @@ ${escapeHTML(v.owner_name)}
 
 `:""}
 
-
 ${v.phone?`
 
 <div class="detail-item">
@@ -1956,7 +2035,6 @@ ${escapeHTML(v.phone)}
 </div>
 
 `:""}
-
 
 ${v.email?`
 
@@ -1974,7 +2052,6 @@ ${escapeHTML(v.email)}
 
 `:""}
 
-
 ${v.products_services?`
 
 <div class="detail-item">
@@ -1991,7 +2068,6 @@ ${escapeHTML(v.products_services)}
 
 `:""}
 
-
 ${v.minimum_order?`
 
 <div class="detail-item">
@@ -2007,7 +2083,6 @@ ${escapeHTML(v.minimum_order)}
 </div>
 
 `:""}
-
 
 ${v.website?`
 
@@ -2033,7 +2108,6 @@ ${escapeHTML(v.website)}
 
 `:""}
 
-
 ${v.instagram?`
 
 <div class="detail-item">
@@ -2058,9 +2132,7 @@ View Instagram
 
 `:""}
 
-
 </div>
-
 
 <div class="back-categories">
 
@@ -2068,11 +2140,8 @@ ${backCategoryHTML}
 
 </div>
 
-
 <div class="back-footer">
-
 BGC CLUB Business Network
-
 </div>
 
 </div>
@@ -2080,7 +2149,6 @@ BGC CLUB Business Network
 </div>
 
 </div>
-
 
 <!-- CONTACT BUTTONS -->
 
@@ -2089,17 +2157,39 @@ BGC CLUB Business Network
 <a
 class="contact-btn call-btn ${callDisabled}"
 href="${callLink}"
+aria-label="Call ${escapeHTML(v.owner_name||v.business_name||'business')}"
+onclick="event.stopPropagation()"
 >
-☎ Call
+
+<svg viewBox="0 0 24 24" aria-hidden="true">
+
+<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.64a2 2 0 0 1-.45 2.11L8 9.77a16 16 0 0 0 6 6l1.3-1.28a2 2 0 0 1 2.11-.45c.86.29 1.74.5 2.64.62A2 2 0 0 1 22 16.92z"></path>
+
+</svg>
+
+<span>Call</span>
+
 </a>
 
 <a
 class="contact-btn whatsapp-btn ${whatsappDisabled}"
 href="${whatsappLink}"
+aria-label="WhatsApp ${escapeHTML(v.owner_name||v.business_name||'business')}"
+onclick="event.stopPropagation()"
 target="_blank"
 rel="noopener"
 >
-☏ WhatsApp
+
+<svg viewBox="0 0 24 24" aria-hidden="true">
+
+<path d="M20.5 3.5A11.8 11.8 0 0 0 3.2 19.8L2 22l2.4-.6A11.8 11.8 0 1 0 20.5 3.5z"></path>
+
+<path d="M8.2 7.4c-.3-.6-.6-.6-.9-.6h-.5c-.3 0-.7.2-1 .6-.3.4-1 1-1 2.4s1 2.7 1.2 2.9c.2.2 2 3.2 4.9 4.4 2.4 1 2.9.8 3.4.7.5-.1 1.6-.7 1.8-1.3.2-.6.2-1.1.1-1.2-.1-.2-.3-.3-.6-.4l-1.8-.9c-.3-.1-.5-.2-.7.2-.2.3-.7.9-.9 1.1-.2.2-.4.1-.7 0-.9-.2-.3-1.1-.7-2.1-1.1-.3-.1-.5 0-.7.2l-.6.7c-.2.2-.3.2-.6.1a6.5 6.5 0 0 1-2-1.3 7.2 7.2 0 0 1-1.4-1.8c-.1-.2 0-.4.1-.5l.4-.5c.1-.2.2-.3.2-.5 0-.2-.1-.4-.2-.6z"></path>
+
+</svg>
+
+<span>WhatsApp</span>
+
 </a>
 
 </div>
@@ -2114,7 +2204,6 @@ initRecentWorkSliders();
 
 }
 
-
 /* FLIP */
 
 function flipVendorCard(element){
@@ -2122,7 +2211,6 @@ function flipVendorCard(element){
 element.classList.toggle("flipped");
 
 }
-
 
 /* INITIAL LOAD */
 
@@ -2154,129 +2242,124 @@ init();
 
 </script>
 
-  <!-- PREMIUM FIXED NAVIGATION -->
+<!-- PREMIUM FIXED NAVIGATION -->
 
 <nav class="mobile-bottom-nav"
-     aria-label="BGC CLUB main navigation">
+aria-label="BGC CLUB main navigation">
 
+<!-- HOME -->
 
-  <!-- HOME -->
+<a href="index.html"
+class="mobile-nav-item"
+aria-label="Home">
 
-  <a href="index.html"
-     class="mobile-nav-item"
-     aria-label="Home">
+<span class="mobile-nav-icon">
 
-    <span class="mobile-nav-icon">
+<svg viewBox="0 0 24 24" aria-hidden="true">
 
-      <svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="m3 10 9-7 9 7"></path>
 
-        <path d="m3 10 9-7 9 7"></path>
+<path d="M5 9v12h14V9"></path>
 
-        <path d="M5 9v12h14V9"></path>
+<path d="M9 21v-7h6v7"></path>
 
-        <path d="M9 21v-7h6v7"></path>
+</svg>
 
-      </svg>
+</span>
 
-    </span>
+<span>Home</span>
 
-    <span>Home</span>
+</a>
 
-  </a>
+<!-- MEMBERS -->
 
+<a href="members.html"
+class="mobile-nav-item"
+aria-label="Members">
 
-  <!-- MEMBERS -->
+<span class="mobile-nav-icon">
 
-  <a href="members.html"
-     class="mobile-nav-item"
-     aria-label="Members">
+<svg viewBox="0 0 24 24" aria-hidden="true">
 
-    <span class="mobile-nav-icon">
+<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
 
-      <svg viewBox="0 0 24 24" aria-hidden="true">
+<circle cx="9" cy="7" r="4"></circle>
 
-        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+<path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
 
-        <circle cx="9" cy="7" r="4"></circle>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
 
-        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+</svg>
 
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+</span>
 
-      </svg>
+<span>Members</span>
 
-    </span>
+</a>
 
-    <span>Members</span>
+<!-- VENDORS -->
 
-  </a>
+<a href="vendors.html"
+class="mobile-nav-item active"
+aria-label="Vendors">
 
+<span class="mobile-nav-icon">
 
-  <!-- VENDORS -->
+<svg viewBox="0 0 24 24" aria-hidden="true">
 
-  <a href="vendors.html"
-     class="mobile-nav-item active"
-     aria-label="Vendors">
+<rect x="3" y="3" width="18" height="18" rx="2"></rect>
 
-    <span class="mobile-nav-icon">
+<path d="M7 7h10"></path>
 
-      <svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M7 12h10"></path>
 
-        <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+<path d="M7 17h10"></path>
 
-        <path d="M7 7h10"></path>
+</svg>
 
-        <path d="M7 12h10"></path>
+</span>
 
-        <path d="M7 17h10"></path>
+<span>Vendors</span>
 
-      </svg>
+</a>
 
-    </span>
+<!-- PROVIDERS -->
 
-    <span>Vendors</span>
+<a href="bgc-event-providers.html"
+class="mobile-nav-item"
+aria-label="Providers">
 
-  </a>
+<span class="mobile-nav-icon">
 
+<svg viewBox="0 0 24 24" aria-hidden="true">
 
-  <!-- PROVIDERS -->
+<rect x="3" y="5" width="18" height="16" rx="2"></rect>
 
-  <a href="bgc-event-providers.html"
-     class="mobile-nav-item"
-     aria-label="Providers">
+<path d="M16 3v4"></path>
 
-    <span class="mobile-nav-icon">
+<path d="M8 3v4"></path>
 
-      <svg viewBox="0 0 24 24" aria-hidden="true">
+<path d="M3 10h18"></path>
 
-        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+<path d="M8 14h.01"></path>
 
-        <path d="M16 3v4"></path>
+<path d="M12 14h.01"></path>
 
-        <path d="M8 3v4"></path>
+<path d="M16 14h.01"></path>
 
-        <path d="M3 10h18"></path>
+<path d="M8 17h.01"></path>
 
-        <path d="M8 14h.01"></path>
+<path d="M12 17h.01"></path>
 
-        <path d="M12 14h.01"></path>
+<path d="M16 17h.01"></path>
 
-        <path d="M16 14h.01"></path>
+</svg>
 
-        <path d="M8 17h.01"></path>
+</span>
 
-        <path d="M12 17h.01"></path>
+<span>Providers</span>
 
-        <path d="M16 17h.01"></path>
-
-      </svg>
-
-    </span>
-
-    <span>Providers</span>
-
-  </a>
-
+</a>
 
 </nav>
 
