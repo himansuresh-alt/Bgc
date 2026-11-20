@@ -290,7 +290,30 @@ font-size:23px;
 
 
 }
+  .vendor-card{
+    min-width:0;
+}
 
+.vendor-card-inner{
+    min-width:0;
+}
+
+.vendor-card-front,
+.vendor-card-back{
+    min-width:0;
+}
+  
+.vendor-name{
+    font-size:16px;
+}
+
+.vendor-description{
+    font-size:11px;
+}
+
+.vendor-info{
+    padding:12px;
+}
 </style>
 <style>
 
@@ -483,7 +506,7 @@ gap:5px;
 
 .back-content{
 height:100%;
-padding:25px;
+padding:18px;
 display:flex;
 flex-direction:column;
 background:linear-gradient(
@@ -491,6 +514,11 @@ background:linear-gradient(
 #fff,
 #fff8fa
 );
+
+overflow-y:auto;
+-webkit-overflow-scrolling:touch;
+overscroll-behavior:contain;
+scrollbar-width:thin;
 }
 
 .back-top{
@@ -502,7 +530,7 @@ gap:10px;
 
 .back-title{
 font-family:"Space Grotesk",sans-serif;
-font-size:19px;
+font-size:16px;
 font-weight:700;
 }
 
@@ -516,56 +544,57 @@ font-weight:800;
 }
 
 .back-description{
-font-size:13px;
+font-size:12px;
 color:#666;
-line-height:1.7;
-margin-top:18px;
+line-height:1.5;
+margin-top:10px;
 }
 
 .back-details{
 display:grid;
-gap:11px;
-margin-top:20px;
+gap:8px;
+margin-top:12px;
 }
 
 .detail-item{
 border:1px solid #ececef;
-border-radius:12px;
-padding:11px 13px;
+border-radius:10px;
+padding:9px 11px;
 background:#fff;
 }
 
 .detail-label{
-font-size:10px;
+font-size:9px;
 color:#888;
 font-weight:700;
 text-transform:uppercase;
-letter-spacing:.6px;
+letter-spacing:.5px;
 }
 
 .detail-value{
-font-size:12px;
+font-size:11px;
 font-weight:600;
-margin-top:4px;
+margin-top:3px;
 overflow-wrap:anywhere;
+line-height:1.4;
 }
 
 .back-categories{
 display:flex;
 flex-wrap:wrap;
-gap:6px;
-margin-top:16px;
+gap:5px;
+margin-top:10px;
 }
 
 .back-category{
 background:var(--accent-light);
 color:var(--accent);
 border-radius:999px;
-padding:7px 10px;
-font-size:10px;
+padding:6px 8px;
+font-size:9px;
 font-weight:700;
 }
-
+  
 .back-footer{
 margin-top:auto;
 padding-top:20px;
@@ -918,6 +947,62 @@ font-size:13px;
   }
 
 }
+
+  @media(max-width:700px){
+
+.back-content{
+padding:12px;
+}
+
+.back-title{
+font-size:14px;
+}
+
+.back-flip{
+padding:6px 9px;
+font-size:9px;
+}
+
+.back-description{
+font-size:11px;
+margin-top:8px;
+}
+
+.back-details{
+gap:6px;
+margin-top:9px;
+}
+
+.detail-item{
+padding:7px 9px;
+}
+
+.detail-label{
+font-size:8px;
+}
+
+.detail-value{
+font-size:10px;
+}
+
+.back-categories{
+margin-top:8px;
+gap:4px;
+}
+
+.back-category{
+padding:5px 7px;
+font-size:8px;
+}
+
+.back-footer{
+padding-top:10px;
+font-size:9px;
+}
+
+}
+  
+    
 </style>
 
 </head>
