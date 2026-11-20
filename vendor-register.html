@@ -1286,37 +1286,63 @@ removePhoto.addEventListener("click", function() {
   resetPhotoPreview();
 });
 
-// Convert selected image to WebP and keep it under 1 MB where possible.
+// ROBUST IMAGE COMPRESSION - ANDROID FRIENDLY
 async function compressImage(file) {
+
   const maxBytes = 1024 * 1024;
   const maxSide = 1600;
 
-  const image = await new Promise((resolve, reject) => {
-    const reader = new FileReader();
+  if (!file) {
+    throw new Error("No image selected.");
+  }
 
-    reader.onload = e => {
+  if (!file.type || !file.type.startsWith("image/")) {
+    throw new Error("Please select a valid image.");
+  }
+
+  let image;
+  let objectUrl;
+
+  try {
+
+    // Use object URL instead of FileReader
+    objectUrl = URL.createObjectURL(file);
+
+    image = await new Promise((resolve, reject) => {
+
       const img = new Image();
 
       img.onload = () => resolve(img);
 
-      img.onerror = () => reject(
-        new Error("Could not read image. Please select another photo.")
-      );
+      img.onerror = () => {
+        reject(new Error(
+          "This image format is not supported. Please select JPG or PNG."
+        ));
+      };
 
-      img.src = e.target.result;
-    };
+      img.src = objectUrl;
 
-    reader.onerror = () => reject(
-      new Error("Could not read image file.")
-    );
+    });
 
-    reader.readAsDataURL(file);
-  });
+  } finally {
 
-  let w = image.naturalWidth || image.width;
-  let h = image.naturalHeight || image.height;
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl);
+    }
 
-  const scale = Math.min(1, maxSide / Math.max(w, h));
+  }
+
+  let w = image.naturalWidth;
+  let h = image.naturalHeight;
+
+  if (!w || !h) {
+    throw new Error("Could not decode the selected image.");
+  }
+
+  const scale = Math.min(
+    1,
+    maxSide / Math.max(w, h)
+  );
 
   w = Math.round(w * scale);
   h = Math.round(h * scale);
@@ -1324,45 +1350,74 @@ async function compressImage(file) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
+  if (!ctx) {
+    throw new Error("Image processing is unavailable.");
+  }
+
   let blob = null;
 
   for (let attempt = 0; attempt < 8; attempt++) {
+
     canvas.width = w;
     canvas.height = h;
 
     ctx.clearRect(0, 0, w, h);
     ctx.drawImage(image, 0, 0, w, h);
 
-    for (let quality = 0.88; quality >= 0.4; quality -= 0.1) {
-      blob = await new Promise(resolve =>
-        canvas.toBlob(resolve, "image/webp", quality)
-      );
+    for (
+      let quality = 0.9;
+      quality >= 0.4;
+      quality -= 0.1
+    ) {
 
-      if (blob && blob.size <= maxBytes) break;
+      blob = await new Promise(resolve => {
+
+        canvas.toBlob(
+          resolve,
+          "image/webp",
+          quality
+        );
+
+      });
+
+      if (blob && blob.size <= maxBytes) {
+        break;
+      }
+
     }
 
-    if (blob && blob.size <= maxBytes) break;
+    if (blob && blob.size <= maxBytes) {
+      break;
+    }
 
-    w = Math.round(w * 0.8);
-    h = Math.round(h * 0.8);
+    w = Math.round(w * 0.75);
+    h = Math.round(h * 0.75);
+
   }
 
   if (!blob) {
-    throw new Error("Image compression failed. Please select another photo.");
+    throw new Error("Image compression failed.");
   }
 
   if (blob.size > maxBytes) {
     throw new Error(
-      "Photo could not be compressed below 1 MB. Please choose a smaller image."
+      "Image is too large. Please select a smaller photo."
     );
   }
 
-  const safeName = (file.name || "image").replace(/\.[^.]+$/, "") + ".webp";
+  const safeName =
+    (file.name || "image").replace(/\.[^.]+$/, "") +
+    ".webp";
 
-  return new File([blob], safeName, {
-    type:"image/webp",
-    lastModified:Date.now()
-  });
+  return new File(
+    [blob],
+    safeName,
+    {
+      type: "image/webp",
+      lastModified: Date.now()
+    }
+  );
+
 }
 
 // RECENT WORK PHOTOS
