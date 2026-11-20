@@ -1286,66 +1286,77 @@ removePhoto.addEventListener("click", function() {
   resetPhotoPreview();
 });
 
-// ROBUST IMAGE COMPRESSION - ANDROID FRIENDLY
+// ANDROID COMPATIBLE IMAGE COMPRESSION
 async function compressImage(file) {
 
   const maxBytes = 1024 * 1024;
   const maxSide = 1600;
 
   if (!file) {
-    throw new Error("No image selected.");
+    throw new Error("Please select an image.");
   }
 
-  if (!file.type || !file.type.startsWith("image/")) {
-    throw new Error("Please select a valid image.");
+  const validImage =
+    (file.type && file.type.startsWith("image/")) ||
+    /\.(jpg|jpeg|png|webp|gif|bmp|heic|heif|avif)$/i.test(file.name || "");
+
+  if (!validImage) {
+    throw new Error("Please select a valid image file.");
   }
 
-  let image;
-  let objectUrl;
+  // 1. Read image using FileReader
+  const dataUrl = await new Promise((resolve, reject) => {
 
-  try {
+    const reader = new FileReader();
 
-    // Use object URL instead of FileReader
-    objectUrl = URL.createObjectURL(file);
+    reader.onload = () => {
+      if (reader.result) {
+        resolve(reader.result);
+      } else {
+        reject(new Error("Unable to read selected photo."));
+      }
+    };
 
-    image = await new Promise((resolve, reject) => {
+    reader.onerror = () => {
+      reject(new Error("Unable to read selected photo."));
+    };
 
-      const img = new Image();
+    reader.readAsDataURL(file);
 
-      img.onload = () => resolve(img);
+  });
 
-      img.onerror = () => {
-        reject(new Error(
-          "This image format is not supported. Please select JPG or PNG."
-        ));
-      };
+  // 2. Decode image
+  const image = await new Promise((resolve, reject) => {
 
-      img.src = objectUrl;
+    const img = new Image();
 
-    });
+    img.onload = () => resolve(img);
 
-  } finally {
+    img.onerror = () => {
+      reject(new Error(
+        "Unable to open this photo. Try taking a screenshot and selecting it."
+      ));
+    };
 
-    if (objectUrl) {
-      URL.revokeObjectURL(objectUrl);
-    }
+    img.src = dataUrl;
 
+  });
+
+  let width = image.naturalWidth;
+  let height = image.naturalHeight;
+
+  if (!width || !height) {
+    throw new Error("Invalid image dimensions.");
   }
 
-  let w = image.naturalWidth;
-  let h = image.naturalHeight;
-
-  if (!w || !h) {
-    throw new Error("Could not decode the selected image.");
-  }
-
+  // 3. Resize
   const scale = Math.min(
     1,
-    maxSide / Math.max(w, h)
+    maxSide / Math.max(width, height)
   );
 
-  w = Math.round(w * scale);
-  h = Math.round(h * scale);
+  width = Math.round(width * scale);
+  height = Math.round(height * scale);
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -1356,28 +1367,25 @@ async function compressImage(file) {
 
   let blob = null;
 
+  // 4. Compress as JPEG - maximum compatibility
   for (let attempt = 0; attempt < 8; attempt++) {
 
-    canvas.width = w;
-    canvas.height = h;
+    canvas.width = width;
+    canvas.height = height;
 
-    ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(image, 0, 0, w, h);
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, width, height);
 
-    for (
-      let quality = 0.9;
-      quality >= 0.4;
-      quality -= 0.1
-    ) {
+    ctx.drawImage(image, 0, 0, width, height);
+
+    for (let quality = 0.9; quality >= 0.35; quality -= 0.1) {
 
       blob = await new Promise(resolve => {
-
         canvas.toBlob(
           resolve,
-          "image/webp",
+          "image/jpeg",
           quality
         );
-
       });
 
       if (blob && blob.size <= maxBytes) {
@@ -1390,36 +1398,30 @@ async function compressImage(file) {
       break;
     }
 
-    w = Math.round(w * 0.75);
-    h = Math.round(h * 0.75);
+    width = Math.round(width * 0.75);
+    height = Math.round(height * 0.75);
 
   }
 
   if (!blob) {
-    throw new Error("Image compression failed.");
+    throw new Error("Photo compression failed.");
   }
 
   if (blob.size > maxBytes) {
-    throw new Error(
-      "Image is too large. Please select a smaller photo."
-    );
+    throw new Error("Please select a smaller photo.");
   }
 
-  const safeName =
-    (file.name || "image").replace(/\.[^.]+$/, "") +
-    ".webp";
-
+  // 5. Return compressed JPEG
   return new File(
     [blob],
-    safeName,
+    (file.name || "image").replace(/\.[^.]+$/, "") + ".jpg",
     {
-      type: "image/webp",
+      type: "image/jpeg",
       lastModified: Date.now()
     }
   );
 
 }
-
 // RECENT WORK PHOTOS
 
 portfolioFiles.addEventListener("change", function() {
@@ -1506,18 +1508,22 @@ renderPortfolioPreview();
 
   const compressedFile = await compressImage(file);
 
-  const {error} = await sb.storage.from("vendor-logos").upload(path, compressedFile, {
-    contentType:"image/webp",
-    cacheControl:"3600",
-    upsert:false
-  });
+  const {error} = await sb.storage
+    .from("vendor-logos")
+    .upload(path, compressedFile, {
+      contentType: compressedFile.type,
+      cacheControl: "3600",
+      upsert: false
+    });
 
   if (error) throw error;
 
-  const {data} = sb.storage.from("vendor-logos").getPublicUrl(path);
+  const {data} = sb.storage
+    .from("vendor-logos")
+    .getPublicUrl(path);
 
   return data.publicUrl;
-}
+  }
 
 async function uploadBusinessLogo(file) {
 
@@ -1526,7 +1532,7 @@ async function uploadBusinessLogo(file) {
   const path =
     Date.now() + "-" +
     Math.random().toString(36).slice(2,10) +
-    ".webp";
+    ".jpg";
 
   return uploadImageToStorage(file, path);
 }
