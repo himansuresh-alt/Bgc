@@ -3,1735 +3,1645 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>BGC Admin • Vendors</title>
+
+<title>BGC Club • Vendor Admin</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
---bg:#f4f5ef;
---card:#fff;
---ink:#1e2b25;
---muted:#718078;
---green:#52745f;
---line:#e3e8e1;
---red:#b84c4c;
+:root {
+  --bg: #f4f5ef;
+  --card: #ffffff;
+  --ink: #1e2b25;
+  --muted: #718078;
+  --green: #52745f;
+  --dark: #233b30;
+  --line: #e3e8e1;
+  --red: #b84c4c;
+  --orange: #e8a83c;
 }
 
-*{
-box-sizing:border-box;
+* {
+  box-sizing: border-box;
 }
 
-body{
-margin:0;
-background:var(--bg);
-font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
-color:var(--ink);
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
+  color: var(--ink);
 }
 
-header{
-background:#233b30;
-color:white;
-padding:22px 18px;
-position:sticky;
-top:0;
-z-index:5;
+header {
+  background: var(--dark);
+  color: white;
+  padding: 18px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.header-inner{
-max-width:1200px;
-margin:auto;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
-h1{
-font-size:20px;
-margin:0;
+h1 {
+  font-size: 20px;
+  margin: 0;
 }
 
-header small{
-display:block;
-color:#c7d6cb;
-margin-top:4px;
+header small {
+  display: block;
+  color: #c7d6cb;
+  margin-top: 4px;
 }
 
-main{
-max-width:1200px;
-margin:22px auto;
-padding:0 14px;
+main {
+  max-width: 1200px;
+  margin: 22px auto;
+  padding: 0 14px;
 }
 
-.stats{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:12px;
-margin-bottom:16px;
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
-.stat,.panel{
-background:var(--card);
-border:1px solid var(--line);
-border-radius:17px;
-padding:16px;
+.stat,
+.panel {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 16px;
 }
 
-.stat span{
-font-size:12px;
-color:var(--muted);
+.stat span {
+  font-size: 12px;
+  color: var(--muted);
 }
 
-.stat strong{
-display:block;
-font-size:25px;
-margin-top:5px;
+.stat strong {
+  display: block;
+  font-size: 25px;
+  margin-top: 5px;
 }
 
-.toolbar{
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-margin:0 0 14px;
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
 }
 
-input,select,textarea{
-width:100%;
-padding:11px 12px;
-border:1px solid #dce3dc;
-border-radius:11px;
-background:white;
-font:inherit;
-color:var(--ink);
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #dce3dc;
+  border-radius: 11px;
+  background: white;
+  font: inherit;
+  color: var(--ink);
 }
 
-.toolbar input{
-flex:1;
-min-width:220px;
+.toolbar input {
+  flex: 1;
+  min-width: 220px;
 }
 
-.toolbar select{
-width:auto;
-min-width:150px;
+.toolbar select {
+  width: auto;
+  min-width: 150px;
 }
 
-button{
-border:0;
-border-radius:10px;
-padding:10px 13px;
-background:var(--green);
-color:white;
-font:inherit;
-font-weight:700;
-cursor:pointer;
+button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 13px;
+  background: var(--green);
+  color: white;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-button.secondary{
-background:#edf2ed;
-color:#2d4938;
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
 }
 
-button.danger{
-background:#b94c4c;
+button.secondary {
+  background: #edf2ed;
+  color: #2d4938;
 }
 
-button.ghost{
-background:transparent;
-color:var(--ink);
-border:1px solid var(--line);
+button.danger {
+  background: var(--red);
 }
 
-.table-wrap{
-overflow:auto;
+button.ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
 }
 
-.table{
-width:100%;
-border-collapse:collapse;
-min-width:720px;
+.table-wrap {
+  overflow: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
 }
 
 .table th,
-.table td{
-text-align:left;
-padding:12px;
-border-bottom:1px solid var(--line);
-font-size:13px;
+.table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
 }
 
-.table th{
-color:var(--muted);
-font-size:11px;
-text-transform:uppercase;
-letter-spacing:.05em;
+.table th {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
 }
 
-.name{
-font-weight:800;
+.name {
+  font-weight: 800;
 }
 
-.sub{
-font-size:11px;
-color:var(--muted);
-margin-top:3px;
+.sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
 }
 
-.badge{
-display:inline-block;
-border-radius:99px;
-padding:5px 9px;
-font-size:11px;
-font-weight:700;
-background:#edf2ed;
+.badge {
+  display: inline-block;
+  border-radius: 99px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #edf2ed;
 }
 
-.pending{
-background:#fff2d7;
-color:#916b1b;
+.pending {
+  background: #fff2d7;
+  color: #916b1b;
 }
 
-.approved{
-background:#e3f5e9;
-color:#267145;
+.approved {
+  background: #e3f5e9;
+  color: #267145;
 }
 
-.rejected{
-background:#fde7e7;
-color:#a53c3c;
+.rejected {
+  background: #fde7e7;
+  color: #a53c3c;
 }
 
-.actions{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
+.actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.actions button{
-padding:7px 9px;
-font-size:12px;
+.actions button {
+  padding: 7px 9px;
+  font-size: 12px;
 }
 
-.login{
-max-width:420px;
-margin:9vh auto;
-background:white;
-padding:25px;
-border-radius:20px;
-border:1px solid var(--line);
+.login {
+  max-width: 420px;
+  margin: 8vh auto;
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
 }
 
-.login h2{
-margin-top:0;
+.login h2 {
+  margin-top: 0;
 }
 
-.login form{
-display:grid;
-gap:12px;
+.login form {
+  display: grid;
+  gap: 12px;
 }
 
-.modal{
-position:fixed;
-inset:0;
-background:#17241dbb;
-display:none;
-align-items:center;
-justify-content:center;
-padding:14px;
-z-index:20;
+.modal {
+  position: fixed;
+  inset: 0;
+  background: #17241dbb;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  z-index: 20;
 }
 
-.modal.open{
-display:flex;
+.modal.open {
+  display: flex;
 }
 
-.modal-box{
-width:min(850px,100%);
-max-height:92vh;
-overflow:auto;
-background:white;
-border-radius:20px;
-padding:18px;
+.modal-box {
+  width: min(850px, 100%);
+  max-height: 92vh;
+  overflow: auto;
+  background: white;
+  border-radius: 20px;
+  padding: 18px;
 }
 
-.modal-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-position:sticky;
-top:-18px;
-background:white;
-padding:8px 0;
-z-index:2;
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  position: sticky;
+  top: -18px;
+  background: white;
+  padding: 8px 0;
+  z-index: 2;
 }
 
-.form-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.field label{
-display:block;
-font-size:12px;
-font-weight:700;
-margin-bottom:5px;
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 5px;
 }
 
-.field.full{
-grid-column:1/-1;
+.field.full {
+  grid-column: 1 / -1;
 }
 
-.checks{
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-padding:8px 0;
+.checks {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding: 8px 0;
 }
 
-.checks label{
-display:flex;
-align-items:center;
-gap:6px;
-font-size:13px;
+.checks label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
 }
 
-.checks input{
-width:auto;
+.checks input {
+  width: auto;
 }
 
-.category-box{
-border:1px solid var(--line);
-border-radius:12px;
-padding:12px;
+.category-box {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
-.category-box label{
-display:flex;
-gap:8px;
-align-items:center;
-margin:7px 0;
-font-size:13px;
+.category-group {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.category-box input{
-width:auto;
+.category-group:last-child {
+  border-bottom: 0;
 }
 
-.message{
-padding:10px;
-border-radius:10px;
-background:#edf2ed;
-margin:10px 0;
-display:none;
+.category-box label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 7px 0;
+  font-size: 13px;
 }
 
-.empty{
-text-align:center;
-padding:30px;
-color:var(--muted);
+.category-box input {
+  width: auto;
 }
 
-@media(max-width:650px){
-
-.stats{
-grid-template-columns:repeat(2,1fr);
+.message {
+  padding: 10px;
+  border-radius: 10px;
+  background: #edf2ed;
+  margin: 10px 0;
+  display: none;
+  overflow-wrap: anywhere;
 }
 
-.form-grid{
-grid-template-columns:1fr;
+.message.error {
+  background: #fde7e7;
+  color: #9d3030;
 }
 
-.field.full{
-grid-column:auto;
+.message.success {
+  background: #e3f5e9;
+  color: #267145;
 }
 
-.header-inner{
-align-items:flex-start;
+.empty {
+  text-align: center;
+  padding: 30px;
+  color: var(--muted);
 }
 
-.toolbar select{
-flex:1;
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: var(--muted);
 }
 
-.stat,.panel{
-padding:13px;
-}
+@media(max-width:650px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field.full {
+    grid-column: auto;
+  }
+
+  .header-inner {
+    align-items: flex-start;
+  }
+
+  .toolbar select {
+    flex: 1;
+  }
+
+  .stat,
+  .panel {
+    padding: 13px;
+  }
 }
 </style>
 </head>
 <body>
 
 <header>
-<div class="header-inner">
+  <div class="header-inner">
+    <div>
+      <h1>🏢 BGC Vendor Admin</h1>
+      <small>Manage Business Network Listings</small>
+    </div>
 
-<div>
-<h1>🏢 BGC Vendor Admin</h1>
-<small>Manage business network listings</small>
-</div>
-
-<button
-class="secondary"
-id="logoutBtn"
-style="display:none"
->
-Logout
-</button>
-
-</div>
+    <button
+      class="secondary"
+      id="logoutBtn"
+      style="display:none"
+    >
+      Logout
+    </button>
+  </div>
 </header>
 
-
-<!-- ADMIN LOGIN -->
-
+<!-- LOGIN -->
 <section id="loginView" class="login">
 
-<h2>Admin Login</h2>
+  <h2>Admin Login</h2>
 
-<p style="color:var(--muted);font-size:13px">
-Sign in with your Supabase admin account.
-</p>
+  <p style="color:var(--muted);font-size:13px">
+    Sign in with your Supabase admin account.
+  </p>
 
-<form id="loginForm">
+  <form id="loginForm">
 
-<input
-id="loginEmail"
-type="email"
-placeholder="Admin email"
-required
->
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="Admin email"
+      autocomplete="username"
+      required
+    >
 
-<input
-id="loginPassword"
-type="password"
-placeholder="Password"
-required
->
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="Password"
+      autocomplete="current-password"
+      required
+    >
 
-<button>Login</button>
+    <button id="loginBtn" type="submit">
+      Login
+    </button>
 
-</form>
+  </form>
 
-<div id="loginMessage" class="message"></div>
+  <div id="loginMessage" class="message"></div>
 
 </section>
 
-
-<!-- ADMIN DASHBOARD -->
-
+<!-- DASHBOARD -->
 <main id="app" style="display:none">
 
-<div class="stats">
+  <div class="stats">
 
-<div class="stat">
-<span>Total Vendors</span>
-<strong id="totalCount">0</strong>
-</div>
+    <div class="stat">
+      <span>Total Vendors</span>
+      <strong id="totalCount">0</strong>
+    </div>
 
-<div class="stat">
-<span>Approved</span>
-<strong id="approvedCount">0</strong>
-</div>
+    <div class="stat">
+      <span>Approved</span>
+      <strong id="approvedCount">0</strong>
+    </div>
 
-<div class="stat">
-<span>Pending</span>
-<strong id="pendingCount">0</strong>
-</div>
+    <div class="stat">
+      <span>Pending</span>
+      <strong id="pendingCount">0</strong>
+    </div>
 
-<div class="stat">
-<span>Rejected</span>
-<strong id="rejectedCount">0</strong>
-</div>
+    <div class="stat">
+      <span>Rejected</span>
+      <strong id="rejectedCount">0</strong>
+    </div>
 
-</div>
+  </div>
 
+  <!-- SEARCH & FILTER -->
+  <div class="toolbar">
 
-<!-- SEARCH & FILTER -->
+    <input
+      id="search"
+      placeholder="Search business, owner, phone..."
+    >
 
-<div class="toolbar">
+    <select id="statusFilter">
+      <option value="all">All statuses</option>
+      <option value="approved">Approved</option>
+      <option value="pending">Pending</option>
+      <option value="rejected">Rejected</option>
+    </select>
 
-<input
-id="search"
-placeholder="Search business, owner, phone…"
->
+    <button
+      class="secondary"
+      id="refreshBtn"
+    >
+      ↻ Refresh
+    </button>
 
-<select id="statusFilter">
+  </div>
 
-<option value="all">All statuses</option>
-<option value="approved">Approved</option>
-<option value="pending">Pending</option>
-<option value="rejected">Rejected</option>
+  <!-- VENDOR TABLE -->
+  <div class="panel table-wrap">
 
-</select>
+    <table class="table">
 
-<button
-class="secondary"
-id="refreshBtn"
->
-↻ Refresh
-</button>
+      <thead>
+        <tr>
+          <th>Business</th>
+          <th>Contact</th>
+          <th>Status</th>
+          <th>Added</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-</div>
+      <tbody id="vendorRows"></tbody>
 
+    </table>
 
-<!-- VENDOR TABLE -->
+    <div id="emptyState" class="empty" style="display:none">
+      No vendors found.
+    </div>
 
-<div class="panel table-wrap">
+    <div id="tableLoading" class="loading" style="display:none">
+      Loading vendors...
+    </div>
 
-<table class="table">
-
-<thead>
-
-<tr>
-<th>Business</th>
-<th>Contact</th>
-<th>Status</th>
-<th>Added</th>
-<th>Actions</th>
-</tr>
-
-</thead>
-
-<tbody id="vendorRows"></tbody>
-
-</table>
-
-<div
-id="emptyState"
-class="empty"
-style="display:none"
->
-No vendors found.
-</div>
-
-</div>
+  </div>
 
 </main>
 
-
-<!-- EDIT VENDOR MODAL -->
-
+<!-- EDIT MODAL -->
 <div class="modal" id="editModal">
 
-<div class="modal-box">
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="modalTitle">Edit Vendor</h2>
+
+      <button
+        class="ghost"
+        id="closeModal"
+        type="button"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <div id="editMessage" class="message"></div>
+
+    <form id="editForm">
+
+      <input type="hidden" id="vendorId">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label>Business Name *</label>
+          <input id="business_name" required>
+        </div>
+
+        <div class="field">
+          <label>Owner Name</label>
+          <input id="owner_name">
+        </div>
+
+        <div class="field">
+          <label>Business Type</label>
+          <input id="business_type">
+        </div>
+
+        <div class="field">
+          <label>Phone *</label>
+          <input id="phone" required>
+        </div>
+
+        <div class="field">
+          <label>WhatsApp</label>
+          <input id="whatsapp">
+        </div>
+
+        <div class="field">
+          <label>Email</label>
+          <input id="email" type="email">
+        </div>
+
+        <div class="field">
+          <label>Website</label>
+          <input id="website">
+        </div>
+
+        <div class="field">
+          <label>Instagram</label>
+          <input id="instagram">
+        </div>
+
+        <div class="field">
+          <label>Facebook</label>
+          <input id="facebook">
+        </div>
+
+        <div class="field">
+          <label>Years in Business</label>
+          <input
+            id="years_in_business"
+            type="number"
+            min="0"
+          >
+        </div>
+
+        <div class="field">
+          <label>Minimum Order</label>
+          <input id="minimum_order">
+        </div>
+
+        <div class="field">
+          <label>Logo / Photo URL</label>
+          <input id="logo_url">
+        </div>
+
+        <div class="field full">
+          <label>Description</label>
+          <textarea id="description" rows="3"></textarea>
+        </div>
+
+        <div class="field full">
+          <label>Products / Services</label>
+          <textarea id="products_services" rows="3"></textarea>
+        </div>
+
+        <div class="field full">
+          <label>Availability</label>
+
+          <div class="checks">
+
+            <label>
+              <input
+                type="checkbox"
+                id="wholesale_available"
+              >
+              Wholesale
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                id="retail_available"
+              >
+              Retail
+            </label>
+
+            <label>
+              <input
+                type="checkbox"
+                id="delivery_available"
+              >
+              Delivery
+            </label>
+
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Listing Status</label>
+
+          <select id="status">
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Verified</label>
+
+          <select id="is_verified">
+            <option value="false">Not verified</option>
+            <option value="true">Verified</option>
+          </select>
+        </div>
+
+        <div class="field full">
+          <label>Categories / Subcategories</label>
+
+          <div
+            id="categoryList"
+            class="category-box"
+          >
+            Loading categories...
+          </div>
+        </div>
+
+      </div>
+
+      <div style="
+        display:flex;
+        gap:9px;
+        justify-content:flex-end;
+        margin-top:16px;
+        flex-wrap:wrap;
+      ">
+
+        <button
+          type="button"
+          class="ghost"
+          id="cancelEdit"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          id="saveBtn"
+        >
+          Save Changes
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
 
-<div class="modal-head">
-
-<h2 id="modalTitle">Edit Vendor</h2>
-
-<button
-class="ghost"
-id="closeModal"
->
-✕
-</button>
-
-</div>
-
-<div
-id="editMessage"
-class="message"
-></div>
-
-
-<form id="editForm">
-
-<input
-type="hidden"
-id="vendorId"
->
-
-
-<div class="form-grid">
-
-
-<!-- BUSINESS NAME -->
-
-<div class="field">
-
-<label>Business Name *</label>
-
-<input
-id="business_name"
-required
->
-
-</div>
-
-
-<!-- OWNER -->
-
-<div class="field">
-
-<label>Owner Name</label>
-
-<input
-id="owner_name"
->
-
-</div>
-
-
-<!-- BUSINESS TYPE -->
-
-<div class="field">
-
-<label>Business Type</label>
-
-<input
-id="business_type"
->
-
-</div>
-
-
-<!-- PHONE -->
-
-<div class="field">
-
-<label>Phone *</label>
-
-<input
-id="phone"
-required
->
-
-</div>
-
-
-<!-- WHATSAPP -->
-
-<div class="field">
-
-<label>WhatsApp</label>
-
-<input
-id="whatsapp"
->
-
-</div>
-
-
-<!-- EMAIL -->
-
-<div class="field">
-
-<label>Email</label>
-
-<input
-id="email"
-type="email"
->
-
-</div>
-
-
-<!-- WEBSITE -->
-
-<div class="field">
-
-<label>Website</label>
-
-<input
-id="website"
->
-
-</div>
-
-
-<!-- INSTAGRAM -->
-
-<div class="field">
-
-<label>Instagram</label>
-
-<input
-id="instagram"
->
-
-</div>
-
-
-<!-- FACEBOOK -->
-
-<div class="field">
-
-<label>Facebook</label>
-
-<input
-id="facebook"
->
-
-</div>
-
-
-<!-- YEARS -->
-
-<div class="field">
-
-<label>Years in Business</label>
-
-<input
-id="years_in_business"
-type="number"
-min="0"
->
-
-</div>
-
-
-<!-- MINIMUM ORDER -->
-
-<div class="field">
-
-<label>Minimum Order</label>
-
-<input
-id="minimum_order"
->
-
-</div>
-
-
-<!-- LOGO -->
-
-<div class="field">
-
-<label>Logo / Photo URL</label>
-
-<input
-id="logo_url"
->
-
-</div>
-
-
-<!-- DESCRIPTION -->
-
-<div class="field full">
-
-<label>Description</label>
-
-<textarea
-id="description"
-rows="3"
-></textarea>
-
-</div>
-
-
-<!-- PRODUCTS -->
-
-<div class="field full">
-
-<label>Products / Services</label>
-
-<textarea
-id="products_services"
-rows="3"
-></textarea>
-
-</div>
-
-
-<!-- BUSINESS AVAILABILITY -->
-
-<div class="field full">
-
-<label>Availability</label>
-
-<div class="checks">
-
-<label>
-<input
-type="checkbox"
-id="wholesale_available"
->
-Wholesale
-</label>
-
-<label>
-<input
-type="checkbox"
-id="retail_available"
->
-Retail
-</label>
-
-<label>
-<input
-type="checkbox"
-id="delivery_available"
->
-Delivery
-</label>
-
-</div>
-
-</div>
-
-
-<!-- STATUS -->
-
-<div class="field">
-
-<label>Listing Status</label>
-
-<select id="status">
-
-<option value="pending">Pending</option>
-<option value="approved">Approved</option>
-<option value="rejected">Rejected</option>
-
-</select>
-
-</div>
-
-
-<!-- VERIFICATION -->
-
-<div class="field">
-
-<label>Verified</label>
-
-<select id="is_verified">
-
-<option value="false">Not verified</option>
-<option value="true">Verified</option>
-
-</select>
-
-</div>
-
-
-<!-- CATEGORY EDIT -->
-
-<div class="field full">
-
-<label>Categories / Subcategories</label>
-
-<div
-id="categoryList"
-class="category-box"
->
-Loading categories…
-</div>
-
-</div>
-
-
-</div>
-
-
-<!-- SAVE BUTTONS -->
-
-<div
-style="
-display:flex;
-gap:9px;
-justify-content:flex-end;
-margin-top:16px;
-"
->
-
-<button
-type="button"
-class="ghost"
-id="cancelEdit"
->
-Cancel
-</button>
-
-<button
-type="submit"
-id="saveBtn"
->
-Save Changes
-</button>
-
-</div>
-
-</form>
-
-</div>
 </div>
 <script>
+/* ================================
+   SUPABASE CONFIGURATION
+================================ */
 
-const SUPABASE_URL=
-"https://acgbtsfuwybbtzakvmjf.supabase.co";
+const SUPABASE_URL =
+  "https://acgbtsfuwybbtzakvmjf.supabase.co";
 
-const SUPABASE_KEY=
-"sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
+const SUPABASE_KEY =
+  "sb_publishable_dAYxllrkoRGYtW4_jNCQrQ_rXksAiCB";
 
-const sb=supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+const sb = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
 );
 
 
-let vendors=[];
-let categories=[];
-let subcategories=[];
-let mappings=[];
-let editingVendor=null;
+/* ================================
+   GLOBAL VARIABLES
+================================ */
+
+let vendors = [];
+let categories = [];
+let subcategories = [];
+let mappings = [];
+let editingVendor = null;
+let loadingData = false;
 
 
-const $=id=>document.getElementById(id);
+/* ================================
+   HELPERS
+================================ */
+
+const $ = id => document.getElementById(id);
 
 
-function esc(v){
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
+}
 
-return String(v??"").replace(/[&<>"']/g,c=>({
 
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
+function showMessage(element, text, type = "") {
+  element.textContent = text;
+  element.className = "message " + type;
+  element.style.display = "block";
+}
 
-}[c]));
+
+function hideMessage(element) {
+  element.style.display = "none";
+  element.textContent = "";
+}
+
+
+function setLoginLoading(isLoading) {
+  $("loginBtn").disabled = isLoading;
+  $("loginBtn").textContent = isLoading
+    ? "Signing in..."
+    : "Login";
+}
+
+
+function setSaveLoading(isLoading) {
+  $("saveBtn").disabled = isLoading;
+  $("saveBtn").textContent = isLoading
+    ? "Saving..."
+    : "Save Changes";
+}
+
+
+/* ================================
+   SHOW / HIDE VIEWS
+================================ */
+
+function showLogin() {
+  $("loginView").style.display = "block";
+  $("app").style.display = "none";
+  $("logoutBtn").style.display = "none";
+}
+
+
+function showDashboard() {
+  $("loginView").style.display = "none";
+  $("app").style.display = "block";
+  $("logoutBtn").style.display = "block";
+}
+
+
+/* ================================
+   SESSION CHECK
+================================ */
+
+async function checkSession() {
+  try {
+    const { data, error } = await sb.auth.getSession();
+
+    if (error) {
+      console.error("Session error:", error);
+      showLogin();
+      return;
+    }
+
+    if (data.session) {
+      showDashboard();
+      await loadAll();
+    } else {
+      showLogin();
+    }
+
+  } catch (error) {
+    console.error("Session check failed:", error);
+    showLogin();
+  }
+}
+
+
+/* ================================
+   LOGIN
+================================ */
+
+$("loginForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  hideMessage($("loginMessage"));
+
+  const email = $("loginEmail").value.trim();
+  const password = $("loginPassword").value;
+
+  if (!email || !password) {
+    showMessage(
+      $("loginMessage"),
+      "Please enter email and password.",
+      "error"
+    );
+    return;
+  }
+
+  setLoginLoading(true);
+
+  try {
+    const { data, error } = await sb.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) {
+      showMessage(
+        $("loginMessage"),
+        error.message,
+        "error"
+      );
+
+      return;
+    }
+
+    if (!data.session) {
+      showMessage(
+        $("loginMessage"),
+        "Login successful, but session was not created. Please try again.",
+        "error"
+      );
+
+      return;
+    }
+
+    showDashboard();
+
+    await loadAll();
+
+  } catch (error) {
+    console.error("Login error:", error);
+
+    showMessage(
+      $("loginMessage"),
+      error.message || "Login failed. Please try again.",
+      "error"
+    );
+
+  } finally {
+    setLoginLoading(false);
+  }
+});
+
+
+/* ================================
+   LOGOUT
+================================ */
+
+$("logoutBtn").addEventListener("click", async function() {
+
+  const confirmed = confirm("Are you sure you want to logout?");
+
+  if (!confirmed) return;
+
+  $("logoutBtn").disabled = true;
+
+  try {
+    const { error } = await sb.auth.signOut();
+
+    if (error) {
+      alert("Logout failed: " + error.message);
+      return;
+    }
+
+    vendors = [];
+    categories = [];
+    subcategories = [];
+    mappings = [];
+
+    showLogin();
+
+    $("loginPassword").value = "";
+
+  } catch (error) {
+    alert("Logout error: " + error.message);
+
+  } finally {
+    $("logoutBtn").disabled = false;
+  }
+});
+
+
+/* ================================
+   REFRESH
+================================ */
+
+$("refreshBtn").addEventListener("click", loadAll);
+
+
+/* ================================
+   SEARCH & FILTER
+================================ */
+
+$("search").addEventListener("input", render);
+
+$("statusFilter").addEventListener("change", render);
+
+
+/* ================================
+   LOAD DATABASE
+================================ */
+
+async function loadAll() {
+
+  if (loadingData) return;
+
+  loadingData = true;
+
+  $("tableLoading").style.display = "block";
+  $("vendorRows").innerHTML = "";
+  $("emptyState").style.display = "none";
+
+  try {
+
+    const results = await Promise.all([
+
+      sb
+        .from("franchise_vendors")
+        .select("*")
+        .order("created_at", { ascending: false }),
+
+      sb
+        .from("franchise_categories")
+        .select("*")
+        .order("sort_order"),
+
+      sb
+        .from("franchise_subcategories")
+        .select("*")
+        .order("sort_order"),
+
+      sb
+        .from("franchise_vendor_categories")
+        .select("*")
+
+    ]);
+
+    const v = results[0];
+    const c = results[1];
+    const s = results[2];
+    const m = results[3];
+
+    if (v.error) {
+      throw new Error("Vendors: " + v.error.message);
+    }
+
+    if (c.error) {
+      console.warn("Category loading error:", c.error.message);
+    }
+
+    if (s.error) {
+      console.warn("Subcategory loading error:", s.error.message);
+    }
+
+    if (m.error) {
+      console.warn("Mapping loading error:", m.error.message);
+    }
+
+    vendors = v.data || [];
+    categories = c.data || [];
+    subcategories = s.data || [];
+    mappings = m.data || [];
+
+    updateStats();
+    render();
+
+  } catch (error) {
+
+    console.error("Database loading error:", error);
+
+    alert(
+      "Database loading failed:\n\n" +
+      error.message
+    );
+
+  } finally {
+
+    $("tableLoading").style.display = "none";
+    loadingData = false;
+
+  }
+}
+
+
+/* ================================
+   UPDATE COUNTERS
+================================ */
+
+function updateStats() {
+
+  $("totalCount").textContent = vendors.length;
+
+  $("approvedCount").textContent =
+    vendors.filter(v => v.status === "approved").length;
+
+  $("pendingCount").textContent =
+    vendors.filter(v => v.status === "pending").length;
+
+  $("rejectedCount").textContent =
+    vendors.filter(v => v.status === "rejected").length;
+}
+
+
+/* ================================
+   RENDER VENDORS
+================================ */
+
+function render() {
+
+  const term = $("search").value.trim().toLowerCase();
+  const status = $("statusFilter").value;
+
+  const list = vendors.filter(v => {
+
+    const statusMatch =
+      status === "all" || v.status === status;
+
+    const searchText = [
+      v.business_name,
+      v.owner_name,
+      v.phone,
+      v.whatsapp,
+      v.email,
+      v.business_type
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return statusMatch && searchText.includes(term);
+  });
+
+
+  $("vendorRows").innerHTML = list.map(v => {
+
+    const date = v.created_at
+      ? new Date(v.created_at).toLocaleDateString()
+      : "—";
+
+    const vendorId = esc(v.id);
+
+    return `
+      <tr>
+
+        <td>
+          <div class="name">
+            ${esc(v.business_name)}
+          </div>
+
+          <div class="sub">
+            ${esc(v.business_type || "")}
+          </div>
+        </td>
+
+        <td>
+          ${esc(v.owner_name || "—")}
+
+          <div class="sub">
+            ${esc(v.phone || "")}
+          </div>
+        </td>
+
+        <td>
+          <span class="badge ${esc(v.status || "pending")}">
+            ${esc(v.status || "pending")}
+          </span>
+        </td>
+
+        <td>${esc(date)}</td>
+
+        <td>
+          <div class="actions">
+
+            <button
+              onclick="editVendor('${vendorId}')"
+            >
+              Edit
+            </button>
+
+            <button
+              class="secondary"
+              onclick="quickStatus('${vendorId}','approved')"
+            >
+              Approve
+            </button>
+
+            <button
+              class="danger"
+              onclick="deleteVendor('${vendorId}')"
+            >
+              Delete
+            </button>
+
+          </div>
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+
+  $("emptyState").style.display =
+    list.length === 0 ? "block" : "none";
 
 }
 
 
-function msg(el,text){
+/* ================================
+   QUICK APPROVE
+================================ */
 
-el.textContent=text;
-el.style.display="block";
+window.quickStatus = async function(id, status) {
 
+  if (!confirm("Set this vendor to " + status + "?")) {
+    return;
+  }
+
+  try {
+
+    const { error } = await sb
+      .from("franchise_vendors")
+      .update({ status: status })
+      .eq("id", id);
+
+    if (error) {
+      throw error;
+    }
+
+    await loadAll();
+
+  } catch (error) {
+
+    console.error("Status update error:", error);
+
+    alert(
+      "Status update failed:\n\n" +
+      error.message
+    );
+
+  }
+
+};
+  /* ================================
+   EDIT VENDOR
+================================ */
+
+window.editVendor = function(id) {
+
+  editingVendor = vendors.find(v => v.id === id);
+
+  if (!editingVendor) {
+    alert("Vendor not found.");
+    return;
+  }
+
+  $("vendorId").value = id;
+
+  const fields = [
+    "business_name",
+    "owner_name",
+    "business_type",
+    "phone",
+    "whatsapp",
+    "email",
+    "website",
+    "instagram",
+    "facebook",
+    "years_in_business",
+    "minimum_order",
+    "logo_url",
+    "description",
+    "products_services",
+    "status"
+  ];
+
+  fields.forEach(field => {
+    $(field).value = editingVendor[field] ?? "";
+  });
+
+
+  const checkFields = [
+    "wholesale_available",
+    "retail_available",
+    "delivery_available"
+  ];
+
+  checkFields.forEach(field => {
+    $(field).checked = !!editingVendor[field];
+  });
+
+
+  $("is_verified").value =
+    String(!!editingVendor.is_verified);
+
+
+  renderCategoryChoices(id);
+
+  $("editModal").classList.add("open");
+
+  hideMessage($("editMessage"));
+};
+
+
+/* ================================
+   CATEGORY EDITING
+================================ */
+
+function renderCategoryChoices(vendorId) {
+
+  const current = mappings.filter(
+    m => m.vendor_id === vendorId
+  );
+
+  if (!categories.length) {
+    $("categoryList").innerHTML =
+      "Categories could not be loaded.";
+    return;
+  }
+
+  $("categoryList").innerHTML = categories.map(cat => {
+
+    const subs = subcategories.filter(
+      s => s.category_id === cat.id
+    );
+
+    return `
+      <div class="category-group">
+
+        <strong>${esc(cat.name)}</strong>
+
+        ${
+          subs.length
+            ? subs.map(sub => {
+
+                const checked = current.some(
+                  m => m.subcategory_id === sub.id
+                );
+
+                return `
+                  <label>
+
+                    <input
+                      type="checkbox"
+                      class="cat-check"
+                      value="${esc(sub.id)}"
+                      data-cat="${esc(cat.id)}"
+                      ${checked ? "checked" : ""}
+                    >
+
+                    ${esc(sub.name)}
+
+                  </label>
+                `;
+
+              }).join("")
+            : `<div class="sub">No subcategories</div>`
+        }
+
+      </div>
+    `;
+
+  }).join("");
 }
 
 
-function hideMsg(el){
+/* ================================
+   CLOSE MODAL
+================================ */
 
-el.style.display="none";
-
+function closeEditModal() {
+  $("editModal").classList.remove("open");
+  editingVendor = null;
 }
 
+$("closeModal").addEventListener(
+  "click",
+  closeEditModal
+);
 
-/* SESSION CHECK */
+$("cancelEdit").addEventListener(
+  "click",
+  closeEditModal
+);
 
-async function checkSession(){
-
-const {
-data:{
-session
-}
-}=await sb.auth.getSession();
-
-
-if(session){
-
-$("loginView").style.display="none";
-
-$("app").style.display="block";
-
-$("logoutBtn").style.display="block";
-
-await loadAll();
-
-}
-
-}
+$("editModal").addEventListener("click", function(e) {
+  if (e.target === $("editModal")) {
+    closeEditModal();
+  }
+});
 
 
-/* LOGIN */
+/* ================================
+   SAVE VENDOR
+================================ */
 
-$("loginForm").addEventListener(
-"submit",
-async e=>{
+$("editForm").addEventListener("submit", async function(e) {
 
-e.preventDefault();
+  e.preventDefault();
 
-hideMsg($("loginMessage"));
+  const id = $("vendorId").value;
 
-const {
+  if (!id) {
+    alert("Vendor ID missing.");
+    return;
+  }
 
-error
+  hideMessage($("editMessage"));
 
-}=await sb.auth.signInWithPassword({
+  setSaveLoading(true);
 
-email:$("loginEmail").value,
+  try {
 
-password:$("loginPassword").value
+    const payload = {};
+
+    const textFields = [
+      "business_name",
+      "owner_name",
+      "business_type",
+      "phone",
+      "whatsapp",
+      "email",
+      "website",
+      "instagram",
+      "facebook",
+      "minimum_order",
+      "logo_url",
+      "description",
+      "products_services",
+      "status"
+    ];
+
+    textFields.forEach(field => {
+      payload[field] =
+        $(field).value.trim() || null;
+    });
+
+
+    payload.years_in_business =
+      $("years_in_business").value
+        ? Number($("years_in_business").value)
+        : null;
+
+
+    payload.wholesale_available =
+      $("wholesale_available").checked;
+
+    payload.retail_available =
+      $("retail_available").checked;
+
+    payload.delivery_available =
+      $("delivery_available").checked;
+
+    payload.is_verified =
+      $("is_verified").value === "true";
+
+
+    /* UPDATE MAIN VENDOR */
+
+    const { error: updateError } = await sb
+      .from("franchise_vendors")
+      .update(payload)
+      .eq("id", id);
+
+    if (updateError) {
+      throw new Error(
+        "Vendor update failed: " +
+        updateError.message
+      );
+    }
+
+
+    /* SELECTED CATEGORY MAPPINGS */
+
+    const selected = [
+      ...document.querySelectorAll(".cat-check:checked")
+    ].map(ch => ({
+      vendor_id: id,
+      category_id: ch.dataset.cat,
+      subcategory_id: ch.value
+    }));
+
+
+    /* DELETE OLD MAPPINGS */
+
+    const { error: deleteMappingError } = await sb
+      .from("franchise_vendor_categories")
+      .delete()
+      .eq("vendor_id", id);
+
+    if (deleteMappingError) {
+      throw new Error(
+        "Category removal failed: " +
+        deleteMappingError.message
+      );
+    }
+
+
+    /* INSERT NEW MAPPINGS */
+
+    if (selected.length > 0) {
+
+      const { error: insertMappingError } = await sb
+        .from("franchise_vendor_categories")
+        .insert(selected);
+
+      if (insertMappingError) {
+        throw new Error(
+          "Category save failed: " +
+          insertMappingError.message
+        );
+      }
+    }
+
+
+    showMessage(
+      $("editMessage"),
+      "Vendor updated successfully!",
+      "success"
+    );
+
+    await loadAll();
+
+    closeEditModal();
+
+  } catch (error) {
+
+    console.error("SAVE ERROR:", error);
+
+    showMessage(
+      $("editMessage"),
+      error.message || "Save failed.",
+      "error"
+    );
+
+  } finally {
+
+    setSaveLoading(false);
+
+  }
 
 });
 
 
-if(error){
+/* ================================
+   DELETE VENDOR
+================================ */
 
-msg(
-$("loginMessage"),
-error.message
-);
+window.deleteVendor = async function(id) {
 
-return;
+  const vendor = vendors.find(v => v.id === id);
 
-}
+  if (!vendor) {
+    alert("Vendor not found.");
+    return;
+  }
 
-await checkSession();
+  const confirmed = confirm(
+    "Permanently delete this vendor?\n\n" +
+    vendor.business_name +
+    "\n\nThis action cannot be undone."
+  );
 
-});
+  if (!confirmed) return;
 
 
-/* LOGOUT */
+  try {
 
-$("logoutBtn").onclick=async()=>{
+    /* STEP 1: CATEGORY MAPPINGS */
 
-await sb.auth.signOut();
+    const { error: categoryError } = await sb
+      .from("franchise_vendor_categories")
+      .delete()
+      .eq("vendor_id", id);
 
-location.reload();
+    if (categoryError) {
+      throw new Error(
+        "Category delete failed: " +
+        categoryError.message
+      );
+    }
+
+
+    /* STEP 2: MEDIA RECORDS */
+
+    const { error: mediaError } = await sb
+      .from("franchise_vendor_media")
+      .delete()
+      .eq("vendor_id", id);
+
+    if (mediaError) {
+      throw new Error(
+        "Media delete failed: " +
+        mediaError.message
+      );
+    }
+
+
+    /* STEP 3: MAIN VENDOR */
+
+    const { error: vendorError } = await sb
+      .from("franchise_vendors")
+      .delete()
+      .eq("id", id);
+
+    if (vendorError) {
+      throw new Error(
+        "Vendor delete failed: " +
+        vendorError.message
+      );
+    }
+
+
+    /* STEP 4: REFRESH */
+
+    await loadAll();
+
+
+    /* CHECK IF RECORD STILL EXISTS */
+
+    const stillExists = vendors.some(
+      v => v.id === id
+    );
+
+    if (stillExists) {
+
+      alert(
+        "Delete request completed, but the vendor still exists.\n\n" +
+        "Check Supabase DELETE permissions."
+      );
+
+      return;
+    }
+
+
+    alert(
+      "Vendor deleted successfully!"
+    );
+
+
+  } catch (error) {
+
+    console.error("DELETE ERROR:", error);
+
+    alert(
+      "DELETE FAILED\n\n" +
+      error.message
+    );
+
+  }
 
 };
 
 
-/* REFRESH */
-
-$("refreshBtn").onclick=loadAll;
-
-
-/* SEARCH */
-
-$("search").oninput=render;
-
-
-/* FILTER */
-
-$("statusFilter").onchange=render;
-
-
-/* LOAD DATABASE */
-
-async function loadAll(){
-
-const [
-
-v,
-c,
-s,
-m
-
-]=await Promise.all([
-
-sb
-.from("franchise_vendors")
-.select("*")
-.order("created_at",{ascending:false}),
-
-sb
-.from("franchise_categories")
-.select("*")
-.order("sort_order"),
-
-sb
-.from("franchise_subcategories")
-.select("*")
-.order("sort_order"),
-
-sb
-.from("franchise_vendor_categories")
-.select("*")
-
-]);
-
-
-if(v.error){
-
-alert(
-"Vendors load error: "+
-v.error.message
-);
-
-return;
-
-}
-
-
-vendors=v.data||[];
-
-categories=c.data||[];
-
-subcategories=s.data||[];
-
-mappings=m.data||[];
-
-
-$("totalCount").textContent=
-vendors.length;
-
-
-$("approvedCount").textContent=
-vendors.filter(
-x=>x.status==="approved"
-).length;
-
-
-$("pendingCount").textContent=
-vendors.filter(
-x=>x.status==="pending"
-).length;
-
-
-$("rejectedCount").textContent=
-vendors.filter(
-x=>x.status==="rejected"
-).length;
-
-
-render();
-
-}
-
-
-/* RENDER VENDORS */
-
-function render(){
-
-const term=$("search")
-.value
-.trim()
-.toLowerCase();
-
-const status=$("statusFilter").value;
-
-
-const list=vendors.filter(v=>
-
-(status==="all"||v.status===status)
-
-&&
-
-[
-v.business_name,
-v.owner_name,
-v.phone,
-v.whatsapp,
-v.email
-]
-.join(" ")
-.toLowerCase()
-.includes(term)
-
-);
-
-
-$("vendorRows").innerHTML=
-
-list.map(v=>`
-
-<tr>
-
-<td>
-
-<div class="name">
-${esc(v.business_name)}
-</div>
-
-<div class="sub">
-${esc(v.business_type||"")}
-</div>
-
-</td>
-
-
-<td>
-
-${esc(v.owner_name||"—")}
-
-<div class="sub">
-${esc(v.phone||"")}
-</div>
-
-</td>
-
-
-<td>
-
-<span class="badge ${esc(v.status||"pending")}">
-
-${esc(v.status||"pending")}
-
-</span>
-
-</td>
-
-
-<td>
-
-${
-v.created_at
-?
-new Date(v.created_at)
-.toLocaleDateString()
-:
-"—"
-}
-
-</td>
-
-
-<td>
-
-<div class="actions">
-
-<button
-onclick="editVendor('${v.id}')"
->
-Edit
-</button>
-
-
-<button
-class="secondary"
-onclick="quickStatus('${v.id}','approved')"
->
-Approve
-</button>
-
-
-<button
-class="danger"
-onclick="deleteVendor('${v.id}')"
->
-Delete
-</button>
-
-</div>
-
-</td>
-
-</tr>
-
-`).join("");
-
-
-$("emptyState").style.display=
-list.length
-?
-"none"
-:
-"block";
-
-}
-
-
-/* QUICK APPROVE */
-
-window.quickStatus=async(
-id,
-status
-)=>{
-
-if(!confirm(
-"Set this vendor to "+status+"?"
-))return;
-
-
-const {
-
-error
-
-}=await sb
-.from("franchise_vendors")
-.update({status})
-.eq("id",id);
-
-
-if(error){
-
-alert(error.message);
-
-}else{
-
-await loadAll();
-
-}
-
-};
-
-
-/* OPEN EDIT MODAL */
-
-window.editVendor=id=>{
-
-editingVendor=
-vendors.find(v=>v.id===id);
-
-
-if(!editingVendor)return;
-
-
-$("vendorId").value=id;
-
-
-const fields=[
-
-"business_name",
-"owner_name",
-"business_type",
-"phone",
-"whatsapp",
-"email",
-"website",
-"instagram",
-"facebook",
-"years_in_business",
-"minimum_order",
-"logo_url",
-"description",
-"products_services",
-"status"
-
-];
-
-
-fields.forEach(f=>{
-
-$(f).value=
-editingVendor[f]??"";
-
-});
-
-
-[
-"wholesale_available",
-"retail_available",
-"delivery_available"
-
-].forEach(f=>{
-
-$(f).checked=
-!!editingVendor[f];
-
-});
-
-
-$("is_verified").value=
-String(
-!!editingVendor.is_verified
-);
-
-
-renderCategoryChoices(id);
-
-
-$("editModal").classList.add("open");
-
-
-hideMsg(
-$("editMessage")
-);
-
-};
-
-
-/* CATEGORY EDIT */
-
-function renderCategoryChoices(
-vendorId
-){
-
-const current=
-mappings.filter(
-m=>m.vendor_id===vendorId
-);
-
-
-$("categoryList").innerHTML=
-
-categories.map(cat=>{
-
-const subs=
-subcategories.filter(
-s=>s.category_id===cat.id
-);
-
-
-return `
-
-<strong>
-${esc(cat.name)}
-</strong>
-
-${subs.map(sub=>`
-
-<label>
-
-<input
-
-type="checkbox"
-
-class="cat-check"
-
-value="${sub.id}"
-
-data-cat="${cat.id}"
-
-${
-current.some(
-m=>m.subcategory_id===sub.id
-)
-?
-"checked"
-:
-""
-}
-
->
-
-${esc(sub.name)}
-
-</label>
-
-`).join("")}
-
-`;
-
-}).join("");
-
-}
-
-
-/* CLOSE EDIT MODAL */
-
-$("closeModal").onclick=
-$("cancelEdit").onclick=()=>{
-
-$("editModal")
-.classList.remove("open");
-
-};
-
-
-$("editModal").addEventListener(
-"click",
-e=>{
-
-if(e.target===$("editModal")){
-
-$("editModal")
-.classList.remove("open");
-
-}
-
-});
-  /* SAVE EDITED VENDOR */
-
-$("editForm").addEventListener(
-"submit",
-async e=>{
-
-e.preventDefault();
-
-
-const id=$("vendorId").value;
-
-
-const payload={};
-
-
-[
-"business_name",
-"owner_name",
-"business_type",
-"phone",
-"whatsapp",
-"email",
-"website",
-"instagram",
-"facebook",
-"minimum_order",
-"logo_url",
-"description",
-"products_services",
-"status"
-
-].forEach(f=>{
-
-payload[f]=
-$(f).value.trim()||null;
-
-});
-
-
-payload.years_in_business=
-
-$("years_in_business").value
-
-?
-
-Number(
-$("years_in_business").value
-)
-
-:
-
-null;
-
-
-[
-"wholesale_available",
-"retail_available",
-"delivery_available"
-
-].forEach(f=>{
-
-payload[f]=$ (f).checked;
-
-});
-
-
-payload.is_verified=
-
-$("is_verified").value==="true";
-
-
-$("saveBtn").disabled=true;
-
-$("saveBtn").textContent=
-"Saving…";
-
-
-/* UPDATE VENDOR TABLE */
-
-const {
-
-error
-
-}=await sb
-
-.from("franchise_vendors")
-
-.update(payload)
-
-.eq("id",id);
-
-
-if(error){
-
-msg(
-$("editMessage"),
-"Update failed: "+
-error.message
-);
-
-
-$("saveBtn").disabled=false;
-
-$("saveBtn").textContent=
-"Save Changes";
-
-return;
-
-}
-
-
-/* UPDATE CATEGORY MAPPINGS */
-
-const selected=[
-
-...document.querySelectorAll(
-".cat-check:checked"
-)
-
-].map(ch=>({
-
-vendor_id:id,
-
-category_id:ch.dataset.cat,
-
-subcategory_id:ch.value
-
-}));
-
-
-/* REMOVE OLD CATEGORY LINKS */
-
-const {
-
-error:delErr
-
-}=await sb
-
-.from("franchise_vendor_categories")
-
-.delete()
-
-.eq("vendor_id",id);
-
-
-if(delErr){
-
-msg(
-$("editMessage"),
-"Vendor saved, but category removal failed: "+
-delErr.message
-);
-
-
-$("saveBtn").disabled=false;
-
-$("saveBtn").textContent=
-"Save Changes";
-
-return;
-
-}
-
-
-/* ADD UPDATED CATEGORY LINKS */
-
-if(selected.length){
-
-const {
-
-error:insErr
-
-}=await sb
-
-.from("franchise_vendor_categories")
-
-.insert(selected);
-
-
-if(insErr){
-
-msg(
-$("editMessage"),
-"Vendor saved, but category save failed: "+
-insErr.message
-);
-
-
-$("saveBtn").disabled=false;
-
-$("saveBtn").textContent=
-"Save Changes";
-
-return;
-
-}
-
-}
-
-
-/* SUCCESS */
-
-$("editModal")
-.classList.remove("open");
-
-
-$("saveBtn").disabled=false;
-
-$("saveBtn").textContent=
-"Save Changes";
-
-
-await loadAll();
-
-});
-
-
-/* DELETE VENDOR */
-
-window.deleteVendor=async id=>{
-
-const v=vendors.find(
-x=>x.id===id
-);
-
-
-if(!v)return;
-
-
-if(!confirm(
-
-`Delete "${v.business_name}" permanently?
-
-This will also remove category links and media records.`
-
-))return;
-
-
-/* DELETE CATEGORY LINKS */
-
-const a=await sb
-
-.from("franchise_vendor_categories")
-
-.delete()
-
-.eq("vendor_id",id);
-
-
-if(a.error){
-
-alert(
-"Category link deletion failed: "+
-a.error.message
-);
-
-return;
-
-}
-
-
-/* DELETE MEDIA RECORDS */
-
-const b=await sb
-
-.from("franchise_vendor_media")
-
-.delete()
-
-.eq("vendor_id",id);
-
-
-if(b.error){
-
-alert(
-"Media record deletion failed: "+
-b.error.message
-);
-
-return;
-
-}
-
-
-/* DELETE VENDOR */
-
-const c=await sb
-
-.from("franchise_vendors")
-
-.delete()
-
-.eq("id",id);
-
-
-if(c.error){
-
-alert(
-"Vendor deletion failed: "+
-c.error.message
-);
-
-return;
-
-}
-
-
-/* REFRESH */
-
-await loadAll();
-
-};
-
-
-/* INITIALIZE */
+/* ================================
+   INITIALIZE
+================================ */
 
 checkSession();
 
